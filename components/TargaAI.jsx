@@ -101,88 +101,102 @@ function HoverCard({ title, desc, accent }) {
 
 /* ═══ TACTICAL CALLOUT DATA ═══ */
 const CALLOUTS = [
-  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, side: "right" },
-  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, side: "right" },
-  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, side: "right" },
-  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, side: "right" },
-  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, side: "left" },
-  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, side: "right" },
-  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, side: "left" },
+  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, side: "right", top: "12%" },
+  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, side: "left", top: "20%" },
+  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, side: "right", top: "28%" },
+  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, side: "left", top: "52%" },
+  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, side: "right", top: "60%" },
+  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, side: "left", top: "68%" },
+  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, side: "right", top: "76%" },
 ];
 
-/* ═══ CALLOUT ASSEMBLY — real TARGA A icon, nudge up, advance to box ═══ */
-function DashboardCallout({ active, color, label, desc, side }) {
+/* ═══ OUTER CALLOUT — box + icon sit OUTSIDE dashboard, curved line draws FROM dashboard TO here ═══ */
+function OuterCallout({ active, color, label, desc, side, top }) {
   const isRight = side === "right";
-
-  /* Animation sequence:
-     Phase 1 (0-300ms): Inner capstone nudges UP — the "command" gesture
-     Phase 2 (200-600ms): Whole icon advances outward toward the callout box
-     Phase 3 (300-600ms): Curved line draws from icon to box
-     Phase 4 (450-700ms): Callout box materializes at the end */
 
   return (
     <div style={{
-      display: "flex",
-      flexDirection: isRight ? "row" : "row-reverse",
-      alignItems: "center",
-      gap: 0,
+      position: "absolute",
+      top,
+      [isRight ? "right" : "left"]: -280,
+      width: 260,
+      zIndex: 20,
       pointerEvents: "none",
     }}>
-      {/* TARGA A icon — advances outward as a unit after the nudge */}
-      <div style={{
-        width: 20, height: 20, position: "relative", flexShrink: 0,
-        opacity: active ? 1 : 0,
-        transition: "opacity 0.25s",
-      }}>
-        {/* Outer white A shell */}
-        <svg width={20} height={20} viewBox="0 0 43.39 45.25" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
-          <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.45" />
-        </svg>
-        {/* Inner teal capstone — nudges UP first, then settles */}
-        <svg width={20} height={20} viewBox="0 0 43.39 45.25" fill="none" style={{
-          position: "absolute", top: 0, left: 0,
-          transform: active ? "translateY(-3px)" : "translateY(0)",
-          transition: active ? "transform 0.25s cubic-bezier(0.16,1,0.3,1)" : "transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.1s",
-        }}>
-          <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
-        </svg>
-      </div>
-
-      {/* Curved connector line — draws outward */}
-      <svg width={90} height={28} viewBox="0 0 90 28" fill="none" style={{ flexShrink: 0, overflow: "visible", margin: "0 -2px" }}>
+      {/* Curved line — originates at dashboard edge, arrives at callout box */}
+      <svg
+        width={260} height={60}
+        viewBox="0 0 260 60"
+        fill="none"
+        style={{
+          position: "absolute",
+          [isRight ? "left" : "right"]: 0,
+          top: -10,
+          overflow: "visible",
+          transform: isRight ? "none" : "scaleX(-1)",
+        }}
+      >
         <path
-          d={isRight ? "M 2 14 C 22 3, 68 3, 88 14" : "M 88 14 C 68 3, 22 3, 2 14"}
+          d="M 0 50 C 40 50, 60 10, 130 10 C 180 10, 220 20, 250 30"
           stroke={color}
           strokeWidth="1"
           fill="none"
-          strokeDasharray="130"
-          strokeDashoffset={active ? "0" : (isRight ? "130" : "-130")}
-          style={{ transition: active ? "stroke-dashoffset 0.4s cubic-bezier(0.16,1,0.3,1) 0.2s" : "stroke-dashoffset 0.25s ease 0s", opacity: 0.4 }}
+          strokeDasharray="300"
+          strokeDashoffset={active ? "0" : "300"}
+          style={{
+            transition: active
+              ? "stroke-dashoffset 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s"
+              : "stroke-dashoffset 0.3s ease 0s",
+            opacity: 0.35,
+          }}
         />
-        {/* Dot at the end of the path */}
-        <circle
-          cx={isRight ? 88 : 2} cy={14} r="2"
-          fill={color}
-          opacity={active ? 0.65 : 0}
-          style={{ transition: active ? "opacity 0.2s 0.5s" : "opacity 0.15s 0s" }}
-        />
+        <circle cx={0} cy={50} r="2.5" fill={color} opacity={active ? 0.5 : 0} style={{ transition: "opacity 0.2s" }} />
       </svg>
 
-      {/* Callout box — materializes at the end */}
+      {/* Box + icon assembly */}
       <div style={{
-        background: "rgba(15,32,53,0.94)",
-        border: "1px solid " + color + "25",
-        borderRadius: 8,
-        padding: "10px 14px",
-        backdropFilter: "blur(12px)",
-        maxWidth: 200,
-        whiteSpace: "normal",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: isRight ? "flex-start" : "flex-end",
+        gap: 8,
         opacity: active ? 1 : 0,
-        transform: active ? "translateY(0) scale(1)" : "translateY(4px) scale(0.94)",
-        transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.4s" : "all 0.2s ease 0s",
+        transform: active ? "translateY(0) scale(1)" : "translateY(6px) scale(0.94)",
+        transition: active
+          ? "all 0.35s cubic-bezier(0.16,1,0.3,1) 0.4s"
+          : "all 0.2s ease 0s",
       }}>
-        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color, fontWeight: 600, marginBottom: 3 }}>{label}</div>
-        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.67rem", color: C.g300, lineHeight: 1.5 }}>{desc}</div>
+        {/* Callout box */}
+        <div style={{
+          background: "rgba(15,32,53,0.92)",
+          border: "1px solid " + color + "30",
+          borderRadius: 10,
+          padding: "14px 16px",
+          backdropFilter: "blur(12px)",
+          maxWidth: 220,
+        }}>
+          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color, fontWeight: 600, marginBottom: 4 }}>{label}</div>
+          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color: C.g300, lineHeight: 1.55 }}>{desc}</div>
+        </div>
+
+        {/* TARGA A icon — next to the box */}
+        <div style={{
+          width: 28, height: 28, position: "relative",
+          marginLeft: isRight ? 12 : 0,
+          marginRight: isRight ? 0 : 12,
+        }}>
+          <svg width={28} height={28} viewBox="0 0 43.39 45.25" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
+            <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.4" />
+          </svg>
+          <svg width={28} height={28} viewBox="0 0 43.39 45.25" fill="none" style={{
+            position: "absolute", top: 0, left: 0,
+            transform: active ? "translateY(-3px)" : "translateY(0)",
+            transition: active
+              ? "transform 0.3s cubic-bezier(0.16,1,0.3,1) 0.5s"
+              : "transform 0.2s ease 0s",
+          }}>
+            <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
+          </svg>
+        </div>
       </div>
     </div>
   );
@@ -215,12 +229,6 @@ function PerspectiveDashboard({ view = "strategic" }) {
 
   const rows = strategicRows;
 
-  // Vertical positions for each callout, mapped to dashboard elements
-  const calloutTop = {
-    kpi0: "16%", kpi1: "16%", kpi2: "16%",
-    row0: "56%", row1: "64%", row2: "72%", row3: "80%",
-  };
-
   return (
     <div ref={ref} style={{ perspective: "1200px", perspectiveOrigin: "50% 40%" }}>
       <div
@@ -236,13 +244,10 @@ function PerspectiveDashboard({ view = "strategic" }) {
           transformStyle: "preserve-3d",
         }}
       >
-        {/* Glow */}
         <div style={{ position: "absolute", bottom: -20, left: "10%", right: "10%", height: 40, background: "rgba(14,178,175,0.08)", filter: "blur(30px)", borderRadius: "50%", pointerEvents: "none" }} />
 
-        {/* Dashboard card */}
         <div style={{ background: "linear-gradient(145deg," + C.navy + " 0%," + C.navyDark + " 100%)", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", padding: 28, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,178,175,0.05), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "visible" }}>
 
-          {/* Window chrome */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, paddingBottom: 16, borderBottom: "1px solid rgba(14,178,175,0.06)" }}>
             <div style={{ display: "flex", gap: 7 }}>
               {["#ff5f57", "#febc2e", "#28c840"].map(bg => <div key={bg} style={{ width: 10, height: 10, borderRadius: "50%", background: bg }} />)}
@@ -260,7 +265,6 @@ function PerspectiveDashboard({ view = "strategic" }) {
             <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: C.g500 }}>app.targa.ai</span>
           </div>
 
-          {/* KPI row */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 20 }}>
             {kpis.map((k, i) => (
               <div key={k.t}
@@ -281,7 +285,6 @@ function PerspectiveDashboard({ view = "strategic" }) {
             ))}
           </div>
 
-          {/* Rows */}
           {view === "strategic" ? rows.map((r, i) => (
             <div key={r.n}
               onMouseEnter={() => setActiveCallout(r.cid)}
@@ -328,28 +331,18 @@ function PerspectiveDashboard({ view = "strategic" }) {
           )}
         </div>
 
-        {/* Callout assemblies — positioned at the edges of the dashboard */}
-        {CALLOUTS.map(co => {
-          const topVal = calloutTop[co.cid];
-          if (!topVal) return null;
-          const isRight = co.side === "right";
-          return (
-            <div key={co.cid} style={{
-              position: "absolute",
-              top: topVal,
-              [isRight ? "right" : "left"]: -14,
-              zIndex: 20,
-            }}>
-              <DashboardCallout
-                active={activeCallout === co.cid}
-                color={co.color}
-                label={co.label}
-                desc={co.desc}
-                side={co.side}
-              />
-            </div>
-          );
-        })}
+        {/* Outer callout assemblies — boxes + icons in the space beside the dashboard */}
+        {CALLOUTS.map(co => (
+          <OuterCallout
+            key={co.cid}
+            active={activeCallout === co.cid}
+            color={co.color}
+            label={co.label}
+            desc={co.desc}
+            side={co.side}
+            top={co.top}
+          />
+        ))}
       </div>
     </div>
   );
