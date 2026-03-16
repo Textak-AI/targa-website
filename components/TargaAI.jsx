@@ -101,13 +101,13 @@ function HoverCard({ title, desc, accent }) {
 
 /* ═══ CALLOUT DATA ═══ */
 const CALLOUTS = [
-  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, side: "right", top: "12%" },
-  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, side: "left", top: "20%" },
-  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, side: "right", top: "28%" },
-  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, side: "left", top: "54%" },
-  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, side: "right", top: "62%" },
-  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, side: "left", top: "70%" },
-  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, side: "right", top: "78%" },
+  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, top: "12%" },
+  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, top: "20%" },
+  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, top: "28%" },
+  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, top: "54%" },
+  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, top: "62%" },
+  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, top: "70%" },
+  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, top: "78%" },
 ];
 
 /* ═══ CALLOUT — icon fades up, box fades in beside it ═══ */
@@ -178,6 +178,17 @@ function OuterCallout({ active, color, label, desc, side, top }) {
 function PerspectiveDashboard({ view = "strategic" }) {
   const [ref, inView] = useInView(0.1);
   const [activeCallout, setActiveCallout] = useState(null);
+  const [activeSide, setActiveSide] = useState("right");
+  const dashRef = useRef(null);
+
+  const handleHover = useCallback((cid, e) => {
+    setActiveCallout(cid);
+    if (dashRef.current) {
+      const rect = dashRef.current.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      setActiveSide(e.clientX < midX ? "left" : "right");
+    }
+  }, []);
 
   const kpis = [
     { t: "Q2 Value Pipeline", v: "$4.2M", d: "+18% QoQ", c: C.teal, cid: "kpi0" },
@@ -216,7 +227,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
       >
         <div style={{ position: "absolute", bottom: -20, left: "10%", right: "10%", height: 40, background: "rgba(14,178,175,0.08)", filter: "blur(30px)", borderRadius: "50%", pointerEvents: "none" }} />
 
-        <div style={{ background: "linear-gradient(145deg," + C.navy + " 0%," + C.navyDark + " 100%)", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", padding: 28, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,178,175,0.05), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "visible" }}>
+        <div ref={dashRef} style={{ background: "linear-gradient(145deg," + C.navy + " 0%," + C.navyDark + " 100%)", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", padding: 28, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,178,175,0.05), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "visible" }}>
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, paddingBottom: 16, borderBottom: "1px solid rgba(14,178,175,0.06)" }}>
             <div style={{ display: "flex", gap: 7 }}>
@@ -238,7 +249,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 20 }}>
             {kpis.map((k, i) => (
               <div key={k.t}
-                onMouseEnter={() => setActiveCallout(k.cid)}
+                onMouseEnter={(e) => handleHover(k.cid, e)}
                 onMouseLeave={() => setActiveCallout(null)}
                 style={{
                   background: activeCallout === k.cid ? "rgba(14,178,175,0.06)" : "rgba(15,32,53,0.6)",
@@ -257,7 +268,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
 
           {view === "strategic" ? rows.map((r, i) => (
             <div key={r.n}
-              onMouseEnter={() => setActiveCallout(r.cid)}
+              onMouseEnter={(e) => handleHover(r.cid, e)}
               onMouseLeave={() => setActiveCallout(null)}
               style={{
                 display: "grid", gridTemplateColumns: "1.5fr 70px 85px 180px", gap: 12, alignItems: "center",
@@ -308,7 +319,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
             color={co.color}
             label={co.label}
             desc={co.desc}
-            side={co.side}
+            side={activeSide}
             top={co.top}
           />
         ))}
