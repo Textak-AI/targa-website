@@ -426,13 +426,37 @@ function HomePage({ setPage }) {
           <Reveal><div><Eyebrow color={C.gold}>Why TARGA</Eyebrow><SectionTitle sub="Every task platform starts with a checklist. TARGA starts with your strategic objectives and works down — because that is how leaders actually think.">Not another project management tool.</SectionTitle></div></Reveal>
           <Reveal delay={0.15}>
             <div>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Your executive team costs millions. Strategic initiatives stall when visibility is limited to quarterly meetings. TARGA gives you continuous, cross-functional clarity — so your highest-paid talent creates value every week.</p>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", lineHeight: 1.7, color: C.gold, marginBottom: 28, padding: "14px 18px", background: "rgba(251,191,36,0.04)", borderLeft: "2px solid rgba(251,191,36,0.3)", borderRadius: "0 6px 6px 0" }}>Every quarter without cross-functional visibility costs your executive team six weeks of strategic output. That is time your competitors are using.</p>
-              <div style={{ display: "flex", gap: 32 }}>
-                {[{ v: "4x", l: "Faster Value Creation" }, { v: "$350K+", l: "Avg. Enterprise Value" }].map(x => (
-                  <div key={x.l}><div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.8rem", fontWeight: 500, color: C.gold }}>{x.v}</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", letterSpacing: "0.08em", color: C.g500, textTransform: "uppercase", marginTop: 4 }}>{x.l}</div></div>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Growth businesses have roughly 30% of gross margin available for strategic decisions. High performers direct 20% of that toward value creation. But capital is not the constraint — execution is. 90% of companies simply repeat last year's budget.</p>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", lineHeight: 1.7, color: C.gold, marginBottom: 28, padding: "14px 18px", background: "rgba(251,191,36,0.04)", borderLeft: "2px solid rgba(251,191,36,0.3)", borderRadius: "0 6px 6px 0" }}>Is 6% of your total revenue going to value creation? If not — why not? TARGA gives you the infrastructure to find out and fix it.</p>
+              <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+                {[
+                  { v: "70%", l: "Transformations fail" },
+                  { v: "48%", l: "Projects meet goals" },
+                  { v: "$2.3T", l: "Lost annually" },
+                ].map(x => (
+                  <div key={x.l}><div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.6rem", fontWeight: 500, color: C.gold }}>{x.v}</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", letterSpacing: "0.08em", color: C.g500, textTransform: "uppercase", marginTop: 4 }}>{x.l}</div></div>
                 ))}
               </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* EXECUTION GAP */}
+      <section style={{ background: C.navyDark, padding: "60px 40px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <Reveal>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, textAlign: "center" }}>
+              {[
+                { v: "80%", d: "of executives cite internal barriers — not market conditions — as the top obstacle to growth." },
+                { v: "90%", d: "year-over-year correlation in capital spending. Most firms just repeat last year's budget." },
+                { v: "67%", d: "of well-formulated strategies fail in execution — not because the strategy was wrong." },
+              ].map(({ v, d }, i) => (
+                <div key={v} style={{ padding: "28px 20px" }}>
+                  <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2rem", fontWeight: 500, color: C.teal, marginBottom: 12 }}>{v}</div>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.82rem", lineHeight: 1.65, color: C.g500 }}>{d}</p>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>
@@ -610,12 +634,11 @@ function AboutPage({ setPage }) {
 
       <section style={{ background: C.navyDeep, padding: "80px 40px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <Reveal><Eyebrow color={C.gold}>Leadership</Eyebrow><SectionTitle>[Workshop: headline TBD]</SectionTitle></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, marginTop: 40 }}>
+          <Reveal><Eyebrow color={C.gold}>Leadership</Eyebrow><SectionTitle>The team behind the platform.</SectionTitle></Reveal>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 24, marginTop: 40, maxWidth: 680 }}>
             {[
-              { name: "Joe Thompson", role: "CEO", desc: "[Workshop: bio TBD]" },
-              { name: "Mark Sternberger", role: "CTO / CPO", desc: "[Workshop: bio TBD]" },
-              { name: "Bill Adams", role: "Founder, Board", desc: "[Workshop: bio TBD]" },
+              { name: "Joe Thompson", role: "CEO", desc: "Enterprise software executive with deep experience in strategic planning, capital allocation, and value creation across Fortune 500 and PE-backed organizations." },
+              { name: "Mark Sternberger", role: "CTO / CPO", desc: "Technology leader focused on AI-native architecture, enterprise security, and building platforms that give leaders real-time cross-functional visibility." },
             ].map((p, i) => (
               <Reveal key={p.name} delay={i * 0.1}><div style={{ padding: 28, background: "rgba(14,178,175,0.04)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 10 }}>
                 <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(14,178,175,0.08)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}><span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", color: C.teal, fontWeight: 500 }}>{p.name.split(" ").map(n => n[0]).join("")}</span></div>
@@ -627,7 +650,7 @@ function AboutPage({ setPage }) {
           </div>
         </div>
       </section>
-      <section style={{ background: C.navy, padding: "60px 40px", textAlign: "center" }}><Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.3rem", fontWeight: 300, color: C.white, marginBottom: 10 }}>A Targatek Inc. Company</h2><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", color: C.g500, maxWidth: 420, margin: "0 auto" }}>TARGA AI is the flagship product of Targatek Inc.</p></Reveal></section>
+      <section style={{ background: C.navy, padding: "60px 40px", textAlign: "center" }}><Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.3rem", fontWeight: 300, color: C.white, marginBottom: 10 }}>A Targatek Inc. Company</h2><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", color: C.g500, maxWidth: 420, margin: "0 auto" }}>TARGA AI is the flagship product of Targatek Inc., a software company focused on enterprise value creation infrastructure.</p></Reveal></section>
       <section style={{ background: C.navyDeep, padding: "80px 40px", textAlign: "center" }}><Reveal><div style={{ display: "flex", gap: 14, justifyContent: "center" }}><Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Get in Touch</Btn><Btn variant="secondary" onClick={() => { setPage("ceo100"); window.scrollTo(0, 0); }}>Join 100 CEOs</Btn></div></Reveal></section>
     </>
   );
