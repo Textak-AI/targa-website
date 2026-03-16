@@ -678,10 +678,11 @@ function AboutPage({ setPage }) {
       <section style={{ background: C.navyDeep, padding: "80px 40px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <Reveal><Eyebrow color={C.gold}>Leadership</Eyebrow><SectionTitle>The team behind the platform.</SectionTitle></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 24, marginTop: 40, maxWidth: 680 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, marginTop: 40 }}>
             {[
               { name: "Joe Thompson", role: "CEO", desc: "Enterprise software executive with deep experience in strategic planning, capital allocation, and value creation across Fortune 500 and PE-backed organizations." },
               { name: "Mark Sternberger", role: "CTO / CPO", desc: "Technology leader focused on AI-native architecture, enterprise security, and building platforms that give leaders real-time cross-functional visibility." },
+              { name: "Kyle Moyer", role: "Fractional CMO", desc: "Brand strategist and marketing executive specializing in enterprise SaaS positioning, digital presence, and go-to-market strategy for high-growth companies." },
             ].map((p, i) => (
               <Reveal key={p.name} delay={i * 0.1}><div style={{ padding: 28, background: "rgba(14,178,175,0.04)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 10 }}>
                 <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(14,178,175,0.08)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}><span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", color: C.teal, fontWeight: 500 }}>{p.name.split(" ").map(n => n[0]).join("")}</span></div>
