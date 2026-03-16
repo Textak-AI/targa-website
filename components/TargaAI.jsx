@@ -98,22 +98,111 @@ function HoverCard({ title, desc, accent }) {
   return (<div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{ background: "linear-gradient(145deg,rgba(31,71,106,0.6) 0%,rgba(15,32,53,0.85) 100%)", borderRadius: 10, padding: "36px 32px", borderTop: "3px solid " + accent, borderLeft: "1px solid rgba(14,178,175,0.08)", borderRight: "1px solid rgba(14,178,175,0.08)", borderBottom: "1px solid rgba(14,178,175,0.08)", transition: "all 0.35s", transform: h ? "translateY(-4px)" : "none", boxShadow: h ? "0 16px 48px rgba(0,0,0,0.3)" : "0 4px 16px rgba(0,0,0,0.15)" }}><h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.15rem", fontWeight: 500, color: C.white, marginBottom: 12 }}>{title}</h3><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", lineHeight: 1.7, color: C.g300 }}>{desc}</p></div>);
 }
 
-/* ═══ 3D PERSPECTIVE DASHBOARD WITH CALLOUTS ═══ */
+/* ═══ TACTICAL CALLOUT DATA ═══ */
+const CALLOUTS = [
+  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, side: "right", top: "18%", anchor: "22%" },
+  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, side: "right", top: "18%", anchor: "55%" },
+  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, side: "right", top: "18%", anchor: "82%" },
+  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, side: "right", top: "56%", anchor: "70%" },
+  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, side: "left", top: "64%", anchor: "30%" },
+  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, side: "right", top: "72%", anchor: "70%" },
+  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, side: "left", top: "80%", anchor: "30%" },
+];
+
+/* ═══ TACTICAL CALLOUT — icon mark + curved connector + label box ═══ */
+function TacticalCallout({ active, color, label, desc, side, top, anchor }) {
+  const isRight = side === "right";
+  const dir = isRight ? 1 : -1;
+
+  // Curved path from near the dashboard edge to the callout box
+  const pathW = 120;
+  const pathH = 40;
+  const startX = isRight ? 0 : pathW;
+  const endX = isRight ? pathW : 0;
+  const cp1x = startX + 30 * dir;
+  const cp1y = 5;
+  const cp2x = endX - 20 * dir;
+  const cp2y = pathH - 5;
+  const pathD = "M " + startX + " " + 8 + " C " + cp1x + " " + cp1y + " " + cp2x + " " + cp2y + " " + endX + " " + (pathH - 8);
+
+  return (
+    <div style={{
+      position: "absolute",
+      top,
+      [isRight ? "right" : "left"]: -8,
+      display: "flex",
+      flexDirection: isRight ? "row" : "row-reverse",
+      alignItems: "flex-start",
+      gap: 0,
+      pointerEvents: "none",
+      zIndex: 20,
+      opacity: active ? 1 : 0,
+      transform: active ? "translateX(0)" : ("translateX(" + (10 * dir) + "px)"),
+      transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)",
+    }}>
+      {/* TARGA icon mark — inner capstone nudges first */}
+      <div style={{ position: "relative", width: 24, height: 24, flexShrink: 0, marginTop: -4 }}>
+        {/* Outer shell — follows with delay */}
+        <svg width={24} height={24} viewBox="0 0 48 48" fill="none" style={{ position: "absolute", top: 0, left: 0, transform: active ? "translate(" + (1.5 * dir) + "px, -0.8px)" : "translate(0, 0)", transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.12s" }}>
+          <polygon fill="white" points="44,42 4,42 24,4" opacity="0.4" />
+        </svg>
+        {/* Inner capstone — nudges first */}
+        <svg width={24} height={24} viewBox="0 0 48 48" fill="none" style={{ position: "absolute", top: 0, left: 0, transform: active ? "translate(" + (2.5 * dir) + "px, -1.2px)" : "translate(0, 0)", transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1)" }}>
+          <polygon fill={color} points="32,34 16,34 24,18" opacity="0.9" />
+        </svg>
+      </div>
+
+      {/* Curved connector line */}
+      <svg width={pathW} height={pathH} viewBox={"0 0 " + pathW + " " + pathH} fill="none" style={{ flexShrink: 0, overflow: "visible" }}>
+        <path
+          d={pathD}
+          stroke={color}
+          strokeWidth="1"
+          fill="none"
+          strokeDasharray="200"
+          strokeDashoffset={active ? "0" : "200"}
+          style={{ transition: "stroke-dashoffset 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s", opacity: 0.45 }}
+        />
+        <circle cx={endX} cy={pathH - 8} r="2.5" fill={color} opacity={active ? 0.7 : 0} style={{ transition: "opacity 0.3s 0.4s" }} />
+      </svg>
+
+      {/* Callout box */}
+      <div style={{
+        background: "rgba(15,32,53,0.94)",
+        border: "1px solid " + color + "25",
+        borderRadius: 8,
+        padding: "10px 14px",
+        backdropFilter: "blur(12px)",
+        maxWidth: 200,
+        marginTop: pathH - 24,
+        opacity: active ? 1 : 0,
+        transform: active ? "translateX(0) scale(1)" : ("translateX(" + (8 * dir) + "px) scale(0.92)"),
+        transition: "all 0.35s cubic-bezier(0.16,1,0.3,1) 0.3s",
+      }}>
+        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color, fontWeight: 600, marginBottom: 3 }}>{label}</div>
+        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.67rem", color: C.g300, lineHeight: 1.5 }}>{desc}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ 3D PERSPECTIVE DASHBOARD WITH TACTICAL CALLOUTS ═══ */
 function PerspectiveDashboard({ view = "strategic" }) {
   const [ref, inView] = useInView(0.1);
   const [hovered, setHovered] = useState(false);
+  const [activeCallout, setActiveCallout] = useState(null);
 
   const kpis = [
-    { t: "Q2 Value Pipeline", v: "$4.2M", d: "+18% QoQ", c: C.teal },
-    { t: "Strategic Initiatives", v: "12 Active", d: "3 At Risk", c: C.gold },
-    { t: "Exec Alignment", v: "87%", d: "+12 pts", c: C.teal },
+    { t: "Q2 Value Pipeline", v: "$4.2M", d: "+18% QoQ", c: C.teal, cid: "kpi0" },
+    { t: "Strategic Initiatives", v: "12 Active", d: "3 At Risk", c: C.gold, cid: "kpi1" },
+    { t: "Exec Alignment", v: "87%", d: "+12 pts", c: C.teal, cid: "kpi2" },
   ];
 
   const strategicRows = [
-    { n: "APAC Market Expansion", o: "CRO", s: "On Track", p: 72 },
-    { n: "Product Line Extension", o: "CPO", s: "At Risk", p: 38 },
-    { n: "Digital Transformation", o: "CTO", s: "On Track", p: 85 },
-    { n: "Talent Development", o: "CHRO", s: "On Track", p: 60 },
+    { n: "APAC Market Expansion", o: "CRO", s: "On Track", p: 72, cid: "row0" },
+    { n: "Product Line Extension", o: "CPO", s: "At Risk", p: 38, cid: "row1" },
+    { n: "Digital Transformation", o: "CTO", s: "On Track", p: 85, cid: "row2" },
+    { n: "Talent Development", o: "CHRO", s: "On Track", p: 60, cid: "row3" },
   ];
 
   const timelineRows = [
@@ -128,7 +217,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
     <div ref={ref} style={{ perspective: "1200px", perspectiveOrigin: "50% 40%" }}>
       <div
         onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseLeave={() => { setHovered(false); setActiveCallout(null); }}
         style={{
           position: "relative",
           transform: inView
@@ -143,7 +232,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
         <div style={{ position: "absolute", bottom: -20, left: "10%", right: "10%", height: 40, background: "rgba(14,178,175,0.08)", filter: "blur(30px)", borderRadius: "50%", pointerEvents: "none" }} />
 
         {/* Dashboard card */}
-        <div style={{ background: "linear-gradient(145deg," + C.navy + " 0%," + C.navyDark + " 100%)", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", padding: 28, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,178,175,0.05), inset 0 1px 0 rgba(255,255,255,0.03)" }}>
+        <div style={{ background: "linear-gradient(145deg," + C.navy + " 0%," + C.navyDark + " 100%)", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", padding: 28, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,178,175,0.05), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "visible" }}>
 
           {/* Window chrome */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, paddingBottom: 16, borderBottom: "1px solid rgba(14,178,175,0.06)" }}>
@@ -166,13 +255,17 @@ function PerspectiveDashboard({ view = "strategic" }) {
           {/* KPI row */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 20 }}>
             {kpis.map((k, i) => (
-              <div key={k.t} style={{
-                background: "rgba(15,32,53,0.6)", borderRadius: 8, padding: 20,
-                border: "1px solid rgba(14,178,175,0.05)",
-                opacity: inView ? 1 : 0,
-                transform: inView ? "translateY(0)" : "translateY(16px)",
-                transition: "all 0.6s cubic-bezier(0.16,1,0.3,1) " + (0.3 + i * 0.1) + "s",
-              }}>
+              <div key={k.t}
+                onMouseEnter={() => setActiveCallout(k.cid)}
+                onMouseLeave={() => setActiveCallout(null)}
+                style={{
+                  background: activeCallout === k.cid ? "rgba(14,178,175,0.06)" : "rgba(15,32,53,0.6)",
+                  borderRadius: 8, padding: 20, cursor: "default",
+                  border: activeCallout === k.cid ? "1px solid rgba(14,178,175,0.15)" : "1px solid rgba(14,178,175,0.05)",
+                  opacity: inView ? 1 : 0,
+                  transform: inView ? "translateY(0)" : "translateY(16px)",
+                  transition: "all 0.4s cubic-bezier(0.16,1,0.3,1) " + (0.3 + i * 0.1) + "s",
+                }}>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color: C.g500, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>{k.t}</div>
                 <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.5rem", color: C.white, fontWeight: 500 }}>{k.v}</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.73rem", color: k.c, marginTop: 6 }}>{k.d}</div>
@@ -180,14 +273,19 @@ function PerspectiveDashboard({ view = "strategic" }) {
             ))}
           </div>
 
-          {/* Rows with staggered animation */}
+          {/* Rows with hover triggers */}
           {view === "strategic" ? rows.map((r, i) => (
-            <div key={r.n} style={{
-              display: "grid", gridTemplateColumns: "1.5fr 70px 85px 180px", gap: 12, alignItems: "center",
-              padding: "12px 16px", borderBottom: "1px solid rgba(14,178,175,0.04)",
-              opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-20px)",
-              transition: "all 0.5s cubic-bezier(0.16,1,0.3,1) " + (0.5 + i * 0.08) + "s",
-            }}>
+            <div key={r.n}
+              onMouseEnter={() => setActiveCallout(r.cid)}
+              onMouseLeave={() => setActiveCallout(null)}
+              style={{
+                display: "grid", gridTemplateColumns: "1.5fr 70px 85px 180px", gap: 12, alignItems: "center",
+                padding: "12px 16px", cursor: "default",
+                borderBottom: "1px solid rgba(14,178,175,0.04)",
+                background: activeCallout === r.cid ? "rgba(14,178,175,0.03)" : "transparent",
+                opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-20px)",
+                transition: "all 0.4s cubic-bezier(0.16,1,0.3,1) " + (0.5 + i * 0.08) + "s",
+              }}>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", color: C.g200 }}>{r.n}</span>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.73rem", color: C.g500 }}>{r.o}</span>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", color: r.s === "At Risk" ? C.gold : C.teal, fontWeight: 500 }}>{r.s}</span>
@@ -203,7 +301,6 @@ function PerspectiveDashboard({ view = "strategic" }) {
               </div>
             </div>
           )) : (
-            /* Timeline view */
             <div style={{ padding: "8px 0" }}>
               {timelineRows.map((q, qi) => (
                 <div key={q.n} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 16px", borderBottom: "1px solid rgba(14,178,175,0.04)", opacity: inView ? 1 : 0, transition: "opacity 0.5s " + (0.5 + qi * 0.1) + "s" }}>
@@ -221,65 +318,21 @@ function PerspectiveDashboard({ view = "strategic" }) {
               ))}
             </div>
           )}
+
+          {/* Tactical callouts — positioned relative to the dashboard card */}
+          {CALLOUTS.map(co => (
+            <TacticalCallout
+              key={co.cid}
+              active={activeCallout === co.cid}
+              color={co.color}
+              label={co.label}
+              desc={co.desc}
+              side={co.side}
+              top={co.top}
+              anchor={co.anchor}
+            />
+          ))}
         </div>
-
-        {/* CALLOUT ANNOTATIONS */}
-        <Callout inView={inView} delay={0.8} top={80} right={-140} label="Cross-functional KPIs" arrow="left" />
-        <Callout inView={inView} delay={1.0} bottom={100} left={-120} label="Risk flagged by AI" arrow="right" color={C.gold} />
-        <Callout inView={inView} delay={1.2} top={200} right={-100} label="Progress bars animate in real-time" arrow="left" />
-      </div>
-    </div>
-  );
-}
-
-/* ═══ CALLOUT ICON: Inner capstone nudges, outer shell follows ═══ */
-function CalloutIcon({ size = 22, color = C.teal, direction = "left" }) {
-  const shell = C.white;
-  const nudgeClass = direction === "left" ? "nudge-left" : "nudge-right";
-  const followClass = direction === "left" ? "follow-left" : "follow-right";
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none" style={{ flexShrink: 0, overflow: "visible" }}>
-      <g className={followClass}>
-        <polygon fill={shell} points="44,42 4,42 24,4" opacity="0.6" />
-      </g>
-      <g className={nudgeClass}>
-        <polygon fill={color} points="32,34 16,34 24,18" opacity="0.95" />
-      </g>
-    </svg>
-  );
-}
-
-/* ═══ CALLOUT ANNOTATION ═══ */
-function Callout({ inView, delay = 0, top, bottom, left, right, label, arrow = "left", color = C.teal }) {
-  const pos = {};
-  if (top !== undefined) pos.top = top;
-  if (bottom !== undefined) pos.bottom = bottom;
-  if (left !== undefined) pos.left = left;
-  if (right !== undefined) pos.right = right;
-
-  const fromX = arrow === "left" ? 30 : -30;
-
-  return (
-    <div style={{
-      position: "absolute", ...pos,
-      display: "flex", alignItems: "center", gap: 6,
-      flexDirection: arrow === "right" ? "row-reverse" : "row",
-      opacity: inView ? 1 : 0,
-      transform: inView ? "translateX(0) scale(1)" : "translateX(" + fromX + "px) scale(0.9)",
-      transition: "all 0.6s cubic-bezier(0.16,1,0.3,1) " + delay + "s",
-      pointerEvents: "none", zIndex: 10,
-    }}>
-      {/* Thin connector line */}
-      <div style={{ width: 16, height: 1, background: color, opacity: 0.35 }} />
-      {/* TARGA icon mark with nudge animation */}
-      <CalloutIcon size={20} color={color} direction={arrow} />
-      {/* Label */}
-      <div style={{
-        background: "rgba(15,32,53,0.92)", border: "1px solid " + color + "22",
-        borderRadius: 6, padding: "6px 12px", backdropFilter: "blur(8px)",
-        whiteSpace: "nowrap",
-      }}>
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color, fontWeight: 500 }}>{label}</span>
       </div>
     </div>
   );
