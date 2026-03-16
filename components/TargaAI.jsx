@@ -62,8 +62,8 @@ function WordmarkAI({ height = 18, variant = "light" }) {
 
 function Logo({ variant = "light", size = "sm" }) {
   const sepColor = variant === "light" ? "rgba(255,255,255,0.25)" : C.g300;
-  const ih = size === "sm" ? 28 : 36;
-  const wh = size === "sm" ? 14 : 18;
+  const ih = size === "sm" ? 30 : 38;
+  const wh = size === "sm" ? 17 : 22;
   return (
     <div style={{ display: "flex", alignItems: "center", gap: size === "sm" ? 10 : 14, cursor: "pointer" }}>
       <IconMark height={ih} variant={variant} />
