@@ -98,75 +98,77 @@ function HoverCard({ title, desc, accent }) {
   return (<div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{ background: "linear-gradient(145deg,rgba(31,71,106,0.6) 0%,rgba(15,32,53,0.85) 100%)", borderRadius: 10, padding: "36px 32px", borderTop: "3px solid " + accent, borderLeft: "1px solid rgba(14,178,175,0.08)", borderRight: "1px solid rgba(14,178,175,0.08)", borderBottom: "1px solid rgba(14,178,175,0.08)", transition: "all 0.35s", transform: h ? "translateY(-4px)" : "none", boxShadow: h ? "0 16px 48px rgba(0,0,0,0.3)" : "0 4px 16px rgba(0,0,0,0.15)" }}><h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.15rem", fontWeight: 500, color: C.white, marginBottom: 12 }}>{title}</h3><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", lineHeight: 1.7, color: C.g300 }}>{desc}</p></div>);
 }
 
+
 /* ═══ TACTICAL CALLOUT DATA ═══ */
 const CALLOUTS = [
-  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, side: "right", top: "18%", anchor: "22%" },
-  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, side: "right", top: "18%", anchor: "55%" },
-  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, side: "right", top: "18%", anchor: "82%" },
-  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, side: "right", top: "56%", anchor: "70%" },
-  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, side: "left", top: "64%", anchor: "30%" },
-  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, side: "right", top: "72%", anchor: "70%" },
-  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, side: "left", top: "80%", anchor: "30%" },
+  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, side: "right" },
+  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, side: "right" },
+  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, side: "right" },
+  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, side: "right" },
+  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, side: "left" },
+  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, side: "right" },
+  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, side: "left" },
 ];
 
-/* ═══ TACTICAL CALLOUT — icon mark + curved connector + label box ═══ */
-function TacticalCallout({ active, color, label, desc, side, top, anchor }) {
+/* ═══ CALLOUT ASSEMBLY — real TARGA A icon, nudge up, advance to box ═══ */
+function DashboardCallout({ active, color, label, desc, side }) {
   const isRight = side === "right";
-  const dir = isRight ? 1 : -1;
 
-  // Curved path from near the dashboard edge to the callout box
-  const pathW = 120;
-  const pathH = 40;
-  const startX = isRight ? 0 : pathW;
-  const endX = isRight ? pathW : 0;
-  const cp1x = startX + 30 * dir;
-  const cp1y = 5;
-  const cp2x = endX - 20 * dir;
-  const cp2y = pathH - 5;
-  const pathD = "M " + startX + " " + 8 + " C " + cp1x + " " + cp1y + " " + cp2x + " " + cp2y + " " + endX + " " + (pathH - 8);
+  /* Animation sequence:
+     Phase 1 (0-300ms): Inner capstone nudges UP — the "command" gesture
+     Phase 2 (200-600ms): Whole icon advances outward toward the callout box
+     Phase 3 (300-600ms): Curved line draws from icon to box
+     Phase 4 (450-700ms): Callout box materializes at the end */
 
   return (
     <div style={{
-      position: "absolute",
-      top,
-      [isRight ? "right" : "left"]: -8,
       display: "flex",
       flexDirection: isRight ? "row" : "row-reverse",
-      alignItems: "flex-start",
+      alignItems: "center",
       gap: 0,
       pointerEvents: "none",
-      zIndex: 20,
-      opacity: active ? 1 : 0,
-      transform: active ? "translateX(0)" : ("translateX(" + (10 * dir) + "px)"),
-      transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)",
     }}>
-      {/* TARGA icon mark — inner capstone nudges first */}
-      <div style={{ position: "relative", width: 24, height: 24, flexShrink: 0, marginTop: -4 }}>
-        {/* Outer shell — follows with delay */}
-        <svg width={24} height={24} viewBox="0 0 48 48" fill="none" style={{ position: "absolute", top: 0, left: 0, transform: active ? "translate(" + (1.5 * dir) + "px, -0.8px)" : "translate(0, 0)", transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.12s" }}>
-          <polygon fill="white" points="44,42 4,42 24,4" opacity="0.4" />
+      {/* TARGA A icon — advances outward as a unit after the nudge */}
+      <div style={{
+        width: 20, height: 20, position: "relative", flexShrink: 0,
+        opacity: active ? 1 : 0,
+        transition: "opacity 0.25s",
+      }}>
+        {/* Outer white A shell */}
+        <svg width={20} height={20} viewBox="0 0 43.39 45.25" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
+          <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.45" />
         </svg>
-        {/* Inner capstone — nudges first */}
-        <svg width={24} height={24} viewBox="0 0 48 48" fill="none" style={{ position: "absolute", top: 0, left: 0, transform: active ? "translate(" + (2.5 * dir) + "px, -1.2px)" : "translate(0, 0)", transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1)" }}>
-          <polygon fill={color} points="32,34 16,34 24,18" opacity="0.9" />
+        {/* Inner teal capstone — nudges UP first, then settles */}
+        <svg width={20} height={20} viewBox="0 0 43.39 45.25" fill="none" style={{
+          position: "absolute", top: 0, left: 0,
+          transform: active ? "translateY(-3px)" : "translateY(0)",
+          transition: active ? "transform 0.25s cubic-bezier(0.16,1,0.3,1)" : "transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.1s",
+        }}>
+          <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
         </svg>
       </div>
 
-      {/* Curved connector line */}
-      <svg width={pathW} height={pathH} viewBox={"0 0 " + pathW + " " + pathH} fill="none" style={{ flexShrink: 0, overflow: "visible" }}>
+      {/* Curved connector line — draws outward */}
+      <svg width={90} height={28} viewBox="0 0 90 28" fill="none" style={{ flexShrink: 0, overflow: "visible", margin: "0 -2px" }}>
         <path
-          d={pathD}
+          d={isRight ? "M 2 14 C 22 3, 68 3, 88 14" : "M 88 14 C 68 3, 22 3, 2 14"}
           stroke={color}
           strokeWidth="1"
           fill="none"
-          strokeDasharray="200"
-          strokeDashoffset={active ? "0" : "200"}
-          style={{ transition: "stroke-dashoffset 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s", opacity: 0.45 }}
+          strokeDasharray="130"
+          strokeDashoffset={active ? "0" : (isRight ? "130" : "-130")}
+          style={{ transition: active ? "stroke-dashoffset 0.4s cubic-bezier(0.16,1,0.3,1) 0.2s" : "stroke-dashoffset 0.25s ease 0s", opacity: 0.4 }}
         />
-        <circle cx={endX} cy={pathH - 8} r="2.5" fill={color} opacity={active ? 0.7 : 0} style={{ transition: "opacity 0.3s 0.4s" }} />
+        {/* Dot at the end of the path */}
+        <circle
+          cx={isRight ? 88 : 2} cy={14} r="2"
+          fill={color}
+          opacity={active ? 0.65 : 0}
+          style={{ transition: active ? "opacity 0.2s 0.5s" : "opacity 0.15s 0s" }}
+        />
       </svg>
 
-      {/* Callout box */}
+      {/* Callout box — materializes at the end */}
       <div style={{
         background: "rgba(15,32,53,0.94)",
         border: "1px solid " + color + "25",
@@ -174,10 +176,10 @@ function TacticalCallout({ active, color, label, desc, side, top, anchor }) {
         padding: "10px 14px",
         backdropFilter: "blur(12px)",
         maxWidth: 200,
-        marginTop: pathH - 24,
+        whiteSpace: "normal",
         opacity: active ? 1 : 0,
-        transform: active ? "translateX(0) scale(1)" : ("translateX(" + (8 * dir) + "px) scale(0.92)"),
-        transition: "all 0.35s cubic-bezier(0.16,1,0.3,1) 0.3s",
+        transform: active ? "translateY(0) scale(1)" : "translateY(4px) scale(0.94)",
+        transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.4s" : "all 0.2s ease 0s",
       }}>
         <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color, fontWeight: 600, marginBottom: 3 }}>{label}</div>
         <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.67rem", color: C.g300, lineHeight: 1.5 }}>{desc}</div>
@@ -213,6 +215,12 @@ function PerspectiveDashboard({ view = "strategic" }) {
 
   const rows = strategicRows;
 
+  // Vertical positions for each callout, mapped to dashboard elements
+  const calloutTop = {
+    kpi0: "16%", kpi1: "16%", kpi2: "16%",
+    row0: "56%", row1: "64%", row2: "72%", row3: "80%",
+  };
+
   return (
     <div ref={ref} style={{ perspective: "1200px", perspectiveOrigin: "50% 40%" }}>
       <div
@@ -228,7 +236,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
           transformStyle: "preserve-3d",
         }}
       >
-        {/* Glow under the card */}
+        {/* Glow */}
         <div style={{ position: "absolute", bottom: -20, left: "10%", right: "10%", height: 40, background: "rgba(14,178,175,0.08)", filter: "blur(30px)", borderRadius: "50%", pointerEvents: "none" }} />
 
         {/* Dashboard card */}
@@ -273,7 +281,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
             ))}
           </div>
 
-          {/* Rows with hover triggers */}
+          {/* Rows */}
           {view === "strategic" ? rows.map((r, i) => (
             <div key={r.n}
               onMouseEnter={() => setActiveCallout(r.cid)}
@@ -318,21 +326,30 @@ function PerspectiveDashboard({ view = "strategic" }) {
               ))}
             </div>
           )}
-
-          {/* Tactical callouts — positioned relative to the dashboard card */}
-          {CALLOUTS.map(co => (
-            <TacticalCallout
-              key={co.cid}
-              active={activeCallout === co.cid}
-              color={co.color}
-              label={co.label}
-              desc={co.desc}
-              side={co.side}
-              top={co.top}
-              anchor={co.anchor}
-            />
-          ))}
         </div>
+
+        {/* Callout assemblies — positioned at the edges of the dashboard */}
+        {CALLOUTS.map(co => {
+          const topVal = calloutTop[co.cid];
+          if (!topVal) return null;
+          const isRight = co.side === "right";
+          return (
+            <div key={co.cid} style={{
+              position: "absolute",
+              top: topVal,
+              [isRight ? "right" : "left"]: -14,
+              zIndex: 20,
+            }}>
+              <DashboardCallout
+                active={activeCallout === co.cid}
+                color={co.color}
+                label={co.label}
+                desc={co.desc}
+                side={co.side}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
