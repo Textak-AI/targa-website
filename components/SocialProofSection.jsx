@@ -87,8 +87,8 @@ export default function SocialProofSection() {
             alt={logo.alt}
             draggable={false}
             style={{
-              height: '22px',
-              maxWidth: '140px',
+              height: '28px',
+              maxWidth: '170px',
               width: 'auto',
               objectFit: 'contain',
               opacity: 0.7,

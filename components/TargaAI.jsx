@@ -713,7 +713,7 @@ function CEO100Page({ setPage }) {
               { t: "Early Platform Access", d: "Participants who commit to a pilot get priority access and favorable terms." },
               { t: "Shape the Product", d: "Your input directly influences features and AI capabilities. Co-creation, not a sales pitch." },
             ].map(({ t, d }, i) => (
-              <Reveal key={t} delay={i * 0.1}><div style={{ padding: "28px 24px", background: "rgba(14,178,175,0.03)", border: "1px solid rgba(14,178,175,0.08)", borderRadius: 10 }}>
+              <Reveal key={t} delay={i * 0.1}><div style={{ padding: "28px 24px", minHeight: 180, background: "rgba(14,178,175,0.03)", border: "1px solid rgba(14,178,175,0.08)", borderRadius: 10 }}>
                 <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1rem", fontWeight: 500, color: C.white, marginBottom: 10 }}>{t}</h3>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", lineHeight: 1.7, color: C.g300 }}>{d}</p>
               </div></Reveal>
