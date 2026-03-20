@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const C = {
   navy: "#1f476a", navyDark: "#162d46", navyDeep: "#0f2035",
   teal: "#0eb2af", tealHover: "#0cc7c4", gold: "#fbbf24",
-  white: "#fff", g500: "#64748b", g300: "#cbd5e1", g200: "#e2e8f0",
+  white: "#fff", g500: "#8494a7", g300: "#d6dfe8", g200: "#e2e8f0",
 };
 
 /* ═══ SCROLL ANIMATION HOOK ═══ */
@@ -347,7 +347,7 @@ function Nav({ page, setPage }) {
           <Link to="about">About</Link>
           <Link to="ceo100">100 CEOs</Link>
           <Link to="contact">Contact</Link>
-          <Btn variant={scrolled ? "outline" : "primary"} style={{ padding: "9px 20px", fontSize: "0.76rem" }} onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request a Demo</Btn>
+          <Btn variant={scrolled ? "outline" : "primary"} style={{ padding: "9px 20px", fontSize: "0.76rem" }} onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request More Information</Btn>
         </div>
       </div>
     </nav>
@@ -364,7 +364,7 @@ function Footer({ setPage }) {
           <div><Logo variant="light" /><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.82rem", color: C.g500, lineHeight: 1.7, marginTop: 16, maxWidth: 280 }}>Speed and clarity for enterprise value creation. The Leader Experience™.</p></div>
           <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Platform</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><FL to="platform">Overview</FL><FL to="platform">Features</FL><FL to="platform">Security</FL></div></div>
           <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Company</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><FL to="about">About</FL><FL to="about">Leadership</FL><FL to="ceo100">100 CEOs</FL><FL to="contact">Contact</FL></div></div>
-          <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Connect</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><FL to="contact">LinkedIn</FL><FL to="contact">Schedule a Call</FL></div></div>
+          <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Connect</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><a href="https://www.linkedin.com/company/targatek" target="_blank" rel="noopener" style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.78rem", color: C.g500, textDecoration: "none", cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={e => e.target.style.color = C.teal} onMouseLeave={e => e.target.style.color = C.g500}>LinkedIn</a><FL to="contact">Schedule a Call</FL></div></div>
         </div>
         <div style={{ borderTop: "1px solid rgba(14,178,175,0.06)", paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500 }}>© 2026 Targatek Inc. All rights reserved.</span>
@@ -399,7 +399,7 @@ function HomePage({ setPage }) {
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2.4rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 720, marginBottom: 24, ...fade(0.35) }}>Speed and Clarity<br />for Enterprise<br />Value Creation</h1>
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520, marginBottom: 40, ...fade(0.5) }}>TARGA AI gives executives cross-functional visibility — turning strategic goals into measurable outcomes with AI-driven insight into what drives enterprise value.</p>
           <div style={{ display: "flex", gap: 14, ...fade(0.65) }}>
-            <Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request a Demo</Btn>
+            <Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request More Information</Btn>
             <Btn variant="secondary" onClick={() => { setPage("platform"); window.scrollTo(0, 0); }}>Learn More</Btn>
           </div>
         </div>
@@ -450,7 +450,7 @@ function HomePage({ setPage }) {
       <section style={{ background: "linear-gradient(180deg," + C.navyDark + " 0%," + C.navy + " 100%)", padding: "40px 40px 100px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, alignItems: "stretch", position: "relative", zIndex: 3 }}>
           {[
-            { t: "Clarity", d: "Real-time executive dashboards that surface what matters — goals, gaps, and the teams driving them.", a: C.teal },
+            { t: "Clarity", d: "Real-time executive dashboards that surface what matters — goals, gaps, and the teams driving them.", a: C.white },
             { t: "Speed", d: "Accelerate value creation across every quarter — not just the two weeks before a board meeting.", a: C.teal },
             { t: "Value", d: "Enterprise value creation management — not task tracking. Outcomes measured in dollars, not checkboxes.", a: C.gold },
           ].map(({ t, d, a }, i) => (
@@ -616,7 +616,7 @@ function PlatformPage({ setPage }) {
       </section>
 
       <section style={{ background: C.navyDeep, padding: "80px 40px", textAlign: "center" }}>
-        <Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.4rem,2vw,1.8rem)", fontWeight: 300, color: C.white, marginBottom: 20 }}>See it in action.</h2><Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request a Demo</Btn></Reveal>
+        <Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.4rem,2vw,1.8rem)", fontWeight: 300, color: C.white, marginBottom: 20 }}>See it in action.</h2><Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request More Information</Btn></Reveal>
       </section>
     </>
   );
@@ -672,7 +672,7 @@ function AboutPage({ setPage }) {
           <Reveal><Eyebrow color={C.gold}>Leadership</Eyebrow><SectionTitle>The team behind the platform.</SectionTitle></Reveal>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, marginTop: 40 }}>
             {[
-              { name: "Joe Thompson", role: "CEO", desc: "Enterprise software executive with deep experience in strategic planning, capital allocation, and value creation across Fortune 500 and PE-backed organizations." },
+              { name: "Joseph Thompson", role: "CEO", desc: "Enterprise software executive with deep experience in strategic planning, capital allocation, and value creation across Fortune 500 and PE-backed organizations." },
               { name: "Mark Sternberger", role: "CTO / CPO", desc: "Technology leader focused on AI-native architecture, enterprise security, and building platforms that give leaders real-time cross-functional visibility." },
               { name: "Kyle Moyer", role: "Fractional CMO", desc: "Brand strategist and marketing executive specializing in enterprise SaaS positioning, digital presence, and go-to-market strategy for high-growth companies." },
             ].map((p, i) => (
@@ -763,7 +763,7 @@ function ContactPage() {
           </div>
         </div></Reveal>
         <Reveal delay={0.15}><div style={{ background: "rgba(14,178,175,0.04)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 12, padding: 32 }}>
-          <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", fontWeight: 500, color: C.white, marginBottom: 24 }}>Request a Demo</h3>
+          <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", fontWeight: 500, color: C.white, marginBottom: 24 }}>Request More Information</h3>
           {["Full Name", "Email", "Company", "Title"].map(label => (
             <div key={label} style={{ marginBottom: 16 }}><label style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", fontWeight: 600, color: C.g500, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>{label}</label><input type="text" style={{ width: "100%", padding: "12px 14px", background: "rgba(15,32,53,0.6)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 6, color: C.white, fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", outline: "none" }} /></div>
           ))}

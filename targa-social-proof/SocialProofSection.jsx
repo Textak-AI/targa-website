@@ -91,12 +91,12 @@ export default function SocialProofSection() {
               maxWidth: '140px',
               width: 'auto',
               objectFit: 'contain',
-              opacity: 0.55,
+              opacity: 0.35,
               transition: 'opacity 0.3s ease',
               flexShrink: 0,
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.8'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.6'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.35'; }}
           />
         ))}
       </div>
