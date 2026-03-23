@@ -469,7 +469,7 @@ function HomePage({ setPage }) {
       {/* DIFFERENTIATOR */}
       <section style={{ background: C.navy, padding: "100px 40px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64 }}>
-          <Reveal><div><Eyebrow color={C.gold}>Why TARGA</Eyebrow><SectionTitle sub="TARGA starts with your strategic objectives and works down — delivering the clarity, speed, and accountability leaders need to convert strategy into enterprise value.">Built for how leaders think.</SectionTitle></div></Reveal>
+          <Reveal><div><Eyebrow color={C.gold}>Why TARGA</Eyebrow><SectionTitle sub="TARGA is an intelligent strategic advisor that understands your business in context — surfacing what you need to act on, flagging what you would not think to ask about, and giving you the clarity to move with confidence.">Your AI-powered strategic advisor.</SectionTitle></div></Reveal>
           <Reveal delay={0.15}>
             <div>
               <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Growth businesses have roughly 30% of gross margin available for strategic decisions. High performers direct 20% of that toward value creation. But capital is not the constraint — execution is. 90% of companies simply repeat last year's budget.</p>
@@ -511,7 +511,7 @@ function HomePage({ setPage }) {
       {/* 3D DASHBOARD */}
       <section style={{ background: C.navyDeep, padding: "100px 40px", overflow: "visible" }}>
         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
-          <Reveal><div style={{ textAlign: "center", marginBottom: 48 }}><Eyebrow color={C.teal}>The Platform</Eyebrow><SectionTitle align="center">Built for How Leaders Think</SectionTitle></div></Reveal>
+          <Reveal><div style={{ textAlign: "center", marginBottom: 48 }}><Eyebrow color={C.teal}>The Platform</Eyebrow><SectionTitle align="center">Clarity at a Glance. Speed to Action.</SectionTitle></div></Reveal>
           <PerspectiveDashboard />
           <Reveal delay={0.3}><div style={{ textAlign: "center", marginTop: 48 }}><Btn onClick={() => { setPage("platform"); window.scrollTo(0, 0); }}>Explore the Platform →</Btn></div></Reveal>
         </div>
@@ -634,7 +634,7 @@ function AboutPage({ setPage }) {
   return (
     <>
       <section style={{ background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: "160px 40px 80px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}><Eyebrow color={C.gold}>About TARGA AI</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Enterprise leaders deserve a platform built for how they actually work.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA AI exists because the tools executives rely on were designed for project managers. We are building something different — a platform that starts with strategic value creation and gives leaders the speed and clarity to outpace the competition.</p></div>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}><Eyebrow color={C.gold}>About TARGA AI</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>An intelligent advisor for the executives who create enterprise value.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA AI exists because the gap between setting strategy and executing it is the most expensive problem in enterprise management. We are building a platform that starts at the strategic level and gives leaders the clarity, speed, and accountability to close that gap.</p></div>
       </section>
       <section style={{ background: C.navy, padding: "80px 40px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64 }}>
