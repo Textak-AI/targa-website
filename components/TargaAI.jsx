@@ -215,7 +215,7 @@ function DrawnCallout({ active, color, label, desc, side, top }) {
       pointerEvents: "none",
       display: "flex",
       flexDirection: isRight ? "row" : "row-reverse",
-      alignItems: "flex-start",
+      alignItems: "center",
       transform: "translateY(-50%)" + (isRight ? " translateX(100%)" : " translateX(-100%)"),
     }}>
       {/* ─── Connector line: draws outward ─── */}
