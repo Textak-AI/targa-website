@@ -326,7 +326,7 @@ function DrawnCallout({ active, callout, side, top }) {
           )}
           {tier === 2 && (
             <>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.58rem", fontWeight: 700, color: C.gold, background: "rgba(251,191,36,0.12)", padding: "3px 8px", borderRadius: 3, letterSpacing: "0.06em" }}>AI SURFACED</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.58rem", fontWeight: 700, color: C.gold, background: "rgba(251,191,36,0.12)", padding: "3px 8px", borderRadius: 3, letterSpacing: "0.06em" }}>TARGA INSIGHT</span>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: C.g500 }}>Linked: {callout.linked}</span>
             </>
           )}
