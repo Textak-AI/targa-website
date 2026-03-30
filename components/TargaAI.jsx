@@ -233,16 +233,17 @@ const CALLOUTS = [
     action: "Reassign → CHRO" },
 ];
 
-/* ═══ DRAWN CALLOUT — problem → feature → outcome structure ═══ */
+/* ═══ DRAWN CALLOUT — problem → feature → outcome with section headlines ═══ */
 function DrawnCallout({ active, callout, side, top }) {
   if (!callout) return null;
   const { tier, color } = callout;
   const isRight = side === "right";
   const lineLen = 60;
-  const boxW = 240;
+  const boxW = 255;
   const borderAlpha = color === C.gold ? "rgba(251,191,36,0.25)" : "rgba(14,178,175,0.25)";
   const borderTopColor = color === C.gold ? C.gold : C.teal;
-  const metaBorderAlpha = color === C.gold ? "rgba(251,191,36,0.12)" : "rgba(14,178,175,0.12)";
+  const dividerAlpha = color === C.gold ? "rgba(251,191,36,0.1)" : "rgba(14,178,175,0.1)";
+  const labelStyle = { fontFamily: "'Inter',sans-serif", fontSize: "0.55rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 5 };
 
   return (
     <div style={{
@@ -263,7 +264,7 @@ function DrawnCallout({ active, callout, side, top }) {
         width: boxW, flexShrink: 0,
         background: "rgba(10,24,42,0.95)", backdropFilter: "blur(16px)",
         borderRadius: 8, border: "1px solid " + borderAlpha, borderTop: "2px solid " + borderTopColor,
-        padding: "14px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+        padding: "16px 18px", boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
         opacity: active ? 1 : 0,
         transform: active ? "translateY(0) scale(1)" : "translateY(4px) scale(0.97)",
         transformOrigin: isRight ? "left top" : "right top",
@@ -272,37 +273,45 @@ function DrawnCallout({ active, callout, side, top }) {
           ? "clip-path 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s, opacity 0.25s ease 0.2s, transform 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s"
           : "clip-path 0.2s ease 0s, opacity 0.15s ease 0s, transform 0.2s ease 0s",
       }}>
-        {/* ROW 1: Problem reference — ties to the stat section above */}
+
+        {/* ── SECTION 1: The problem ── */}
         <div style={{
-          fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: color, fontWeight: 600,
-          letterSpacing: "0.03em", marginBottom: 10, lineHeight: 1.4,
+          marginBottom: 12, paddingBottom: 10, borderBottom: "1px solid " + dividerAlpha,
           opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(6px)",
           transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.35s" : "all 0.1s ease 0s",
-        }}>{callout.problem}</div>
+        }}>
+          <div style={{ ...labelStyle, color: C.g500 }}>The problem</div>
+          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color, fontWeight: 600, lineHeight: 1.45 }}>{callout.problem}</div>
+        </div>
 
-        {/* ROW 2: Feature — TARGA icon + what it does */}
+        {/* ── SECTION 2: What TARGA does ── */}
         <div style={{
-          display: "flex", alignItems: "center", gap: 8, marginBottom: 8,
+          marginBottom: 12, paddingBottom: 10, borderBottom: "1px solid " + dividerAlpha,
           opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(6px)",
           transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.45s" : "all 0.1s ease 0s",
         }}>
-          <svg width={14} height={14} viewBox="0 0 43.39 45.25" fill="none" style={{ flexShrink: 0 }}>
-            <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.25" />
-            <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
-          </svg>
-          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.82rem", color: C.white, fontWeight: 700, letterSpacing: "0.01em" }}>{callout.feature}</div>
+          <div style={{ ...labelStyle, color: C.g500 }}>What TARGA does</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <svg width={14} height={14} viewBox="0 0 43.39 45.25" fill="none" style={{ flexShrink: 0 }}>
+              <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.25" />
+              <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
+            </svg>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.82rem", color: C.white, fontWeight: 700 }}>{callout.feature}</div>
+          </div>
         </div>
 
-        {/* ROW 3: Outcome — how it solves the problem */}
+        {/* ── SECTION 3: The outcome ── */}
         <div style={{
-          fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6, paddingLeft: 22,
           opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(4px)",
           transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.55s" : "all 0.1s ease 0s",
-        }}>{callout.outcome}</div>
+        }}>
+          <div style={{ ...labelStyle, color: C.g500 }}>How it solves it</div>
+          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6 }}>{callout.outcome}</div>
+        </div>
 
-        {/* Tier-specific meta */}
+        {/* ── Tier badge ── */}
         <div style={{
-          marginTop: 10, paddingTop: 8, borderTop: "1px solid " + metaBorderAlpha,
+          marginTop: 12, paddingTop: 10, borderTop: "1px solid " + dividerAlpha,
           display: "flex", alignItems: "center", gap: 6,
           opacity: active ? 1 : 0,
           transition: active ? "opacity 0.3s ease 0.65s" : "opacity 0.1s ease 0s",
@@ -317,13 +326,13 @@ function DrawnCallout({ active, callout, side, top }) {
           )}
           {tier === 2 && (
             <>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.gold, background: "rgba(251,191,36,0.12)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>AI SURFACED</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.58rem", fontWeight: 700, color: C.gold, background: "rgba(251,191,36,0.12)", padding: "3px 8px", borderRadius: 3, letterSpacing: "0.06em" }}>AI SURFACED</span>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: C.g500 }}>Linked: {callout.linked}</span>
             </>
           )}
           {tier === 3 && (
             <>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.teal, background: "rgba(14,178,175,0.12)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>1 CLICK</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.58rem", fontWeight: 700, color: C.teal, background: "rgba(14,178,175,0.12)", padding: "3px 8px", borderRadius: 3, letterSpacing: "0.06em" }}>1 CLICK</span>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: C.g500 }}>{callout.action}</span>
             </>
           )}
