@@ -240,9 +240,14 @@ function PerspectiveDashboard({ view = "strategic" }) {
       const dashRect = dashRef.current.getBoundingClientRect();
       const midX = dashRect.left + dashRect.width / 2;
       setActiveSide(e.clientX < midX ? "left" : "right");
-      // Use offsetTop for accurate position relative to dashRef (positioned parent)
-      const el = e.currentTarget;
-      setCalloutY(el.offsetTop + el.offsetHeight / 2);
+      // Walk offsetParent chain to get true Y relative to dashRef
+      let el = e.currentTarget;
+      let top = el.offsetHeight / 2;
+      while (el && el !== dashRef.current) {
+        top += el.offsetTop;
+        el = el.offsetParent;
+      }
+      setCalloutY(top);
     }
   }, []);
 
