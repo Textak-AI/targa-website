@@ -189,74 +189,81 @@ function FrameworkChart() {
   );
 }
 
-/* ═══ CALLOUT DATA — three tiers mapping to 85%/90%/67% problems ═══ */
+/* ═══ CALLOUT DATA — three tiers, each with problem→feature→outcome ═══ */
 const CALLOUTS = [
-  /* Tier 1: METRIC (teal) — "Can I see the whole picture?" → 85% problem */
-  { cid: "kpi0", tier: 1, label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", meta: "+18% QoQ", spark: [14,11,12,8,6,4,2], color: C.teal },
-  { cid: "kpi2", tier: 1, label: "Continuous alignment scoring", desc: "Exec alignment measured weekly — not just at board meetings.", meta: "+12 pts this quarter", spark: [12,10,9,7,5,4,3], color: C.teal },
-  { cid: "row0", tier: 1, label: "Cross-functional dependencies", desc: "See how every initiative connects across functions in real time.", meta: "4 linked initiatives", spark: [10,9,8,6,5,3,2], color: C.teal },
+  /* Tier 1: METRIC (teal) — addresses the 85% barrier problem */
+  { cid: "kpi0", tier: 1, color: C.teal,
+    problem: "85% cite internal barriers to growth — McKinsey",
+    feature: "Real-time pipeline visibility",
+    outcome: "$4.2M across 12 initiatives. No quarterly surprises.",
+    spark: [14,11,12,8,6,4,2], meta: "+18% QoQ" },
+  { cid: "kpi2", tier: 1, color: C.teal,
+    problem: "85% cite internal barriers to growth — McKinsey",
+    feature: "Continuous alignment scoring",
+    outcome: "Exec alignment measured weekly — not just at board meetings.",
+    spark: [12,10,9,7,5,4,3], meta: "+12 pts this quarter" },
+  { cid: "row0", tier: 1, color: C.teal,
+    problem: "85% cite internal barriers to growth — McKinsey",
+    feature: "Cross-functional initiative mapping",
+    outcome: "See how every initiative connects across functions in real time.",
+    spark: [10,9,8,6,5,3,2], meta: "4 linked initiatives" },
 
-  /* Tier 2: AI INSIGHT (gold) — "What am I not seeing?" → 90% problem */
-  { cid: "kpi1", tier: 2, label: "AI-flagged risk detection", desc: "3 initiatives share constrained engineering capacity. Budget is not the blocker — resource allocation is.", linked: "APAC Expansion, Product Line", color: C.gold },
-  { cid: "row1", tier: 2, label: "Cross-functional resource conflict", desc: "This initiative shares 3 resources with APAC Expansion. Engineering capacity is the constraint — not budget.", linked: "APAC Expansion", color: C.gold },
+  /* Tier 2: AI INSIGHT (gold) — addresses the 90% inertia problem */
+  { cid: "kpi1", tier: 2, color: C.gold,
+    problem: "90% repeat last year's budget — Deloitte",
+    feature: "AI-flagged risk detection",
+    outcome: "3 initiatives share constrained engineering capacity. Budget is not the blocker — resource allocation is.",
+    linked: "APAC Expansion, Product Line" },
+  { cid: "row1", tier: 2, color: C.gold,
+    problem: "90% repeat last year's budget — Deloitte",
+    feature: "Cross-functional resource conflict",
+    outcome: "This initiative shares 3 resources with APAC Expansion. Engineering capacity is the constraint — not budget.",
+    linked: "APAC Expansion" },
 
-  /* Tier 3: ACTION (white) — "What do I do about it?" → 67% problem */
-  { cid: "row2", tier: 3, label: "Suggested next action", desc: "Schedule 15-min alignment check with CTO and CPO on shared engineering capacity before Q2 close.", action: "Send invite → CTO, CPO", color: C.white },
-  { cid: "row3", tier: 3, label: "Delegation prompt", desc: "CHRO has bandwidth. Reassign the talent pipeline review from CRO to accelerate by 2 weeks.", action: "Reassign → CHRO", color: C.white },
+  /* Tier 3: ACTION (teal accent on premium dark) — addresses the 67% execution problem */
+  { cid: "row2", tier: 3, color: C.teal,
+    problem: "67% of strategies fail in execution — Bain",
+    feature: "Suggested next action",
+    outcome: "Schedule 15-min alignment check with CTO and CPO on shared engineering capacity before Q2 close.",
+    action: "Send invite → CTO, CPO" },
+  { cid: "row3", tier: 3, color: C.teal,
+    problem: "67% of strategies fail in execution — Bain",
+    feature: "Delegation prompt",
+    outcome: "CHRO has bandwidth. Reassign the talent pipeline review from CRO to accelerate by 2 weeks.",
+    action: "Reassign → CHRO" },
 ];
 
-/* ═══ DRAWN CALLOUT — three tiers: metric, AI insight, action ═══ */
+/* ═══ DRAWN CALLOUT — problem → feature → outcome structure ═══ */
 function DrawnCallout({ active, callout, side, top }) {
   if (!callout) return null;
-  const { tier, color, label, desc } = callout;
+  const { tier, color } = callout;
   const isRight = side === "right";
   const lineLen = 60;
-  const boxW = 230;
-  const borderColor = color === C.white ? "rgba(255,255,255,0.15)" : color + "30";
-  const topBorder = color === C.white ? "rgba(255,255,255,0.25)" : color;
-  const labelColor = color === C.white ? C.white : color;
-  const metaColor = C.g500;
-  const metaBorder = color === C.white ? "rgba(255,255,255,0.08)" : color + "18";
+  const boxW = 240;
+  const borderAlpha = color === C.gold ? "rgba(251,191,36,0.25)" : "rgba(14,178,175,0.25)";
+  const borderTopColor = color === C.gold ? C.gold : C.teal;
+  const metaBorderAlpha = color === C.gold ? "rgba(251,191,36,0.12)" : "rgba(14,178,175,0.12)";
 
   return (
     <div style={{
-      position: "absolute",
-      top,
+      position: "absolute", top,
       [isRight ? "right" : "left"]: 0,
-      width: lineLen + boxW + 4,
-      zIndex: 20,
-      pointerEvents: "none",
-      display: "flex",
-      flexDirection: isRight ? "row" : "row-reverse",
-      alignItems: "center",
+      width: lineLen + boxW + 4, zIndex: 20, pointerEvents: "none",
+      display: "flex", flexDirection: isRight ? "row" : "row-reverse", alignItems: "center",
       transform: "translateY(-50%)" + (isRight ? " translateX(100%)" : " translateX(-100%)"),
     }}>
-      {/* Connector line */}
+      {/* Connector */}
       <div style={{ display: "flex", alignItems: "center", flexShrink: 0, width: lineLen, flexDirection: isRight ? "row" : "row-reverse" }}>
-        <div style={{
-          width: 5, height: 5, borderRadius: "50%", background: color,
-          opacity: active ? 1 : 0, transform: active ? "scale(1)" : "scale(0)",
-          transition: active ? "all 0.2s cubic-bezier(0.16,1,0.3,1) 0s" : "all 0.15s ease 0.1s",
-          flexShrink: 0,
-        }} />
-        <div style={{
-          height: 1,
-          background: "linear-gradient(" + (isRight ? "to right" : "to left") + ", " + color + ", " + color + "40)",
-          flex: 1,
-          transformOrigin: isRight ? "left center" : "right center",
-          transform: active ? "scaleX(1)" : "scaleX(0)",
-          transition: active ? "transform 0.3s cubic-bezier(0.16,1,0.3,1) 0.05s" : "transform 0.15s ease 0.05s",
-        }} />
+        <div style={{ width: 5, height: 5, borderRadius: "50%", background: color, opacity: active ? 1 : 0, transform: active ? "scale(1)" : "scale(0)", transition: active ? "all 0.2s cubic-bezier(0.16,1,0.3,1) 0s" : "all 0.15s ease 0.1s", flexShrink: 0 }} />
+        <div style={{ height: 1, background: color, flex: 1, transformOrigin: isRight ? "left center" : "right center", transform: active ? "scaleX(1)" : "scaleX(0)", transition: active ? "transform 0.3s cubic-bezier(0.16,1,0.3,1) 0.05s" : "transform 0.15s ease 0.05s" }} />
       </div>
 
-      {/* Callout box */}
+      {/* Box */}
       <div style={{
         width: boxW, flexShrink: 0,
         background: "rgba(10,24,42,0.95)", backdropFilter: "blur(16px)",
-        borderRadius: 8, border: "1px solid " + borderColor,
-        borderTop: "2px solid " + topBorder,
-        padding: "14px 16px",
-        boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+        borderRadius: 8, border: "1px solid " + borderAlpha, borderTop: "2px solid " + borderTopColor,
+        padding: "14px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
         opacity: active ? 1 : 0,
         transform: active ? "translateY(0) scale(1)" : "translateY(4px) scale(0.97)",
         transformOrigin: isRight ? "left top" : "right top",
@@ -265,51 +272,59 @@ function DrawnCallout({ active, callout, side, top }) {
           ? "clip-path 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s, opacity 0.25s ease 0.2s, transform 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s"
           : "clip-path 0.2s ease 0s, opacity 0.15s ease 0s, transform 0.2s ease 0s",
       }}>
-        {/* Icon + label row */}
+        {/* ROW 1: Problem reference — ties to the stat section above */}
         <div style={{
-          display: "flex", alignItems: "center", gap: 8, marginBottom: 6,
+          fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: color, fontWeight: 600,
+          letterSpacing: "0.03em", marginBottom: 10, lineHeight: 1.4,
           opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(6px)",
-          transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.4s" : "all 0.1s ease 0s",
+          transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.35s" : "all 0.1s ease 0s",
+        }}>{callout.problem}</div>
+
+        {/* ROW 2: Feature — TARGA icon + what it does */}
+        <div style={{
+          display: "flex", alignItems: "center", gap: 8, marginBottom: 8,
+          opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(6px)",
+          transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.45s" : "all 0.1s ease 0s",
         }}>
-          <svg width={16} height={16} viewBox="0 0 43.39 45.25" fill="none" style={{ flexShrink: 0 }}>
+          <svg width={14} height={14} viewBox="0 0 43.39 45.25" fill="none" style={{ flexShrink: 0 }}>
             <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.25" />
             <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
           </svg>
-          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", color: labelColor, fontWeight: 700, letterSpacing: "0.01em" }}>{label}</div>
+          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.82rem", color: C.white, fontWeight: 700, letterSpacing: "0.01em" }}>{callout.feature}</div>
         </div>
 
-        {/* Description */}
+        {/* ROW 3: Outcome — how it solves the problem */}
         <div style={{
-          fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6, fontWeight: 400, paddingLeft: 24,
+          fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6, paddingLeft: 22,
           opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(4px)",
-          transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.5s" : "all 0.1s ease 0s",
-        }}>{desc}</div>
+          transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.55s" : "all 0.1s ease 0s",
+        }}>{callout.outcome}</div>
 
-        {/* Tier-specific meta row */}
+        {/* Tier-specific meta */}
         <div style={{
-          marginTop: 10, paddingTop: 8, borderTop: "1px solid " + metaBorder,
+          marginTop: 10, paddingTop: 8, borderTop: "1px solid " + metaBorderAlpha,
           display: "flex", alignItems: "center", gap: 6,
           opacity: active ? 1 : 0,
-          transition: active ? "opacity 0.3s ease 0.6s" : "opacity 0.1s ease 0s",
+          transition: active ? "opacity 0.3s ease 0.65s" : "opacity 0.1s ease 0s",
         }}>
           {tier === 1 && callout.spark && (
             <>
               <svg width={40} height={14} viewBox="0 0 42 14" style={{ flexShrink: 0 }}>
                 <polyline points={callout.spark.map((v, i) => (i * 7) + "," + v).join(" ")} fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" />
               </svg>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: metaColor }}>{callout.meta}</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: C.g500 }}>{callout.meta}</span>
             </>
           )}
           {tier === 2 && (
             <>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.gold, background: "rgba(251,191,36,0.1)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>AI SURFACED</span>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: metaColor }}>Linked: {callout.linked}</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.gold, background: "rgba(251,191,36,0.12)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>AI SURFACED</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: C.g500 }}>Linked: {callout.linked}</span>
             </>
           )}
           {tier === 3 && (
             <>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.white, background: "rgba(255,255,255,0.08)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>1 CLICK</span>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: metaColor }}>{callout.action}</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.teal, background: "rgba(14,178,175,0.12)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>1 CLICK</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: C.g500 }}>{callout.action}</span>
             </>
           )}
         </div>
