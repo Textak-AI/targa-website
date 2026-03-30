@@ -128,58 +128,98 @@ const CALLOUTS = [
   { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, top: "78%" },
 ];
 
-/* ═══ PULSE INDICATOR — subtle dot on hoverable elements ═══ */
-function PulseIndicator({ color = C.teal, active }) {
+/* ═══ DRAWN CALLOUT — line extends from dashboard, box assembles outside ═══ */
+function DrawnCallout({ active, color, label, desc, side, top }) {
+  const isRight = side === "right";
+  const lineLen = 60;
+  const boxW = 220;
   return (
     <div style={{
-      width: 6, height: 6, borderRadius: "50%", background: color,
-      opacity: active ? 0 : 0.6, transition: "opacity 0.3s",
-      boxShadow: "0 0 6px " + color + "40",
-      animation: active ? "none" : "pulse-glow 2.5s ease-in-out infinite",
-      flexShrink: 0,
-    }} />
-  );
-}
-
-/* ═══ INLINE CALLOUT — tooltip anchored inside the dashboard ═══ */
-function InlineCallout({ active, color, label, desc }) {
-  return (
-    <div style={{
-      position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)",
-      zIndex: 30, pointerEvents: "none",
-      width: 260,
-      opacity: active ? 1 : 0,
-      transition: active
-        ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.08s"
-        : "all 0.18s ease 0s",
+      position: "absolute",
+      top,
+      [isRight ? "right" : "left"]: 0,
+      width: lineLen + boxW + 4,
+      zIndex: 20,
+      pointerEvents: "none",
+      display: "flex",
+      flexDirection: isRight ? "row" : "row-reverse",
+      alignItems: "flex-start",
+      transform: "translateY(-50%)" + (isRight ? " translateX(100%)" : " translateX(-100%)"),
     }}>
+      {/* ─── Connector line: draws outward ─── */}
       <div style={{
-        background: "rgba(10,24,42,0.95)",
-        border: "1px solid " + color + "25",
-        borderLeft: "3px solid " + color,
-        borderRadius: "0 10px 10px 0",
-        padding: "14px 16px",
-        backdropFilter: "blur(16px)",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(14,178,175,0.04)",
-        transform: active ? "translateX(0)" : "translateX(-8px)",
-        transition: active
-          ? "transform 0.3s cubic-bezier(0.16,1,0.3,1) 0.08s"
-          : "transform 0.18s ease 0s",
+        display: "flex", alignItems: "center", flexShrink: 0,
+        width: lineLen,
+        flexDirection: isRight ? "row" : "row-reverse",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-          {/* Mini TARGA A icon */}
-          <svg width={14} height={14} viewBox="0 0 43.39 45.25" fill="none" style={{
+        {/* Dot at dashboard edge */}
+        <div style={{
+          width: 5, height: 5, borderRadius: "50%",
+          background: color,
+          opacity: active ? 1 : 0,
+          transform: active ? "scale(1)" : "scale(0)",
+          transition: active ? "all 0.2s cubic-bezier(0.16,1,0.3,1) 0s" : "all 0.15s ease 0.1s",
+          flexShrink: 0,
+        }} />
+        {/* Horizontal line */}
+        <div style={{
+          height: 1,
+          background: "linear-gradient(" + (isRight ? "to right" : "to left") + ", " + color + ", " + color + "40)",
+          flex: 1,
+          transformOrigin: isRight ? "left center" : "right center",
+          transform: active ? "scaleX(1)" : "scaleX(0)",
+          transition: active
+            ? "transform 0.3s cubic-bezier(0.16,1,0.3,1) 0.05s"
+            : "transform 0.15s ease 0.05s",
+        }} />
+      </div>
+
+      {/* ─── Callout box: border draws in, then content reveals ─── */}
+      <div style={{
+        width: boxW, position: "relative", flexShrink: 0,
+      }}>
+        {/* Box container with clip reveal */}
+        <div style={{
+          background: "rgba(10,24,42,0.95)",
+          backdropFilter: "blur(16px)",
+          borderRadius: 8,
+          border: "1px solid " + color + "30",
+          borderTop: "2px solid " + color,
+          padding: "14px 16px",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+          opacity: active ? 1 : 0,
+          transform: active ? "translateY(0) scale(1)" : "translateY(4px) scale(0.97)",
+          transformOrigin: isRight ? "left top" : "right top",
+          clipPath: active ? "inset(0 0 0 0)" : (isRight ? "inset(0 100% 100% 0)" : "inset(0 0 100% 100%)"),
+          transition: active
+            ? "clip-path 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s, opacity 0.25s ease 0.2s, transform 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s"
+            : "clip-path 0.2s ease 0s, opacity 0.15s ease 0s, transform 0.2s ease 0s",
+        }}>
+          {/* TARGA A + Label */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: 8, marginBottom: 6,
+            opacity: active ? 1 : 0,
+            transform: active ? "translateY(0)" : "translateY(6px)",
+            transition: active
+              ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.4s"
+              : "all 0.1s ease 0s",
+          }}>
+            <svg width={16} height={16} viewBox="0 0 43.39 45.25" fill="none" style={{ flexShrink: 0 }}>
+              <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.25" />
+              <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
+            </svg>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", color, fontWeight: 700, letterSpacing: "0.01em" }}>{label}</div>
+          </div>
+          {/* Description */}
+          <div style={{
+            fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6, fontWeight: 400, paddingLeft: 24,
             opacity: active ? 1 : 0,
             transform: active ? "translateY(0)" : "translateY(4px)",
-            transition: active ? "all 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s" : "all 0.15s ease 0s",
-            flexShrink: 0,
-          }}>
-            <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.3" />
-            <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
-          </svg>
-          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.78rem", color, fontWeight: 700, letterSpacing: "0.01em" }}>{label}</div>
+            transition: active
+              ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.5s"
+              : "all 0.1s ease 0s",
+          }}>{desc}</div>
         </div>
-        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6, fontWeight: 400, paddingLeft: 22 }}>{desc}</div>
       </div>
     </div>
   );
@@ -189,10 +229,17 @@ function InlineCallout({ active, color, label, desc }) {
 function PerspectiveDashboard({ view = "strategic" }) {
   const [ref, inView] = useInView(0.1);
   const [activeCallout, setActiveCallout] = useState(null);
+  const [activeSide, setActiveSide] = useState("right");
+  const dashRef = useRef(null);
   const { mobile } = useMedia();
 
-  const handleHover = useCallback((cid) => {
+  const handleHover = useCallback((cid, e) => {
     setActiveCallout(cid);
+    if (dashRef.current) {
+      const rect = dashRef.current.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      setActiveSide(e.clientX < midX ? "left" : "right");
+    }
   }, []);
 
   const kpis = [
@@ -232,9 +279,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
       >
         <div style={{ position: "absolute", bottom: -20, left: "10%", right: "10%", height: 40, background: "rgba(14,178,175,0.08)", filter: "blur(30px)", borderRadius: "50%", pointerEvents: "none" }} />
 
-        <div style={{ background: "linear-gradient(145deg," + C.navy + " 0%," + C.navyDark + " 100%)", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", padding: 28, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,178,175,0.05), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "hidden" }}>
-          {/* Pulse animation keyframes */}
-          <style>{`@keyframes pulse-glow { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.3); } }`}</style>
+        <div ref={dashRef} style={{ background: "linear-gradient(145deg," + C.navy + " 0%," + C.navyDark + " 100%)", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", padding: 28, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,178,175,0.05), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "visible" }}>
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, paddingBottom: 16, borderBottom: "1px solid rgba(14,178,175,0.06)" }}>
             <div style={{ display: "flex", gap: 7 }}>
@@ -254,14 +299,11 @@ function PerspectiveDashboard({ view = "strategic" }) {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 16, marginBottom: 20 }}>
-            {kpis.map((k, i) => {
-              const co = CALLOUTS.find(c => c.cid === k.cid);
-              return (
+            {kpis.map((k, i) => (
               <div key={k.t}
-                onMouseEnter={() => handleHover(k.cid)}
+                onMouseEnter={(e) => handleHover(k.cid, e)}
                 onMouseLeave={() => setActiveCallout(null)}
                 style={{
-                  position: "relative",
                   background: activeCallout === k.cid ? "rgba(14,178,175,0.06)" : "rgba(15,32,53,0.6)",
                   borderRadius: 8, padding: 20, cursor: "default",
                   border: activeCallout === k.cid ? "1px solid rgba(14,178,175,0.15)" : "1px solid rgba(14,178,175,0.05)",
@@ -269,33 +311,24 @@ function PerspectiveDashboard({ view = "strategic" }) {
                   transform: inView ? "translateY(0)" : "translateY(16px)",
                   transition: "all 0.4s cubic-bezier(0.16,1,0.3,1) " + (0.3 + i * 0.1) + "s",
                 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10, fontWeight: 600 }}>{k.t}</div>
-                  {!mobile && <PulseIndicator color={k.c} active={activeCallout === k.cid} />}
-                </div>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10, fontWeight: 600 }}>{k.t}</div>
                 <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.5rem", color: C.white, fontWeight: 500 }}>{k.v}</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.73rem", color: k.c, marginTop: 6 }}>{k.d}</div>
-                {!mobile && co && <InlineCallout active={activeCallout === k.cid} color={co.color} label={co.label} desc={co.desc} />}
               </div>
-            );})}
-          </div>
+            ))}          </div>
 
-          {view === "strategic" ? rows.map((r, i) => {
-            const co = CALLOUTS.find(c => c.cid === r.cid);
-            return (
+          {view === "strategic" ? rows.map((r, i) => (
             <div key={r.n}
-              onMouseEnter={() => handleHover(r.cid)}
+              onMouseEnter={(e) => handleHover(r.cid, e)}
               onMouseLeave={() => setActiveCallout(null)}
               style={{
-                display: "grid", gridTemplateColumns: mobile ? "1fr 85px 100px" : "auto 1.5fr 70px 85px 180px", gap: mobile ? 8 : 12, alignItems: "center",
+                display: "grid", gridTemplateColumns: mobile ? "1fr 85px 100px" : "1.5fr 70px 85px 180px", gap: mobile ? 8 : 12, alignItems: "center",
                 padding: "12px 16px", cursor: "default",
                 borderBottom: "1px solid rgba(14,178,175,0.04)",
                 background: activeCallout === r.cid ? "rgba(14,178,175,0.03)" : "transparent",
-                position: "relative",
                 opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-20px)",
                 transition: "all 0.4s cubic-bezier(0.16,1,0.3,1) " + (0.5 + i * 0.08) + "s",
               }}>
-              {!mobile && <PulseIndicator color={r.s === "At Risk" ? C.gold : C.teal} active={activeCallout === r.cid} />}
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", color: C.white, fontWeight: 400 }}>{r.n}</span>
               {!mobile && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.78rem", color: C.g300, fontWeight: 600 }}>{r.o}</span>}
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.78rem", color: r.s === "At Risk" ? C.gold : C.teal, fontWeight: 700 }}>{r.s}</span>
@@ -309,9 +342,8 @@ function PerspectiveDashboard({ view = "strategic" }) {
                 </div>
                 <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.76rem", color: C.g300, minWidth: 28 }}>{r.p}%</span>
               </div>
-              {!mobile && co && <InlineCallout active={activeCallout === r.cid} color={co.color} label={co.label} desc={co.desc} />}
             </div>
-          );}) : (
+          )) : (
             <div style={{ padding: "8px 0" }}>
               {timelineRows.map((q, qi) => (
                 <div key={q.n} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 16px", borderBottom: "1px solid rgba(14,178,175,0.04)", opacity: inView ? 1 : 0, transition: "opacity 0.5s " + (0.5 + qi * 0.1) + "s" }}>
@@ -330,6 +362,19 @@ function PerspectiveDashboard({ view = "strategic" }) {
             </div>
           )}
         </div>
+
+        {/* ─── Drawn callouts — positioned outside dashboard ─── */}
+        {!mobile && CALLOUTS.map(co => (
+          <DrawnCallout
+            key={co.cid}
+            active={activeCallout === co.cid}
+            color={co.color}
+            label={co.label}
+            desc={co.desc}
+            side={activeSide}
+            top={co.top}
+          />
+        ))}
 
       </div>
     </div>
