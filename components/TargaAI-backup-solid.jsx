@@ -189,35 +189,22 @@ function FrameworkChart() {
   );
 }
 
-/* ═══ CALLOUT DATA — three tiers mapping to 85%/90%/67% problems ═══ */
+/* ═══ CALLOUT DATA ═══ */
 const CALLOUTS = [
-  /* Tier 1: METRIC (teal) — "Can I see the whole picture?" → 85% problem */
-  { cid: "kpi0", tier: 1, label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", meta: "+18% QoQ", spark: [14,11,12,8,6,4,2], color: C.teal },
-  { cid: "kpi2", tier: 1, label: "Continuous alignment scoring", desc: "Exec alignment measured weekly — not just at board meetings.", meta: "+12 pts this quarter", spark: [12,10,9,7,5,4,3], color: C.teal },
-  { cid: "row0", tier: 1, label: "Cross-functional dependencies", desc: "See how every initiative connects across functions in real time.", meta: "4 linked initiatives", spark: [10,9,8,6,5,3,2], color: C.teal },
-
-  /* Tier 2: AI INSIGHT (gold) — "What am I not seeing?" → 90% problem */
-  { cid: "kpi1", tier: 2, label: "AI-flagged risk detection", desc: "3 initiatives share constrained engineering capacity. Budget is not the blocker — resource allocation is.", linked: "APAC Expansion, Product Line", color: C.gold },
-  { cid: "row1", tier: 2, label: "Cross-functional resource conflict", desc: "This initiative shares 3 resources with APAC Expansion. Engineering capacity is the constraint — not budget.", linked: "APAC Expansion", color: C.gold },
-
-  /* Tier 3: ACTION (white) — "What do I do about it?" → 67% problem */
-  { cid: "row2", tier: 3, label: "Suggested next action", desc: "Schedule 15-min alignment check with CTO and CPO on shared engineering capacity before Q2 close.", action: "Send invite → CTO, CPO", color: C.white },
-  { cid: "row3", tier: 3, label: "Delegation prompt", desc: "CHRO has bandwidth. Reassign the talent pipeline review from CRO to accelerate by 2 weeks.", action: "Reassign → CHRO", color: C.white },
+  { cid: "kpi0", label: "Real-time pipeline visibility", desc: "Cross-functional value metrics — no quarterly surprises.", color: C.teal, top: "12%" },
+  { cid: "kpi1", label: "AI-flagged risk detection", desc: "At-risk initiatives surfaced before they become write-offs.", color: C.gold, top: "20%" },
+  { cid: "kpi2", label: "Continuous alignment scoring", desc: "Measure exec alignment weekly — not just at board meetings.", color: C.teal, top: "28%" },
+  { cid: "row0", label: "Cross-functional dependencies", desc: "See how every initiative connects across functions.", color: C.teal, top: "54%" },
+  { cid: "row1", label: "Early risk intervention", desc: "Leaders act before delays compound. AI explains why.", color: C.gold, top: "62%" },
+  { cid: "row2", label: "Value-based progress", desc: "Progress measured in enterprise value — not tasks completed.", color: C.teal, top: "70%" },
+  { cid: "row3", label: "Full-team contribution", desc: "Every function's impact on value creation — visible.", color: C.teal, top: "78%" },
 ];
 
-/* ═══ DRAWN CALLOUT — three tiers: metric, AI insight, action ═══ */
-function DrawnCallout({ active, callout, side, top }) {
-  if (!callout) return null;
-  const { tier, color, label, desc } = callout;
+/* ═══ DRAWN CALLOUT — line extends from dashboard, box assembles outside ═══ */
+function DrawnCallout({ active, color, label, desc, side, top }) {
   const isRight = side === "right";
   const lineLen = 60;
-  const boxW = 230;
-  const borderColor = color === C.white ? "rgba(255,255,255,0.15)" : color + "30";
-  const topBorder = color === C.white ? "rgba(255,255,255,0.25)" : color;
-  const labelColor = color === C.white ? C.white : color;
-  const metaColor = C.g500;
-  const metaBorder = color === C.white ? "rgba(255,255,255,0.08)" : color + "18";
-
+  const boxW = 220;
   return (
     <div style={{
       position: "absolute",
@@ -231,87 +218,79 @@ function DrawnCallout({ active, callout, side, top }) {
       alignItems: "center",
       transform: "translateY(-50%)" + (isRight ? " translateX(100%)" : " translateX(-100%)"),
     }}>
-      {/* Connector line */}
-      <div style={{ display: "flex", alignItems: "center", flexShrink: 0, width: lineLen, flexDirection: isRight ? "row" : "row-reverse" }}>
+      {/* ─── Connector line: draws outward ─── */}
+      <div style={{
+        display: "flex", alignItems: "center", flexShrink: 0,
+        width: lineLen,
+        flexDirection: isRight ? "row" : "row-reverse",
+      }}>
+        {/* Dot at dashboard edge */}
         <div style={{
-          width: 5, height: 5, borderRadius: "50%", background: color,
-          opacity: active ? 1 : 0, transform: active ? "scale(1)" : "scale(0)",
+          width: 5, height: 5, borderRadius: "50%",
+          background: color,
+          opacity: active ? 1 : 0,
+          transform: active ? "scale(1)" : "scale(0)",
           transition: active ? "all 0.2s cubic-bezier(0.16,1,0.3,1) 0s" : "all 0.15s ease 0.1s",
           flexShrink: 0,
         }} />
+        {/* Horizontal line */}
         <div style={{
           height: 1,
           background: "linear-gradient(" + (isRight ? "to right" : "to left") + ", " + color + ", " + color + "40)",
           flex: 1,
           transformOrigin: isRight ? "left center" : "right center",
           transform: active ? "scaleX(1)" : "scaleX(0)",
-          transition: active ? "transform 0.3s cubic-bezier(0.16,1,0.3,1) 0.05s" : "transform 0.15s ease 0.05s",
+          transition: active
+            ? "transform 0.3s cubic-bezier(0.16,1,0.3,1) 0.05s"
+            : "transform 0.15s ease 0.05s",
         }} />
       </div>
 
-      {/* Callout box */}
+      {/* ─── Callout box: border draws in, then content reveals ─── */}
       <div style={{
-        width: boxW, flexShrink: 0,
-        background: "rgba(10,24,42,0.95)", backdropFilter: "blur(16px)",
-        borderRadius: 8, border: "1px solid " + borderColor,
-        borderTop: "2px solid " + topBorder,
-        padding: "14px 16px",
-        boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
-        opacity: active ? 1 : 0,
-        transform: active ? "translateY(0) scale(1)" : "translateY(4px) scale(0.97)",
-        transformOrigin: isRight ? "left top" : "right top",
-        clipPath: active ? "inset(0 0 0 0)" : (isRight ? "inset(0 100% 100% 0)" : "inset(0 0 100% 100%)"),
-        transition: active
-          ? "clip-path 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s, opacity 0.25s ease 0.2s, transform 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s"
-          : "clip-path 0.2s ease 0s, opacity 0.15s ease 0s, transform 0.2s ease 0s",
+        width: boxW, position: "relative", flexShrink: 0,
       }}>
-        {/* Icon + label row */}
+        {/* Box container with clip reveal */}
         <div style={{
-          display: "flex", alignItems: "center", gap: 8, marginBottom: 6,
-          opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(6px)",
-          transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.4s" : "all 0.1s ease 0s",
-        }}>
-          <svg width={16} height={16} viewBox="0 0 43.39 45.25" fill="none" style={{ flexShrink: 0 }}>
-            <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.25" />
-            <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
-          </svg>
-          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", color: labelColor, fontWeight: 700, letterSpacing: "0.01em" }}>{label}</div>
-        </div>
-
-        {/* Description */}
-        <div style={{
-          fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6, fontWeight: 400, paddingLeft: 24,
-          opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(4px)",
-          transition: active ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.5s" : "all 0.1s ease 0s",
-        }}>{desc}</div>
-
-        {/* Tier-specific meta row */}
-        <div style={{
-          marginTop: 10, paddingTop: 8, borderTop: "1px solid " + metaBorder,
-          display: "flex", alignItems: "center", gap: 6,
+          background: "rgba(10,24,42,0.95)",
+          backdropFilter: "blur(16px)",
+          borderRadius: 8,
+          border: "1px solid " + color + "30",
+          borderTop: "2px solid " + color,
+          padding: "14px 16px",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
           opacity: active ? 1 : 0,
-          transition: active ? "opacity 0.3s ease 0.6s" : "opacity 0.1s ease 0s",
+          transform: active ? "translateY(0) scale(1)" : "translateY(4px) scale(0.97)",
+          transformOrigin: isRight ? "left top" : "right top",
+          clipPath: active ? "inset(0 0 0 0)" : (isRight ? "inset(0 100% 100% 0)" : "inset(0 0 100% 100%)"),
+          transition: active
+            ? "clip-path 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s, opacity 0.25s ease 0.2s, transform 0.35s cubic-bezier(0.16,1,0.3,1) 0.2s"
+            : "clip-path 0.2s ease 0s, opacity 0.15s ease 0s, transform 0.2s ease 0s",
         }}>
-          {tier === 1 && callout.spark && (
-            <>
-              <svg width={40} height={14} viewBox="0 0 42 14" style={{ flexShrink: 0 }}>
-                <polyline points={callout.spark.map((v, i) => (i * 7) + "," + v).join(" ")} fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: metaColor }}>{callout.meta}</span>
-            </>
-          )}
-          {tier === 2 && (
-            <>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.gold, background: "rgba(251,191,36,0.1)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>AI SURFACED</span>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: metaColor }}>Linked: {callout.linked}</span>
-            </>
-          )}
-          {tier === 3 && (
-            <>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.6rem", fontWeight: 700, color: C.white, background: "rgba(255,255,255,0.08)", padding: "2px 7px", borderRadius: 3, letterSpacing: "0.04em" }}>1 CLICK</span>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: metaColor }}>{callout.action}</span>
-            </>
-          )}
+          {/* TARGA A + Label */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: 8, marginBottom: 6,
+            opacity: active ? 1 : 0,
+            transform: active ? "translateY(0)" : "translateY(6px)",
+            transition: active
+              ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.4s"
+              : "all 0.1s ease 0s",
+          }}>
+            <svg width={16} height={16} viewBox="0 0 43.39 45.25" fill="none" style={{ flexShrink: 0 }}>
+              <polygon fill="white" points="43.39 45.05 38.88 45.05 21.89 9.5 4.61 45.25 0 45.25 21.9 0 43.39 45.05" opacity="0.25" />
+              <polygon fill={color} points="26.48 34.75 16.91 34.75 17.59 33.32 20.79 26.62 21.69 24.73 22.6 26.62 25.8 33.32 26.48 34.75" opacity="0.9" />
+            </svg>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", color, fontWeight: 700, letterSpacing: "0.01em" }}>{label}</div>
+          </div>
+          {/* Description */}
+          <div style={{
+            fontFamily: "'Inter',sans-serif", fontSize: "0.74rem", color: C.g300, lineHeight: 1.6, fontWeight: 400, paddingLeft: 24,
+            opacity: active ? 1 : 0,
+            transform: active ? "translateY(0)" : "translateY(4px)",
+            transition: active
+              ? "all 0.3s cubic-bezier(0.16,1,0.3,1) 0.5s"
+              : "all 0.1s ease 0s",
+          }}>{desc}</div>
         </div>
       </div>
     </div>
@@ -471,7 +450,9 @@ function PerspectiveDashboard({ view = "strategic" }) {
               <DrawnCallout
                 key={co.cid}
                 active={true}
-                callout={co}
+                color={co.color}
+                label={co.label}
+                desc={co.desc}
                 side={activeSide}
                 top={calloutY + "px"}
               />
