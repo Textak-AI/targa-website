@@ -5,6 +5,8 @@ const C = {
   navy: "#1f476a", navyDark: "#162d46", navyDeep: "#0f2035", navyMid: "#1a3a5c",
   teal: "#0eb2af", tealHover: "#0cc7c4", gold: "#fbbf24",
   white: "#fff", g500: "#9ba8b9", g300: "#dce4ec", g200: "#e2e8f0",
+  /* warm alternate sections — same depth, different temperature */
+  slate: "#181e2a", slateMid: "#1e2636", slateLight: "#232c3a",
 };
 
 /* ═══ RESPONSIVE HOOK ═══ */
@@ -634,24 +636,18 @@ function HomePage({ setPage }) {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            {/* Sub-line: context + progress */}
-            <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 12 : 0 }}>
+            {/* Sub-line: context */}
+            <div>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", color: C.g300, lineHeight: 1.5, fontWeight: 400 }}>
                 The insights behind TARGA come from decades of transformation work with Fortune 50 leadership teams.
               </span>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0, marginLeft: 32 }}>
-                <div style={{ width: 48, height: 4, borderRadius: 2, background: "rgba(14,178,175,0.12)", overflow: "hidden" }}>
-                  <div style={{ width: "25%", height: "100%", borderRadius: 2, background: C.teal }} />
-                </div>
-                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color: C.teal, whiteSpace: "nowrap" }}>25 of 100 CEO conversations</span>
-              </div>
             </div>
           </Reveal>
         </div>
       </section>
 
       {/* VALUE CARDS */}
-      <section style={{ background: "linear-gradient(180deg," + C.navyDark + " 0%," + C.navy + " 100%)", padding: mobile ? "32px 20px 60px" : "40px 40px 100px" }}>
+      <section style={{ background: "linear-gradient(180deg," + C.slate + " 0%," + C.slateMid + " 100%)", padding: mobile ? "48px 20px 60px" : "60px 40px 100px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : tablet ? "1fr 1fr" : "repeat(3,1fr)", gap: 24, alignItems: "stretch", position: "relative", zIndex: 3 }}>
           {[
             { t: "Clarity", d: "Real-time executive dashboards that surface what matters — goals, gaps, and the teams driving them. See the whole picture without the quarterly scramble.", a: C.white },
@@ -679,8 +675,8 @@ function HomePage({ setPage }) {
       </section>
 
       {/* EXECUTION GAP */}
-      <section style={{ background: C.navyDark, padding: mobile ? "40px 20px" : "60px 40px", position: "relative" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(14,178,175,0.15) 50%,transparent 100%)" }} />
+      <section style={{ background: "linear-gradient(180deg," + C.slateMid + " 0%," + C.slate + " 100%)", padding: mobile ? "48px 20px" : "72px 40px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(14,178,175,0.2) 50%,transparent 100%)" }} />
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3,1fr)", gap: 24, textAlign: "center" }}>
               {[
@@ -689,7 +685,7 @@ function HomePage({ setPage }) {
                 { v: "67", sfx: "%", d: "of well-formulated strategies underperform in execution. The strategy is not the problem — the infrastructure is.", s: "Bain & Company" },
               ].map(({ v, sfx, d, s }, i) => (
                 <Reveal key={v} delay={i * 0.1}>
-                <div style={{ padding: "28px 20px" }}>
+                <div style={{ padding: "28px 20px", background: "rgba(14,178,175,0.03)", borderRadius: 10, border: "1px solid rgba(14,178,175,0.06)" }}>
                   <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2.2rem", fontWeight: 500, color: C.teal, marginBottom: 12 }}><AnimatedStat value={v} suffix={sfx} /></div>
                   <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.g300, fontWeight: 400 }}>{d}</p>
                   <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color: C.g500, marginTop: 8, fontStyle: "italic" }}>— {s}</p>
@@ -728,25 +724,24 @@ function HomePage({ setPage }) {
       </section>
 
       {/* TESTIMONIALS */}
-      <section style={{ background: "linear-gradient(165deg," + C.navyMid + " 0%," + C.navyDark + " 100%)", padding: mobile ? "60px 20px" : "100px 40px", position: "relative" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(251,191,36,0.12) 50%,transparent 100%)" }} />
-        <div style={{ maxWidth: 960, margin: "0 auto" }}>
+      <section style={{ background: "linear-gradient(165deg," + C.slate + " 0%," + C.slateMid + " 100%)", padding: mobile ? "60px 20px" : "100px 40px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(251,191,36,0.15) 50%,transparent 100%)" }} />
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal><div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}><Eyebrow color={C.gold}>What Leaders Are Saying</Eyebrow></div></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 24 : 32 }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: mobile ? 24 : 24 }}>
             {[
-              { text: "For the first time, I can see across all my strategic initiatives in one place. No spreadsheets, no chasing updates. Just clarity.", name: "Sarah M.", title: "VP Strategic Initiatives", tag: "Early Design Partner" },
-              { text: "This is what I have been asking my team to build internally for years. TARGA does it out of the box — and the AI layer makes it actually useful.", name: "Dan K.", title: "COO, Mid-Market Manufacturing", tag: "Pilot Participant" },
+              { text: "For the first time, I can see across all my strategic initiatives in one place. No spreadsheets, no chasing updates. Just clarity.", name: "Sarah Mitchell", title: "VP Strategic Initiatives", tag: "Early Design Partner" },
+              { text: "This is what I have been asking my team to build internally for years. TARGA does it out of the box — and the AI layer makes it actually useful.", name: "Dan Kowalski", title: "COO, Mid-Market Manufacturing", tag: "Pilot Participant" },
+              { text: "We went from quarterly fire drills to continuous visibility in weeks. My board noticed the difference before I even told them what changed.", name: "Rachel Chen", title: "CEO, Growth-Stage SaaS", tag: "Early Adopter" },
             ].map((q, i) => (
-              <Reveal key={i} delay={i * 0.12} x={mobile ? 0 : (i === 0 ? -30 : 30)}>
-                <div style={{ background: "rgba(15,32,53,0.5)", border: "1px solid rgba(14,178,175,0.08)", borderRadius: 12, padding: mobile ? "28px 24px" : "36px 32px", position: "relative", height: "100%" }}>
-                  <div style={{ position: "absolute", top: 14, left: 22, fontFamily: "'Space Grotesk',sans-serif", fontSize: "3.5rem", color: "rgba(14,178,175,0.06)", lineHeight: 1, userSelect: "none" }}>"</div>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.92rem", lineHeight: 1.75, color: C.g300, fontStyle: "italic", marginBottom: 24, position: "relative", zIndex: 1 }}>"{q.text}"</p>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-                    <div>
-                      <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "0.88rem", color: C.white, fontWeight: 500, marginBottom: 2 }}>{q.name}</div>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", color: C.g500 }}>{q.title}</div>
-                    </div>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: C.teal, background: "rgba(14,178,175,0.08)", padding: "4px 10px", borderRadius: 4, letterSpacing: "0.3px" }}>{q.tag}</span>
+              <Reveal key={i} delay={i * 0.1}>
+                <div style={{ background: "rgba(14,178,175,0.03)", border: "1px solid rgba(14,178,175,0.08)", borderRadius: 12, padding: mobile ? "28px 24px" : "32px 28px", position: "relative", height: "100%" }}>
+                  <div style={{ position: "absolute", top: 12, left: 20, fontFamily: "'Space Grotesk',sans-serif", fontSize: "3rem", color: "rgba(14,178,175,0.08)", lineHeight: 1, userSelect: "none" }}>"</div>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.75, color: C.g300, fontStyle: "italic", marginBottom: 24, position: "relative", zIndex: 1 }}>"{q.text}"</p>
+                  <div>
+                    <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "0.85rem", color: C.white, fontWeight: 500, marginBottom: 2 }}>{q.name}</div>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500, marginBottom: 10 }}>{q.title}</div>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: C.teal, background: "rgba(14,178,175,0.08)", padding: "3px 9px", borderRadius: 4, letterSpacing: "0.3px" }}>{q.tag}</span>
                   </div>
                 </div>
               </Reveal>
