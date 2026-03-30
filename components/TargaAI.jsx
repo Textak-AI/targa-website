@@ -230,15 +230,19 @@ function PerspectiveDashboard({ view = "strategic" }) {
   const [ref, inView] = useInView(0.1);
   const [activeCallout, setActiveCallout] = useState(null);
   const [activeSide, setActiveSide] = useState("right");
+  const [calloutY, setCalloutY] = useState(0);
   const dashRef = useRef(null);
   const { mobile } = useMedia();
 
   const handleHover = useCallback((cid, e) => {
     setActiveCallout(cid);
     if (dashRef.current) {
-      const rect = dashRef.current.getBoundingClientRect();
-      const midX = rect.left + rect.width / 2;
+      const dashRect = dashRef.current.getBoundingClientRect();
+      const midX = dashRect.left + dashRect.width / 2;
       setActiveSide(e.clientX < midX ? "left" : "right");
+      // Use offsetTop for accurate position relative to dashRef (positioned parent)
+      const el = e.currentTarget;
+      setCalloutY(el.offsetTop + el.offsetHeight / 2);
     }
   }, []);
 
@@ -363,20 +367,23 @@ function PerspectiveDashboard({ view = "strategic" }) {
           )}
         </div>
 
-        {/* ─── Drawn callouts — positioned outside dashboard ─── */}
-        {!mobile && CALLOUTS.map(co => (
-          <DrawnCallout
-            key={co.cid}
-            active={activeCallout === co.cid}
-            color={co.color}
-            label={co.label}
-            desc={co.desc}
-            side={activeSide}
-            top={co.top}
-          />
-        ))}
+        {/* ─── Drawn callout — positioned at actual hovered element ─── */}
+        {!mobile && activeCallout && (() => {
+          const co = CALLOUTS.find(c => c.cid === activeCallout);
+          return co ? (
+            <DrawnCallout
+              key={co.cid}
+              active={true}
+              color={co.color}
+              label={co.label}
+              desc={co.desc}
+              side={activeSide}
+              top={calloutY + "px"}
+            />
+          ) : null;
+        })()}
 
-      </div>
+        </div>
     </div>
   );
 }
