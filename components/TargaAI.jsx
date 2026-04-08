@@ -240,13 +240,13 @@ function TargaCanvasPattern() {
           const nx = x / w;
           const ny = y / h;
           const depth = nx * 0.35 + ny * 0.65;
-          const baseAlpha = 0.02 + depth * 0.05;
+          const baseAlpha = 0.03 + depth * 0.08;
 
           const diagPos = (nx + ny) * 0.5;
           const dist = Math.abs(diagPos - sweepPos);
-          const boost = dist < 0.1 ? (1 - dist / 0.1) * 0.07 : 0;
+          const boost = dist < 0.12 ? (1 - dist / 0.12) * 0.1 : 0;
 
-          drawIcon(x, y, 16, Math.min(baseAlpha + boost, 0.1));
+          drawIcon(x, y, 16, Math.min(baseAlpha + boost, 0.15));
         }
       }
       animRef.current = requestAnimationFrame(render);
@@ -999,13 +999,14 @@ function PlatformPage({ setPage }) {
   const { mobile } = useMedia();
   return (
     <>
-      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 80px" }}>
+      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 60px 100px", minHeight: mobile ? "auto" : "70vh", display: "flex", alignItems: "center" }}>
+        {/* Depth: dark upper-left */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in lower-right half */}
+        {/* Fog — hides pattern in right half */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
-        <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}><Eyebrow>The Platform</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 600, marginBottom: 20 }}>Your executive team deserves better than spreadsheets and slide decks.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520 }}>TARGA AI is a leadership platform that gives C-suite teams continuous visibility into what is creating enterprise value — and what is not.</p></div>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow>The Platform</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Your executive team deserves better than spreadsheets and slide decks.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520 }}>TARGA AI is a leadership platform that gives C-suite teams continuous visibility into what is creating enterprise value — and what is not.</p></div>
       </section>
 
       <section style={{ background: C.navy, padding: mobile ? "48px 20px" : "80px 40px" }}>
@@ -1078,13 +1079,14 @@ function AboutPage({ setPage }) {
   const { mobile } = useMedia();
   return (
     <>
-      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 80px" }}>
+      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 60px 100px", minHeight: mobile ? "auto" : "70vh", display: "flex", alignItems: "center" }}>
+        {/* Depth: dark upper-left */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in lower-right half */}
+        {/* Fog — hides pattern in right half */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
-        <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}><Eyebrow color={C.gold}>About TARGA AI</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>An intelligent advisor for the executives who create enterprise value.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA AI exists because the gap between setting strategy and executing it is the most expensive problem in enterprise management. We are building a platform that starts at the strategic level and gives leaders the clarity, speed, and accountability to close that gap.</p></div>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow color={C.gold}>About TARGA AI</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>An intelligent advisor for the executives who create enterprise value.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA AI exists because the gap between setting strategy and executing it is the most expensive problem in enterprise management. We are building a platform that starts at the strategic level and gives leaders the clarity, speed, and accountability to close that gap.</p></div>
       </section>
       <section style={{ background: C.navy, padding: mobile ? "48px 20px" : "80px 40px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 32 : 64 }}>
@@ -1154,17 +1156,17 @@ function CEO100Page({ setPage }) {
   const { mobile } = useMedia();
   return (
     <>
-      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 80px", textAlign: "center" }}>
+      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 60px 100px", minHeight: mobile ? "auto" : "70vh", display: "flex", alignItems: "center" }}>
+        {/* Depth: dark upper-left */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in lower-right half */}
+        {/* Fog — hides pattern in right half */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <IconMark height={52} variant="light" />
-          <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, marginTop: 28, marginBottom: 20 }}>100 CEO Conversations</h1>
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "2px", color: C.teal, textTransform: "uppercase", marginBottom: 24 }}>Building the Future of the Leader Experience</p>
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560, margin: "0 auto" }}>We are having 100 conversations with enterprise CEOs about how they create value, where they lose visibility, and what tools they wish existed.</p>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}>
+          <Eyebrow>100 CEO Conversations</Eyebrow>
+          <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Building the future of the leader experience.</h1>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>We are having 100 conversations with enterprise CEOs about how they create value, where they lose visibility, and what tools they wish existed. Your perspective shapes what we build.</p>
         </div>
       </section>
       <section style={{ background: C.navy, padding: mobile ? "48px 20px" : "80px 40px" }}>
@@ -1215,13 +1217,14 @@ function CEO100Page({ setPage }) {
 function ContactPage() {
   const { mobile } = useMedia();
   return (
-    <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 100px" }}>
+    <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 60px 100px", minHeight: mobile ? "auto" : "70vh" }}>
+        {/* Depth: dark upper-left */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in lower-right half */}
+        {/* Fog — hides pattern in right half */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 32 : 80 }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative", zIndex: 1, display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 32 : 80 }}>
         <Reveal><div>
           <Eyebrow>Contact</Eyebrow>
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 300, lineHeight: 1.2, letterSpacing: "-1px", color: C.white, marginBottom: 20 }}>Start the conversation.</h1>
