@@ -192,27 +192,36 @@ function TargaCanvasPattern() {
       if (alpha < 0.003) return;
       ctx.globalAlpha = alpha;
       ctx.strokeStyle = "#fff";
+      /* Outer A — matches the polygon: 182.9 181, 151.9 181, 97.8 67.7, 43.1 181, 11.9 181, 81 37.8, 92.5 13.9, 97.8 3 */
+      /* Normalized to -0.5 to 0.5 range centered on x,y */
+      var s = size;
       ctx.lineWidth = 0.6;
       ctx.beginPath();
-      ctx.moveTo(x - size * 0.44, y + size * 0.49);
-      ctx.lineTo(x - size * 0.16, y + size * 0.49);
-      ctx.lineTo(x, y - size * 0.49);
-      ctx.lineTo(x + size * 0.44, y + size * 0.49);
-      ctx.lineTo(x + size * 0.16, y + size * 0.49);
-      ctx.lineTo(x, y - size * 0.05);
+      ctx.moveTo(x + s * 0.44, y + s * 0.49);   /* 182.9, 181 — bottom right */
+      ctx.lineTo(x + s * 0.28, y + s * 0.49);   /* 151.9, 181 — inner right */
+      ctx.lineTo(x, y - s * 0.28);               /* 97.8, 67.7 — notch top */
+      ctx.lineTo(x - s * 0.28, y + s * 0.49);   /* 43.1, 181 — inner left */
+      ctx.lineTo(x - s * 0.44, y + s * 0.49);   /* 11.9, 181 — bottom left */
+      ctx.lineTo(x - s * 0.09, y - s * 0.28);   /* 81, 37.8 — upper left slope */
+      ctx.lineTo(x - s * 0.03, y - s * 0.41);   /* 92.5, 13.9 */
+      ctx.lineTo(x, y - s * 0.49);               /* 97.8, 3 — apex */
       ctx.closePath();
       ctx.stroke();
+      /* Inner triangle — matches: 114.8 141.9, 80 142.1, 97.5 105.7 */
       ctx.lineWidth = 0.4;
       ctx.beginPath();
-      ctx.moveTo(x - size * 0.12, y + size * 0.28);
-      ctx.lineTo(x + size * 0.12, y + size * 0.28);
-      ctx.lineTo(x, y + size * 0.08);
+      ctx.moveTo(x + s * 0.09, y + s * 0.27);
+      ctx.lineTo(x - s * 0.09, y + s * 0.27);
+      ctx.lineTo(x, y + size * 0.01);
       ctx.closePath();
       ctx.stroke();
     }
 
     function render() {
-      if (!w || !h) { resize(); }
+      const pw = parent.clientWidth || parent.offsetWidth;
+      const ph = parent.clientHeight || parent.offsetHeight;
+      if (!pw || !ph) { animRef.current = requestAnimationFrame(render); return; }
+      if (pw !== w || ph !== h) { w = pw; h = ph; canvas.width = w * dpr; canvas.height = h * dpr; canvas.style.width = w + "px"; canvas.style.height = h + "px"; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
       ctx.clearRect(0, 0, w, h);
 
       sweepRef.current += 0.0025;
@@ -270,10 +279,12 @@ function PremiumBg({ children, orb1 = "rgba(139,92,246,0.07)", orb2 = "rgba(14,1
   }, []);
   return (
     <div ref={containerRef} style={{ position: "relative", overflow: "hidden", background: "#080e1a", ...sx }}>
-      {/* TARGA icon pattern with sweep */}
-      <TargaCanvasPattern />
       {/* Depth fade */}
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(8,14,26,0.3) 0%, transparent 50%, rgba(31,71,106,0.06) 100%)", pointerEvents: "none" }} />
+      {/* TARGA icon pattern with sweep — on top of dark layer */}
+      <TargaCanvasPattern />
+      {/* Fog — hides pattern in lower-right half */}
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
       {/* Mouse gloss */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 40% at " + glossX + "% 50%, rgba(255,255,255,0.03), transparent)", pointerEvents: "none", transition: "background 0.15s ease" }} />
       {/* Orb 1 */}
@@ -777,10 +788,12 @@ function HomePage({ setPage }) {
     <>
       {/* HERO */}
       <section style={{ position: "relative", minHeight: mobile ? "auto" : "100vh", display: "flex", alignItems: "center", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 40%," + C.navyDark + " 100%)", overflow: "hidden" }}>
-        {/* TARGA icon pattern with sweep */}
-        <TargaCanvasPattern />
         {/* Depth: dark upper-left, lighter lower-right */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(8,14,26,0.6) 0%, rgba(8,14,26,0.25) 35%, transparent 70%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
+        {/* TARGA icon pattern with sweep — on top of dark layer */}
+        <TargaCanvasPattern />
+        {/* Fog — hides pattern in lower-right half */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
         {/* Lighter blue fade from mid to bottom */}
         <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "60%", background: "linear-gradient(180deg, transparent 0%, rgba(31,71,106,0.15) 40%, rgba(31,71,106,0.25) 100%)", pointerEvents: "none", zIndex: 1 }} />
         {!mobile && <div style={{ position: "absolute", right: "-2%", top: "50%", transform: "translateY(-50%)", opacity: 0.05, pointerEvents: "none" }}><IconMark height={480} variant="light" /></div>}
@@ -989,7 +1002,9 @@ function PlatformPage({ setPage }) {
       <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 80px" }}>
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(8,14,26,0.6) 0%, rgba(8,14,26,0.25) 35%, transparent 70%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
+        {/* Fog — hides pattern in lower-right half */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}><Eyebrow>The Platform</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 600, marginBottom: 20 }}>Your executive team deserves better than spreadsheets and slide decks.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520 }}>TARGA AI is a leadership platform that gives C-suite teams continuous visibility into what is creating enterprise value — and what is not.</p></div>
       </section>
 
@@ -1066,7 +1081,9 @@ function AboutPage({ setPage }) {
       <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 80px" }}>
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(8,14,26,0.6) 0%, rgba(8,14,26,0.25) 35%, transparent 70%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
+        {/* Fog — hides pattern in lower-right half */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}><Eyebrow color={C.gold}>About TARGA AI</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>An intelligent advisor for the executives who create enterprise value.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA AI exists because the gap between setting strategy and executing it is the most expensive problem in enterprise management. We are building a platform that starts at the strategic level and gives leaders the clarity, speed, and accountability to close that gap.</p></div>
       </section>
       <section style={{ background: C.navy, padding: mobile ? "48px 20px" : "80px 40px" }}>
@@ -1140,7 +1157,9 @@ function CEO100Page({ setPage }) {
       <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 80px", textAlign: "center" }}>
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(8,14,26,0.6) 0%, rgba(8,14,26,0.25) 35%, transparent 70%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
+        {/* Fog — hides pattern in lower-right half */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <IconMark height={52} variant="light" />
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, marginTop: 28, marginBottom: 20 }}>100 CEO Conversations</h1>
@@ -1199,7 +1218,9 @@ function ContactPage() {
     <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 40px 100px" }}>
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(8,14,26,0.6) 0%, rgba(8,14,26,0.25) 35%, transparent 70%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
+        {/* Fog — hides pattern in lower-right half */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%, rgba(31,71,106,0.08) 100%)", pointerEvents: "none" }} />
       <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 32 : 80 }}>
         <Reveal><div>
           <Eyebrow>Contact</Eyebrow>
