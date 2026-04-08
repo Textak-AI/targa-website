@@ -1,0 +1,260 @@
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans, system-ui); color: var(--color-text-primary); }
+.pool { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg, 12px); margin-bottom: 12px; overflow: hidden; }
+.lane { display: flex; align-items: stretch; min-height: 110px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.lane:last-child { border-bottom: none; }
+.lane-label { writing-mode: vertical-lr; text-orientation: mixed; transform: rotate(180deg); font-size: 12px; font-weight: 500; padding: 12px 8px; min-width: 36px; display: flex; align-items: center; justify-content: center; border-right: 0.5px solid var(--color-border-tertiary); }
+.lane-content { flex: 1; padding: 12px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; overflow-x: auto; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 100px; }
+.step-box { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; text-align: center; border: 0.5px solid; line-height: 1.3; cursor: default; max-width: 130px; }
+.step-screen { font-size: 10px; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+.arrow { font-size: 16px; color: var(--color-text-tertiary); flex-shrink: 0; }
+.decision { transform: rotate(45deg); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 0.5px solid; border-radius: 4px; }
+.decision span { transform: rotate(-45deg); font-size: 10px; font-weight: 500; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; font-size: 11px; color: var(--color-text-secondary); }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+.pool-title { font-size: 14px; font-weight: 500; padding: 10px 16px; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+.ceo { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.ceo-screen { background: #0C447C; color: #E6F1FB; }
+.owner { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+.owner-screen { background: #085041; color: #E1F5EE; }
+.member { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
+.member-screen { background: #633806; color: #FAEEDA; }
+.ai { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+.ai-screen { background: #3C3489; color: #EEEDFE; }
+.board { background: #FBEAF0; border-color: #ED93B1; color: #72243E; }
+.board-screen { background: #72243E; color: #FBEAF0; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 6px; }
+.vert-arrow { text-align: center; color: var(--color-text-tertiary); font-size: 14px; margin: -4px 0; }
+@media (prefers-color-scheme: dark) {
+  .ceo { background: #0C447C; border-color: #85B7EB; color: #B5D4F4; }
+  .ceo-screen { background: #B5D4F4; color: #0C447C; }
+  .owner { background: #085041; border-color: #5DCAA5; color: #9FE1CB; }
+  .owner-screen { background: #9FE1CB; color: #085041; }
+  .member { background: #633806; border-color: #EF9F27; color: #FAC775; }
+  .member-screen { background: #FAC775; color: #633806; }
+  .ai { background: #3C3489; border-color: #AFA9EC; color: #CECBF6; }
+  .ai-screen { background: #CECBF6; color: #3C3489; }
+  .board { background: #72243E; border-color: #ED93B1; color: #F4C0D1; }
+  .board-screen { background: #F4C0D1; color: #72243E; }
+}
+</style>
+
+<div class="section-label">Phase 1 — Strategic planning (360 mode)</div>
+
+<div class="pool">
+  <div class="pool-title">Annual / quarterly planning cycle</div>
+
+  <div class="lane">
+    <div class="lane-label ceo" style="background: #E6F1FB;">CEO</div>
+    <div class="lane-content">
+      <div class="step">
+        <div class="step-box ceo">Define enterprise strategy</div>
+        <div class="step-screen ceo-screen">360 planner</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ceo">Set strategic priorities</div>
+        <div class="step-screen ceo-screen">360 planner</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ceo">Assign groups to owners</div>
+        <div class="step-screen ceo-screen">Cascade view</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ceo">Commit plan</div>
+        <div class="step-screen ceo-screen">→ Business plan</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <div class="lane-label ai" style="background: #EEEDFE;">AI agent</div>
+    <div class="lane-content">
+      <div class="step">
+        <div class="step-box ai">Suggest decomposition from goal</div>
+        <div class="step-screen ai-screen">AI panel</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ai">Validate dependencies</div>
+        <div class="step-screen ai-screen">Inline alerts</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ai">Flag resource conflicts</div>
+        <div class="step-screen ai-screen">Insight bar</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="vert-arrow">↓ Plan committed — activates Business Plan mode</div>
+
+<div class="section-label">Phase 2 — Execution & monitoring (Business plan mode)</div>
+
+<div class="pool">
+  <div class="pool-title">Ongoing execution cycle</div>
+
+  <div class="lane">
+    <div class="lane-label ceo" style="background: #E6F1FB;">CEO</div>
+    <div class="lane-content">
+      <div class="step">
+        <div class="step-box ceo">Review command center</div>
+        <div class="step-screen ceo-screen">Dashboard</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ceo">Act on AI insights</div>
+        <div class="step-screen ceo-screen">Insight drawer</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ceo">Escalate or redirect</div>
+        <div class="step-screen ceo-screen">Cascade view</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ceo">Approve board pulse</div>
+        <div class="step-screen ceo-screen">Board pulse</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <div class="lane-label owner" style="background: #E1F5EE;">Dept. owner</div>
+    <div class="lane-content">
+      <div class="step">
+        <div class="step-box owner">Decompose initiatives</div>
+        <div class="step-screen owner-screen">Initiative detail</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box owner">Assign actions to members</div>
+        <div class="step-screen owner-screen">Kanban view</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box owner">Update metrics & status</div>
+        <div class="step-screen owner-screen">Metrics panel</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box owner">Escalate blockers</div>
+        <div class="step-screen owner-screen">Blocker form</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <div class="lane-label member" style="background: #FAEEDA;">Team member</div>
+    <div class="lane-content">
+      <div class="step">
+        <div class="step-box member">View assigned actions</div>
+        <div class="step-screen member-screen">My actions</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box member">Execute & log progress</div>
+        <div class="step-screen member-screen">Action detail</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box member">Flag impediments</div>
+        <div class="step-screen member-screen">Quick add</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <div class="lane-label ai" style="background: #EEEDFE;">AI agent</div>
+    <div class="lane-content">
+      <div class="step">
+        <div class="step-box ai">Monitor velocity & health</div>
+        <div class="step-screen ai-screen">Background</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ai">Detect stalls & patterns</div>
+        <div class="step-screen ai-screen">Insight bar</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ai">Synthesize board pulse</div>
+        <div class="step-screen ai-screen">Auto-generated</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box ai">Surface "did you know"</div>
+        <div class="step-screen ai-screen">Proactive alerts</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <div class="lane-label board" style="background: #FBEAF0;">Board</div>
+    <div class="lane-content">
+      <div class="step">
+        <div class="step-box board">Receive board pulse digest</div>
+        <div class="step-screen board-screen">Read-only brief</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-box board">Submit confidence signal</div>
+        <div class="step-screen board-screen">Likert survey</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="vert-arrow">↻ Continuous — AI monitors, escalates, synthesizes</div>
+
+<div class="section-label">Screen inventory (your Figma deliverables)</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 8px;">
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">1. 360 planner</div>
+    <div style="color: var(--color-text-secondary);">Strategy sandbox, drag-to-organize</div>
+  </div>
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">2. Command center</div>
+    <div style="color: var(--color-text-secondary);">CEO dashboard, 4 key metrics</div>
+  </div>
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">3. Cascade view</div>
+    <div style="color: var(--color-text-secondary);">Hierarchy with typed objects</div>
+  </div>
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">4. Kanban view</div>
+    <div style="color: var(--color-text-secondary);">Owner-level action board</div>
+  </div>
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">5. Timeline view</div>
+    <div style="color: var(--color-text-secondary);">Gantt-style initiative map</div>
+  </div>
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">6. Initiative detail</div>
+    <div style="color: var(--color-text-secondary);">Drill-down with metrics + AI</div>
+  </div>
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">7. Board pulse</div>
+    <div style="color: var(--color-text-secondary);">Read-only digest + Likert</div>
+  </div>
+  <div style="padding: 10px 12px; border-radius: 8px; background: var(--color-background-secondary); font-size: 11px;">
+    <div style="font-weight: 500; margin-bottom: 4px;">8. AI insight panel</div>
+    <div style="color: var(--color-text-secondary);">Proactive intelligence layer</div>
+  </div>
+</div>
+
+<div class="legend" style="margin-top: 16px;">
+  <div class="legend-item"><div class="legend-dot" style="background: #85B7EB;"></div> CEO</div>
+  <div class="legend-item"><div class="legend-dot" style="background: #5DCAA5;"></div> Dept. owner</div>
+  <div class="legend-item"><div class="legend-dot" style="background: #EF9F27;"></div> Team member</div>
+  <div class="legend-item"><div class="legend-dot" style="background: #AFA9EC;"></div> AI agent</div>
+  <div class="legend-item"><div class="legend-dot" style="background: #ED93B1;"></div> Board</div>
+  <div style="margin-left: auto; font-size: 10px; color: var(--color-text-tertiary);">Colored pills = Figma screen each step maps to</div>
+</div>
