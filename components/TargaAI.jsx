@@ -1243,8 +1243,8 @@ function ContactPage() {
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 300, lineHeight: 1.2, letterSpacing: "-1px", color: C.white, marginBottom: 20 }}>Start the conversation.</h1>
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 40 }}>Whether you want a demo, want to join the 100 CEO initiative, or just want to learn more — we would like to hear from you.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div><div style={labelStyle}>Email</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal }}>info@targa.ai</div></div>
-            <div><div style={labelStyle}>LinkedIn</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal }}>linkedin.com/company/targa-ai</div></div>
+            <div><div style={labelStyle}>Email</div><a href="mailto:info@targa.ai" style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal, textDecoration: "none" }}>info@targa.ai</a></div>
+            <div><div style={labelStyle}>LinkedIn</div><a href="https://www.linkedin.com/company/targatek" target="_blank" rel="noopener" style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal, textDecoration: "none" }}>linkedin.com/company/targatek</a></div>
           </div>
         </div></Reveal>
         <Reveal delay={0.15}><div style={{ background: "rgba(14,178,175,0.04)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 12, padding: 32 }}>
