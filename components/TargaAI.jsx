@@ -770,7 +770,7 @@ function Footer({ setPage }) {
               </span>
             ))}
           </div>}
-          <div style={{ display: "flex", gap: 20 }}><FL to="home">Privacy</FL><FL to="home">Terms</FL></div>
+          <div style={{ display: "flex", gap: 20 }}><FL to="privacy">Privacy</FL><FL to="terms">Terms</FL></div>
         </div>
       </div>
     </footer>
@@ -1271,10 +1271,78 @@ function ContactPage() {
   );
 }
 
+/* ═══ PAGE: PRIVACY ═══ */
+function PrivacyPage() {
+  const { mobile } = useMedia();
+  const headStyle = { fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", fontWeight: 600, color: C.white, marginTop: 32, marginBottom: 12 };
+  const paraStyle = { fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", lineHeight: 1.8, color: C.g300, marginBottom: 16 };
+  return (
+    <section style={{ background: C.navyDeep, padding: mobile ? "120px 20px 60px" : "160px 40px 100px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <Eyebrow>Legal</Eyebrow>
+        <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 300, color: C.white, marginBottom: 12 }}>Privacy Policy</h1>
+        <p style={{ ...paraStyle, color: C.g500, marginBottom: 40 }}>Last updated: April 9, 2026</p>
+        <p style={paraStyle}>Targatek Inc. ("TARGA AI," "we," "us," or "our") respects your privacy and is committed to protecting the personal information you share with us. This Privacy Policy describes how we collect, use, and safeguard information when you visit targa.ai or interact with our services.</p>
+        <h2 style={headStyle}>Information We Collect</h2>
+        <p style={paraStyle}>We collect information you provide directly, such as your name, email address, company, title, and inquiry details when you submit our contact form or request a demo. We also collect standard technical information including IP address, browser type, and pages visited through cookies and analytics tools.</p>
+        <h2 style={headStyle}>How We Use Your Information</h2>
+        <p style={paraStyle}>We use the information we collect to respond to your inquiries, provide information about our platform, improve our website and services, and communicate with you about relevant updates. We do not sell, rent, or trade your personal information to third parties.</p>
+        <h2 style={headStyle}>Data Security</h2>
+        <p style={paraStyle}>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. Our infrastructure is hosted on enterprise-grade cloud services with industry-standard security protocols.</p>
+        <h2 style={headStyle}>Cookies</h2>
+        <p style={paraStyle}>Our website uses cookies and similar technologies to analyze site traffic and understand how visitors interact with our content. You may control cookie preferences through your browser settings.</p>
+        <h2 style={headStyle}>Third-Party Services</h2>
+        <p style={paraStyle}>We may use third-party analytics and communication tools to operate our website and services. These providers are bound by their own privacy policies and are only permitted to use your information as necessary to provide services to us.</p>
+        <h2 style={headStyle}>Your Rights</h2>
+        <p style={paraStyle}>You may request access to, correction of, or deletion of your personal information at any time by contacting us at info@targa.ai. We will respond to your request within 30 days.</p>
+        <h2 style={headStyle}>Changes to This Policy</h2>
+        <p style={paraStyle}>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date.</p>
+        <h2 style={headStyle}>Contact Us</h2>
+        <p style={paraStyle}>If you have questions about this Privacy Policy, please contact us at info@targa.ai or write to Targatek Inc., Fort Lauderdale, FL.</p>
+      </div>
+    </section>
+  );
+}
+
+/* ═══ PAGE: TERMS ═══ */
+function TermsPage() {
+  const { mobile } = useMedia();
+  const headStyle = { fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", fontWeight: 600, color: C.white, marginTop: 32, marginBottom: 12 };
+  const paraStyle = { fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", lineHeight: 1.8, color: C.g300, marginBottom: 16 };
+  return (
+    <section style={{ background: C.navyDeep, padding: mobile ? "120px 20px 60px" : "160px 40px 100px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <Eyebrow>Legal</Eyebrow>
+        <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 300, color: C.white, marginBottom: 12 }}>Terms of Use</h1>
+        <p style={{ ...paraStyle, color: C.g500, marginBottom: 40 }}>Last updated: April 9, 2026</p>
+        <p style={paraStyle}>Welcome to targa.ai. By accessing or using this website, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use our website.</p>
+        <h2 style={headStyle}>Use of Website</h2>
+        <p style={paraStyle}>This website is operated by Targatek Inc. for informational purposes about the TARGA AI platform and related services. You may use this website for lawful purposes only. You agree not to use the site in any way that could damage, disable, or impair the website or interfere with any other party's use of the site.</p>
+        <h2 style={headStyle}>Intellectual Property</h2>
+        <p style={paraStyle}>All content on this website, including text, graphics, logos, icons, images, and software, is the property of Targatek Inc. or its licensors and is protected by United States and international copyright, trademark, and other intellectual property laws. You may not reproduce, distribute, modify, or create derivative works from any content without our prior written consent.</p>
+        <h2 style={headStyle}>Trademarks</h2>
+        <p style={paraStyle}>TARGA AI, Targatek, The Leader Experience, and related logos and marks are trademarks of Targatek Inc. All other trademarks appearing on this site are the property of their respective owners.</p>
+        <h2 style={headStyle}>Disclaimer of Warranties</h2>
+        <p style={paraStyle}>This website and its content are provided "as is" without warranties of any kind, either express or implied. Targatek Inc. does not warrant that the website will be uninterrupted, error-free, or free of harmful components.</p>
+        <h2 style={headStyle}>Limitation of Liability</h2>
+        <p style={paraStyle}>To the fullest extent permitted by law, Targatek Inc. shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use this website or its content.</p>
+        <h2 style={headStyle}>External Links</h2>
+        <p style={paraStyle}>This website may contain links to third-party websites. We are not responsible for the content, privacy practices, or terms of use of any linked sites. Your access to any other websites is at your own risk.</p>
+        <h2 style={headStyle}>Governing Law</h2>
+        <p style={paraStyle}>These Terms of Use are governed by and construed in accordance with the laws of the State of Florida, without regard to its conflict of law provisions. Any disputes arising from these terms shall be resolved in the courts located in Broward County, Florida.</p>
+        <h2 style={headStyle}>Changes to These Terms</h2>
+        <p style={paraStyle}>Targatek Inc. reserves the right to modify these Terms of Use at any time. Changes will be effective upon posting to this page. Your continued use of the website constitutes acceptance of the updated terms.</p>
+        <h2 style={headStyle}>Contact Us</h2>
+        <p style={paraStyle}>For questions about these Terms of Use, contact us at info@targa.ai or write to Targatek Inc., Fort Lauderdale, FL.</p>
+      </div>
+    </section>
+  );
+}
+
 /* ═══ MAIN ═══ */
 export default function TargaAI() {
   const [page, setPage] = useState("home");
-  const pages = { home: HomePage, platform: PlatformPage, about: AboutPage, ceo100: CEO100Page, contact: ContactPage };
+  const pages = { home: HomePage, platform: PlatformPage, about: AboutPage, ceo100: CEO100Page, contact: ContactPage, privacy: PrivacyPage, terms: TermsPage };
   const Page = pages[page] || HomePage;
   return (
     <div style={{ background: C.navyDeep, minHeight: "100vh", position: "relative" }}>
