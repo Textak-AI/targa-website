@@ -1216,8 +1216,21 @@ function CEO100Page({ setPage }) {
 /* ═══ PAGE: CONTACT ═══ */
 function ContactPage() {
   const { mobile } = useMedia();
+  const [form, setForm] = useState({ name: "", email: "", company: "", title: "", interest: "Platform Demo" });
+  const [status, setStatus] = useState("idle");
+  const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+  const submit = async () => {
+    if (!form.name || !form.email) { setStatus("error"); return; }
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      if (res.ok) { setStatus("sent"); } else { setStatus("error"); }
+    } catch (err) { setStatus("error"); }
+  };
+  const inputStyle = { width: "100%", padding: "12px 14px", background: "rgba(15,32,53,0.6)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 6, color: C.white, fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", outline: "none" };
+  const labelStyle = { fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", fontWeight: 600, color: C.g500, letterSpacing: "0.05em", display: "block", marginBottom: 6 };
   return (
-    <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 60px 100px", minHeight: mobile ? "auto" : "70vh" }}>
+    <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 100%)", padding: mobile ? "120px 20px 60px" : "160px 60px 100px", minHeight: mobile ? "auto" : "70vh", display: "flex", alignItems: "center" }}>
         {/* Depth: dark upper-left */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
@@ -1230,17 +1243,28 @@ function ContactPage() {
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 300, lineHeight: 1.2, letterSpacing: "-1px", color: C.white, marginBottom: 20 }}>Start the conversation.</h1>
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 40 }}>Whether you want a demo, want to join the 100 CEO initiative, or just want to learn more — we would like to hear from you.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 6 }}>Email</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal }}>info@targa.ai</div></div>
-            <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 6 }}>LinkedIn</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal }}>linkedin.com/company/targa-ai</div></div>
+            <div><div style={labelStyle}>Email</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal }}>info@targa.ai</div></div>
+            <div><div style={labelStyle}>LinkedIn</div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal }}>linkedin.com/company/targa-ai</div></div>
           </div>
         </div></Reveal>
         <Reveal delay={0.15}><div style={{ background: "rgba(14,178,175,0.04)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 12, padding: 32 }}>
-          <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", fontWeight: 500, color: C.white, marginBottom: 24 }}>Request More Information</h3>
-          {["Full Name", "Email", "Company", "Title"].map(label => (
-            <div key={label} style={{ marginBottom: 16 }}><label style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", fontWeight: 600, color: C.g500, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>{label}</label><input type="text" style={{ width: "100%", padding: "12px 14px", background: "rgba(15,32,53,0.6)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 6, color: C.white, fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", outline: "none" }} /></div>
-          ))}
-          <div style={{ marginBottom: 16 }}><label style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", fontWeight: 600, color: C.g500, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>Interest</label><select style={{ width: "100%", padding: "12px 14px", background: "rgba(15,32,53,0.6)", border: "1px solid rgba(14,178,175,0.1)", borderRadius: 6, color: C.g300, fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", outline: "none" }}><option>Platform Demo</option><option>100 CEO Conversation</option><option>Partnership Inquiry</option><option>Other</option></select></div>
-          <Btn style={{ width: "100%", justifyContent: "center", marginTop: 8 }}>Submit</Btn>
+          {status === "sent" ? (
+            <div style={{ textAlign: "center", padding: "40px 0" }}>
+              <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.5rem", fontWeight: 500, color: C.teal, marginBottom: 12 }}>Thank you.</div>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", color: C.g300, lineHeight: 1.6 }}>We received your inquiry and will be in touch shortly.</p>
+            </div>
+          ) : (
+            <>
+              <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", fontWeight: 500, color: C.white, marginBottom: 24 }}>Request More Information</h3>
+              <div style={{ marginBottom: 16 }}><label style={labelStyle}>Full Name *</label><input type="text" value={form.name} onChange={update("name")} style={inputStyle} /></div>
+              <div style={{ marginBottom: 16 }}><label style={labelStyle}>Email *</label><input type="email" value={form.email} onChange={update("email")} style={inputStyle} /></div>
+              <div style={{ marginBottom: 16 }}><label style={labelStyle}>Company</label><input type="text" value={form.company} onChange={update("company")} style={inputStyle} /></div>
+              <div style={{ marginBottom: 16 }}><label style={labelStyle}>Title</label><input type="text" value={form.title} onChange={update("title")} style={inputStyle} /></div>
+              <div style={{ marginBottom: 16 }}><label style={labelStyle}>Interest</label><select value={form.interest} onChange={update("interest")} style={inputStyle}><option>Platform Demo</option><option>100 CEO Conversation</option><option>Partnership Inquiry</option><option>Other</option></select></div>
+              {status === "error" && <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.78rem", color: "#e8634d", marginBottom: 12 }}>Please fill in your name and email, then try again.</p>}
+              <Btn style={{ width: "100%", justifyContent: "center", marginTop: 8, opacity: status === "sending" ? 0.6 : 1 }} onClick={submit}>{status === "sending" ? "Sending..." : "Submit"}</Btn>
+            </>
+          )}
         </div></Reveal>
       </div>
     </section>
