@@ -283,8 +283,6 @@ function PremiumBg({ children, orb1 = "rgba(139,92,246,0.07)", orb2 = "rgba(14,1
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(8,14,26,0.3) 0%, transparent 50%, rgba(31,71,106,0.06) 100%)", pointerEvents: "none" }} />
       {/* TARGA icon pattern with sweep — on top of dark layer */}
       <TargaCanvasPattern />
-      {/* Fog — hides pattern in lower-right half */}
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
       {/* Mouse gloss */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 40% at " + glossX + "% 50%, rgba(255,255,255,0.03), transparent)", pointerEvents: "none", transition: "background 0.15s ease" }} />
       {/* Orb 1 */}
@@ -788,14 +786,14 @@ function HomePage({ setPage }) {
     <>
       {/* HERO */}
       <section style={{ position: "relative", minHeight: mobile ? "auto" : "100vh", display: "flex", alignItems: "center", background: "linear-gradient(165deg," + C.navyDeep + " 0%," + C.navy + " 40%," + C.navyDark + " 100%)", overflow: "hidden" }}>
-        {/* Depth: dark upper-left, lighter lower-right */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
+        {/* Depth: dark upper-left extending further, dramatic contrast */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(145deg, rgba(2,6,14,0.95) 0%, rgba(2,6,14,0.85) 25%, rgba(8,14,26,0.6) 50%, rgba(8,14,26,0.25) 70%, transparent 90%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep — on top of dark layer */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in lower-right half */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
-        {/* Lighter blue fade from mid to bottom */}
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "60%", background: "linear-gradient(180deg, transparent 0%, rgba(31,71,106,0.15) 40%, rgba(31,71,106,0.25) 100%)", pointerEvents: "none", zIndex: 1 }} />
+        {/* Atmospheric fog — soft bottom-up haze, lighter teal-navy */}
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "60%", background: "linear-gradient(0deg, rgba(22,55,78,0.8) 0%, rgba(22,55,78,0.55) 30%, rgba(22,55,78,0.2) 65%, transparent 100%)", pointerEvents: "none", zIndex: 1 }} />
+        {/* Soft radial glow anchored lower-center for depth */}
+        <div style={{ position: "absolute", left: "50%", bottom: "-10%", transform: "translateX(-50%)", width: "130%", height: "65%", background: "radial-gradient(ellipse 75% 80% at 50% 90%, rgba(31,71,106,0.3) 0%, transparent 70%)", pointerEvents: "none", zIndex: 1 }} />
         {!mobile && <div style={{ position: "absolute", right: "-2%", top: "50%", transform: "translateY(-50%)", opacity: 0.05, pointerEvents: "none" }}><IconMark height={480} variant="light" /></div>}
         {!mobile && <div style={{ position: "absolute", top: "15%", right: "10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(14,178,175,0.06) 0%,transparent 70%)", filter: "blur(50px)", pointerEvents: "none" }} />}
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "120px 20px 60px" : "160px 40px 100px", position: "relative", zIndex: 2 }}>
@@ -1004,8 +1002,6 @@ function PlatformPage({ setPage }) {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in right half */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow>The Platform</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Your executive team deserves better than spreadsheets and slide decks.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520 }}>TARGA AI is a leadership platform that gives C-suite teams continuous visibility into what is creating enterprise value — and what is not.</p></div>
       </section>
 
@@ -1084,8 +1080,6 @@ function AboutPage({ setPage }) {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in right half */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow color={C.gold}>About TARGA AI</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>An intelligent advisor for the executives who create enterprise value.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA AI exists because the gap between setting strategy and executing it is the most expensive problem in enterprise management. We are building a platform that starts at the strategic level and gives leaders the clarity, speed, and accountability to close that gap.</p></div>
       </section>
       <section style={{ background: C.navy, padding: mobile ? "48px 20px" : "80px 40px" }}>
@@ -1161,8 +1155,6 @@ function CEO100Page({ setPage }) {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in right half */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}>
           <Eyebrow>100 CEO Conversations</Eyebrow>
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Building the future of the leader experience.</h1>
@@ -1235,8 +1227,6 @@ function ContactPage() {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        {/* Fog — hides pattern in right half */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(275deg, rgba(10,28,42,0.95) 0%, rgba(10,28,42,0.8) 20%, rgba(10,28,42,0.5) 35%, transparent 50%)", pointerEvents: "none" }} />
       <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative", zIndex: 1, display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 32 : 80 }}>
         <Reveal><div>
           <Eyebrow>Contact</Eyebrow>
