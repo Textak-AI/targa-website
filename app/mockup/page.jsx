@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const C = { navy: "#1f476a", teal: "#0eb2af", gold: "#fbbf24", gray: "#6b7a8a", light: "#f4f7fa", white: "#fff", border: "#d6dee6", subtle: "#e6ecf2", bg2: "#f4f6f8", tealBg: "#e6f7f7", tealBd: "#b8e8e7", tealDk: "#076c69", green: "#059669", greenBg: "#ecfdf5", amber: "#d97706", amberBg: "#fef3c7", red: "#dc2626", redBg: "#fef2f2", navyLt: "#dde6ef", pinkDk: "#8a3560" };
 const TML = ({ s = 18 }) => <svg width={s} height={s} viewBox="0 0 24 24"><polygon points="14.4 18.6 9.7 18.6 12 13.8" fill={C.teal}/><polygon points="23.5 23.9 19.4 23.9 12.1 8.7 4.7 24 0.5 24 9.8 4.7 11.4 1.5 12.1 0" fill="#fff"/></svg>;
@@ -41,6 +41,32 @@ export default function ReconciledLayout() {
     setTimeout(() => setPulse(false), 2500);
   };
   const reset = () => { setPhase(0); setPulse(false); };
+
+  const [msgs, setMsgs] = useState([]);
+  const [chatIn, setChatIn] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
+  const chatRef = useRef(null);
+  useEffect(() => { if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight; }, [msgs, chatLoading]);
+
+  const sendChat = async () => {
+    if (!chatIn.trim() || chatLoading) return;
+    const q = chatIn.trim();
+    setChatIn("");
+    setMsgs(p => [...p, { role: "user", text: q }]);
+    setChatLoading(true);
+    try {
+      const r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 300,
+          system: "You are TARGA AI, an enterprise strategy execution assistant. You are viewing the strategic plan 'Expand gross margin by 300bps' owned by Joe Thompson. Context: Gross margin is 39.8% against a 42.3% target. COGS reduction is behind at $3.2M vs $8M target. Price realization is on track at +1.4% vs +2.1%. There is a blocker on tier-1 COGS from Mark Sternberger. 4 actions are open, 1 overdue. The plan impacts $24M EBITDA. Confidence is 72%. Progress is 54%. Keep responses concise (2-3 sentences max), executive-level, actionable. Never use em-dashes. Do not use markdown formatting or bullet points. Write in plain sentences.",
+          messages: [{ role: "user", content: q }] })
+      });
+      const d = await r.json();
+      const txt = d.content?.map(b => b.text || "").join("") || "I could not process that request.";
+      setMsgs(p => [...p, { role: "assistant", text: txt }]);
+    } catch { setMsgs(p => [...p, { role: "assistant", text: "Your COGS reduction initiative is the primary concern. Mark Sternberger has flagged a blocker on tier-1 product lines and the pricing model approval is overdue. I would prioritize resolving those two items this week." }]); }
+    setChatLoading(false);
+  };
 
   const progress = phase >= 3 ? 62 : 54;
   const actionCount = phase >= 3 ? 3 : 4;
@@ -121,9 +147,22 @@ export default function ReconciledLayout() {
                   <div style={{ height: 6, background: "#e6ecf2", borderRadius: 3, overflow: "hidden" }}><div style={{ width: `${progress}%`, height: "100%", background: C.teal, borderRadius: 3, transition: "width 1.4s cubic-bezier(0.4, 0, 0.2, 1)" }} /></div>
                 </div>
               </div>
-            </div>
 
-            <div style={{ width: 230, flexShrink: 0 }}>
+              <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden", marginTop: 10 }}>
+                <div style={{ padding: "9px 14px", borderBottom: `1px solid ${C.subtle}`, display: "flex", alignItems: "center", gap: 8 }}>
+                  <TM v="a" s={16} /><span style={{ fontSize: 11, fontWeight: 500, color: C.navy }}>Ask TARGA</span><span style={{ fontSize: 10, color: C.gray, marginLeft: "auto" }}>Context: this strategic plan</span>
+                </div>
+                <div ref={chatRef} style={{ minHeight: 100, maxHeight: 200, overflow: "auto", padding: "10px 14px" }}>
+                  {msgs.length === 0 && <div style={{ textAlign: "center", padding: "16px 8px", color: "#8b99a8", fontSize: 11, lineHeight: 1.6 }}>Ask anything about this strategic plan. TARGA has context on metrics, actions, risks, and dependencies.</div>}
+                  {msgs.map((m, i) => <div key={i} style={{ display: "flex", justifyContent: m.role === "user" ? "flex-end" : "flex-start", marginBottom: 8 }}><div style={{ maxWidth: "82%", padding: "8px 12px", borderRadius: m.role === "user" ? "12px 12px 4px 12px" : "12px 12px 12px 4px", background: m.role === "user" ? C.navy : C.tealBg, color: m.role === "user" ? "#fff" : C.navy, fontSize: 12, lineHeight: 1.5 }}>{m.text}</div></div>)}
+                  {chatLoading && <div style={{ display: "flex", gap: 4, padding: "6px 0" }}>{[0,1,2].map(i => <div key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: C.teal, opacity: 0.4, animation: `pu 1s ease ${i*0.15}s infinite` }} />)}</div>}
+                </div>
+                <div style={{ padding: "8px 14px 10px", borderTop: `1px solid ${C.subtle}`, display: "flex", gap: 8 }}>
+                  <input value={chatIn} onChange={e => setChatIn(e.target.value)} onKeyDown={e => e.key === "Enter" && sendChat()} placeholder="Ask about this strategy..." style={{ flex: 1, padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 12, color: C.navy, outline: "none", background: C.bg2, fontFamily: "inherit" }} />
+                  <div onClick={sendChat} style={{ width: 36, height: 36, background: C.teal, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12 L19 12 M12 5 L19 12 L12 19" stroke="#fff" strokeWidth="2"/></svg></div>
+                </div>
+              </div>
+            </div>
               <Eye><svg width="12" height="12" viewBox="0 0 24 24"><path d="M3 5 L12 5 L20 12 L12 19 L3 19 L11 12 Z" fill="#d49a0f"/><path d="M7 9 L12 9 L15 12 L12 15 L7 15 L10 12 Z" fill="#6c5006"/></svg> Actions <span style={{ color: C.gray, fontWeight: 400 }}>· <Odo value={actionCount} dur={1.4} /></span></Eye>
               <div style={{ overflow: "hidden", maxHeight: showBlocker ? 300 : 0, opacity: showBlocker ? 1 : 0, marginBottom: showBlocker ? 5 : 0, transition: "max-height 0.9s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s, margin 0.9s" }}>
                 <div style={{ background: completed ? C.teal : C.white, border: `1px solid ${completed ? C.teal : C.border}`, borderLeft: `3px solid ${completed ? C.teal : C.red}`, borderRadius: 8, padding: 9, transition: "all 0.3s" }}>
@@ -209,12 +248,9 @@ export default function ReconciledLayout() {
             </div>
           </div>
 
-          <div style={{ marginTop: 12, background: C.white, border: `1px solid ${C.border}`, borderRadius: 10, padding: "11px 14px", display: "flex", alignItems: "center", gap: 10 }}>
-            <TM v="a" s={18} /><div style={{ flex: 1, fontSize: 13, color: "#8b99a8" }}>Ask TARGA about this strategy...</div><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12 L19 12 M12 5 L19 12 L12 19" stroke={C.teal} strokeWidth="2"/></svg>
-          </div>
         </div>
       </div>
-      <style>{`@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
+      <style>{`@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}} @keyframes pu{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}`}</style>
     </div>
   );
 }
