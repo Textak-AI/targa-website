@@ -75,6 +75,7 @@ return(
 <NI pg="detail" d="M9 3 L9 21 M3 9 L15 9 M3 15 L15 15" title="Item Detail"/>
 <NI pg="dashboard" d="M3 3 L10 3 L10 13 L3 13 Z M14 3 L21 3 L21 8 L14 8 Z M14 11 L21 11 L21 21 L14 21 Z M3 16 L10 16 L10 21 L3 21 Z" title="Dashboard"/>
 <NI pg="pulse" d="M2 12 L6 12 L9 4 L12 20 L15 8 L18 12 L22 12" title="Board Pulse"/>
+<NI pg="system" d="M4 4 L10 4 L10 10 L4 10 Z M14 4 L20 4 L20 10 L14 10 Z M4 14 L10 14 L10 20 L4 20 Z M14 14 L20 14 L20 20 L14 20 Z" title="Design System"/>
 <div style={{flex:1}}/>
 <Av i="JT" s={28}/>
 </div>
@@ -404,6 +405,199 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{background:C.tealBg,borderRadius:8,padding:12}}><div style={{fontSize:11,fontWeight:500,color:C.tealDk,marginBottom:4}}>Talent plan ahead of pace</div><div style={{fontSize:11,color:C.tealDk,lineHeight:1.5}}>Hiring 20% ahead of forecast. Front-load onboarding support.</div></div>
 </div>
 </div>
+</div>}
+
+
+{page==="system"&&<div>
+<PH eyebrow="Design system" title="TARGA AI Component Library" right={<div style={{fontSize:11,color:C.gray}}>v1.0 - April 2026</div>}/>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Color palette</div>
+<div style={{display:"flex",gap:12,marginBottom:32,flexWrap:"wrap"}}>
+{[["Navy","#1f476a","Primary"],["Teal","#0eb2af","Secondary"],["Gold","#fbbf24","Accent"],["Green","#059669","Success"],["Amber","#d97706","Warning"],["Red","#dc2626","Danger"],["Gray","#6b7a8a","Neutral"],["Light","#f4f7fa","Background"]].map(function(c){return(
+<div key={c[0]} style={{width:120}}>
+<div style={{width:"100%",height:56,background:c[1],borderRadius:10,marginBottom:6,border:c[0]==="Light"?"1px solid #d6dee6":"none"}}/>
+<div style={{fontSize:12,fontWeight:500,color:C.navy}}>{c[0]}</div>
+<div style={{fontSize:10,color:C.gray}}>{c[1]} . {c[2]}</div>
+</div>
+);})}
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Category tier colors</div>
+<div style={{display:"flex",gap:16,marginBottom:32}}>
+{[["Strategic","#0eb2af","Plans, objectives"],["Execution","#db2777","Projects, workstreams"],["Action","#fbbf24","Tasks, decisions"],["Measurement","#1f476a","KPIs, metrics"]].map(function(t){return(
+<div key={t[0]} style={{flex:1,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+t[1],borderRadius:10,padding:"14px 18px"}}>
+<div style={{fontSize:14,fontWeight:500,color:C.navy,marginBottom:4}}>{t[0]}</div>
+<div style={{fontSize:11,color:C.gray}}>{t[2]}</div>
+<div style={{fontSize:10,color:t[1],fontWeight:500,marginTop:6}}>{t[1]}</div>
+</div>
+);})}
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Typography</div>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:24,marginBottom:32}}>
+<div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,marginBottom:8,letterSpacing:"-0.02em"}}>Space Grotesk - Display</div>
+<div style={{fontSize:18,fontWeight:500,color:C.navy,marginBottom:4}}>Inter Semibold - Card titles</div>
+<div style={{fontSize:14,color:"#4a5868",lineHeight:1.6,marginBottom:4}}>Inter Regular - Body text and descriptions</div>
+<div style={{fontSize:11,color:C.gray,marginBottom:4}}>Inter - Small labels and metadata</div>
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase"}}>Inter Medium - Section headers (uppercase, tracked)</div>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Status pills</div>
+<div style={{display:"flex",gap:12,marginBottom:32,flexWrap:"wrap",alignItems:"center"}}>
+<Pl c="green">ON TRACK</Pl>
+<Pl c="amber">BEHIND</Pl>
+<Pl c="red">BLOCKER</Pl>
+<Pl c="amber">{"\u25B3"} RISK</Pl>
+<Pl c="green">{"\u2197"} ON TRACK</Pl>
+<Pl c="navy">OPERATIONAL</Pl>
+<Pl c="teal">Q1 2026</Pl>
+<Pl c="red">OVERDUE</Pl>
+<Pl c="amber">AT RISK</Pl>
+<Pl c="green">{"\u2713"} RESOLVED</Pl>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>TARGA brand marks</div>
+<div style={{display:"flex",gap:32,marginBottom:32,alignItems:"center"}}>
+<div style={{textAlign:"center"}}>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:20,marginBottom:8,display:"flex",alignItems:"center",justifyContent:"center"}}><TM s={40}/></div>
+<div style={{fontSize:11,fontWeight:500,color:C.navy}}>Intelligence</div>
+<div style={{fontSize:10,color:C.gray}}>Teal accent</div>
+</div>
+<div style={{textAlign:"center"}}>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:20,marginBottom:8,display:"flex",alignItems:"center",justifyContent:"center"}}><TM v="a" s={40}/></div>
+<div style={{fontSize:11,fontWeight:500,color:C.navy}}>Ask TARGA</div>
+<div style={{fontSize:10,color:C.gray}}>Gold accent</div>
+</div>
+<div style={{textAlign:"center"}}>
+<div style={{background:C.navy,border:"1px solid "+C.navy,borderRadius:12,padding:20,marginBottom:8,display:"flex",alignItems:"center",justifyContent:"center"}}><TML s={40}/></div>
+<div style={{fontSize:11,fontWeight:500,color:C.navy}}>On dark</div>
+<div style={{fontSize:10,color:C.gray}}>White + teal</div>
+</div>
+<div style={{textAlign:"center"}}>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:20,marginBottom:8,display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="40" height="40" viewBox="0 0 24 24"><polygon points="14.4 18.6 9.7 18.6 12 13.8" fill={C.teal}/><polygon points="23.5 23.9 19.4 23.9 12.1 8.7 4.7 24 0.5 24 9.8 4.7 11.4 1.5 12.1 0" fill={C.navy}/></svg></div>
+<div style={{fontSize:11,fontWeight:500,color:C.navy}}>Full mark</div>
+<div style={{fontSize:10,color:C.gray}}>Navy + teal</div>
+</div>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Object type icons</div>
+<div style={{display:"flex",gap:24,marginBottom:32,alignItems:"flex-end"}}>
+{[["Strategic Plan",<SI s={24}/>],["Project",<PI/>],["Action",<svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 5 L12 5 L20 12 L12 19 L3 19 L11 12 Z" fill="#d49a0f"/><path d="M7 9 L12 9 L15 12 L12 15 L7 15 L10 12 Z" fill="#6c5006"/></svg>],["Metric",<svg width="24" height="24" viewBox="0 0 24 24"><path d="M2 22 L2 16 L7 16 L7 22 Z" fill={C.navy}/><path d="M9 22 L9 10 L14 10 L14 22 Z" fill={C.navy}/><path d="M16 22 L16 4 L21 4 L21 22 Z" fill="#0a1929"/></svg>]].map(function(ic,idx){return(
+<div key={idx} style={{textAlign:"center"}}>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:16,marginBottom:6,display:"flex",alignItems:"center",justifyContent:"center",width:56,height:56}}>{ic[1]}</div>
+<div style={{fontSize:11,fontWeight:500,color:C.navy}}>{ic[0]}</div>
+</div>
+);})}
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Avatars</div>
+<div style={{display:"flex",gap:16,marginBottom:32,alignItems:"flex-end"}}>
+{[["JT",C.gold,C.navy,"Joe Thompson"],["KM",C.teal,"#fff","Kyle Moyer"],["MS",C.red,"#fff","Mark Sternberger"],["SD",C.navy,"#fff","Sarah Darlington"],["BA",C.navy,"#fff","Bill Adams"]].map(function(a){return(
+<div key={a[0]} style={{textAlign:"center"}}>
+<div style={{marginBottom:6,display:"flex",justifyContent:"center"}}><Av i={a[0]} bg={a[1]} fg={a[2]} s={36}/></div>
+<div style={{fontSize:11,fontWeight:500,color:C.navy}}>{a[3]}</div>
+</div>
+);})}
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Card treatments</div>
+<div style={{display:"flex",gap:20,marginBottom:32}}>
+<div style={{flex:1}}>
+<div style={{fontSize:11,fontWeight:500,color:C.gray,marginBottom:8}}>B treatment - Accent rail</div>
+<div style={{background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+C.teal,borderRadius:10,padding:"14px 18px"}}>
+<div style={{fontSize:14,fontWeight:500,color:C.navy,marginBottom:4}}>Workhorse card</div>
+<div style={{fontSize:12,color:C.gray}}>Used for list items, metrics, actions, child items. Rail color encodes category tier.</div>
+</div>
+</div>
+<div style={{flex:1}}>
+<div style={{fontSize:11,fontWeight:500,color:C.gray,marginBottom:8}}>C treatment - Navy header</div>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,overflow:"hidden"}}>
+<div style={{background:C.navy,padding:"8px 14px",display:"flex",alignItems:"center",gap:8}}><TML s={14}/><span style={{fontSize:10,fontWeight:500,letterSpacing:1,color:"#fff",textTransform:"uppercase"}}>Focal card</span></div>
+<div style={{padding:"14px 18px"}}><div style={{fontSize:14,fontWeight:500,color:C.navy,marginBottom:4}}>Primary item</div><div style={{fontSize:12,color:C.gray}}>Reserved for the item being actively managed. One per screen.</div></div>
+</div>
+</div>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Progress bars</div>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:24,marginBottom:32}}>
+<div style={{display:"flex",gap:24}}>
+<div style={{flex:1}}>
+<div style={{fontSize:11,color:C.gray,marginBottom:8}}>On track (teal)</div>
+<PB pct={68} h={6} color={C.teal}/>
+<div style={{marginTop:16,fontSize:11,color:C.gray,marginBottom:8}}>Behind (amber)</div>
+<PB pct={31} h={6} color={C.amber}/>
+<div style={{marginTop:16,fontSize:11,color:C.gray,marginBottom:8}}>Critical (red)</div>
+<PB pct={15} h={6} color={C.red}/>
+</div>
+<div style={{flex:1}}>
+<div style={{fontSize:11,color:C.gray,marginBottom:8}}>Thin variant (3px)</div>
+<PB pct={72} h={3}/>
+<div style={{marginTop:16,fontSize:11,color:C.gray,marginBottom:8}}>Standard (5px)</div>
+<PB pct={54} h={5}/>
+<div style={{marginTop:16,fontSize:11,color:C.gray,marginBottom:8}}>Prominent (8px)</div>
+<PB pct={45} h={8} color={C.amber}/>
+</div>
+</div>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Odometer numbers</div>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:24,marginBottom:32}}>
+<div style={{display:"flex",gap:40,alignItems:"baseline"}}>
+<div><div style={{fontSize:10,color:C.gray,marginBottom:4}}>Progress</div><div style={{fontSize:32,fontWeight:500,color:C.navy}}><Odo value={62} suffix="%" dur={1.2}/></div></div>
+<div><div style={{fontSize:10,color:C.gray,marginBottom:4}}>Actions</div><div style={{fontSize:32,fontWeight:500,color:C.navy}}><Odo value={3} suffix=" open" dur={1.0}/></div></div>
+<div><div style={{fontSize:10,color:C.gray,marginBottom:4}}>Review in</div><div style={{fontSize:32,fontWeight:500,color:C.amber}}><Odo value={9} suffix=" days" dur={1.0}/></div></div>
+<div><div style={{fontSize:10,color:C.gray,marginBottom:4}}>Confidence</div><div style={{fontSize:32,fontWeight:500,color:C.green}}><Odo value={72} suffix="%" dur={1.4}/></div></div>
+</div>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>TARGA Intelligence panel</div>
+<div style={{display:"flex",gap:20,marginBottom:32}}>
+<div style={{width:320}}>
+<div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12}}>
+<div style={{fontSize:10,fontWeight:500,letterSpacing:0.5,color:C.tealDk,textTransform:"uppercase",marginBottom:8}}>Suggestions</div>
+<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:10,marginBottom:6}}><div style={{fontSize:12,fontWeight:500,color:C.navy,marginBottom:2}}>Suggestion title</div><div style={{fontSize:11,color:C.gray}}>Brief context and recommended action.</div></div>
+<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:10}}><div style={{fontSize:12,fontWeight:500,color:C.green,marginBottom:2}}>{"\u2713"} Resolved item</div><div style={{fontSize:11,color:C.gray}}>Confirmation after cascade completion.</div></div>
+</div>
+</div>
+<div style={{width:320}}>
+<div style={{background:C.greenBg,border:"1px solid #a7f3d0",borderRadius:10,padding:14}}>
+<div style={{fontSize:10,fontWeight:500,letterSpacing:0.5,color:C.green,textTransform:"uppercase",marginBottom:6}}>Cascade impact</div>
+<div style={{fontSize:12,color:"#065f46",lineHeight:1.6}}>Appears after a cascade completion event. Shows upstream effects of the action taken.</div>
+</div>
+</div>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Stat cards</div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:20,marginBottom:32}}>
+<StatCard label="Default" value="69%" sub={"\u2197 +2% this month"} subColor={C.green}/>
+<StatCard label="Warning" value="11 days" color={C.amber} sub="Q1 materials due"/>
+<StatCard label="Danger" value="3" color={C.red} sub="2 overdue" subColor={C.red}/>
+<StatCard label="Neutral" value="$48M" sub="EBITDA impact"/>
+</div>
+
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Spacing and layout rules</div>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:24,marginBottom:32}}>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+<div>
+<div style={{fontSize:13,fontWeight:500,color:C.navy,marginBottom:8}}>Three-column orbital</div>
+<div style={{fontSize:12,color:C.gray,lineHeight:1.6}}>Metrics (220px) | Focal card (flex) | Actions (250px). Center column holds the item being managed. Left and right columns provide supporting context.</div>
+</div>
+<div>
+<div style={{fontSize:13,fontWeight:500,color:C.navy,marginBottom:8}}>Progressive disclosure</div>
+<div style={{fontSize:12,color:C.gray,lineHeight:1.6}}>Orbital = what you see. Bottom tabs = what you reach for. Every detail is one tap away, never cluttering the working view.</div>
+</div>
+<div>
+<div style={{fontSize:13,fontWeight:500,color:C.navy,marginBottom:8}}>Card gap system</div>
+<div style={{fontSize:12,color:C.gray,lineHeight:1.6}}>8px within groups. 16px between cards. 24px between sections. 32px between major zones. Consistent rhythm throughout.</div>
+</div>
+<div>
+<div style={{fontSize:13,fontWeight:500,color:C.navy,marginBottom:8}}>Border radius scale</div>
+<div style={{fontSize:12,color:C.gray,lineHeight:1.6}}>4px for pills. 6px for inputs. 8px for inner cards. 10px for standard cards. 12px for containers. Consistent rounding.</div>
+</div>
+</div>
+</div>
+
+<div style={{textAlign:"center",padding:"16px 0",fontSize:11,color:C.gray}}>TARGA AI Design System . HyperBrand Creative . April 2026</div>
 </div>}
 
 </div>
