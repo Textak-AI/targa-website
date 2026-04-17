@@ -53,6 +53,7 @@ var btS=useState("History");var bTab=btS[0];var setBTab=btS[1];
 useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}",
 "@keyframes pu{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}",
+"@keyframes trg-tri{0%,100%{opacity:0.25;transform:translateY(2px) scale(0.9)}50%{opacity:1;transform:translateY(0) scale(1)}}",
 ".trg-shell{display:flex;min-height:100vh}",
 ".trg-rail{width:56px;flex-shrink:0;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 8px}",
 ".trg-main{flex:1;padding:32px 48px;min-width:0}",
@@ -143,6 +144,7 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 "}"
 ].join("");document.head.appendChild(s);return function(){s.remove();};},[]);
 useEffect(function(){if(chatRef.current)chatRef.current.scrollTop=chatRef.current.scrollHeight;},[msgs,chatLoading]);
+useEffect(function(){window.scrollTo(0,0);},[page]);
 
 function fire(){if(phase>0)return;setPhase(1);setTimeout(function(){setPhase(2);},600);setTimeout(function(){setPhase(3);},900);setTimeout(function(){setPhase(4);},1000);setTimeout(function(){setPhase(5);setPulse(true);},1100);setTimeout(function(){setPulse(false);},2500);}
 function reset(){setPhase(0);setPulse(false);}
@@ -318,7 +320,7 @@ return(<div key={m.l} onClick={function(){setExpMetric(isExp?null:idx);}} style=
 
 <div className="trg-orbit-center">
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,overflow:"hidden",boxShadow:pulse?"0 0 0 3px rgba(14,178,175,0.3)":"0 2px 8px rgba(31,71,106,0.08)",transition:"box-shadow 1s"}}>
-<div style={{background:C.navy,padding:"12px 18px",display:"flex",alignItems:"center",gap:10}}><TML s={16}/><span style={{fontSize:13,fontWeight:500,letterSpacing:1,color:"#fff",textTransform:"uppercase"}}>Goal</span></div>
+<div style={{background:C.navy,backgroundImage:"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><polygon points='20,8 32,30 8,30' fill='none' stroke='%230eb2af' stroke-width='1' opacity='0.15'/></svg>\")",backgroundSize:"40px 40px",padding:"12px 18px",display:"flex",alignItems:"center",gap:10}}><TML s={16}/><span style={{fontSize:13,fontWeight:500,letterSpacing:1,color:"#fff",textTransform:"uppercase"}}>Goal</span></div>
 <div style={{padding:"22px 22px 20px"}}>
 <div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}><Pl c="navy">OPERATIONAL</Pl><Pl c="teal">Q1 2026</Pl><Pl c="amber" hide={!showRisk}>{"\u25B3"} RISK</Pl><Pl c="green">{"\u2197"} ON TRACK</Pl></div>
 <div className="trg-focal-title" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.2,letterSpacing:"-0.02em",marginBottom:12}}>Expand gross margin by 300bps</div>
@@ -388,7 +390,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{overflow:"hidden",maxHeight:isExpS?120:0,opacity:isExpS?1:0,transition:"max-height 0.3s, opacity 0.25s"}}><div style={{borderTop:"1px solid "+C.tealBd,paddingTop:6,marginTop:6,fontSize:11,color:"#4a5868",lineHeight:1.5,marginBottom:6}}>{sg.detail}</div><div style={{display:"flex",gap:4}}><div style={{flex:1,padding:"5px 0",background:C.teal,color:"#fff",borderRadius:4,textAlign:"center",fontSize:11,fontWeight:500}}>{sg.act}</div><div onClick={function(e){e.stopPropagation();setExpSug(null);}} style={{padding:"5px 8px",border:"1px solid "+C.border,borderRadius:4,fontSize:11,color:C.gray}}>Dismiss</div></div></div>
 </div>);})}
 </div></div>
-{phase>=5&&<div style={{marginTop:8,background:C.greenBg,border:"1px solid #a7f3d0",borderRadius:8,padding:10,animation:"fu 0.4s ease"}}><div style={{fontSize:11,fontWeight:500,color:C.green,textTransform:"uppercase",marginBottom:4}}>Cascade impact</div><div style={{fontSize:12,color:"#065f46",lineHeight:1.5}}>Unblocked price realization. Removed 1 risk. Progress 54% {"\u2192"} 62%.</div></div>}
+{phase>=5&&<div style={{marginTop:8,background:C.greenBg,border:"1px solid #a7f3d0",borderRadius:8,padding:10,animation:"fu 0.4s ease"}}><div style={{fontSize:11,fontWeight:500,color:C.green,textTransform:"uppercase",marginBottom:4,display:"flex",alignItems:"center",gap:5}}><TM s={11}/> Cascade impact</div><div style={{fontSize:12,color:"#065f46",lineHeight:1.5}}>Unblocked price realization. Removed 1 risk. Progress 54% {"\u2192"} 62%.</div></div>}
 </div>
 </div>
 
@@ -397,7 +399,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div ref={chatRef} style={{minHeight:140,maxHeight:320,overflow:"auto",padding:"18px 24px"}}>
 {msgs.length===0&&<div style={{textAlign:"center",padding:"24px 8px",color:"#8b99a8",fontSize:15}}>Ask anything about this goal. Try "What's blocking progress?" or "Who should I talk to about COGS?"</div>}
 {msgs.map(function(m,i){return(<div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start",marginBottom:10}}><div style={{maxWidth:"78%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?C.navy:C.tealBg,color:m.role==="user"?"#fff":C.navy,fontSize:16,lineHeight:1.55}}>{m.text}</div></div>);})}
-{chatLoading&&<div style={{display:"flex",gap:5,padding:"8px 0"}}>{[0,1,2].map(function(i){return(<div key={i} style={{width:8,height:8,borderRadius:"50%",background:C.teal,opacity:0.4,animation:"pu 1s ease "+(i*0.15)+"s infinite"}}/>);})}</div>}
+{chatLoading&&<div style={{display:"flex",gap:8,padding:"8px 0",alignItems:"center"}}>{[0,1,2].map(function(i){return(<svg key={i} width="14" height="14" viewBox="0 0 24 24" style={{animation:"trg-tri 1.2s ease "+(i*0.18)+"s infinite"}}><polygon points="12,4 21,20 3,20" fill={C.teal}/></svg>);})}</div>}
 </div>
 <div style={{padding:"12px 20px 16px",borderTop:"1px solid "+C.subtle,display:"flex",gap:10}}><input value={chatIn} onChange={function(e){setChatIn(e.target.value);}} onKeyDown={function(e){if(e.key==="Enter")sendChat();}} placeholder="Ask about this goal..." style={{flex:1,padding:"10px 14px",border:"1px solid "+C.border,borderRadius:8,fontSize:16,color:C.navy,outline:"none",background:C.bg2,fontFamily:"inherit"}}/><div onClick={sendChat} style={{width:42,height:42,background:C.teal,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12 L19 12 M12 5 L19 12 L12 19" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div></div>
 </div>
@@ -507,7 +509,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{fontSize:14,color:"#4a5868",lineHeight:1.6,marginTop:10}}>{b.note}</div>
 </div>);})}
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:20,marginTop:16}}>
-<div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:10}}>AI pattern detection</div>
+<div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:10,display:"flex",alignItems:"center",gap:6}}><TM s={12}/> AI pattern detection</div>
 <div className="trg-pulse-patterns">
 <div style={{background:C.amberBg,borderRadius:8,padding:12}}><div style={{fontSize:13,fontWeight:500,color:C.amber,marginBottom:4}}>Vendor dependency risk</div><div style={{fontSize:13,color:"#92400e",lineHeight:1.5}}>Two plans have vendor blockers. Cross-plan consolidation may reduce exposure.</div></div>
 <div style={{background:C.greenBg,borderRadius:8,padding:12}}><div style={{fontSize:13,fontWeight:500,color:C.green,marginBottom:4}}>Revenue momentum building</div><div style={{fontSize:13,color:"#065f46",lineHeight:1.5}}>Revenue confidence up 3 consecutive weeks. Pipeline is 1.4x target.</div></div>
@@ -671,7 +673,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 <div style={{flex:"1 1 280px",minWidth:0,maxWidth:400}}>
 <div style={{background:C.greenBg,border:"1px solid #a7f3d0",borderRadius:10,padding:14}}>
-<div style={{fontSize:12,fontWeight:500,letterSpacing:0.5,color:C.green,textTransform:"uppercase",marginBottom:6}}>Cascade impact</div>
+<div style={{fontSize:12,fontWeight:500,letterSpacing:0.5,color:C.green,textTransform:"uppercase",marginBottom:6,display:"flex",alignItems:"center",gap:5}}><TM s={11}/> Cascade impact</div>
 <div style={{fontSize:14,color:"#065f46",lineHeight:1.6}}>Appears after a cascade completion event. Shows upstream effects of the action taken.</div>
 </div>
 </div>
