@@ -63,7 +63,7 @@ fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-T
 
 function NI(p){return(<div onClick={function(){setPage(p.pg);}} style={{width:40,height:40,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",background:page===p.pg?C.tealBg:"transparent",cursor:"pointer",transition:"background 0.2s"}} title={p.title}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d={p.d} stroke={page===p.pg?C.teal:C.gray} strokeWidth="1.8" strokeLinecap="square"/></svg></div>);}
 
-function PH(p){return(<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:14,borderBottom:"1px solid "+C.border,marginBottom:18}}><div><div style={{fontSize:10,fontWeight:500,letterSpacing:1.5,color:C.teal,textTransform:"uppercase",marginBottom:2}}>{p.eyebrow}</div><div style={{fontSize:20,fontWeight:500,color:C.navy,fontFamily:"Space Grotesk, sans-serif",letterSpacing:"-0.02em"}}>{p.title}</div></div>{p.right&&<div>{p.right}</div>}</div>);}
+function PH(p){return(<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:18,borderBottom:"1px solid "+C.border,marginBottom:18}}><div><div style={{fontSize:10,fontWeight:500,letterSpacing:1.5,color:C.teal,textTransform:"uppercase",marginBottom:2}}>{p.eyebrow}</div><div style={{fontSize:20,fontWeight:500,color:C.navy,fontFamily:"Space Grotesk, sans-serif",letterSpacing:"-0.02em"}}>{p.title}</div></div>{p.right&&<div>{p.right}</div>}</div>);}
 
 return(
 <div style={{fontFamily:"Inter, -apple-system, sans-serif",color:C.navy,display:"flex",minHeight:"100vh",background:C.bg2}}>
@@ -79,28 +79,28 @@ return(
 <Av i="JT" s={28}/>
 </div>
 
-<div style={{flex:1,padding:"24px 32px",maxWidth:1100,minWidth:0}}>
+<div style={{flex:1,padding:"32px 48px",maxWidth:1100,minWidth:0}}>
 
 {page==="home"&&<div>
 <PH eyebrow="Good morning, Joe" title="My world" right={<div style={{fontSize:11,color:C.gray}}>Wednesday, April 16, 2026</div>}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:12,marginBottom:24}}>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:16,marginBottom:28}}>
 <StatCard label="Items owned" value="6" sub="2 behind schedule" subColor={C.amber}/>
 <StatCard label="Actions due" value="7" sub="1 overdue" subColor={C.red}/>
 <StatCard label="Avg confidence" value="69%" sub={"\u2197 +3% vs last week"} subColor={C.green}/>
 <StatCard label="Board review" value="11 days" color={C.amber} sub="Q1 materials due"/>
 </div>
-<div style={{display:"flex",gap:16}}>
+<div style={{display:"flex",gap:24}}>
 <div style={{flex:1}}>
 <Eye><SI s={12}/> My strategic plans <span style={{color:C.gray,fontWeight:400}}>. 4</span></Eye>
-{strategies.map(function(s){return(<div key={s.id} onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:10,padding:"12px 16px",marginBottom:8,cursor:"pointer"}}>
+{strategies.map(function(s){return(<div key={s.id} onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:10,padding:"14px 18px",marginBottom:12,cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><SI s={12}/><div style={{flex:1,fontSize:14,fontWeight:500,color:C.navy}}>{s.t}</div><Av i={s.owner} s={22} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><Pl c={s.sc}>{s.status}</Pl>{s.risk&&<Pl c="amber">{"\u25B3"} RISK</Pl>}{s.blocker&&<Pl c="red">BLOCKER</Pl>}<span style={{fontSize:10,color:C.gray,marginLeft:"auto"}}>{s.actions} actions</span></div>
 <PB pct={s.progress}/><div style={{display:"flex",justifyContent:"space-between",marginTop:6,fontSize:10}}><span style={{color:C.gray}}>{s.progress}%</span><span style={{color:C.navy,fontWeight:500}}>{s.impact}</span></div>
 </div>);})}
 </div>
-<div style={{width:300,flexShrink:0}}>
+<div style={{width:320,flexShrink:0}}>
 <Eye><TM s={14}/> TARGA Intelligence</Eye>
-<div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:10,marginBottom:12}}>
+<div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:10,marginBottom:14}}>
 <div style={{fontSize:10,fontWeight:500,letterSpacing:0.5,color:C.tealDk,textTransform:"uppercase",marginBottom:8}}>This week</div>
 <div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:10,marginBottom:6,fontSize:12,color:C.navy,lineHeight:1.5}}>Your team resolved 2 actions and moved 1 item from At Risk to On Track. The COGS blocker on gross margin expansion remains your top priority.</div>
 <div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:10,marginBottom:6}}><div style={{fontSize:11,fontWeight:500,color:C.navy,marginBottom:2}}>Pricing approval is overdue</div><div style={{fontSize:10,color:C.gray}}>Blocking price realization. 3 days past due.</div></div>
@@ -114,38 +114,81 @@ return(
 </div>
 </div>}
 
+
 {page==="cascade"&&<div>
-<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div style={{display:"flex",gap:4}}>{["Cascade","Kanban","Timeline","People"].map(function(v,i){return(<div key={v} style={{padding:"5px 10px",background:i===0?C.white:"transparent",border:i===0?"1px solid "+C.border:"none",borderRadius:6,fontSize:11,color:i===0?C.navy:C.gray,fontWeight:i===0?500:400,cursor:"pointer"}}>{v}</div>);})}</div>}/>
-<div style={{position:"relative",background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:24,minHeight:480}}>
-<svg style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",pointerEvents:"none"}} viewBox="0 0 1000 480" preserveAspectRatio="none"><defs><marker id="at2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill={C.teal}/></marker></defs>
-<path d="M 500 85 C 500 115 250 130 250 160" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#at2)"/>
-<path d="M 500 85 C 500 115 500 130 500 160" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#at2)"/>
-<path d="M 500 85 C 500 115 750 130 750 160" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#at2)"/>
-<path d="M 250 260 C 250 290 180 310 180 340" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#at2)"/>
-<path d="M 250 260 C 250 290 320 310 320 340" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#at2)"/>
-<path d="M 500 260 L 500 340" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#at2)"/>
-<path d="M 750 260 C 750 290 680 310 680 340" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#at2)"/>
+<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div style={{display:"flex",gap:4}}>{["Cascade","Kanban","Timeline","People"].map(function(v,i){return(<div key={v} style={{padding:"6px 14px",background:i===0?C.white:"transparent",border:i===0?"1px solid "+C.border:"none",borderRadius:6,fontSize:11,color:i===0?C.navy:C.gray,fontWeight:i===0?500:400,cursor:"pointer"}}>{v}</div>);})}</div>}/>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:"40px 32px",minHeight:560,position:"relative"}}>
+
+<svg style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:0}} viewBox="0 0 960 560">
+<defs>
+<marker id="arw" viewBox="0 0 10 7" refX="5" refY="3.5" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 5 3.5 L 0 7" fill="none" stroke={C.teal} strokeWidth="1.2"/></marker>
+</defs>
+<path d="M 480 100 L 480 130 Q 480 145 465 145 L 240 145 Q 225 145 225 160 L 225 185" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.6" markerEnd="url(#arw)"/>
+<path d="M 480 100 L 480 185" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.6" markerEnd="url(#arw)"/>
+<path d="M 480 100 L 480 130 Q 480 145 495 145 L 735 145 Q 750 145 750 160 L 750 185" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.6" markerEnd="url(#arw)"/>
+<path d="M 225 305 L 225 335 Q 225 350 210 350 L 155 350 Q 140 350 140 365 L 140 385" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#arw)"/>
+<path d="M 225 305 L 225 335 Q 225 350 240 350 L 345 350 Q 360 350 360 365 L 360 385" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#arw)"/>
+<path d="M 480 305 L 480 385" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#arw)"/>
+<path d="M 750 305 L 750 335 Q 750 350 735 350 L 625 350 Q 610 350 610 365 L 610 385" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#arw)"/>
+<path d="M 750 305 L 750 335 Q 750 350 765 350 L 835 350 Q 850 350 850 365 L 850 385" stroke={C.teal} strokeWidth="1.5" fill="none" opacity="0.5" markerEnd="url(#arw)"/>
 </svg>
-<div onClick={function(){setPage("detail");}} style={{position:"absolute",top:16,left:370,width:260,background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:"12px 14px",cursor:"pointer",zIndex:1}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}><SI s={12}/><span style={{fontSize:9,fontWeight:500,color:C.tealDk}}>BUSINESS PLAN</span></div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginBottom:6}}>Enterprise Value Creation - FY26</div><div style={{display:"flex",gap:4}}><Pl c="green">{"\u2197"} ON TRACK</Pl><span style={{fontSize:10,color:C.gray,marginLeft:"auto"}}>4 strategies</span></div></div>
-{[[120,160,"sp1"],[370,160,"sp2"],[620,160,"sp3"]].map(function(pos){var s=strategies.find(function(x){return x.id===pos[2];});if(!s)s=strategies[0];return(<div key={pos[2]} onClick={function(){setPage("detail");}} style={{position:"absolute",top:pos[1],left:pos[0],width:230,background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:10,padding:"10px 12px",cursor:"pointer",zIndex:1}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}><SI s={10}/><span style={{fontSize:9,fontWeight:500,color:C.tealDk}}>STRATEGIC PLAN</span><div style={{marginLeft:"auto"}}><Av i={s.owner} s={16} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div></div><div style={{fontSize:12,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:6}}>{s.t}</div><div style={{display:"flex",gap:4,marginBottom:6}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div><PB pct={s.progress}/></div>);})}
-{[[100,340,"Reduce COGS tier-1","red","BLOCKER"],[260,340,"Price realization","green","ON TRACK"],[420,340,"EMEA market launch","green","ON TRACK"],[600,340,"Vendor consolidation","amber","BEHIND"]].map(function(c){return(<div key={c[2]} style={{position:"absolute",top:c[1],left:c[0],width:160,background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(c[3]==="red"?"#db2777":c[3]==="amber"?C.gold:"#db2777"),borderRadius:8,padding:"8px 10px",zIndex:1}}><div style={{display:"flex",alignItems:"center",gap:4,marginBottom:3}}><PI/><span style={{fontSize:8,fontWeight:500,color:C.pinkDk}}>PROJECT</span></div><div style={{fontSize:10,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:4}}>{c[2]}</div><Pl c={c[3]}>{c[4]}</Pl></div>);})}
+
+<div style={{position:"relative",zIndex:1}}>
+
+<div style={{display:"flex",justifyContent:"center",marginBottom:48}}>
+<div onClick={function(){setPage("detail");}} style={{width:280,background:C.tealBg,border:"2px solid "+C.tealBd,borderRadius:12,padding:"16px 20px",cursor:"pointer",boxShadow:"0 2px 12px rgba(14,178,175,0.1)"}}>
+<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><SI s={13}/><span style={{fontSize:10,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>BUSINESS PLAN</span></div>
+<div style={{fontSize:17,fontWeight:500,color:C.navy,marginBottom:8,lineHeight:1.3}}>Enterprise Value Creation - FY26</div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><Pl c="green">{"\u2197"} ON TRACK</Pl><span style={{fontSize:10,color:C.gray,marginLeft:"auto"}}>4 strategies</span></div>
+</div>
+</div>
+
+<div style={{display:"flex",justifyContent:"center",gap:32,marginBottom:48}}>
+{strategies.slice(0,3).map(function(s){return(
+<div key={s.id} onClick={function(){setPage("detail");}} style={{width:260,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:12,padding:"14px 18px",cursor:"pointer",boxShadow:"0 1px 4px rgba(31,71,106,0.06)",transition:"box-shadow 0.2s"}}>
+<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+<SI s={11}/><span style={{fontSize:9,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>STRATEGIC PLAN</span>
+<div style={{marginLeft:"auto"}}><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
+</div>
+<div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:8}}>{s.t}</div>
+<div style={{display:"flex",gap:5,marginBottom:8}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div>
+<PB pct={s.progress}/>
+<div style={{display:"flex",justifyContent:"space-between",marginTop:6,fontSize:10}}><span style={{color:C.gray}}>{s.progress}%</span><span style={{color:C.navy,fontWeight:500}}>{s.impact}</span></div>
+</div>
+);})}
+</div>
+
+<div style={{display:"flex",justifyContent:"center",gap:24}}>
+{[{t:"Reduce COGS tier-1",s:"BLOCKER",sc:"red",type:"project"},{t:"Price realization",s:"ON TRACK",sc:"green",type:"project"},{t:"EMEA market launch",s:"ON TRACK",sc:"green",type:"project"},{t:"Vendor consolidation",s:"BEHIND",sc:"amber",type:"initiative"}].map(function(c){return(
+<div key={c.t} style={{width:190,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(c.type==="initiative"?C.gold:"#db2777"),borderRadius:10,padding:"12px 16px",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
+<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}>
+{c.type==="project"?<PI/>:<svg width="10" height="10" viewBox="0 0 24 24"><path d="M3 5 L12 5 L20 12 L12 19 L3 19 L11 12 Z" fill="#d49a0f"/></svg>}
+<span style={{fontSize:9,fontWeight:500,color:c.type==="project"?C.pinkDk:"#a07509",letterSpacing:0.5}}>{c.type==="project"?"PROJECT":"INITIATIVE"}</span>
+</div>
+<div style={{fontSize:12,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:6}}>{c.t}</div>
+<Pl c={c.sc}>{c.s}</Pl>
+</div>
+);})}
+</div>
+
+</div>
 </div>
 </div>}
 
 
 {page==="detail"&&<div>
-<div style={{display:"flex",alignItems:"center",gap:8,fontSize:12,color:C.gray,paddingBottom:14,borderBottom:"1px solid "+C.border,marginBottom:14}}><span style={{cursor:"pointer",color:C.teal}} onClick={function(){setPage("cascade");}}>Strategy Map</span><span style={{color:"#b0bcc9"}}>/</span><span style={{color:C.navy,fontWeight:500}}>Expand gross margin by 300bps</span>{phase>=5&&<span onClick={reset} style={{marginLeft:"auto",color:C.teal,cursor:"pointer",fontSize:11,fontWeight:500}}>Replay demo</span>}</div>
+<div style={{display:"flex",alignItems:"center",gap:8,fontSize:12,color:C.gray,paddingBottom:18,borderBottom:"1px solid "+C.border,marginBottom:18}}><span style={{cursor:"pointer",color:C.teal}} onClick={function(){setPage("cascade");}}>Strategy Map</span><span style={{color:"#b0bcc9"}}>/</span><span style={{color:C.navy,fontWeight:500}}>Expand gross margin by 300bps</span>{phase>=5&&<span onClick={reset} style={{marginLeft:"auto",color:C.teal,cursor:"pointer",fontSize:11,fontWeight:500}}>Replay demo</span>}</div>
 
-<div onClick={function(){setPage("cascade");}} style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"8px 12px",marginBottom:14,display:"flex",alignItems:"center",gap:8,cursor:"pointer"}}><SI s={12}/><span style={{fontSize:11,fontWeight:500,color:C.tealDk}}>PARENT</span><span style={{fontSize:12,fontWeight:500,color:C.navy}}>Drive enterprise value creation - FY26</span><Pl c="green">{"\u2197"} ON TRACK</Pl></div>
+<div onClick={function(){setPage("cascade");}} style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"8px 12px",marginBottom:18,display:"flex",alignItems:"center",gap:8,cursor:"pointer"}}><SI s={12}/><span style={{fontSize:11,fontWeight:500,color:C.tealDk}}>PARENT</span><span style={{fontSize:12,fontWeight:500,color:C.navy}}>Drive enterprise value creation - FY26</span><Pl c="green">{"\u2197"} ON TRACK</Pl></div>
 
-<div style={{display:"flex",gap:12,marginBottom:14}}>
-<div style={{width:200,flexShrink:0}}>
+<div style={{display:"flex",gap:18,marginBottom:20}}>
+<div style={{width:220,flexShrink:0}}>
 <Eye><svg width="12" height="12" viewBox="0 0 24 24"><path d="M2 22 L2 16 L7 16 L7 22 Z" fill={C.navy}/><path d="M9 22 L9 10 L14 10 L14 22 Z" fill={C.navy}/><path d="M16 22 L16 4 L21 4 L21 22 Z" fill="#0a1929"/></svg> Metrics</Eye>
 {[{l:"Gross margin %",v:"39.8%",tg:"42.3%",p:62,tr:"\u2197 +80bps",tc:C.teal,src:"NetSuite",pts:[37.2,37.8,38.1,38.5,38.9,39.1,39.4,39.8]},{l:"COGS reduction",v:"-$3.2M",tg:"-$8M",p:40,tr:"\u2198 Behind",tc:C.amber,src:"SAP",pts:[0.5,0.9,1.2,1.8,2.1,2.5,2.9,3.2]},{l:"Price realization",v:"+1.4%",tg:"+2.1%",p:66,tr:"\u2197 On track",tc:C.teal,src:"Salesforce",pts:[0.3,0.5,0.7,0.8,1.0,1.1,1.3,1.4]}].map(function(m,idx){
 var isExp=expMetric===idx;
 var mx=Math.max.apply(null,m.pts);var mn=Math.min.apply(null,m.pts);
 var sparkD=m.pts.map(function(pt,pi){return(pi===0?"M":"L")+" "+(pi/(m.pts.length-1)*110)+" "+(36-((pt-mn)/(mx-mn||1))*36);}).join(" ");
-return(<div key={m.l} onClick={function(){setExpMetric(isExp?null:idx);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+C.navy,borderRadius:8,padding:9,marginBottom:5,cursor:"pointer",transition:"all 0.2s"}}>
+return(<div key={m.l} onClick={function(){setExpMetric(isExp?null:idx);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+C.navy,borderRadius:8,padding:11,marginBottom:6,cursor:"pointer",transition:"all 0.2s"}}>
 <div style={{display:"flex",justifyContent:"space-between",marginBottom:2}}><span style={{fontSize:10,color:C.gray}}>{m.l}</span><span style={{fontSize:8,color:C.tealDk,background:C.tealBg,padding:"1px 5px",borderRadius:3,fontWeight:500}}>External</span></div>
 <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:4}}><span style={{fontSize:16,fontWeight:500,color:C.navy}}>{m.v}</span><span style={{fontSize:9,color:C.gray}}>{"\u2192"} {m.tg}</span></div>
 <PB pct={m.p} h={3} color={m.tc}/>
@@ -169,12 +212,12 @@ return(<div key={m.l} onClick={function(){setExpMetric(isExp?null:idx);}} style=
 <div style={{padding:16}}>
 <div style={{display:"flex",gap:5,marginBottom:10,flexWrap:"wrap"}}><Pl c="navy">OPERATIONAL</Pl><Pl c="teal">Q1 2026</Pl><Pl c="amber" hide={!showRisk}>{"\u25B3"} RISK</Pl><Pl c="green">{"\u2197"} ON TRACK</Pl></div>
 <div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:20,fontWeight:500,color:C.navy,lineHeight:1.2,letterSpacing:"-0.02em",marginBottom:10}}>Expand gross margin by 300bps</div>
-<div style={{fontSize:13,color:"#4a5868",lineHeight:1.6,marginBottom:12}}>Drive 300 basis points of gross margin expansion across tier-1 product lines through COGS reduction, price realization, and channel mix optimization.</div>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
+<div style={{fontSize:13,color:"#4a5868",lineHeight:1.6,marginBottom:14}}>Drive 300 basis points of gross margin expansion across tier-1 product lines through COGS reduction, price realization, and channel mix optimization.</div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
 <div style={{background:C.bg2,borderRadius:6,padding:"8px 10px",display:"flex",alignItems:"center",gap:8}}><Av i="JT" s={28}/><div><div style={{fontSize:9,color:C.gray}}>Owner</div><div style={{fontSize:12,fontWeight:500,color:C.navy}}>Joe Thompson</div></div></div>
 <div style={{background:C.bg2,borderRadius:6,padding:"8px 10px"}}><div style={{fontSize:9,color:C.gray}}>Dates</div><div style={{fontSize:12,fontWeight:500,color:C.navy}}>Jan 6 - Mar 31, 2026</div></div>
 </div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,padding:10,background:C.bg2,borderRadius:8,marginBottom:12}}>
+<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,padding:10,background:C.bg2,borderRadius:8,marginBottom:14}}>
 <div><div style={{fontSize:9,color:C.gray,marginBottom:1}}>Impact</div><div style={{fontSize:14,fontWeight:500,color:C.navy}}>$24M</div></div>
 <div><div style={{fontSize:9,color:C.gray,marginBottom:1}}>Progress</div><div style={{fontSize:14,fontWeight:500,color:C.navy}}><Odo value={progress} suffix="%" dur={1.6}/></div></div>
 <div><div style={{fontSize:9,color:C.gray,marginBottom:1}}>Actions</div><div style={{fontSize:14,fontWeight:500,color:C.navy}}><Odo value={actionCount} suffix=" open" dur={1.4}/></div></div>
@@ -194,7 +237,7 @@ return(<div key={m.l} onClick={function(){setExpMetric(isExp?null:idx);}} style=
 </div>
 </div>
 
-<div style={{width:230,flexShrink:0}}>
+<div style={{width:250,flexShrink:0}}>
 <Eye><svg width="12" height="12" viewBox="0 0 24 24"><path d="M3 5 L12 5 L20 12 L12 19 L3 19 L11 12 Z" fill="#d49a0f"/><path d="M7 9 L12 9 L15 12 L12 15 L7 15 L10 12 Z" fill="#6c5006"/></svg> Actions <span style={{color:C.gray,fontWeight:400}}>. <Odo value={actionCount} dur={1.4}/></span></Eye>
 
 <div style={{overflow:"hidden",maxHeight:showBlocker?300:0,opacity:showBlocker?1:0,marginBottom:showBlocker?5:0,transition:"max-height 0.9s cubic-bezier(0.4,0,0.2,1), opacity 0.7s, margin 0.9s"}}>
@@ -205,7 +248,7 @@ return(<div key={m.l} onClick={function(){setExpMetric(isExp?null:idx);}} style=
 {t:"Interview channel partners",i:"SD",bg:C.navy,fg:"#fff",d:"May 1",s:"ON TRACK",sc:"green",bc:"#d49a0f",desc:"Conduct interviews with three key channel partners to assess mix optimization opportunities.",subs:["Schedule partner A","Schedule partner B","Schedule partner C"]},
 {t:"Validate supplier scope",i:"MS",bg:C.navy,fg:"#fff",d:"May 8",s:"AT RISK",sc:"amber",bc:"#d49a0f",desc:"Define scope for supplier contract renegotiations targeting tier-1 COGS reduction.",subs:["Identify top 5 suppliers","Set target reduction %","Draft negotiation brief"]}
 ].map(function(a){var isSel=selAction&&selAction.t===a.t;return(<div key={a.t}>
-<div onClick={function(){setSelAction(isSel?null:a);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+a.bc,borderRadius:8,padding:9,marginBottom:5,cursor:"pointer",transition:"transform 0.15s"}}>
+<div onClick={function(){setSelAction(isSel?null:a);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+a.bc,borderRadius:8,padding:11,marginBottom:6,cursor:"pointer",transition:"transform 0.15s"}}>
 <div style={{fontSize:11,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{a.t}</div>
 <div style={{display:"flex",alignItems:"center",gap:5}}><Av i={a.i} bg={a.bg} fg={a.fg} s={16}/><span style={{fontSize:9,color:C.gray}}>{a.d}</span><span style={{marginLeft:"auto"}}><Pl c={a.sc}>{a.s}</Pl></span></div>
 </div>
@@ -249,7 +292,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 
 <Eye><PI/> Child items <span style={{color:C.gray,fontWeight:400}}>. 3</span></Eye>
-<div style={{display:"flex",gap:8,marginBottom:14}}>
+<div style={{display:"flex",gap:12,marginBottom:20}}>
 {[{t:"Reduce COGS tier-1",s:phase>=4?"AT RISK":"BLOCKER",sc:phase>=4?"amber":"red",av:"KM",desc:"Renegotiate tier-1 supplier contracts to reduce COGS by $8M.",prog:40},
 {t:"Price realization",s:phase>=4?"ON TRACK":"BLOCKED",sc:phase>=4?"green":"amber",av:"SD",desc:"Implement pricing adjustments across product lines for +2.1% realization.",prog:66},
 {t:"Channel mix optimization",s:"BEHIND",sc:"amber",av:"MS",desc:"Optimize channel partner mix to improve margin contribution.",prog:28}
@@ -275,7 +318,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 <div style={{padding:16,minHeight:160}}>
 {bTab==="Comments"&&<div>
-{[{i:"JT",bg:C.gold,n:"Joe Thompson",t:"2d ago",m:"Make sure pricing is approved before board review. Critical path."},{i:"KM",bg:C.teal,n:"Kyle Moyer",t:"2d ago",m:"Agreed. Finance sync scheduled Thursday."},{i:"MS",bg:C.red,n:"Mark Sternberger",t:"5h ago",m:"Supplier negotiations taking longer. May need to escalate."}].map(function(c,idx){return(<div key={idx} style={{display:"flex",gap:10,marginBottom:14}}><Av i={c.i} bg={c.bg} fg={c.bg===C.gold?C.navy:"#fff"} s={28}/><div style={{flex:1}}><div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:3}}><span style={{fontSize:12,fontWeight:500,color:C.navy}}>{c.n}</span><span style={{fontSize:10,color:"#8b99a8"}}>{c.t}</span></div><div style={{fontSize:13,color:"#4a5868",lineHeight:1.6}}>{c.m}</div></div></div>);})}
+{[{i:"JT",bg:C.gold,n:"Joe Thompson",t:"2d ago",m:"Make sure pricing is approved before board review. Critical path."},{i:"KM",bg:C.teal,n:"Kyle Moyer",t:"2d ago",m:"Agreed. Finance sync scheduled Thursday."},{i:"MS",bg:C.red,n:"Mark Sternberger",t:"5h ago",m:"Supplier negotiations taking longer. May need to escalate."}].map(function(c,idx){return(<div key={idx} style={{display:"flex",gap:10,marginBottom:18}}><Av i={c.i} bg={c.bg} fg={c.bg===C.gold?C.navy:"#fff"} s={28}/><div style={{flex:1}}><div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:3}}><span style={{fontSize:12,fontWeight:500,color:C.navy}}>{c.n}</span><span style={{fontSize:10,color:"#8b99a8"}}>{c.t}</span></div><div style={{fontSize:13,color:"#4a5868",lineHeight:1.6}}>{c.m}</div></div></div>);})}
 <div style={{display:"flex",gap:8,marginTop:12,paddingTop:12,borderTop:"1px solid "+C.subtle}}><div style={{flex:1,background:C.bg2,borderRadius:8,padding:"10px 12px",fontSize:12,color:"#8b99a8"}}>Add a comment...</div><div style={{padding:"10px 16px",background:C.teal,color:"#fff",borderRadius:8,fontSize:12,fontWeight:500,cursor:"pointer"}}>Send</div></div>
 </div>}
 
@@ -296,7 +339,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>}
 
 {bTab==="Relationships"&&<div>
-<div style={{fontSize:12,color:"#4a5868",marginBottom:12}}>Cross-dependencies and linked items.</div>
+<div style={{fontSize:12,color:"#4a5868",marginBottom:14}}>Cross-dependencies and linked items.</div>
 <div style={{background:C.bg2,borderRadius:8,padding:12,marginBottom:8,display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}><div style={{width:32,height:32,background:C.tealBg,borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center"}}><SI s={14}/></div><div style={{flex:1}}><div style={{fontSize:12,fontWeight:500,color:C.navy}}>Accelerate revenue growth</div><div style={{fontSize:10,color:C.gray}}>EMEA pricing impacts price realization</div></div><div style={{fontSize:9,color:C.tealDk,background:C.tealBg,border:"1px solid "+C.tealBd,padding:"3px 8px",borderRadius:12,fontWeight:500}}>DEPENDS ON</div></div>
 <div style={{background:C.bg2,borderRadius:8,padding:12,display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}><div style={{width:32,height:32,background:C.amberBg,borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="14" height="14" viewBox="0 0 24 24"><path d="M3 5 L12 5 L20 12 L12 19 L3 19 L11 12 Z" fill="#d49a0f"/></svg></div><div style={{flex:1}}><div style={{fontSize:12,fontWeight:500,color:C.navy}}>FY26 Board Review - Q1</div><div style={{fontSize:10,color:C.gray}}>Requires gross margin update</div></div><div style={{fontSize:9,color:C.amber,background:C.amberBg,border:"1px solid rgba(217,119,6,0.2)",padding:"3px 8px",borderRadius:12,fontWeight:500}}>MILESTONE</div></div>
 </div>}
@@ -306,30 +349,30 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 
 {page==="dashboard"&&<div>
 <PH eyebrow="Executive view" title="Strategic Health Dashboard" right={<div style={{fontSize:11,color:C.gray}}>FY26 Q1 . Updated today</div>}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:12,marginBottom:24}}>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:16,marginBottom:28}}>
 <StatCard label="Overall confidence" value="69%" sub={"\u2197 +2% this month"} subColor={C.green}/>
 <StatCard label="Strategic plans" value="4" sub="3 on track, 1 behind"/>
 <StatCard label="Active blockers" value="3" color={C.red} sub="2 overdue" subColor={C.red}/>
 <StatCard label="Value at stake" value="$48M" sub="EBITDA impact"/>
 </div>
-<div style={{display:"flex",gap:16}}>
+<div style={{display:"flex",gap:24}}>
 <div style={{flex:1}}>
 <Eye>Strategy health matrix</Eye>
-{strategies.map(function(s){return(<div key={s.id} onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:10,cursor:"pointer"}}>
+{strategies.map(function(s){return(<div key={s.id} onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:14,cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:8,height:8,borderRadius:"50%",background:s.sc==="green"?C.green:C.amber}}/><div style={{flex:1,fontSize:14,fontWeight:500,color:C.navy}}>{s.t}</div><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
-<div style={{display:"flex",gap:16,marginBottom:8}}><div><div style={{fontSize:9,color:C.gray}}>Progress</div><div style={{fontSize:16,fontWeight:500,color:C.navy}}>{s.progress}%</div></div><div><div style={{fontSize:9,color:C.gray}}>Impact</div><div style={{fontSize:16,fontWeight:500,color:C.navy}}>{s.impact}</div></div><div style={{marginLeft:"auto",display:"flex",gap:4}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
+<div style={{display:"flex",gap:24,marginBottom:8}}><div><div style={{fontSize:9,color:C.gray}}>Progress</div><div style={{fontSize:16,fontWeight:500,color:C.navy}}>{s.progress}%</div></div><div><div style={{fontSize:9,color:C.gray}}>Impact</div><div style={{fontSize:16,fontWeight:500,color:C.navy}}>{s.impact}</div></div><div style={{marginLeft:"auto",display:"flex",gap:4}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
 <PB pct={s.progress}/>
 </div>);})}
 </div>
-<div style={{width:280,flexShrink:0}}>
+<div style={{width:320,flexShrink:0}}>
 <Eye><TM s={14}/> AI executive summary</Eye>
-<div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12,marginBottom:12}}>
+<div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12,marginBottom:14}}>
 <div style={{fontSize:12,color:C.navy,lineHeight:1.6,marginBottom:10}}>Three of four plans on track. OpEx dropped 7 confidence points due to vendor blockers. Gross margin has an overdue pricing approval. Recommend escalating both before board review.</div>
 <div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:6,padding:8,fontSize:11}}><span style={{fontWeight:500,color:C.red}}>Priority:</span> <span style={{color:C.navy}}>Resolve pricing approval and vendor blockers in 11 days.</span></div>
 </div>
 <Eye>Confidence trend</Eye>
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:12}}>
-{boardItems.map(function(b){return(<div key={b.t} style={{marginBottom:12}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:11,fontWeight:500,color:C.navy}}>{b.t}</span><span style={{fontSize:14,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</span></div><PB pct={b.conf} color={b.status==="green"?C.green:C.red}/><div style={{fontSize:10,color:b.conf>b.prev?C.green:C.red,marginTop:3}}>{b.conf>b.prev?"\u2197":"\u2198"} {Math.abs(b.conf-b.prev)} pts vs last week</div></div>);})}
+{boardItems.map(function(b){return(<div key={b.t} style={{marginBottom:14}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:11,fontWeight:500,color:C.navy}}>{b.t}</span><span style={{fontSize:14,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</span></div><PB pct={b.conf} color={b.status==="green"?C.green:C.red}/><div style={{fontSize:10,color:b.conf>b.prev?C.green:C.red,marginTop:3}}>{b.conf>b.prev?"\u2197":"\u2198"} {Math.abs(b.conf-b.prev)} pts vs last week</div></div>);})}
 </div>
 </div>
 </div>
@@ -346,8 +389,8 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <StatCard label="Value at stake" value="$48M" sub="Combined EBITDA"/>
 </div>
 </div>
-<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:12}}>Confidence by initiative</div>
-{boardItems.map(function(b){return(<div key={b.t} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:16,marginBottom:10}}>
+<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Confidence by initiative</div>
+{boardItems.map(function(b){return(<div key={b.t} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:18,marginBottom:14}}>
 <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}><div style={{fontSize:15,fontWeight:500,color:C.navy,flex:1}}>{b.t}</div><Av i={b.owner} s={22} bg={b.owner==="JT"?C.gold:b.owner==="MS"?C.red:C.navy} fg={b.owner==="JT"?C.navy:"#fff"}/><div style={{textAlign:"right"}}><div style={{fontSize:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:10,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
 <PB pct={b.conf} color={b.status==="green"?C.green:C.red} h={6}/>
 <div style={{fontSize:12,color:"#4a5868",lineHeight:1.6,marginTop:10}}>{b.note}</div>
