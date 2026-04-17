@@ -271,11 +271,11 @@ return(
 </div>
 
 <div className="trg-cascade-children">
-{[{t:"Reduce COGS tier-1",s:"BLOCKER",sc:"red",type:"project"},{t:"Price realization",s:"ON TRACK",sc:"green",type:"project"},{t:"EMEA market launch",s:"ON TRACK",sc:"green",type:"project"},{t:"Vendor consolidation",s:"BEHIND",sc:"amber",type:"initiative"}].map(function(c){return(
+{[{t:"Reduce COGS tier-1",s:"BLOCKER",sc:"red",type:"initiative"},{t:"Price realization",s:"ON TRACK",sc:"green",type:"initiative"},{t:"EMEA market launch",s:"ON TRACK",sc:"green",type:"initiative"},{t:"Vendor consolidation",s:"BEHIND",sc:"amber",type:"action"}].map(function(c){return(
 <div key={c.t} style={{width:210,background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"14px 18px",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}>
-{c.type==="project"?<PI s={11}/>:<AI s={11}/>}
-<span style={{fontSize:11,fontWeight:500,color:c.type==="project"?C.pinkDk:"#a07509",letterSpacing:0.5}}>{c.type==="project"?"INITIATIVE":"ACTION"}</span>
+{c.type==="initiative"?<PI s={11}/>:<AI s={11}/>}
+<span style={{fontSize:11,fontWeight:500,color:c.type==="initiative"?C.pinkDk:"#a07509",letterSpacing:0.5}}>{c.type==="initiative"?"INITIATIVE":"ACTION"}</span>
 </div>
 <div style={{fontSize:15,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:6}}>{c.t}</div>
 <Pl c={c.sc}>{c.s}</Pl>
@@ -536,7 +536,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Category tier colors</div>
 <div className="trg-tier-grid" style={{marginBottom:32}}>
-{[["Strategic","#0eb2af","Plans, objectives"],["Execution","#db2777","Projects, workstreams"],["Action","#fbbf24","Tasks, decisions"],["Measurement","#1f476a","KPIs, metrics"]].map(function(t){return(
+{[["Strategic","#0eb2af","Goals, objectives"],["Execution","#db2777","Initiatives, workstreams"],["Action","#fbbf24","Tasks, decisions"],["Measurement","#1f476a","KPIs, metrics"]].map(function(t){return(
 <div key={t[0]} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+t[1],borderRadius:10,padding:"14px 18px"}}>
 <div style={{fontSize:16,fontWeight:500,color:C.navy,marginBottom:4}}>{t[0]}</div>
 <div style={{fontSize:13,color:C.gray}}>{t[2]}</div>
