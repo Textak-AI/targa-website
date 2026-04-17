@@ -79,7 +79,7 @@ return(
 <Av i="JT" s={28}/>
 </div>
 
-<div style={{flex:1,padding:"32px 48px",maxWidth:1100,minWidth:0}}>
+<div style={{flex:1,padding:"32px 48px",minWidth:0}}>
 
 {page==="home"&&<div>
 <PH eyebrow="Good morning, Joe" title="My world" right={<div style={{fontSize:11,color:C.gray}}>Wednesday, April 16, 2026</div>}/>
