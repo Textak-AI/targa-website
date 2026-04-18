@@ -42,6 +42,113 @@ var strategies=[
 {id:"sp4",t:"Strengthen talent pipeline",status:"ON TRACK",sc:"green",risk:false,progress:72,owner:"SD",name:"Sarah Darlington",role:"CPO",impact:"Key hires",actions:2,blocker:false}
 ];
 
+var goalContent={
+sp1:{
+t:"Expand gross margin by 300bps",
+desc:"Drive 300 basis points of gross margin expansion across tier-1 product lines through COGS reduction, price realization, and channel mix optimization.",
+ownerInit:"JT",ownerName:"Joe Thompson",ownerRole:"CEO",ownerBg:"gold",
+dates:"Jan 6 \u2192 Mar 31, 2026",
+impact:"$24M",progress:54,actionCount:4,reviewDays:11,
+initiatives:[
+{t:"Reduce COGS tier-1",s:"BLOCKER",sc:"red",av:"KM",ownerName:"Kyle Moyer",ownerRole:"VP Operations",desc:"Renegotiate tier-1 supplier contracts to reduce COGS by $8M. Apex Logistics is the primary exposure.",prog:40,impact:"$8M COGS",actions:4,reviewDays:11,blocker:true},
+{t:"Price realization",s:"BLOCKED",sc:"amber",av:"SD",ownerName:"Sarah Darlington",ownerRole:"CPO",desc:"Implement pricing adjustments across product lines for +2.1% realization. Last three deals closed 1.8% below list.",prog:66,impact:"+2.1pp margin",actions:3,reviewDays:14,blocker:false},
+{t:"Channel mix optimization",s:"BEHIND",sc:"amber",av:"MS",ownerName:"Mark Sternberger",ownerRole:"COO",desc:"Optimize channel partner mix to improve margin contribution. Three partner interviews scheduled this month.",prog:28,impact:"$4M margin lift",actions:5,reviewDays:21,blocker:true}
+],
+metrics:[
+{l:"Gross margin %",v:"39.8%",tc:"amber",trend:"\u2197 +0.4pp QoQ",src:"netsuite",pts:[38.2,38.4,38.3,38.9,39.1,39.4,39.6,39.8]},
+{l:"COGS tier-1",v:"$18.2M",tc:"amber",trend:"\u2198 $8M target",src:"sap",pts:[19.8,19.4,19.1,18.9,18.7,18.5,18.3,18.2]},
+{l:"Price realization",v:"98.2%",tc:"green",trend:"\u2197 +0.6pp",src:"sf",pts:[97.1,97.3,97.2,97.4,97.6,97.8,98.0,98.2]}
+],
+metricTarget:"Target: 42.3% (300bps)",
+actions:[
+{t:"Review Q1 margin variance",i:"KM",bg:"teal",fg:"#fff",d:"Apr 22",s:"ON TRACK",sc:"green",bc:"#d49a0f",desc:"Quarterly margin variance review with finance. Compare actual performance against 300bps target.",subs:["Pull NetSuite actuals","Prepare variance bridge","Schedule finance sync"]},
+{t:"Interview channel partners",i:"SD",bg:"navy",fg:"#fff",d:"May 1",s:"ON TRACK",sc:"green",bc:"#d49a0f",desc:"Conduct interviews with three key channel partners to assess mix optimization opportunities.",subs:["Schedule partner A","Schedule partner B","Schedule partner C"]},
+{t:"Validate supplier scope",i:"MS",bg:"navy",fg:"#fff",d:"May 8",s:"AT RISK",sc:"amber",bc:"#d49a0f",desc:"Define scope for supplier contract renegotiations targeting tier-1 COGS reduction.",subs:["Identify top 5 suppliers","Set target reduction %","Draft negotiation brief"]}
+],
+blockerAction:"Approve pricing model",
+hasBlocker:true,
+hasCascadeDemo:true,
+askContext:"Expand gross margin by 300bps is the focal goal, currently 54% progress, $24M EBITDA impact. Gross margin is 39.8% vs 42.3% target. Three initiatives: Reduce COGS tier-1 (40% progress, blocker with Apex Logistics supplier), Price realization (66% progress, last three deals closed 1.8% below list), Channel mix optimization (28% progress, behind). Mark Sternberger (COO) flagged the supplier issue Monday. Board review in 11 days."
+},
+sp2:{
+t:"Accelerate revenue growth",
+desc:"Drive $18M ARR growth through EMEA market expansion, enterprise pipeline acceleration, and upsell motion into installed base.",
+ownerInit:"BA",ownerName:"Bill Adams",ownerRole:"Chairman",ownerBg:"navy",
+dates:"Jan 1 \u2192 Dec 31, 2026",
+impact:"$18M",progress:68,actionCount:3,reviewDays:14,
+initiatives:[
+{t:"EMEA market launch",s:"ON TRACK",sc:"green",av:"SD",ownerName:"Sarah Darlington",ownerRole:"CPO",desc:"Launch in UK, Germany, and Netherlands by Q2. Team hired. Marketing engine live.",prog:72,impact:"$7M ARR",actions:4,reviewDays:28,blocker:false},
+{t:"Enterprise pipeline",s:"ON TRACK",sc:"green",av:"JT",ownerName:"Joe Thompson",ownerRole:"CEO",desc:"Expand enterprise segment. 34 opportunities in Q2 pipeline, $12M weighted value.",prog:61,impact:"$8M ARR",actions:3,reviewDays:14,blocker:false},
+{t:"Upsell existing accounts",s:"BEHIND",sc:"amber",av:"KM",ownerName:"Kyle Moyer",ownerRole:"VP Operations",desc:"Drive expansion revenue from installed base. 22% of target achieved at month 4.",prog:38,impact:"$3M ARR",actions:5,reviewDays:30,blocker:false}
+],
+metrics:[
+{l:"Quarterly ARR",v:"$72.4M",tc:"green",trend:"\u2197 +12% YoY",src:"netsuite",pts:[64.1,65.8,67.2,68.5,69.8,70.9,71.7,72.4]},
+{l:"Pipeline coverage",v:"3.2x",tc:"green",trend:"\u2197 +0.4x QoQ",src:"sf",pts:[2.6,2.7,2.8,2.9,3.0,3.1,3.1,3.2]},
+{l:"Win rate",v:"34.1%",tc:"green",trend:"\u2197 +2.8pp",src:"sf",pts:[30.2,30.9,31.4,32.1,32.8,33.2,33.7,34.1]}
+],
+metricTarget:"Target: $90M ARR by year end",
+actions:[
+{t:"EMEA hiring plan finalization",i:"SD",bg:"navy",fg:"#fff",d:"Apr 25",s:"ON TRACK",sc:"green",bc:"#14B8A6",desc:"Close on three key EMEA hires: RVP UK, RVP DACH, and Marketing Director.",subs:["Final round UK RVP","Offer out to DACH candidate","Marketing Director shortlist"]},
+{t:"Q2 enterprise QBR prep",i:"JT",bg:"gold",fg:"navy",d:"May 5",s:"ON TRACK",sc:"green",bc:"#14B8A6",desc:"Prepare Q2 enterprise quarterly business review with top 10 accounts.",subs:["Pull account health","Draft exec briefings","Schedule review sessions"]},
+{t:"Upsell playbook refresh",i:"KM",bg:"teal",fg:"#fff",d:"May 12",s:"AT RISK",sc:"amber",bc:"#14B8A6",desc:"Refresh upsell playbook to address installed base expansion gap. Current motion underperforming.",subs:["Audit current plays","Interview CSMs","Draft new playbook"]}
+],
+hasBlocker:false,
+hasCascadeDemo:false,
+askContext:"Accelerate revenue growth is the focal goal, currently 68% progress, $18M ARR impact. Pipeline coverage is 3.2x, win rate is 34.1%. Three initiatives: EMEA market launch (72% progress, on track), Enterprise pipeline (61% progress, on track), Upsell existing accounts (38% progress, behind). Owner is Bill Adams (Chairman). Reporting cycle covers full FY26."
+},
+sp3:{
+t:"Drive operational efficiency",
+desc:"Reduce operating expense by $6M through vendor consolidation, process automation, and functional realignment. OpEx ratio needs to drop below 28%.",
+ownerInit:"MS",ownerName:"Mark Sternberger",ownerRole:"COO",ownerBg:"red",
+dates:"Jan 15 \u2192 Sep 30, 2026",
+impact:"$6M",progress:31,actionCount:5,reviewDays:18,
+initiatives:[
+{t:"Vendor consolidation",s:"BLOCKER",sc:"red",av:"MS",ownerName:"Mark Sternberger",ownerRole:"COO",desc:"Consolidate 47 vendors to target list of 18. Legal review blocking two key contracts.",prog:22,impact:"$2.8M savings",actions:6,reviewDays:18,blocker:true},
+{t:"Process automation wave 1",s:"BEHIND",sc:"amber",av:"KM",ownerName:"Kyle Moyer",ownerRole:"VP Operations",desc:"Automate finance close, AP workflow, and procurement routing. Phase 1 covers 3 of 7 processes.",prog:34,impact:"$1.8M savings",actions:4,reviewDays:42,blocker:false},
+{t:"Functional realignment",s:"AT RISK",sc:"amber",av:"SD",ownerName:"Sarah Darlington",ownerRole:"CPO",desc:"Restructure three functions to eliminate duplicative roles. HR review in progress.",prog:37,impact:"$1.4M savings",actions:3,reviewDays:21,blocker:false}
+],
+metrics:[
+{l:"OpEx ratio",v:"31.4%",tc:"amber",trend:"\u2198 -0.6pp QoQ",src:"netsuite",pts:[33.1,32.8,32.4,32.1,31.9,31.7,31.5,31.4]},
+{l:"Vendor count",v:"47",tc:"amber",trend:"\u2198 -8 from peak",src:"sap",pts:[55,54,52,51,50,49,48,47]},
+{l:"Automation coverage",v:"43%",tc:"amber",trend:"\u2197 +8pp QoQ",src:"conf",pts:[28,32,35,37,39,41,42,43]}
+],
+metricTarget:"Target: OpEx ratio < 28%",
+actions:[
+{t:"Escalate vendor legal review",i:"MS",bg:"red",fg:"#fff",d:"Apr 20",s:"AT RISK",sc:"amber",bc:"#dc2626",desc:"Two vendor contracts stuck in legal review for three weeks. Escalate to GC for resolution.",subs:["Schedule GC meeting","Prep redline summary","Set 5-day turnaround"]},
+{t:"Automation wave 2 scoping",i:"KM",bg:"teal",fg:"#fff",d:"May 5",s:"ON TRACK",sc:"green",bc:"#14B8A6",desc:"Scope wave 2 automation targeting procurement and expense management workflows.",subs:["Process inventory","Vendor selection","Business case"]},
+{t:"HR realignment approvals",i:"SD",bg:"navy",fg:"#fff",d:"May 10",s:"AT RISK",sc:"amber",bc:"#d49a0f",desc:"Close on three functional realignment proposals pending HR and legal sign-off.",subs:["Finance realignment","Ops realignment","Marketing realignment"]}
+],
+hasBlocker:false,
+hasCascadeDemo:false,
+askContext:"Drive operational efficiency is the focal goal, currently 31% progress, $6M OpEx impact. OpEx ratio is 31.4%, target is below 28%. Three initiatives: Vendor consolidation (22% progress, blocker with legal review), Process automation wave 1 (34% progress, behind), Functional realignment (37% progress, at risk). Owner is Mark Sternberger (COO). Confidence dropped 7 points last week."
+},
+sp4:{
+t:"Strengthen talent pipeline",
+desc:"Build a differentiated talent engine through senior hiring, succession planning, and internal mobility programs. Five key hires anchor the roadmap.",
+ownerInit:"SD",ownerName:"Sarah Darlington",ownerRole:"CPO",ownerBg:"navy",
+dates:"Jan 1 \u2192 Jun 30, 2026",
+impact:"5 key hires",progress:72,actionCount:2,reviewDays:24,
+initiatives:[
+{t:"Senior hires wave 1",s:"ON TRACK",sc:"green",av:"SD",ownerName:"Sarah Darlington",ownerRole:"CPO",desc:"Close VP Engineering, VP Product, and VP Finance roles. Three offers out, one verbal accept.",prog:80,impact:"3 of 5 hires",actions:3,reviewDays:24,blocker:false},
+{t:"Succession planning",s:"ON TRACK",sc:"green",av:"JT",ownerName:"Joe Thompson",ownerRole:"CEO",desc:"Document succession plans for all executive roles. Board review scheduled Q2.",prog:68,impact:"Full exec coverage",actions:2,reviewDays:35,blocker:false},
+{t:"Internal mobility program",s:"ON TRACK",sc:"green",av:"KM",ownerName:"Kyle Moyer",ownerRole:"VP Operations",desc:"Launch formal internal mobility program to retain and develop high-potential talent.",prog:55,impact:"20% internal fills",actions:2,reviewDays:60,blocker:false}
+],
+metrics:[
+{l:"Key hires filled",v:"3 / 5",tc:"green",trend:"\u2197 2 closed Q1",src:"gs",pts:[0,0,1,1,2,2,3,3]},
+{l:"Time to hire",v:"38d",tc:"green",trend:"\u2198 -12d QoQ",src:"gs",pts:[50,48,46,44,42,41,39,38]},
+{l:"Offer accept rate",v:"82%",tc:"green",trend:"\u2197 +8pp QoQ",src:"gs",pts:[72,74,75,77,78,80,81,82]}
+],
+metricTarget:"Target: 5 key hires by June 30",
+actions:[
+{t:"Close VP Engineering offer",i:"SD",bg:"navy",fg:"#fff",d:"Apr 25",s:"ON TRACK",sc:"green",bc:"#14B8A6",desc:"Final compensation negotiation with preferred candidate. Verbal accept in place, formal offer pending.",subs:["Comp package finalization","Reference checks","Start date confirmation"]},
+{t:"Q2 board succession review prep",i:"JT",bg:"gold",fg:"navy",d:"May 15",s:"ON TRACK",sc:"green",bc:"#14B8A6",desc:"Prepare succession planning document for Q2 board review. Coverage required for all exec roles.",subs:["Role-by-role drafts","Board pre-read","Discussion guide"]}
+],
+hasBlocker:false,
+hasCascadeDemo:false,
+askContext:"Strengthen talent pipeline is the focal goal, currently 72% progress. Three of five key hires closed. Time to hire down to 38 days from 50. Three initiatives: Senior hires wave 1 (80% progress, on track), Succession planning (68% progress, on track), Internal mobility (55% progress, on track). Owner is Sarah Darlington (CPO)."
+}
+};
+
 var boardItems=[
 {t:"Gross margin expansion",conf:72,prev:68,status:"green",owner:"JT",name:"Joe Thompson",role:"CEO",note:"COGS blocker being resolved. Price realization on track."},
 {t:"Revenue acceleration",conf:81,prev:79,status:"green",owner:"BA",name:"Bill Adams",role:"Chairman",note:"Pipeline ahead of target. EMEA launch on schedule."},
@@ -64,6 +171,8 @@ var scS=useState(null);var selChild=scS[0];var setSelChild=scS[1];
 var aaS=useState(false);var showAddAction=aaS[0];var setShowAddAction=aaS[1];
 var btS=useState("History");var bTab=btS[0];var setBTab=btS[1];
 var sicS=useState(null);var selItemCtx=sicS[0];var setSelItemCtx=sicS[1];
+var sgcS=useState("sp1");var selGoalCtx=sgcS[0];var setSelGoalCtx=sgcS[1];
+var G=goalContent[selGoalCtx]||goalContent.sp1;
 
 useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}",
@@ -172,6 +281,7 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 ].join("");document.head.appendChild(s);return function(){s.remove();};},[]);
 useEffect(function(){if(chatRef.current)chatRef.current.scrollTop=chatRef.current.scrollHeight;},[msgs,chatLoading]);
 useEffect(function(){window.scrollTo(0,0);},[page]);
+useEffect(function(){setMsgs([]);},[selGoalCtx]);
 
 function fire(){if(phase>0)return;setPhase(1);setTimeout(function(){setPhase(2);},700);setTimeout(function(){setPhase(3);},1400);setTimeout(function(){setPhase(4);},2100);setTimeout(function(){setPhase(5);setPulse(true);},2700);setTimeout(function(){setPulse(false);},4500);}
 function reset(){setPhase(0);setPulse(false);}
@@ -181,14 +291,16 @@ var showRisk=phase<4;
 var showBlocker=phase<2;
 var completed=phase>=1;
 
+function buildSys(){return "You are TARGA AI speaking to Joe Thompson, CEO of Targatek Inc. You are a strategic execution platform, not a chatbot. Tone: executive, direct, premise-led. Your output should read like a COO's briefing memo. No sycophancy, no generic AI preambles (never start with 'Let me help' or 'Here is' or 'Great question').\n\nContext about the business: "+G.askContext+"\n\nRules: Keep responses 2-3 sentences maximum. Use specific numbers and names. No em-dashes, ever. Use periods or commas instead. No emoji. No markdown formatting. No bullet lists unless explicitly asked. Dollar amounts in short form: $12.4M not $12,400,000. Never use the words task, ticket, sprint, assignee, or project. Use initiative, action, owner instead.";}
+
 function sendChat(){
 if(!chatIn.trim()||chatLoading)return;var q=chatIn.trim();setChatIn("");setMsgs(function(p){return p.concat([{role:"user",text:q}]);});setChatLoading(true);
-fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:"You are TARGA AI speaking to Joe Thompson, CEO of Targatek Inc. You are a strategic execution platform, not a chatbot. Tone: executive, direct, premise-led. Your output should read like a COO's briefing memo. No sycophancy, no generic AI preambles (never start with 'Let me help' or 'Here is' or 'Great question').\\n\\nContext about the business: Expand gross margin by 300bps is the focal goal, currently 54% progress, $24M EBITDA impact. Gross margin is 39.8% vs 42.3% target. Three initiatives: Reduce COGS tier-1 (40% progress, blocker with Apex Logistics supplier), Price realization (66% progress, last three deals closed 1.8% below list), Channel mix optimization (28% progress, behind). Mark Sternberger (COO) flagged the supplier issue Monday. Board review in 11 days. Other goals: Revenue acceleration (68%, on track, Bill Adams), Operational efficiency (31%, behind, Mark Sternberger), Talent pipeline (72%, on track, Sarah Darlington).\\n\\nRules: Keep responses 2-3 sentences maximum. Use specific numbers and names. No em-dashes, ever. Use periods or commas instead. No emoji. No markdown formatting. No bullet lists unless explicitly asked. Dollar amounts in short form: $12.4M not $12,400,000. Never use the words task, ticket, sprint, assignee, or project. Use initiative, action, owner instead.",messages:[{role:"user",content:q}]})}).then(function(r){return r.json();}).then(function(d){var txt=d.content?d.content.map(function(b){return b.text||"";}).join(""):"Could not process.";setMsgs(function(p){return p.concat([{role:"assistant",text:txt}]);});setChatLoading(false);}).catch(function(){setMsgs(function(p){return p.concat([{role:"assistant",text:"Gross margin is the exposure right now. COGS tier-1 is blocked on Apex Logistics, and price realization slipped 1.8% across the last three deals. Resolve the supplier conversation this week to unblock $6.1M of modeled value before board review."}]);});setChatLoading(false);});
+fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:buildSys(),messages:[{role:"user",content:q}]})}).then(function(r){return r.json();}).then(function(d){var txt=d.content?d.content.map(function(b){return b.text||"";}).join(""):"Could not process.";setMsgs(function(p){return p.concat([{role:"assistant",text:txt}]);});setChatLoading(false);}).catch(function(){setMsgs(function(p){return p.concat([{role:"assistant",text:"Let me pull that from the live data. One moment."}]);});setChatLoading(false);});
 }
 
 function askPreset(q){
 if(chatLoading)return;setMsgs(function(p){return p.concat([{role:"user",text:q}]);});setChatLoading(true);
-fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:"You are TARGA AI speaking to Joe Thompson, CEO of Targatek Inc. You are a strategic execution platform, not a chatbot. Tone: executive, direct, premise-led. Your output should read like a COO's briefing memo. No sycophancy, no generic AI preambles (never start with 'Let me help' or 'Here is' or 'Great question').\n\nContext about the business: Expand gross margin by 300bps is the focal goal, currently 54% progress, $24M EBITDA impact. Gross margin is 39.8% vs 42.3% target. Three initiatives: Reduce COGS tier-1 (40% progress, blocker with Apex Logistics supplier), Price realization (66% progress, last three deals closed 1.8% below list), Channel mix optimization (28% progress, behind). Mark Sternberger (COO) flagged the supplier issue Monday. Board review in 11 days. Other goals: Revenue acceleration (68%, on track, Bill Adams), Operational efficiency (31%, behind, Mark Sternberger), Talent pipeline (72%, on track, Sarah Darlington).\n\nRules: Keep responses 2-3 sentences maximum. Use specific numbers and names. No em-dashes, ever. Use periods or commas instead. No emoji. No markdown formatting. No bullet lists unless explicitly asked. Dollar amounts in short form: $12.4M not $12,400,000. Never use the words task, ticket, sprint, assignee, or project. Use initiative, action, owner instead.",messages:[{role:"user",content:q}]})}).then(function(r){return r.json();}).then(function(d){var txt=d.content?d.content.map(function(b){return b.text||"";}).join(""):"Could not process.";setMsgs(function(p){return p.concat([{role:"assistant",text:txt}]);});setChatLoading(false);}).catch(function(){setMsgs(function(p){return p.concat([{role:"assistant",text:"Gross margin is the exposure right now. COGS tier-1 is blocked on Apex Logistics, and price realization slipped 1.8% across the last three deals. Resolve the supplier conversation this week to unblock $6.1M of modeled value before board review."}]);});setChatLoading(false);});
+fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:buildSys(),messages:[{role:"user",content:q}]})}).then(function(r){return r.json();}).then(function(d){var txt=d.content?d.content.map(function(b){return b.text||"";}).join(""):"Could not process.";setMsgs(function(p){return p.concat([{role:"assistant",text:txt}]);});setChatLoading(false);}).catch(function(){setMsgs(function(p){return p.concat([{role:"assistant",text:"Let me pull that from the live data. One moment."}]);});setChatLoading(false);});
 }
 
 function NI(p){return(<div className="trg-nav" onClick={function(){setPage(p.pg);setSelItemCtx(null);}} style={{width:40,height:40,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",background:page===p.pg?C.tealBg:"transparent",cursor:"pointer"}} title={p.title}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d={p.d} stroke={page===p.pg?C.teal:C.gray} strokeWidth="1.8" strokeLinecap="square"/></svg></div>);}
@@ -233,7 +345,7 @@ return(
 <div className="trg-home-grid">
 <div className="trg-home-main">
 <Eye><SI s={12}/> My goals <span style={{color:C.gray,fontWeight:400}}>. 4</span></Eye>
-{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"22px 26px",marginBottom:12,cursor:"pointer"}}>
+{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"22px 26px",marginBottom:12,cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}><SI s={14}/><div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.navy,lineHeight:1.25,letterSpacing:"-0.02em",minWidth:0}}>{s.t}</div><div style={{display:"flex",gap:5,flexShrink:0,marginTop:2}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
 <div style={{display:"flex",alignItems:"flex-end",gap:32,marginBottom:14,flexWrap:"wrap"}}>
 <div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Impact</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{s.impact}</div></div>
@@ -281,7 +393,7 @@ return(
 <div style={{position:"relative",zIndex:1}}>
 
 <div style={{display:"flex",justifyContent:"center",marginBottom:48}}>
-<div className="trg-lift" onClick={function(){setPage("detail");}} style={{width:300,background:C.tealBg,border:"2px solid "+C.tealBd,borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 2px 12px rgba(14,178,175,0.1)"}}>
+<div className="trg-lift" onClick={function(){setSelGoalCtx("sp1");setSelItemCtx(null);setPage("detail");}} style={{width:300,background:C.tealBg,border:"2px solid "+C.tealBd,borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 2px 12px rgba(14,178,175,0.1)"}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><SI s={13}/><span style={{fontSize:12,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>BUSINESS PLAN</span></div>
 <div style={{fontSize:19,fontWeight:500,color:C.navy,marginBottom:8,lineHeight:1.3}}>Enterprise Value Creation - FY26</div>
 <div style={{display:"flex",alignItems:"center",gap:6}}><Pl c="green">{"\u2197"} ON TRACK</Pl><span style={{fontSize:12,color:C.gray,marginLeft:"auto"}}>4 strategies</span></div>
@@ -290,7 +402,7 @@ return(
 
 <div className="trg-cascade-col">
 {strategies.slice(0,3).map(function(s){return(
-<div key={s.id} className="trg-lift" onClick={function(){setPage("detail");}} style={{width:280,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
+<div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{width:280,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
 <SI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>GOAL</span>
 <div style={{marginLeft:"auto"}}><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
@@ -322,25 +434,28 @@ return(
 
 
 {page==="detail"&&<div>
-<div style={{display:"flex",alignItems:"center",gap:8,fontSize:14,color:C.gray,paddingBottom:18,borderBottom:"1px solid "+C.border,marginBottom:18}}><span style={{cursor:"pointer",color:C.teal}} onClick={function(){setPage("cascade");setSelItemCtx(null);}}>Strategy Map</span><span style={{color:"#b0bcc9"}}>/</span>{selItemCtx?<span style={{cursor:"pointer",color:C.teal}} onClick={function(){setSelItemCtx(null);window.scrollTo({top:0,behavior:"smooth"});}}>Expand gross margin by 300bps</span>:<span style={{color:C.navy,fontWeight:500}}>Expand gross margin by 300bps</span>}{selItemCtx&&<span style={{color:"#b0bcc9"}}>/</span>}{selItemCtx&&<span style={{color:C.navy,fontWeight:500}}>{selItemCtx.t}</span>}{phase>=5&&!selItemCtx&&<span className="trg-breadcrumb-replay" onClick={reset} style={{marginLeft:"auto",color:C.teal,cursor:"pointer",fontSize:13,fontWeight:500}}>Replay demo</span>}</div>
+<div style={{display:"flex",alignItems:"center",gap:8,fontSize:14,color:C.gray,paddingBottom:18,borderBottom:"1px solid "+C.border,marginBottom:18}}><span style={{cursor:"pointer",color:C.teal}} onClick={function(){setPage("cascade");setSelItemCtx(null);}}>Strategy Map</span><span style={{color:"#b0bcc9"}}>/</span>{selItemCtx?<span style={{cursor:"pointer",color:C.teal}} onClick={function(){setSelItemCtx(null);window.scrollTo({top:0,behavior:"smooth"});}}>{G.t}</span>:<span style={{color:C.navy,fontWeight:500}}>{G.t}</span>}{selItemCtx&&<span style={{color:"#b0bcc9"}}>/</span>}{selItemCtx&&<span style={{color:C.navy,fontWeight:500}}>{selItemCtx.t}</span>}{phase>=5&&!selItemCtx&&<span className="trg-breadcrumb-replay" onClick={reset} style={{marginLeft:"auto",color:C.teal,cursor:"pointer",fontSize:13,fontWeight:500}}>Replay demo</span>}</div>
 
 <div onClick={function(){setPage("cascade");}} style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"8px 12px",marginBottom:18,display:"flex",alignItems:"center",gap:8,cursor:"pointer"}}><SI s={12}/><span style={{fontSize:13,fontWeight:500,color:C.tealDk}}>PARENT</span><span style={{fontSize:15,fontWeight:500,color:C.navy}}>Drive enterprise value creation - FY26</span><Pl c="green">{"\u2197"} ON TRACK</Pl></div>
 
 <div className="trg-orbit">
 <div className="trg-orbit-left">
 <Eye><MI s={12}/> Metrics</Eye>
-{[{l:"Gross margin",v:"39.8%",tg:"42.3%",p:62,tr:"+80bps",tc:C.teal,src:"netsuite",srcN:"NetSuite",pts:[37.2,37.8,38.1,38.5,38.9,39.1,39.4,39.8],ok:true},{l:"COGS reduction",v:"-$3.2M",tg:"-$8M",p:40,tr:"Behind",tc:C.amber,src:"sap",srcN:"SAP",pts:[0.5,0.9,1.2,1.8,2.1,2.5,2.9,3.2],ok:false},{l:"Price realization",v:"+1.4%",tg:"+2.1%",p:66,tr:"On track",tc:C.teal,src:"sf",srcN:"Salesforce",pts:[0.3,0.5,0.7,0.8,1.0,1.1,1.3,1.4],ok:true}].map(function(m,idx){
+{G.metrics.map(function(m,idx){
 var isExp=expMetric===idx;
 var mx=Math.max.apply(null,m.pts);var mn=Math.min.apply(null,m.pts);
 var sparkD=m.pts.map(function(pt,pi){return(pi===0?"M":"L")+" "+(pi/(m.pts.length-1)*130)+" "+(36-((pt-mn)/(mx-mn||1))*36);}).join(" ");
+var barColor=m.tc==="amber"?C.amber:m.tc==="red"?C.red:C.teal;
+var srcNames={netsuite:"NetSuite",sap:"SAP",sf:"Salesforce",gs:"Google Sheets",conf:"Confluence"};
+var pct=m.tc==="green"?78:m.tc==="amber"?48:30;
 return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isExp?null:idx);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:10,padding:"14px 16px",marginBottom:10,cursor:"pointer"}}>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><span style={{fontSize:13,color:C.gray,fontWeight:500}}>{m.l}</span><div style={{display:"flex",alignItems:"center",gap:5}}><Logo k={m.src} s={14}/><span style={{fontSize:12,color:C.gray}}>{m.srcN}</span></div></div>
-<div style={{display:"flex",alignItems:"baseline",gap:6,marginBottom:8}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1}}>{m.v}</span><span style={{fontSize:12,color:C.gray}}>{"\u2192"} {m.tg}</span></div>
-<PB pct={m.p} h={4} color={m.tc}/>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}><Pl c={m.ok?"green":"amber"}>{m.ok?"\u2197":"\u2198"} {m.tr}</Pl><span style={{fontSize:12,color:C.gray}}>{m.p}%</span></div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><span style={{fontSize:13,color:C.gray,fontWeight:500}}>{m.l}</span><div style={{display:"flex",alignItems:"center",gap:5}}><Logo k={m.src} s={14}/><span style={{fontSize:12,color:C.gray}}>{srcNames[m.src]||m.src}</span></div></div>
+<div style={{display:"flex",alignItems:"baseline",gap:6,marginBottom:8}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{m.v}</span></div>
+<PB pct={pct} h={4} color={barColor}/>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}><Pl c={m.tc}>{m.trend}</Pl></div>
 <div style={{overflow:"hidden",maxHeight:isExp?80:0,opacity:isExp?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
 <div style={{paddingTop:10,borderTop:"1px solid "+C.subtle,marginTop:10}}><div style={{fontSize:11,color:C.gray,marginBottom:4,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500}}>8-week trend</div>
-<svg width="130" height="40" style={{display:"block"}}><path d={sparkD} fill="none" stroke={m.tc===C.amber?C.amber:C.teal} strokeWidth="2" strokeLinecap="round"/><circle cx="130" cy={36-((m.pts[m.pts.length-1]-mn)/(mx-mn||1))*36} r="3" fill={m.tc===C.amber?C.amber:C.teal}/></svg>
+<svg width="130" height="40" style={{display:"block"}}><path d={sparkD} fill="none" stroke={barColor} strokeWidth="2" strokeLinecap="round"/><circle cx="130" cy={36-((m.pts[m.pts.length-1]-mn)/(mx-mn||1))*36} r="3" fill={barColor}/></svg>
 </div></div>
 </div>);})}
 
@@ -355,35 +470,32 @@ return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isEx
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,overflow:"hidden",boxShadow:pulse?"0 0 0 3px rgba(14,178,175,0.3)":"0 2px 8px rgba(31,71,106,0.08)",transition:"box-shadow 1s cubic-bezier(0.23,1,0.32,1)"}}>
 <div style={{background:C.navy,backgroundImage:"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><polygon points='20,8 32,30 8,30' fill='none' stroke='%230eb2af' stroke-width='1' opacity='0.15'/></svg>\")",backgroundSize:"40px 40px",padding:"12px 18px",display:"flex",alignItems:"center",gap:10}}><TML s={16}/><span style={{fontSize:13,fontWeight:500,letterSpacing:1,color:"#fff",textTransform:"uppercase"}}>{selItemCtx?"Initiative":"Goal"}</span></div>
 <div style={{padding:"22px 22px 20px"}}>
-<div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}>{selItemCtx?<><Pl c="navy">INITIATIVE</Pl><Pl c={selItemCtx.sc}>{selItemCtx.s}</Pl>{selItemCtx.blocker&&<Pl c="red">BLOCKER</Pl>}</>:<><Pl c="navy">OPERATIONAL</Pl><Pl c="teal">Q1 2026</Pl><Pl c="amber" hide={!showRisk}>{"\u25B3"} RISK</Pl><Pl c="green">{"\u2197"} ON TRACK</Pl></>}</div>
-<div className="trg-focal-title" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.15,letterSpacing:"-0.025em",marginBottom:12}}>{selItemCtx?selItemCtx.t:"Expand gross margin by 300bps"}</div>
-<div style={{fontSize:16,color:"#4a5868",lineHeight:1.65,marginBottom:18}}>{selItemCtx?selItemCtx.desc:"Drive 300 basis points of gross margin expansion across tier-1 product lines through COGS reduction, price realization, and channel mix optimization."}</div>
+<div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}>{selItemCtx?<><Pl c="navy">INITIATIVE</Pl><Pl c={selItemCtx.sc}>{selItemCtx.s}</Pl>{selItemCtx.blocker&&<Pl c="red">BLOCKER</Pl>}</>:<><Pl c="navy">OPERATIONAL</Pl><Pl c="teal">Q1 2026</Pl><Pl c={G.hasBlocker?"amber":"green"} hide={G.hasBlocker?!showRisk:false}>{G.hasBlocker?"\u25B3 RISK":"\u2197 ON TRACK"}</Pl>{G.hasBlocker&&<Pl c="green">{"\u2197"} ON TRACK</Pl>}</>}</div>
+<div className="trg-focal-title" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.15,letterSpacing:"-0.025em",marginBottom:12}}>{selItemCtx?selItemCtx.t:G.t}</div>
+<div style={{fontSize:16,color:"#4a5868",lineHeight:1.65,marginBottom:18}}>{selItemCtx?selItemCtx.desc:G.desc}</div>
 <div className="trg-owner-row" style={{marginBottom:16}}>
-<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i={selItemCtx?selItemCtx.av:"JT"} bg={selItemCtx?(selItemCtx.av==="MS"?C.red:selItemCtx.av==="KM"?C.teal:C.navy):C.gold} fg={selItemCtx?"#fff":C.navy} s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{selItemCtx?selItemCtx.ownerName:"Joe Thompson"} <span style={{color:C.gray,fontWeight:400}}>. {selItemCtx?selItemCtx.ownerRole:"CEO"}</span></div></div></div>
-<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Dates</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>Jan 6 {"\u2192"} Mar 31, 2026</div></div>
+<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i={selItemCtx?selItemCtx.av:G.ownerInit} bg={selItemCtx?(selItemCtx.av==="MS"?C.red:selItemCtx.av==="KM"?C.teal:C.navy):(G.ownerBg==="gold"?C.gold:G.ownerBg==="red"?C.red:G.ownerBg==="teal"?C.teal:C.navy)} fg={selItemCtx?"#fff":(G.ownerBg==="gold"?C.navy:"#fff")} s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{selItemCtx?selItemCtx.ownerName:G.ownerName} <span style={{color:C.gray,fontWeight:400}}>. {selItemCtx?selItemCtx.ownerRole:G.ownerRole}</span></div></div></div>
+<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Dates</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{G.dates}</div></div>
 </div>
 <div className="trg-stat-strip" style={{background:C.bg2,borderRadius:10,marginBottom:16}}>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Impact</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.impact:"$24M"}</div></div>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Progress</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.prog+"%":<Odo value={progress} suffix="%" dur={1.6}/>}</div></div>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Actions</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.actions:<Odo value={actionCount} dur={1.4}/>}</div></div>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Review</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:selItemCtx?C.navy:(phase>=4?C.green:C.amber),letterSpacing:"-0.025em",lineHeight:1,transition:"color 1s cubic-bezier(0.23,1,0.32,1)",whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.reviewDays+"d":<Odo value={phase>=4?9:11} suffix="d" dur={1.4}/>}</div></div>
+<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Impact</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.impact:G.impact}</div></div>
+<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Progress</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.prog+"%":(G.hasCascadeDemo?<Odo value={progress} suffix="%" dur={1.6}/>:G.progress+"%")}</div></div>
+<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Actions</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.actions:(G.hasCascadeDemo?<Odo value={actionCount} dur={1.4}/>:G.actionCount)}</div></div>
+<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Review</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:selItemCtx?C.navy:(G.hasCascadeDemo?(phase>=4?C.green:C.amber):C.navy),letterSpacing:"-0.025em",lineHeight:1,transition:"color 1s cubic-bezier(0.23,1,0.32,1)",whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>{selItemCtx?selItemCtx.reviewDays+"d":(G.hasCascadeDemo?<Odo value={phase>=4?9:11} suffix="d" dur={1.4}/>:G.reviewDays+"d")}</div></div>
 </div>
-<PB pct={selItemCtx?selItemCtx.prog:progress} h={6} color={selItemCtx&&selItemCtx.sc==="amber"?C.amber:selItemCtx&&selItemCtx.sc==="red"?C.red:C.teal}/>
+<PB pct={selItemCtx?selItemCtx.prog:(G.hasCascadeDemo?progress:G.progress)} h={6} color={selItemCtx&&selItemCtx.sc==="amber"?C.amber:selItemCtx&&selItemCtx.sc==="red"?C.red:C.teal}/>
 </div></div>
 
 </div>
 
 <div className="trg-orbit-right">
-<Eye><AI s={12}/> Actions <span style={{color:C.gray,fontWeight:400}}>. <Odo value={actionCount} dur={1.4}/></span></Eye>
+<Eye><AI s={12}/> Actions <span style={{color:C.gray,fontWeight:400}}>. {G.hasCascadeDemo?<Odo value={actionCount} dur={1.4}/>:G.actionCount}</span></Eye>
 
-<div style={{overflow:"hidden",maxHeight:showBlocker?300:0,opacity:showBlocker?1:0,marginBottom:showBlocker?5:0,transition:"max-height 0.8s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), margin 0.8s cubic-bezier(0.4,0,0.2,1)"}}>
-<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.32s cubic-bezier(0.4,0,0.2,1)"}}>Approve pricing model</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" bg={C.gold} fg={C.navy} s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div className="trg-press" onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
-</div>
+{G.hasBlocker&&G.hasCascadeDemo&&<div style={{overflow:"hidden",maxHeight:showBlocker?300:0,opacity:showBlocker?1:0,marginBottom:showBlocker?5:0,transition:"max-height 0.8s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), margin 0.8s cubic-bezier(0.4,0,0.2,1)"}}>
+<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.32s cubic-bezier(0.4,0,0.2,1)"}}>{G.blockerAction}</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" bg={C.gold} fg={C.navy} s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div className="trg-press" onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
+</div>}
 
-{[{t:"Review Q1 margin variance",i:"KM",bg:C.teal,fg:"#fff",d:"Apr 22",s:"ON TRACK",sc:"green",bc:"#d49a0f",desc:"Quarterly margin variance review with finance. Compare actual performance against 300bps target.",subs:["Pull NetSuite actuals","Prepare variance bridge","Schedule finance sync"]},
-{t:"Interview channel partners",i:"SD",bg:C.navy,fg:"#fff",d:"May 1",s:"ON TRACK",sc:"green",bc:"#d49a0f",desc:"Conduct interviews with three key channel partners to assess mix optimization opportunities.",subs:["Schedule partner A","Schedule partner B","Schedule partner C"]},
-{t:"Validate supplier scope",i:"MS",bg:C.navy,fg:"#fff",d:"May 8",s:"AT RISK",sc:"amber",bc:"#d49a0f",desc:"Define scope for supplier contract renegotiations targeting tier-1 COGS reduction.",subs:["Identify top 5 suppliers","Set target reduction %","Draft negotiation brief"]}
-].map(function(a){var isSel=selAction&&selAction.t===a.t;return(<div key={a.t}>
+{G.actions.map(function(aRaw){var bgMap={teal:C.teal,navy:C.navy,gold:C.gold,red:C.red};var a=Object.assign({},aRaw,{bg:bgMap[aRaw.bg]||aRaw.bg,fg:aRaw.fg==="navy"?C.navy:aRaw.fg});var isSel=selAction&&selAction.t===a.t;return(<div key={a.t}>
 <div className="trg-lift" onClick={function(){setSelAction(isSel?null:a);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+a.bc,borderRadius:8,padding:13,marginBottom:8,cursor:"pointer"}}>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{a.t}</div>
 <div style={{display:"flex",alignItems:"center",gap:5}}><Av i={a.i} bg={a.bg} fg={a.fg} s={16}/><span style={{fontSize:11,color:C.gray}}>{a.d}</span><span style={{marginLeft:"auto"}}><Pl c={a.sc}>{a.s}</Pl></span></div>
@@ -437,12 +549,9 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{padding:"12px 20px 16px",borderTop:"1px solid "+C.subtle,display:"flex",gap:10}}><input value={chatIn} onChange={function(e){setChatIn(e.target.value);}} onKeyDown={function(e){if(e.key==="Enter")sendChat();}} placeholder="Ask about this goal..." style={{flex:1,padding:"10px 14px",border:"1px solid "+C.border,borderRadius:8,fontSize:16,color:C.navy,outline:"none",background:C.bg2,fontFamily:"inherit"}}/><div onClick={sendChat} style={{width:42,height:42,background:C.teal,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12 L19 12 M12 5 L19 12 L12 19" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div></div>
 </div>
 
-<Eye><PI s={12}/> Initiatives <span style={{color:C.gray,fontWeight:400}}>. 3</span></Eye>
+<Eye><PI s={12}/> Initiatives <span style={{color:C.gray,fontWeight:400}}>. {G.initiatives.length}</span></Eye>
 <div className="trg-init-row">
-{[{t:"Reduce COGS tier-1",s:phase>=4?"AT RISK":"BLOCKER",sc:phase>=4?"amber":"red",av:"KM",ownerName:"Kyle Moyer",ownerRole:"VP Operations",desc:"Renegotiate tier-1 supplier contracts to reduce COGS by $8M. Apex Logistics is the primary exposure, two other suppliers secondary.",prog:40,impact:"$8M COGS",actions:4,reviewDays:11,blocker:true},
-{t:"Price realization",s:phase>=4?"ON TRACK":"BLOCKED",sc:phase>=4?"green":"amber",av:"SD",ownerName:"Sarah Darlington",ownerRole:"CPO",desc:"Implement pricing adjustments across product lines for +2.1% realization. Last three deals closed 1.8% below list.",prog:66,impact:"+2.1pp margin",actions:3,reviewDays:14,blocker:false},
-{t:"Channel mix optimization",s:"BEHIND",sc:"amber",av:"MS",ownerName:"Mark Sternberger",ownerRole:"COO",desc:"Optimize channel partner mix to improve margin contribution. Three partner interviews scheduled this month.",prog:28,impact:"$4M margin lift",actions:5,reviewDays:21,blocker:true}
-].map(function(ch,ci){var isSC=selChild===ci;return(<div key={ch.t} style={{flex:1}}>
+{G.initiatives.map(function(chRaw,ci){var ch=G.hasCascadeDemo&&chRaw.t==="Reduce COGS tier-1"?Object.assign({},chRaw,{s:phase>=4?"AT RISK":"BLOCKER",sc:phase>=4?"amber":"red"}):G.hasCascadeDemo&&chRaw.t==="Price realization"?Object.assign({},chRaw,{s:phase>=4?"ON TRACK":"BLOCKED",sc:phase>=4?"green":"amber"}):chRaw;var isSC=selChild===ci;return(<div key={ch.t} style={{flex:1}}>
 <div className="trg-lift" onClick={function(){setSelChild(isSC?null:ci);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:8,padding:"9px 11px",cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}><PI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.pinkDk}}>INITIATIVE</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{ch.t}</div>
@@ -504,7 +613,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div className="trg-home-grid">
 <div className="trg-home-main">
 <Eye>Goal health</Eye>
-{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:16,cursor:"pointer"}}>
+{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:16,cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:8,height:8,borderRadius:"50%",background:s.sc==="green"?C.green:C.amber,flexShrink:0}}/><div style={{flex:1,fontSize:17,fontWeight:500,color:C.navy,minWidth:0}}>{s.t}</div><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
 <div style={{display:"flex",gap:24,marginBottom:8,flexWrap:"wrap"}}><div><div style={{fontSize:11,color:C.gray}}>Progress</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.progress}%</div></div><div><div style={{fontSize:11,color:C.gray}}>Impact</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.impact}</div></div><div style={{marginLeft:"auto",display:"flex",gap:4}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
 <PB pct={s.progress}/>
@@ -536,7 +645,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 </div>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Confidence by initiative</div>
-{boardItems.map(function(b,bi){var isOwned=b.owner==="JT";return(<div key={b.t} className={isOwned?"trg-lift":""} onClick={isOwned?function(){setPage("detail");}:undefined} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:20,marginBottom:16,cursor:isOwned?"pointer":"default"}}>
+{boardItems.map(function(b,bi){var isOwned=b.owner==="JT";return(<div key={b.t} className={isOwned?"trg-lift":""} onClick={isOwned?function(){setSelGoalCtx("sp1");setSelItemCtx(null);setPage("detail");}:undefined} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:20,marginBottom:16,cursor:isOwned?"pointer":"default"}}>
 <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}><div style={{fontSize:17,fontWeight:500,color:C.navy,flex:1,minWidth:0}}>{b.t}</div><div style={{display:"flex",alignItems:"center",gap:8}}><Av i={b.owner} s={22} bg={b.owner==="JT"?C.gold:b.owner==="MS"?C.red:C.navy} fg={b.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:13,color:C.gray,whiteSpace:"nowrap"}}>{b.name} . {b.role}</span></div><div style={{textAlign:"right"}}><div style={{fontSize:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
 <PB pct={b.conf} color={b.status==="green"?C.green:C.red} h={6}/>
 <div style={{fontSize:14,color:"#4a5868",lineHeight:1.6,marginTop:10}}>{b.note}</div>
