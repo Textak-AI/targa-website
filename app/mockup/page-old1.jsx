@@ -3,20 +3,6 @@ import { useState, useRef, useEffect } from "react";
 
 var C = { navy: "#1f476a", teal: "#0eb2af", gold: "#fbbf24", gray: "#6b7a8a", light: "#f4f7fa", white: "#fff", border: "#d6dee6", subtle: "#e6ecf2", bg2: "#f4f6f8", tealBg: "#e6f7f7", tealBd: "#b8e8e7", tealDk: "#076c69", green: "#059669", greenBg: "#ecfdf5", amber: "#d97706", amberBg: "#fef3c7", red: "#dc2626", redBg: "#fef2f2", navyLt: "#dde6ef", pinkDk: "#8a3560" };
 
-// Motion vocabulary - three tiers, two easings. Every transition uses one of these.
-var M = {
-  // Standard easing - decisive, confident. Use for most transitions.
-  ease: "cubic-bezier(0.4, 0, 0.2, 1)",
-  // Expressive easing - eases out strongly. Use for moments of consequence (odometer, progress, cascades).
-  easeOut: "cubic-bezier(0.23, 1, 0.32, 1)",
-  // Tier 1: Micro (hover, tabs, chips, focus, nav)
-  micro: "all 0.18s cubic-bezier(0.4, 0, 0.2, 1)",
-  // Tier 2: Reveal (expand/collapse, modal entrance)
-  reveal: "all 0.32s cubic-bezier(0.4, 0, 0.2, 1)",
-  // Tier 3: Expressive (odometer, progress fills, state cascades)
-  expressive: "all 1.4s cubic-bezier(0.23, 1, 0.32, 1)"
-};
-
 function TML(p){var s=p.s||18;return(<svg width={s} height={s} viewBox="0 0 24 24"><polygon points="14.4 18.6 9.7 18.6 12 13.8" fill={C.teal}/><polygon points="23.5 23.9 19.4 23.9 12.1 8.7 4.7 24 0.5 24 9.8 4.7 11.4 1.5 12.1 0" fill="#fff"/></svg>);}
 function TM(p){var v=p.v||"i",s=p.s||16;return(<svg width={s} height={s} viewBox="0 0 24 24"><polygon points="14.4 18.6 9.7 18.6 12 13.8" fill={v==="a"?C.gold:C.teal}/><polygon points="23.5 23.9 19.4 23.9 12.1 8.7 4.7 24 0.5 24 9.8 4.7 11.4 1.5 12.1 0" fill={C.navy}/></svg>);}
 function SI(p){var s=p.s||11;return(<svg width={s} height={s} viewBox="0 0 24 24"><path d="M12 3 L21 20 L3 20 Z" fill={C.teal} fillOpacity="0.2"/><path d="M12 8 L18 18 L6 18 Z" fill={C.teal}/><circle cx="12" cy="3" r="1.5" fill={C.gold}/></svg>);}
@@ -36,17 +22,17 @@ function Logo(p){var s=p.s||18;var k=p.k;var maps={netsuite:{bg:"#125ca4",fg:"#f
 function PB(p){return(<div style={{height:p.h||5,background:"#e6ecf2",borderRadius:2,overflow:"hidden"}}><div style={{width:p.pct+"%",height:"100%",background:p.color||C.teal,transition:"width 1.4s cubic-bezier(0.4,0,0.2,1)"}}/></div>);}
 
 var strategies=[
-{id:"sp1",t:"Expand gross margin by 300bps",status:"ON TRACK",sc:"green",risk:true,progress:54,owner:"JT",name:"Joe Thompson",role:"CEO",impact:"$24M EBITDA",actions:4,blocker:true},
-{id:"sp2",t:"Accelerate revenue growth",status:"ON TRACK",sc:"green",risk:false,progress:68,owner:"BA",name:"Bill Adams",role:"Chairman",impact:"$18M ARR",actions:3,blocker:false},
-{id:"sp3",t:"Drive operational efficiency",status:"BEHIND",sc:"amber",risk:true,progress:31,owner:"MS",name:"Mark Sternberger",role:"COO",impact:"$6M OpEx",actions:5,blocker:true},
-{id:"sp4",t:"Strengthen talent pipeline",status:"ON TRACK",sc:"green",risk:false,progress:72,owner:"SD",name:"Sarah Darlington",role:"CPO",impact:"Key hires",actions:2,blocker:false}
+{id:"sp1",t:"Expand gross margin by 300bps",status:"ON TRACK",sc:"green",risk:true,progress:54,owner:"JT",impact:"$24M EBITDA",actions:4,blocker:true},
+{id:"sp2",t:"Accelerate revenue growth",status:"ON TRACK",sc:"green",risk:false,progress:68,owner:"BA",impact:"$18M ARR",actions:3,blocker:false},
+{id:"sp3",t:"Drive operational efficiency",status:"BEHIND",sc:"amber",risk:true,progress:31,owner:"MS",impact:"$6M OpEx",actions:5,blocker:true},
+{id:"sp4",t:"Strengthen talent pipeline",status:"ON TRACK",sc:"green",risk:false,progress:72,owner:"SD",impact:"Key hires",actions:2,blocker:false}
 ];
 
 var boardItems=[
-{t:"Gross margin expansion",conf:72,prev:68,status:"green",owner:"JT",name:"Joe Thompson",role:"CEO",note:"COGS blocker being resolved. Price realization on track."},
-{t:"Revenue acceleration",conf:81,prev:79,status:"green",owner:"BA",name:"Bill Adams",role:"Chairman",note:"Pipeline ahead of target. EMEA launch on schedule."},
-{t:"Operational efficiency",conf:45,prev:52,status:"red",owner:"MS",name:"Mark Sternberger",role:"COO",note:"Two blockers active. Vendor delays impacting timeline."},
-{t:"Talent pipeline",conf:78,prev:75,status:"green",owner:"SD",name:"Sarah Darlington",role:"CPO",note:"3 of 5 key hires completed. Remaining positions in final round."}
+{t:"Gross margin expansion",conf:72,prev:68,status:"green",owner:"JT",note:"COGS blocker being resolved. Price realization on track."},
+{t:"Revenue acceleration",conf:81,prev:79,status:"green",owner:"BA",note:"Pipeline ahead of target. EMEA launch on schedule."},
+{t:"Operational efficiency",conf:45,prev:52,status:"red",owner:"MS",note:"Two blockers active. Vendor delays impacting timeline."},
+{t:"Talent pipeline",conf:78,prev:75,status:"green",owner:"SD",note:"3 of 5 key hires completed. Remaining positions in final round."}
 ];
 
 export default function TargaApp(){
@@ -68,17 +54,6 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}",
 "@keyframes pu{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}",
 "@keyframes trg-tri{0%,100%{opacity:0.25;transform:translateY(2px) scale(0.9)}50%{opacity:1;transform:translateY(0) scale(1)}}",
-"@keyframes trg-page{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
-".trg-page{animation:trg-page 0.3s cubic-bezier(0.4,0,0.2,1)}",
-".trg-lift{transition:transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s cubic-bezier(0.4,0,0.2,1)}",
-".trg-lift:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(31,71,106,0.08), 0 0 0 0.5px rgba(31,71,106,0.04) !important;border-color:#c6d1dc !important}",
-".trg-lift:active{transform:translateY(0)}",
-".trg-press{transition:transform 0.1s cubic-bezier(0.4,0,0.2,1), background 0.18s cubic-bezier(0.4,0,0.2,1), opacity 0.18s cubic-bezier(0.4,0,0.2,1)}",
-".trg-press:active{transform:scale(0.97)}",
-".trg-chip{transition:all 0.18s cubic-bezier(0.4,0,0.2,1)}",
-".trg-chip:hover{border-color:#0eb2af !important;color:#0eb2af !important;background:#e6f7f7 !important}",
-".trg-nav{transition:background 0.18s cubic-bezier(0.4,0,0.2,1)}",
-".trg-nav:hover{background:#f4f7fa}",
 ".trg-shell{display:flex;min-height:100vh}",
 ".trg-rail{width:56px;flex-shrink:0;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 8px}",
 ".trg-main{flex:1;padding:32px 48px;min-width:0}",
@@ -107,11 +82,11 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 ".trg-pulse-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}",
 ".trg-pulse-patterns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}",
 ".trg-comments-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}",
-".trg-ph-title{font-size:30px}",
-".trg-hero-headline{font-size:28px}",
-".trg-focal-title{font-size:36px}",
-".trg-focal-num{font-size:28px}",
-".trg-hero-num{font-size:42px}",
+".trg-ph-title{font-size:24px}",
+".trg-hero-headline{font-size:22px}",
+".trg-focal-title{font-size:26px}",
+".trg-focal-num{font-size:22px}",
+".trg-hero-num{font-size:28px}",
 "@media (max-width: 1023px){",
 ".trg-main{padding:24px 28px}",
 ".trg-home-grid{flex-direction:column}",
@@ -131,21 +106,20 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 ".trg-rail-avatar{display:none}",
 ".trg-rail > .trg-flex-spacer{display:none}",
 ".trg-main{padding:16px 14px 80px}",
-".trg-main [style*=\"font-size: 10px\"]{font-size:12px !important}",
 ".trg-main [style*=\"font-size: 11px\"]{font-size:13px !important}",
 ".trg-main [style*=\"font-size: 12px\"]{font-size:14px !important}",
 ".trg-main [style*=\"font-size: 13px\"]{font-size:15px !important}",
 ".trg-main [style*=\"font-size: 14px\"]{font-size:16px !important}",
 ".trg-main [style*=\"font-size: 15px\"]{font-size:17px !important}",
-".trg-ph-title{font-size:26px}",
+".trg-ph-title{font-size:22px}",
 ".trg-hero{flex-direction:column;align-items:stretch;gap:16px;padding:20px 20px}",
 ".trg-hero-divider{display:none}",
 ".trg-hero-metrics{flex-direction:row;min-width:0;gap:20px;padding-top:16px;border-top:1px solid #e6ecf2}",
 ".trg-hero-metrics > div{flex:1}",
-".trg-hero-headline{font-size:24px}",
-".trg-hero-num{font-size:36px}",
-".trg-focal-title{font-size:28px}",
-".trg-focal-num{font-size:24px}",
+".trg-hero-headline{font-size:20px}",
+".trg-hero-num{font-size:26px}",
+".trg-focal-title{font-size:22px}",
+".trg-focal-num{font-size:19px}",
 ".trg-stat4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}",
 ".trg-stat-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:14px}",
 ".trg-owner-row{grid-template-columns:minmax(0,1fr)}",
@@ -172,7 +146,7 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 useEffect(function(){if(chatRef.current)chatRef.current.scrollTop=chatRef.current.scrollHeight;},[msgs,chatLoading]);
 useEffect(function(){window.scrollTo(0,0);},[page]);
 
-function fire(){if(phase>0)return;setPhase(1);setTimeout(function(){setPhase(2);},700);setTimeout(function(){setPhase(3);},1400);setTimeout(function(){setPhase(4);},2100);setTimeout(function(){setPhase(5);setPulse(true);},2700);setTimeout(function(){setPulse(false);},4500);}
+function fire(){if(phase>0)return;setPhase(1);setTimeout(function(){setPhase(2);},600);setTimeout(function(){setPhase(3);},900);setTimeout(function(){setPhase(4);},1000);setTimeout(function(){setPhase(5);setPulse(true);},1100);setTimeout(function(){setPulse(false);},2500);}
 function reset(){setPhase(0);setPulse(false);}
 var progress=phase>=3?62:54;
 var actionCount=phase>=3?3:4;
@@ -182,15 +156,10 @@ var completed=phase>=1;
 
 function sendChat(){
 if(!chatIn.trim()||chatLoading)return;var q=chatIn.trim();setChatIn("");setMsgs(function(p){return p.concat([{role:"user",text:q}]);});setChatLoading(true);
-fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:"You are TARGA AI speaking to Joe Thompson, CEO of Targatek Inc. You are a strategic execution platform, not a chatbot. Tone: executive, direct, premise-led. Your output should read like a COO's briefing memo. No sycophancy, no generic AI preambles (never start with 'Let me help' or 'Here is' or 'Great question').\\n\\nContext about the business: Expand gross margin by 300bps is the focal goal, currently 54% progress, $24M EBITDA impact. Gross margin is 39.8% vs 42.3% target. Three initiatives: Reduce COGS tier-1 (40% progress, blocker with Apex Logistics supplier), Price realization (66% progress, last three deals closed 1.8% below list), Channel mix optimization (28% progress, behind). Mark Sternberger (COO) flagged the supplier issue Monday. Board review in 11 days. Other goals: Revenue acceleration (68%, on track, Bill Adams), Operational efficiency (31%, behind, Mark Sternberger), Talent pipeline (72%, on track, Sarah Darlington).\\n\\nRules: Keep responses 2-3 sentences maximum. Use specific numbers and names. No em-dashes, ever. Use periods or commas instead. No emoji. No markdown formatting. No bullet lists unless explicitly asked. Dollar amounts in short form: $12.4M not $12,400,000. Never use the words task, ticket, sprint, assignee, or project. Use initiative, action, owner instead.",messages:[{role:"user",content:q}]})}).then(function(r){return r.json();}).then(function(d){var txt=d.content?d.content.map(function(b){return b.text||"";}).join(""):"Could not process.";setMsgs(function(p){return p.concat([{role:"assistant",text:txt}]);});setChatLoading(false);}).catch(function(){setMsgs(function(p){return p.concat([{role:"assistant",text:"Gross margin is the exposure right now. COGS tier-1 is blocked on Apex Logistics, and price realization slipped 1.8% across the last three deals. Resolve the supplier conversation this week to unblock $6.1M of modeled value before board review."}]);});setChatLoading(false);});
+fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,system:"You are TARGA AI. Context: 4 goals FY26. Gross margin 39.8% vs 42.3%. Revenue on track. OpEx behind. Talent ahead. Keep responses 2-3 sentences, executive-level. No em-dashes or markdown.",messages:[{role:"user",content:q}]})}).then(function(r){return r.json();}).then(function(d){var txt=d.content?d.content.map(function(b){return b.text||"";}).join(""):"Could not process.";setMsgs(function(p){return p.concat([{role:"assistant",text:txt}]);});setChatLoading(false);}).catch(function(){setMsgs(function(p){return p.concat([{role:"assistant",text:"Gross margin and operational efficiency need focus. Resolve the COGS blocker and escalate vendor delays this week."}]);});setChatLoading(false);});
 }
 
-function askPreset(q){
-if(chatLoading)return;setMsgs(function(p){return p.concat([{role:"user",text:q}]);});setChatLoading(true);
-fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:"You are TARGA AI speaking to Joe Thompson, CEO of Targatek Inc. You are a strategic execution platform, not a chatbot. Tone: executive, direct, premise-led. Your output should read like a COO's briefing memo. No sycophancy, no generic AI preambles (never start with 'Let me help' or 'Here is' or 'Great question').\n\nContext about the business: Expand gross margin by 300bps is the focal goal, currently 54% progress, $24M EBITDA impact. Gross margin is 39.8% vs 42.3% target. Three initiatives: Reduce COGS tier-1 (40% progress, blocker with Apex Logistics supplier), Price realization (66% progress, last three deals closed 1.8% below list), Channel mix optimization (28% progress, behind). Mark Sternberger (COO) flagged the supplier issue Monday. Board review in 11 days. Other goals: Revenue acceleration (68%, on track, Bill Adams), Operational efficiency (31%, behind, Mark Sternberger), Talent pipeline (72%, on track, Sarah Darlington).\n\nRules: Keep responses 2-3 sentences maximum. Use specific numbers and names. No em-dashes, ever. Use periods or commas instead. No emoji. No markdown formatting. No bullet lists unless explicitly asked. Dollar amounts in short form: $12.4M not $12,400,000. Never use the words task, ticket, sprint, assignee, or project. Use initiative, action, owner instead.",messages:[{role:"user",content:q}]})}).then(function(r){return r.json();}).then(function(d){var txt=d.content?d.content.map(function(b){return b.text||"";}).join(""):"Could not process.";setMsgs(function(p){return p.concat([{role:"assistant",text:txt}]);});setChatLoading(false);}).catch(function(){setMsgs(function(p){return p.concat([{role:"assistant",text:"Gross margin is the exposure right now. COGS tier-1 is blocked on Apex Logistics, and price realization slipped 1.8% across the last three deals. Resolve the supplier conversation this week to unblock $6.1M of modeled value before board review."}]);});setChatLoading(false);});
-}
-
-function NI(p){return(<div className="trg-nav" onClick={function(){setPage(p.pg);}} style={{width:40,height:40,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",background:page===p.pg?C.tealBg:"transparent",cursor:"pointer"}} title={p.title}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d={p.d} stroke={page===p.pg?C.teal:C.gray} strokeWidth="1.8" strokeLinecap="square"/></svg></div>);}
+function NI(p){return(<div onClick={function(){setPage(p.pg);}} style={{width:40,height:40,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",background:page===p.pg?C.tealBg:"transparent",cursor:"pointer",transition:"background 0.2s"}} title={p.title}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d={p.d} stroke={page===p.pg?C.teal:C.gray} strokeWidth="1.8" strokeLinecap="square"/></svg></div>);}
 
 function PH(p){return(<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:18,borderBottom:"1px solid "+C.border,marginBottom:18,gap:12,flexWrap:"wrap"}}><div style={{minWidth:0}}><div style={{fontSize:12,fontWeight:500,letterSpacing:1.5,color:C.teal,textTransform:"uppercase",marginBottom:2}}>{p.eyebrow}</div><div className="trg-ph-title" style={{fontWeight:500,color:C.navy,fontFamily:"Space Grotesk, sans-serif",letterSpacing:"-0.02em"}}>{p.title}</div></div>{p.right&&<div>{p.right}</div>}</div>);}
 
@@ -200,7 +169,7 @@ return(
 <div className="trg-rail" style={{background:C.white,borderRight:"1px solid "+C.border}}>
 <div className="trg-rail-brand" style={{marginBottom:16,cursor:"pointer"}} onClick={function(){setPage("home");}}><svg width="24" height="24" viewBox="0 0 24 24"><polygon points="14.4 18.6 9.7 18.6 12 13.8" fill={C.teal}/><polygon points="23.5 23.9 19.4 23.9 12.1 8.7 4.7 24 0.5 24 9.8 4.7 11.4 1.5 12.1 0" fill={C.navy}/></svg></div>
 <NI pg="home" d="M3 9 L12 3 L21 9 L21 21 L3 21 Z" title="Home"/>
-<NI pg="cascade" d="M4 5 L20 5 M4 12 L20 12 M4 19 L16 19" title="Strategy Map"/>
+<NI pg="cascade" d="M4 5 L20 5 M4 12 L20 12 M4 19 L16 19" title="Cascade"/>
 <NI pg="detail" d="M9 3 L9 21 M3 9 L15 9 M3 15 L15 15" title="Item Detail"/>
 <NI pg="dashboard" d="M3 3 L10 3 L10 13 L3 13 Z M14 3 L21 3 L21 8 L14 8 Z M14 11 L21 11 L21 21 L14 21 Z M3 16 L10 16 L10 21 L3 21 Z" title="Dashboard"/>
 <NI pg="pulse" d="M2 12 L6 12 L9 4 L12 20 L15 8 L18 12 L22 12" title="Board Pulse"/>
@@ -211,44 +180,43 @@ return(
 
 <div className="trg-main">
 
-<div key={page} className="trg-page">
-
 {page==="home"&&<div>
 <PH eyebrow="Good morning, Joe" title="My world" right={<div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div>}/>
 
-<div className="trg-hero" style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,marginBottom:28,boxShadow:"0 1px 3px rgba(31,71,106,0.04)",padding:"28px 32px"}}>
+<div className="trg-hero" style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,marginBottom:28,boxShadow:"0 1px 3px rgba(31,71,106,0.04)"}}>
 <div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:10,fontWeight:500,letterSpacing:1.4,color:C.tealDk,textTransform:"uppercase",marginBottom:10,display:"flex",alignItems:"center",gap:6}}><TM s={12}/> This week's focus</div>
-<div className="trg-hero-headline" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.22,letterSpacing:"-0.022em",marginBottom:12}}>Mark flagged Apex Logistics this morning. Two goals are exposed to the same supplier negotiation. One conversation unblocks $6.1M before board review.</div>
-<div style={{fontSize:15,color:"#4a5868",lineHeight:1.6}}>Both gross margin and channel mix depend on this vendor. Last three deals closed 1.8% below list, compounding the exposure. Decision window closes when board materials lock in 11 days.</div>
+<div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:8,display:"flex",alignItems:"center",gap:6}}><TM s={12}/> This week's focus</div>
+<div className="trg-hero-headline" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.3,letterSpacing:"-0.02em",marginBottom:10}}>Resolve the COGS blocker before board review.</div>
+<div style={{fontSize:15,color:"#4a5868",lineHeight:1.6}}>Three of four goals on track. The COGS initiative is 40% against an $8M target and Mark flagged a supplier blocker. Gross margin hits board review in 11 days.</div>
 </div>
 <div className="trg-hero-divider" style={{background:C.border}}/>
 <div className="trg-hero-metrics">
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:6}}>Confidence</div><div style={{display:"flex",alignItems:"baseline",gap:8}}><span className="trg-hero-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>3.5<span style={{fontSize:"0.42em",color:C.gray,fontWeight:400}}> / 5</span></span><span style={{fontSize:13,color:C.green,fontWeight:500}}>{"\u2197"} +0.2</span></div></div>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:6}}>Board review</div><div style={{display:"flex",alignItems:"baseline",gap:8}}><span className="trg-hero-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.amber,letterSpacing:"-0.025em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>11<span style={{fontSize:"0.45em",fontWeight:400}}>d</span></span><span style={{fontSize:13,color:C.gray}}>Q1 materials</span></div></div>
+<div><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,marginBottom:2}}>Confidence</div><div style={{display:"flex",alignItems:"baseline",gap:6}}><span className="trg-hero-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1}}>69<span style={{fontSize:"0.65em"}}>%</span></span><span style={{fontSize:13,color:C.green,fontWeight:500}}>{"\u2197"} +3</span></div></div>
+<div><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,marginBottom:2}}>Board review</div><div style={{display:"flex",alignItems:"baseline",gap:6}}><span className="trg-hero-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.amber,letterSpacing:"-0.02em",lineHeight:1}}>11<span style={{fontSize:"0.6em"}}>d</span></span><span style={{fontSize:13,color:C.gray}}>Q1 materials</span></div></div>
 </div>
 </div>
 
 <div className="trg-home-grid">
 <div className="trg-home-main">
 <Eye><SI s={12}/> My goals <span style={{color:C.gray,fontWeight:400}}>. 4</span></Eye>
-{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"22px 26px",marginBottom:12,cursor:"pointer"}}>
-<div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}><SI s={14}/><div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.navy,lineHeight:1.25,letterSpacing:"-0.02em",minWidth:0}}>{s.t}</div><div style={{display:"flex",gap:5,flexShrink:0,marginTop:2}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
-<div style={{display:"flex",alignItems:"flex-end",gap:32,marginBottom:14,flexWrap:"wrap"}}>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Impact</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{s.impact}</div></div>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Progress</div><div style={{display:"flex",alignItems:"baseline",gap:3}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{s.progress}</span><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:16,color:C.gray,fontWeight:400}}>%</span></div></div>
+{strategies.map(function(s){return(<div key={s.id} onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"18px 22px",marginBottom:12,cursor:"pointer",transition:"all 0.2s"}}>
+<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><SI s={14}/><div style={{flex:1,fontSize:17,fontWeight:500,color:C.navy,lineHeight:1.35}}>{s.t}</div><Av i={s.owner} s={24} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
+<div style={{display:"flex",alignItems:"center",gap:16,marginBottom:10,flexWrap:"wrap"}}>
+<div style={{display:"flex",alignItems:"baseline",gap:4}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:18,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1}}>{s.progress}%</span><span style={{fontSize:12,color:C.gray}}>progress</span></div>
+<div style={{width:1,height:14,background:C.border}}/>
+<div style={{display:"flex",alignItems:"baseline",gap:4}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:17,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1}}>{s.impact}</span></div>
+<div style={{marginLeft:"auto",display:"flex",gap:5}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div>
 </div>
-<PB pct={s.progress} h={3} color={s.sc==="green"?C.teal:C.amber}/>
-<div style={{display:"flex",alignItems:"center",gap:8,marginTop:16,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i={s.owner} s={22} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:13,fontWeight:500,color:C.navy}}>{s.name}</span><span style={{fontSize:12,color:C.gray}}>. {s.role}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500}}>{s.actions} actions</span></div>
+<PB pct={s.progress} h={4} color={s.sc==="green"?C.teal:C.amber}/>
 </div>);})}
 </div>
 <div className="trg-home-side">
 <Eye><TM s={14}/> TARGA Intelligence</Eye>
 <div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12,marginBottom:16}}>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:0.5,color:C.tealDk,textTransform:"uppercase",marginBottom:10}}>This week</div>
-<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 12px",marginBottom:6,fontSize:15,color:C.navy,lineHeight:1.55}}>Your team resolved 2 actions and moved 1 item from At Risk to On Track. Apex Logistics remains your top priority before board materials lock.</div>
-<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 12px",marginBottom:6}}><div style={{fontSize:14,fontWeight:500,color:C.navy,marginBottom:2}}>Price realization slipping</div><div style={{fontSize:13,color:C.gray,lineHeight:1.5}}>Last three deals closed 1.8% below list. Compounds the Apex exposure.</div></div>
-<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 12px"}}><div style={{fontSize:14,fontWeight:500,color:C.navy,marginBottom:2}}>OpEx efficiency dropping</div><div style={{fontSize:13,color:C.gray,lineHeight:1.5}}>Confidence fell 7 points. Mark escalating two vendor items.</div></div>
+<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 12px",marginBottom:6,fontSize:15,color:C.navy,lineHeight:1.55}}>Your team resolved 2 actions and moved 1 item from At Risk to On Track. The COGS blocker on gross margin expansion remains your top priority.</div>
+<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 12px",marginBottom:6}}><div style={{fontSize:14,fontWeight:500,color:C.navy,marginBottom:2}}>Pricing approval is overdue</div><div style={{fontSize:13,color:C.gray,lineHeight:1.5}}>Blocking price realization. 3 days past due.</div></div>
+<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 12px"}}><div style={{fontSize:14,fontWeight:500,color:C.navy,marginBottom:2}}>OpEx efficiency dropping</div><div style={{fontSize:13,color:C.gray,lineHeight:1.5}}>Confidence fell 7 points. Two vendor blockers.</div></div>
 </div>
 <Eye><TI s={12}/> Recent activity</Eye>
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"4px 14px"}}>
@@ -260,7 +228,7 @@ return(
 
 
 {page==="cascade"&&<div>
-<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div className="trg-view-tabs" style={{display:"flex",gap:4}}>{["Map","Kanban","Timeline","People"].map(function(v,i){return(<div key={v} style={{padding:"6px 14px",background:i===0?C.white:"transparent",border:i===0?"1px solid "+C.border:"none",borderRadius:6,fontSize:13,color:i===0?C.navy:C.gray,fontWeight:i===0?500:400,cursor:"pointer"}}>{v}</div>);})}</div>}/>
+<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div className="trg-view-tabs" style={{display:"flex",gap:4}}>{["Cascade","Kanban","Timeline","People"].map(function(v,i){return(<div key={v} style={{padding:"6px 14px",background:i===0?C.white:"transparent",border:i===0?"1px solid "+C.border:"none",borderRadius:6,fontSize:13,color:i===0?C.navy:C.gray,fontWeight:i===0?500:400,cursor:"pointer"}}>{v}</div>);})}</div>}/>
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:"48px 40px",minHeight:620,position:"relative"}}>
 
 <svg className="trg-cascade-svg" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:0}} viewBox="0 0 1060 620">
@@ -280,7 +248,7 @@ return(
 <div style={{position:"relative",zIndex:1}}>
 
 <div style={{display:"flex",justifyContent:"center",marginBottom:48}}>
-<div className="trg-lift" onClick={function(){setPage("detail");}} style={{width:300,background:C.tealBg,border:"2px solid "+C.tealBd,borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 2px 12px rgba(14,178,175,0.1)"}}>
+<div onClick={function(){setPage("detail");}} style={{width:300,background:C.tealBg,border:"2px solid "+C.tealBd,borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 2px 12px rgba(14,178,175,0.1)"}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><SI s={13}/><span style={{fontSize:12,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>BUSINESS PLAN</span></div>
 <div style={{fontSize:19,fontWeight:500,color:C.navy,marginBottom:8,lineHeight:1.3}}>Enterprise Value Creation - FY26</div>
 <div style={{display:"flex",alignItems:"center",gap:6}}><Pl c="green">{"\u2197"} ON TRACK</Pl><span style={{fontSize:12,color:C.gray,marginLeft:"auto"}}>4 strategies</span></div>
@@ -289,7 +257,7 @@ return(
 
 <div className="trg-cascade-col">
 {strategies.slice(0,3).map(function(s){return(
-<div key={s.id} className="trg-lift" onClick={function(){setPage("detail");}} style={{width:280,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
+<div key={s.id} onClick={function(){setPage("detail");}} style={{width:280,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 1px 4px rgba(31,71,106,0.06)",transition:"box-shadow 0.2s"}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
 <SI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>GOAL</span>
 <div style={{marginLeft:"auto"}}><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
@@ -304,7 +272,7 @@ return(
 
 <div className="trg-cascade-children">
 {[{t:"Reduce COGS tier-1",s:"BLOCKER",sc:"red",type:"initiative"},{t:"Price realization",s:"ON TRACK",sc:"green",type:"initiative"},{t:"EMEA market launch",s:"ON TRACK",sc:"green",type:"initiative"},{t:"Vendor consolidation",s:"BEHIND",sc:"amber",type:"action"}].map(function(c){return(
-<div key={c.t} className="trg-lift" style={{width:210,background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"14px 18px",boxShadow:"0 1px 4px rgba(31,71,106,0.06)",cursor:"pointer"}}>
+<div key={c.t} style={{width:210,background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"14px 18px",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}>
 {c.type==="initiative"?<PI s={11}/>:<AI s={11}/>}
 <span style={{fontSize:11,fontWeight:500,color:c.type==="initiative"?C.pinkDk:"#a07509",letterSpacing:0.5}}>{c.type==="initiative"?"INITIATIVE":"ACTION"}</span>
@@ -332,12 +300,12 @@ return(
 var isExp=expMetric===idx;
 var mx=Math.max.apply(null,m.pts);var mn=Math.min.apply(null,m.pts);
 var sparkD=m.pts.map(function(pt,pi){return(pi===0?"M":"L")+" "+(pi/(m.pts.length-1)*130)+" "+(36-((pt-mn)/(mx-mn||1))*36);}).join(" ");
-return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isExp?null:idx);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:10,padding:"14px 16px",marginBottom:10,cursor:"pointer"}}>
+return(<div key={m.l} onClick={function(){setExpMetric(isExp?null:idx);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:10,padding:"14px 16px",marginBottom:10,cursor:"pointer",transition:"all 0.2s"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><span style={{fontSize:13,color:C.gray,fontWeight:500}}>{m.l}</span><div style={{display:"flex",alignItems:"center",gap:5}}><Logo k={m.src} s={14}/><span style={{fontSize:12,color:C.gray}}>{m.srcN}</span></div></div>
 <div style={{display:"flex",alignItems:"baseline",gap:6,marginBottom:8}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1}}>{m.v}</span><span style={{fontSize:12,color:C.gray}}>{"\u2192"} {m.tg}</span></div>
 <PB pct={m.p} h={4} color={m.tc}/>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}><Pl c={m.ok?"green":"amber"}>{m.ok?"\u2197":"\u2198"} {m.tr}</Pl><span style={{fontSize:12,color:C.gray}}>{m.p}%</span></div>
-<div style={{overflow:"hidden",maxHeight:isExp?80:0,opacity:isExp?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
+<div style={{overflow:"hidden",maxHeight:isExp?80:0,opacity:isExp?1:0,transition:"max-height 0.3s, opacity 0.25s"}}>
 <div style={{paddingTop:10,borderTop:"1px solid "+C.subtle,marginTop:10}}><div style={{fontSize:11,color:C.gray,marginBottom:4,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500}}>8-week trend</div>
 <svg width="130" height="40" style={{display:"block"}}><path d={sparkD} fill="none" stroke={m.tc===C.amber?C.amber:C.teal} strokeWidth="2" strokeLinecap="round"/><circle cx="130" cy={36-((m.pts[m.pts.length-1]-mn)/(mx-mn||1))*36} r="3" fill={m.tc===C.amber?C.amber:C.teal}/></svg>
 </div></div>
@@ -351,21 +319,21 @@ return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isEx
 </div>
 
 <div className="trg-orbit-center">
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,overflow:"hidden",boxShadow:pulse?"0 0 0 3px rgba(14,178,175,0.3)":"0 2px 8px rgba(31,71,106,0.08)",transition:"box-shadow 1s cubic-bezier(0.23,1,0.32,1)"}}>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,overflow:"hidden",boxShadow:pulse?"0 0 0 3px rgba(14,178,175,0.3)":"0 2px 8px rgba(31,71,106,0.08)",transition:"box-shadow 1s"}}>
 <div style={{background:C.navy,backgroundImage:"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><polygon points='20,8 32,30 8,30' fill='none' stroke='%230eb2af' stroke-width='1' opacity='0.15'/></svg>\")",backgroundSize:"40px 40px",padding:"12px 18px",display:"flex",alignItems:"center",gap:10}}><TML s={16}/><span style={{fontSize:13,fontWeight:500,letterSpacing:1,color:"#fff",textTransform:"uppercase"}}>Goal</span></div>
 <div style={{padding:"22px 22px 20px"}}>
 <div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}><Pl c="navy">OPERATIONAL</Pl><Pl c="teal">Q1 2026</Pl><Pl c="amber" hide={!showRisk}>{"\u25B3"} RISK</Pl><Pl c="green">{"\u2197"} ON TRACK</Pl></div>
-<div className="trg-focal-title" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.15,letterSpacing:"-0.025em",marginBottom:12}}>Expand gross margin by 300bps</div>
+<div className="trg-focal-title" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.2,letterSpacing:"-0.02em",marginBottom:12}}>Expand gross margin by 300bps</div>
 <div style={{fontSize:16,color:"#4a5868",lineHeight:1.65,marginBottom:18}}>Drive 300 basis points of gross margin expansion across tier-1 product lines through COGS reduction, price realization, and channel mix optimization.</div>
 <div className="trg-owner-row" style={{marginBottom:16}}>
-<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i="JT" s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>Joe Thompson <span style={{color:C.gray,fontWeight:400}}>. CEO</span></div></div></div>
+<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i="JT" s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>Joe Thompson</div></div></div>
 <div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Dates</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>Jan 6 {"\u2192"} Mar 31, 2026</div></div>
 </div>
 <div className="trg-stat-strip" style={{background:C.bg2,borderRadius:10,marginBottom:16}}>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Impact</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>$24M</div></div>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Progress</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}><Odo value={progress} suffix="%" dur={1.6}/></div></div>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Actions</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}><Odo value={actionCount} dur={1.4}/></div></div>
-<div style={{minWidth:0}}><div style={{fontSize:10,color:C.gray,marginBottom:6,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Review</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:phase>=4?C.green:C.amber,letterSpacing:"-0.025em",lineHeight:1,transition:"color 1s cubic-bezier(0.23,1,0.32,1)",whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}><Odo value={phase>=4?9:11} suffix="d" dur={1.4}/></div></div>
+<div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,marginBottom:4,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Impact</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,whiteSpace:"nowrap"}}>$24M</div></div>
+<div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,marginBottom:4,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Progress</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,whiteSpace:"nowrap"}}><Odo value={progress} suffix="%" dur={1.6}/></div></div>
+<div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,marginBottom:4,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Actions</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,whiteSpace:"nowrap"}}><Odo value={actionCount} dur={1.4}/></div></div>
+<div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,marginBottom:4,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Review</div><div className="trg-focal-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:phase>=4?C.green:C.amber,letterSpacing:"-0.02em",lineHeight:1,transition:"color 1s",whiteSpace:"nowrap"}}><Odo value={phase>=4?9:11} suffix="d" dur={1.4}/></div></div>
 </div>
 <PB pct={progress} h={6}/>
 </div></div>
@@ -375,29 +343,29 @@ return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isEx
 <div className="trg-orbit-right">
 <Eye><AI s={12}/> Actions <span style={{color:C.gray,fontWeight:400}}>. <Odo value={actionCount} dur={1.4}/></span></Eye>
 
-<div style={{overflow:"hidden",maxHeight:showBlocker?300:0,opacity:showBlocker?1:0,marginBottom:showBlocker?5:0,transition:"max-height 0.8s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), margin 0.8s cubic-bezier(0.4,0,0.2,1)"}}>
-<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.32s cubic-bezier(0.4,0,0.2,1)"}}>Approve pricing model</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" bg={C.gold} fg={C.navy} s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div className="trg-press" onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
+<div style={{overflow:"hidden",maxHeight:showBlocker?300:0,opacity:showBlocker?1:0,marginBottom:showBlocker?5:0,transition:"max-height 0.9s cubic-bezier(0.4,0,0.2,1), opacity 0.7s, margin 0.9s"}}>
+<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.3s"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.3s"}}>Approve pricing model</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" bg={C.gold} fg={C.navy} s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
 </div>
 
 {[{t:"Review Q1 margin variance",i:"KM",bg:C.teal,fg:"#fff",d:"Apr 22",s:"ON TRACK",sc:"green",bc:"#d49a0f",desc:"Quarterly margin variance review with finance. Compare actual performance against 300bps target.",subs:["Pull NetSuite actuals","Prepare variance bridge","Schedule finance sync"]},
 {t:"Interview channel partners",i:"SD",bg:C.navy,fg:"#fff",d:"May 1",s:"ON TRACK",sc:"green",bc:"#d49a0f",desc:"Conduct interviews with three key channel partners to assess mix optimization opportunities.",subs:["Schedule partner A","Schedule partner B","Schedule partner C"]},
 {t:"Validate supplier scope",i:"MS",bg:C.navy,fg:"#fff",d:"May 8",s:"AT RISK",sc:"amber",bc:"#d49a0f",desc:"Define scope for supplier contract renegotiations targeting tier-1 COGS reduction.",subs:["Identify top 5 suppliers","Set target reduction %","Draft negotiation brief"]}
 ].map(function(a){var isSel=selAction&&selAction.t===a.t;return(<div key={a.t}>
-<div className="trg-lift" onClick={function(){setSelAction(isSel?null:a);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+a.bc,borderRadius:8,padding:13,marginBottom:8,cursor:"pointer"}}>
+<div onClick={function(){setSelAction(isSel?null:a);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+a.bc,borderRadius:8,padding:13,marginBottom:8,cursor:"pointer",transition:"transform 0.15s"}}>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{a.t}</div>
 <div style={{display:"flex",alignItems:"center",gap:5}}><Av i={a.i} bg={a.bg} fg={a.fg} s={16}/><span style={{fontSize:11,color:C.gray}}>{a.d}</span><span style={{marginLeft:"auto"}}><Pl c={a.sc}>{a.s}</Pl></span></div>
 </div>
-<div style={{overflow:"hidden",maxHeight:isSel?300:0,opacity:isSel?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
+<div style={{overflow:"hidden",maxHeight:isSel?300:0,opacity:isSel?1:0,transition:"max-height 0.3s, opacity 0.25s"}}>
 <div style={{background:C.bg2,border:"1px solid "+C.subtle,borderRadius:8,padding:10,marginBottom:5,marginTop:-3}}>
 <div style={{fontSize:13,color:"#4a5868",lineHeight:1.5,marginBottom:8}}>{a.desc}</div>
-<div style={{fontSize:11,fontWeight:500,letterSpacing:1,color:C.gray,textTransform:"uppercase",marginBottom:6}}>Sub-actions</div>
+<div style={{fontSize:11,fontWeight:500,letterSpacing:1,color:C.gray,textTransform:"uppercase",marginBottom:6}}>Subtasks</div>
 {a.subs.map(function(sub,si){return(<div key={si} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:si<a.subs.length-1?"1px solid "+C.subtle:"none"}}><div style={{width:14,height:14,border:"1.5px solid "+C.border,borderRadius:3}}/><span style={{fontSize:13,color:C.navy}}>{sub}</span></div>);})}
-<div style={{display:"flex",gap:6,marginTop:8}}><div className="trg-press" style={{flex:1,padding:"6px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:12,fontWeight:500,cursor:"pointer"}}>Mark complete</div><div className="trg-press" onClick={function(e){e.stopPropagation();setSelAction(null);}} style={{padding:"6px 10px",border:"1px solid "+C.border,borderRadius:6,fontSize:12,color:C.gray,cursor:"pointer"}}>Close</div></div>
+<div style={{display:"flex",gap:6,marginTop:8}}><div style={{flex:1,padding:"6px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:12,fontWeight:500}}>Mark complete</div><div onClick={function(e){e.stopPropagation();setSelAction(null);}} style={{padding:"6px 10px",border:"1px solid "+C.border,borderRadius:6,fontSize:12,color:C.gray}}>Close</div></div>
 </div></div>
 </div>);})}
 
 <div onClick={function(){setShowAddAction(!showAddAction);}} style={{padding:"6px 0",fontSize:12,color:C.teal,fontWeight:500,cursor:"pointer",marginTop:4}}>+ Add action</div>
-<div style={{overflow:"hidden",maxHeight:showAddAction?200:0,opacity:showAddAction?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
+<div style={{overflow:"hidden",maxHeight:showAddAction?200:0,opacity:showAddAction?1:0,transition:"max-height 0.3s, opacity 0.25s"}}>
 <div style={{background:C.bg2,border:"1px solid "+C.subtle,borderRadius:8,padding:10,marginTop:4}}>
 <input placeholder="Action title..." style={{width:"100%",padding:"6px 8px",border:"1px solid "+C.border,borderRadius:6,fontSize:13,color:C.navy,outline:"none",marginBottom:6,fontFamily:"inherit",boxSizing:"border-box"}}/>
 <div style={{display:"flex",gap:6}}><input placeholder="Owner" style={{flex:1,padding:"6px 8px",border:"1px solid "+C.border,borderRadius:6,fontSize:13,outline:"none",fontFamily:"inherit"}}/><input placeholder="Due date" style={{flex:1,padding:"6px 8px",border:"1px solid "+C.border,borderRadius:6,fontSize:13,outline:"none",fontFamily:"inherit"}}/></div>
@@ -414,12 +382,12 @@ var isFirst=si===0;
 var isExpS=expSug===si;
 if(isFirst){return(<div key={si} style={{position:"relative"}}>
 <div style={{opacity:phase>=5?0:1,maxHeight:phase>=5?0:200,transition:"opacity 0.8s, max-height 0.8s",overflow:"hidden"}}><div onClick={function(){setExpSug(isExpS?null:si);}} style={{background:"#fff",border:"1px solid "+C.tealBd,borderRadius:6,padding:8,marginBottom:4,cursor:"pointer"}}><div style={{fontSize:12,fontWeight:500,color:C.navy,marginBottom:2}}>{sg.t}</div><div style={{fontSize:11,color:C.gray}}>{sg.d}</div>
-<div style={{overflow:"hidden",maxHeight:isExpS&&phase<5?120:0,opacity:isExpS&&phase<5?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{borderTop:"1px solid "+C.tealBd,paddingTop:6,marginTop:6,fontSize:11,color:"#4a5868",lineHeight:1.5,marginBottom:6}}>{sg.detail}</div><div style={{padding:"5px 0",background:C.teal,color:"#fff",borderRadius:4,textAlign:"center",fontSize:11,fontWeight:500}}>{sg.act}</div></div>
+<div style={{overflow:"hidden",maxHeight:isExpS&&phase<5?120:0,opacity:isExpS&&phase<5?1:0,transition:"max-height 0.3s, opacity 0.25s"}}><div style={{borderTop:"1px solid "+C.tealBd,paddingTop:6,marginTop:6,fontSize:11,color:"#4a5868",lineHeight:1.5,marginBottom:6}}>{sg.detail}</div><div style={{padding:"5px 0",background:C.teal,color:"#fff",borderRadius:4,textAlign:"center",fontSize:11,fontWeight:500}}>{sg.act}</div></div>
 </div></div>
 <div style={{opacity:phase>=5?1:0,maxHeight:phase>=5?200:0,transition:"opacity 0.8s 0.2s, max-height 0.8s",overflow:"hidden"}}><div style={{background:"#fff",border:"1px solid "+C.tealBd,borderRadius:6,padding:8,marginBottom:4}}><div style={{fontSize:12,fontWeight:500,color:C.green,marginBottom:2}}>{"\u2713"} Blocker resolved</div><div style={{fontSize:11,color:C.gray}}>Progress 54% {"\u2192"} 62%.</div></div></div>
 </div>);}
 return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{background:"#fff",border:"1px solid "+C.tealBd,borderRadius:6,padding:8,marginBottom:4,cursor:"pointer"}}><div style={{fontSize:12,fontWeight:500,color:C.navy,marginBottom:2}}>{sg.t}</div><div style={{fontSize:11,color:C.gray}}>{sg.d}</div>
-<div style={{overflow:"hidden",maxHeight:isExpS?120:0,opacity:isExpS?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{borderTop:"1px solid "+C.tealBd,paddingTop:6,marginTop:6,fontSize:11,color:"#4a5868",lineHeight:1.5,marginBottom:6}}>{sg.detail}</div><div style={{display:"flex",gap:4}}><div style={{flex:1,padding:"5px 0",background:C.teal,color:"#fff",borderRadius:4,textAlign:"center",fontSize:11,fontWeight:500}}>{sg.act}</div><div onClick={function(e){e.stopPropagation();setExpSug(null);}} style={{padding:"5px 8px",border:"1px solid "+C.border,borderRadius:4,fontSize:11,color:C.gray}}>Dismiss</div></div></div>
+<div style={{overflow:"hidden",maxHeight:isExpS?120:0,opacity:isExpS?1:0,transition:"max-height 0.3s, opacity 0.25s"}}><div style={{borderTop:"1px solid "+C.tealBd,paddingTop:6,marginTop:6,fontSize:11,color:"#4a5868",lineHeight:1.5,marginBottom:6}}>{sg.detail}</div><div style={{display:"flex",gap:4}}><div style={{flex:1,padding:"5px 0",background:C.teal,color:"#fff",borderRadius:4,textAlign:"center",fontSize:11,fontWeight:500}}>{sg.act}</div><div onClick={function(e){e.stopPropagation();setExpSug(null);}} style={{padding:"5px 8px",border:"1px solid "+C.border,borderRadius:4,fontSize:11,color:C.gray}}>Dismiss</div></div></div>
 </div>);})}
 </div></div>
 {phase>=5&&<div style={{marginTop:8,background:C.greenBg,border:"1px solid #a7f3d0",borderRadius:8,padding:10,animation:"fu 0.4s ease"}}><div style={{fontSize:11,fontWeight:500,color:C.green,textTransform:"uppercase",marginBottom:4,display:"flex",alignItems:"center",gap:5}}><TM s={11}/> Cascade impact</div><div style={{fontSize:12,color:"#065f46",lineHeight:1.5}}>Unblocked price realization. Removed 1 risk. Progress 54% {"\u2192"} 62%.</div></div>}
@@ -429,7 +397,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,overflow:"hidden",marginBottom:24,boxShadow:"0 1px 3px rgba(31,71,106,0.04)"}}>
 <div style={{padding:"14px 20px",borderBottom:"1px solid "+C.subtle,display:"flex",alignItems:"center",gap:10}}><TM v="a" s={18}/><span style={{fontSize:15,fontWeight:500,color:C.navy}}>Ask TARGA</span><span style={{fontSize:13,color:C.gray,marginLeft:4}}>AI assistant for this goal</span></div>
 <div ref={chatRef} style={{minHeight:140,maxHeight:320,overflow:"auto",padding:"18px 24px"}}>
-{msgs.length===0&&<div style={{padding:"18px 8px 8px"}}><div style={{fontSize:14,color:"#6b7a8a",marginBottom:12,lineHeight:1.5}}>Ask anything about this goal. Grounded in live data from your initiatives, metrics, and recent activity.</div><div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{["What's blocking progress?","Who should I talk to?","What changed this week?"].map(function(ch){return(<div key={ch} className="trg-chip" onClick={function(){askPreset(ch);}} style={{padding:"8px 14px",border:"1px solid "+C.border,borderRadius:999,fontSize:13,color:C.navy,cursor:"pointer",background:"#fff",fontWeight:500}}>{ch}</div>);})}</div></div>}
+{msgs.length===0&&<div style={{textAlign:"center",padding:"24px 8px",color:"#8b99a8",fontSize:15}}>Ask anything about this goal. Try "What's blocking progress?" or "Who should I talk to about COGS?"</div>}
 {msgs.map(function(m,i){return(<div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start",marginBottom:10}}><div style={{maxWidth:"78%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?C.navy:C.tealBg,color:m.role==="user"?"#fff":C.navy,fontSize:16,lineHeight:1.55}}>{m.text}</div></div>);})}
 {chatLoading&&<div style={{display:"flex",gap:8,padding:"8px 0",alignItems:"center"}}>{[0,1,2].map(function(i){return(<svg key={i} width="14" height="14" viewBox="0 0 24 24" style={{animation:"trg-tri 1.2s ease "+(i*0.18)+"s infinite"}}><polygon points="12,4 21,20 3,20" fill={C.teal}/></svg>);})}</div>}
 </div>
@@ -442,7 +410,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 {t:"Price realization",s:phase>=4?"ON TRACK":"BLOCKED",sc:phase>=4?"green":"amber",av:"SD",desc:"Implement pricing adjustments across product lines for +2.1% realization.",prog:66},
 {t:"Channel mix optimization",s:"BEHIND",sc:"amber",av:"MS",desc:"Optimize channel partner mix to improve margin contribution.",prog:28}
 ].map(function(ch,ci){var isSC=selChild===ci;return(<div key={ch.t} style={{flex:1}}>
-<div className="trg-lift" onClick={function(){setSelChild(isSC?null:ci);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:8,padding:"9px 11px",cursor:"pointer"}}>
+<div onClick={function(){setSelChild(isSC?null:ci);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:8,padding:"9px 11px",cursor:"pointer",transition:"all 0.2s"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}><PI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.pinkDk}}>INITIATIVE</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{ch.t}</div>
 <div style={{display:"flex",alignItems:"center",transition:"color 0.8s, opacity 0.8s"}}><Pl c={ch.sc}>{ch.s}</Pl><div style={{marginLeft:"auto"}}><Av i={ch.av} bg={C.navy} fg="#fff" s={16}/></div></div>
@@ -459,7 +427,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,overflow:"hidden"}}>
 <div style={{display:"flex",borderBottom:"1px solid "+C.border,overflowX:"auto"}}>
-{["Comments","Attachments","History","Hierarchy","Relationships"].map(function(t){return(<div key={t} onClick={function(){setBTab(t);}} style={{flex:"1 0 auto",padding:"10px 16px",textAlign:"center",fontSize:13,fontWeight:bTab===t?500:400,color:bTab===t?C.teal:C.gray,borderBottom:bTab===t?"2px solid "+C.teal:"2px solid transparent",cursor:"pointer",transition:"color 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s cubic-bezier(0.4,0,0.2,1)",whiteSpace:"nowrap"}}>{t}</div>);})}
+{["Comments","Attachments","History","Hierarchy","Relationships"].map(function(t){return(<div key={t} onClick={function(){setBTab(t);}} style={{flex:"1 0 auto",padding:"10px 16px",textAlign:"center",fontSize:13,fontWeight:bTab===t?500:400,color:bTab===t?C.teal:C.gray,borderBottom:bTab===t?"2px solid "+C.teal:"2px solid transparent",cursor:"pointer",transition:"all 0.2s",whiteSpace:"nowrap"}}>{t}</div>);})}
 </div>
 <div style={{padding:16,minHeight:160}}>
 {bTab==="Comments"&&<div>
@@ -503,7 +471,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div className="trg-home-grid">
 <div className="trg-home-main">
 <Eye>Goal health</Eye>
-{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:16,cursor:"pointer"}}>
+{strategies.map(function(s){return(<div key={s.id} onClick={function(){setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:16,cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:8,height:8,borderRadius:"50%",background:s.sc==="green"?C.green:C.amber,flexShrink:0}}/><div style={{flex:1,fontSize:17,fontWeight:500,color:C.navy,minWidth:0}}>{s.t}</div><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
 <div style={{display:"flex",gap:24,marginBottom:8,flexWrap:"wrap"}}><div><div style={{fontSize:11,color:C.gray}}>Progress</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.progress}%</div></div><div><div style={{fontSize:11,color:C.gray}}>Impact</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.impact}</div></div><div style={{marginLeft:"auto",display:"flex",gap:4}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
 <PB pct={s.progress}/>
@@ -512,8 +480,8 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div className="trg-home-side">
 <Eye><TM s={14}/> AI executive summary</Eye>
 <div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12,marginBottom:14}}>
-<div style={{fontSize:15,color:C.navy,lineHeight:1.6,marginBottom:10}}>Three of four goals on track. OpEx dropped 7 confidence points on vendor blockers. Gross margin depends on Apex Logistics. Two goals share that exposure. Recommend resolving both in one conversation.</div>
-<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:6,padding:8,fontSize:13}}><span style={{fontWeight:500,color:C.red}}>Priority:</span> <span style={{color:C.navy}}>Resolve Apex Logistics before board materials lock in 11 days.</span></div>
+<div style={{fontSize:15,color:C.navy,lineHeight:1.6,marginBottom:10}}>Three of four plans on track. OpEx dropped 7 confidence points due to vendor blockers. Gross margin has an overdue pricing approval. Recommend escalating both before board review.</div>
+<div style={{background:C.white,border:"1px solid "+C.tealBd,borderRadius:6,padding:8,fontSize:13}}><span style={{fontWeight:500,color:C.red}}>Priority:</span> <span style={{color:C.navy}}>Resolve pricing approval and vendor blockers in 11 days.</span></div>
 </div>
 <Eye>Confidence trend</Eye>
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:12}}>
@@ -535,11 +503,10 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 </div>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Confidence by initiative</div>
-{boardItems.map(function(b,bi){var isOwned=b.owner==="JT";return(<div key={b.t} className={isOwned?"trg-lift":""} onClick={isOwned?function(){setPage("detail");}:undefined} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:20,marginBottom:16,cursor:isOwned?"pointer":"default"}}>
-<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}><div style={{fontSize:17,fontWeight:500,color:C.navy,flex:1,minWidth:0}}>{b.t}</div><div style={{display:"flex",alignItems:"center",gap:8}}><Av i={b.owner} s={22} bg={b.owner==="JT"?C.gold:b.owner==="MS"?C.red:C.navy} fg={b.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:13,color:C.gray,whiteSpace:"nowrap"}}>{b.name} . {b.role}</span></div><div style={{textAlign:"right"}}><div style={{fontSize:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
+{boardItems.map(function(b){return(<div key={b.t} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:20,marginBottom:16}}>
+<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}><div style={{fontSize:17,fontWeight:500,color:C.navy,flex:1,minWidth:0}}>{b.t}</div><Av i={b.owner} s={22} bg={b.owner==="JT"?C.gold:b.owner==="MS"?C.red:C.navy} fg={b.owner==="JT"?C.navy:"#fff"}/><div style={{textAlign:"right"}}><div style={{fontSize:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
 <PB pct={b.conf} color={b.status==="green"?C.green:C.red} h={6}/>
 <div style={{fontSize:14,color:"#4a5868",lineHeight:1.6,marginTop:10}}>{b.note}</div>
-{isOwned&&<div style={{marginTop:10,paddingTop:10,borderTop:"1px solid "+C.subtle,display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:11,color:C.tealDk,letterSpacing:1,textTransform:"uppercase",fontWeight:500}}>Your goal</span><span style={{fontSize:13,color:C.teal,fontWeight:500}}>Open detail {"\u2192"}</span></div>}
 </div>);})}
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:20,marginTop:16}}>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:10,display:"flex",alignItems:"center",gap:6}}><TM s={12}/> AI pattern detection</div>
@@ -745,7 +712,6 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{textAlign:"center",padding:"16px 0",fontSize:13,color:C.gray}}>TARGA AI Design System . HyperBrand Creative . April 2026</div>
 </div>}
 
-</div>
 </div>
 </div>
 );
