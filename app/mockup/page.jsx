@@ -183,7 +183,7 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes trg-tri{0%,100%{opacity:0.25;transform:translateY(2px) scale(0.9)}50%{opacity:1;transform:translateY(0) scale(1)}}",
 "@keyframes trg-page{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
 "@keyframes qaslide{from{transform:translateX(100%)}to{transform:translateX(0)}}",
-".trg-cube-stage{width:72px;height:72px;perspective:280px;flex-shrink:0}",
+".trg-cube-stage{width:60px;height:60px;perspective:240px;flex-shrink:0}",
 ".trg-cube-mini-stage{display:none !important;width:24px;height:24px;perspective:100px;flex-shrink:0;margin-left:8px}",
 ".trg-cube-mini{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-28deg);transition:transform 0.5s cubic-bezier(0.23,1,0.32,1)}",
 ".trg-cube-mini.kanban{transform:rotateX(-20deg) rotateY(-118deg)}",
@@ -200,13 +200,13 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 ".trg-cube.kanban{transform:rotateX(-20deg) rotateY(118deg)}",
 ".trg-cube.timeline{transform:rotateX(-20deg) rotateY(208deg)}",
 ".trg-cube.people{transform:rotateX(-20deg) rotateY(298deg)}",
-".trg-cube-face{position:absolute;width:72px;height:72px;display:flex;align-items:center;justify-content:center}",
-".trg-cube-face.front{transform:translateZ(36px)}",
-".trg-cube-face.right{transform:rotateY(90deg) translateZ(36px)}",
-".trg-cube-face.back{transform:rotateY(180deg) translateZ(36px)}",
-".trg-cube-face.left{transform:rotateY(-90deg) translateZ(36px)}",
-".trg-cube-face.top{transform:rotateX(90deg) translateZ(36px)}",
-".trg-cube-face.bottom{transform:rotateX(-90deg) translateZ(36px)}",
+".trg-cube-face{position:absolute;width:60px;height:60px;display:flex;align-items:center;justify-content:center}",
+".trg-cube-face.front{transform:translateZ(30px)}",
+".trg-cube-face.right{transform:rotateY(90deg) translateZ(30px)}",
+".trg-cube-face.back{transform:rotateY(180deg) translateZ(30px)}",
+".trg-cube-face.left{transform:rotateY(-90deg) translateZ(30px)}",
+".trg-cube-face.top{transform:rotateX(90deg) translateZ(30px)}",
+".trg-cube-face.bottom{transform:rotateX(-90deg) translateZ(30px)}",
 ".trg-page{animation:trg-page 0.3s cubic-bezier(0.4,0,0.2,1)}",
 ".trg-lift{transition:transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s cubic-bezier(0.4,0,0.2,1)}",
 ".trg-lift:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(31,71,106,0.08), 0 0 0 0.5px rgba(31,71,106,0.04) !important;border-color:#c6d1dc !important}",
@@ -510,7 +510,7 @@ return(
 </div>
 </div></div>}/>
 
-<div className="trg-cube-bar" style={{display:"flex",alignItems:"center",gap:18,marginBottom:18,padding:"14px 20px",background:C.white,border:"1px solid "+C.border,borderRadius:10}}>
+<div className="trg-cube-bar" style={{display:"flex",alignItems:"center",gap:28,marginBottom:18,padding:"14px 20px",background:C.white,border:"1px solid "+C.border,borderRadius:10}}>
 <div className="trg-cube-stage">
 <div className={"trg-cube "+(cascadeView==="kanban"?"kanban":cascadeView==="timeline"?"timeline":cascadeView==="people"?"people":"")}>
 <div className="trg-cube-face front" style={{background:"linear-gradient(135deg, "+C.teal+" 0%, "+C.tealDk+" 100%)"}}>
