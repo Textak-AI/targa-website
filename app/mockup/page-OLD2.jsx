@@ -172,8 +172,6 @@ var aaS=useState(false);var showAddAction=aaS[0];var setShowAddAction=aaS[1];
 var btS=useState("History");var bTab=btS[0];var setBTab=btS[1];
 var sicS=useState(null);var selItemCtx=sicS[0];var setSelItemCtx=sicS[1];
 var sgcS=useState("sp1");var selGoalCtx=sgcS[0];var setSelGoalCtx=sgcS[1];
-var cvS=useState("hierarchy");var cascadeView=cvS[0];var setCascadeView=cvS[1];
-var qaS=useState(false);var quickAddOpen=qaS[0];var setQuickAddOpen=qaS[1];
 var G=goalContent[selGoalCtx]||goalContent.sp1;
 
 useEffect(function(){var s=document.createElement("style");s.textContent=[
@@ -181,7 +179,6 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes pu{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}",
 "@keyframes trg-tri{0%,100%{opacity:0.25;transform:translateY(2px) scale(0.9)}50%{opacity:1;transform:translateY(0) scale(1)}}",
 "@keyframes trg-page{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
-"@keyframes qaslide{from{transform:translateX(100%)}to{transform:translateX(0)}}",
 ".trg-page{animation:trg-page 0.3s cubic-bezier(0.4,0,0.2,1)}",
 ".trg-lift{transition:transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s cubic-bezier(0.4,0,0.2,1)}",
 ".trg-lift:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(31,71,106,0.08), 0 0 0 0.5px rgba(31,71,106,0.04) !important;border-color:#c6d1dc !important}",
@@ -316,7 +313,6 @@ return(
 <div className="trg-rail" style={{background:C.white,borderRight:"1px solid "+C.border}}>
 <div className="trg-rail-brand" style={{marginBottom:16,cursor:"pointer"}} onClick={function(){setPage("home");}}><svg width="24" height="24" viewBox="0 0 24 24"><polygon points="14.4 18.6 9.7 18.6 12 13.8" fill={C.teal}/><polygon points="23.5 23.9 19.4 23.9 12.1 8.7 4.7 24 0.5 24 9.8 4.7 11.4 1.5 12.1 0" fill={C.navy}/></svg></div>
 <NI pg="home" d="M3 9 L12 3 L21 9 L21 21 L3 21 Z" title="Home"/>
-<NI pg="vp" d="M12 12 C14.2 12 16 10.2 16 8 C16 5.8 14.2 4 12 4 C9.8 4 8 5.8 8 8 C8 10.2 9.8 12 12 12 Z M4 20 C4 16.7 7.6 14 12 14 C16.4 14 20 16.7 20 20" title="VP View"/>
 <NI pg="cascade" d="M4 5 L20 5 M4 12 L20 12 M4 19 L16 19" title="Strategy Map"/>
 <NI pg="detail" d="M9 3 L9 21 M3 9 L15 9 M3 15 L15 15" title="Item Detail"/>
 <NI pg="dashboard" d="M3 3 L10 3 L10 13 L3 13 Z M14 3 L21 3 L21 8 L14 8 Z M14 11 L21 11 L21 21 L14 21 Z M3 16 L10 16 L10 21 L3 21 Z" title="Dashboard"/>
@@ -331,7 +327,7 @@ return(
 <div key={page} className="trg-page">
 
 {page==="home"&&<div>
-<PH eyebrow="Good morning, Joe" title="My world" right={<div style={{display:"flex",alignItems:"center",gap:12}}><div onClick={function(){setQuickAddOpen(true);}} className="trg-press" style={{display:"flex",alignItems:"center",gap:6,padding:"7px 14px",background:C.navy,color:"#fff",borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",boxShadow:"0 1px 2px rgba(31,71,106,0.15)"}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5 L12 19 M5 12 L19 12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg><span>Quick add</span><span style={{marginLeft:4,padding:"1px 6px",background:"rgba(255,255,255,0.2)",borderRadius:4,fontSize:11,fontWeight:500}}>3</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
+<PH eyebrow="Good morning, Joe" title="My world" right={<div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div>}/>
 
 <div className="trg-hero" style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,marginBottom:28,boxShadow:"0 1px 3px rgba(31,71,106,0.04)",padding:"28px 32px"}}>
 <div style={{flex:1,minWidth:0}}>
@@ -376,86 +372,9 @@ return(
 </div>}
 
 
-{page==="vp"&&<div>
-<PH eyebrow="Good morning, Kyle" title="My initiative" right={<div style={{display:"flex",alignItems:"center",gap:12}}><div style={{display:"flex",alignItems:"center",gap:6,padding:"4px 10px",background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:999}}><Av i="KM" bg={C.teal} fg="#fff" s={18}/><span style={{fontSize:12,fontWeight:500,color:C.tealDk}}>Viewing as Kyle Moyer, VP Operations</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
-
-<div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 14px",marginBottom:20,fontSize:13,color:C.tealDk,lineHeight:1.5}}><strong style={{fontWeight:500}}>Role-aware landing</strong>. Same data, different altitude. Kyle owns one initiative, not the full goal. Joe sees the business plan when he lands; Kyle sees the slice he's accountable for.</div>
-
-<div className="trg-hero" style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,marginBottom:28,padding:"24px 28px",boxShadow:"0 1px 3px rgba(31,71,106,0.04)"}}>
-<div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:10,fontWeight:500,letterSpacing:1.4,color:C.tealDk,textTransform:"uppercase",marginBottom:10,display:"flex",alignItems:"center",gap:6}}><TM s={12}/> Your focus this week</div>
-<div className="trg-hero-headline" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.22,letterSpacing:"-0.022em",marginBottom:12}}>Apex Logistics contract renegotiation is stuck on legal redlines. You own the tier-1 COGS initiative and Mark is waiting for you to close it out.</div>
-<div style={{fontSize:15,color:"#4a5868",lineHeight:1.6}}>Three suppliers in scope. Two already signed revised terms. Apex is the holdout, driving the $8M target. Joe flagged it to the board this morning.</div>
-</div>
-<div className="trg-hero-divider" style={{background:C.border}}/>
-<div className="trg-hero-metrics">
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:6}}>COGS impact</div><div style={{display:"flex",alignItems:"baseline",gap:8}}><span className="trg-hero-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,letterSpacing:"-0.025em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>$8M</span></div></div>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:6}}>Progress</div><div style={{display:"flex",alignItems:"baseline",gap:8}}><span className="trg-hero-num" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.amber,letterSpacing:"-0.025em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>40<span style={{fontSize:"0.45em",fontWeight:400}}>%</span></span></div></div>
-</div>
-</div>
-
-<div style={{display:"grid",gridTemplateColumns:"1fr 320px",gap:32}}>
-<div style={{minWidth:0}}>
-
-<div onClick={function(){setSelGoalCtx("sp1");setSelItemCtx(null);setPage("detail");}} style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"10px 14px",marginBottom:18,display:"flex",alignItems:"center",gap:8,cursor:"pointer"}} className="trg-lift"><SI s={12}/><span style={{fontSize:11,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>PARENT GOAL</span><span style={{fontSize:14,fontWeight:500,color:C.navy}}>Expand gross margin by 300bps</span><span style={{marginLeft:"auto",fontSize:12,color:C.gray}}>Joe Thompson . CEO</span></div>
-
-<Eye><PI s={12}/> Your initiative</Eye>
-<div onClick={function(){setSelGoalCtx("sp1");setSelItemCtx(goalContent.sp1.initiatives[0]);setPage("detail");window.scrollTo({top:0,behavior:"smooth"});}} className="trg-lift" style={{background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+C.red,borderRadius:10,padding:"20px 24px",marginBottom:24,cursor:"pointer"}}>
-<div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,marginBottom:12}}>
-<div>
-<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><PI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.pinkDk,letterSpacing:0.8}}>INITIATIVE</span><span style={{fontSize:11,color:C.gray}}>. FY26</span></div>
-<div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.navy,lineHeight:1.25,letterSpacing:"-0.015em",marginBottom:8}}>Reduce COGS tier-1</div>
-<div style={{fontSize:14,color:"#4a5868",lineHeight:1.6}}>Renegotiate tier-1 supplier contracts to reduce COGS by $8M. Apex Logistics is the primary exposure, two other suppliers secondary.</div>
-</div>
-<div style={{display:"flex",flexDirection:"column",gap:4,alignItems:"flex-end"}}><Pl c="red">BLOCKER</Pl></div>
-</div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(3, minmax(0, 1fr))",gap:12,background:C.bg2,borderRadius:8,padding:"14px 16px",marginBottom:14}}>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Impact</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",fontVariantNumeric:"tabular-nums"}}>$8M</div></div>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Progress</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",fontVariantNumeric:"tabular-nums"}}>40%</div></div>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Review</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.amber,letterSpacing:"-0.02em",fontVariantNumeric:"tabular-nums"}}>11d</div></div>
-</div>
-<PB pct={40} h={6} color={C.amber}/>
-<div style={{display:"flex",alignItems:"center",gap:8,marginTop:14,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i="KM" bg={C.teal} fg="#fff" s={22}/><span style={{fontSize:14,fontWeight:500,color:C.navy}}>Kyle Moyer</span><span style={{fontSize:12,color:C.gray}}>. VP Operations . Owner</span><span style={{marginLeft:"auto",fontSize:12,color:C.teal,fontWeight:500}}>Open item {"\u2192"}</span></div>
-</div>
-
-<Eye><AI s={12}/> Your actions <span style={{color:C.gray,fontWeight:400}}>. 4</span></Eye>
-{[
-{t:"Close Apex Logistics contract",s:"OVERDUE",sc:"red",d:"Apr 16",desc:"Final redline review pending with legal. 3 days past due."},
-{t:"Confirm supplier 2 terms",s:"ON TRACK",sc:"green",d:"Apr 22",desc:"Signed addendum arriving this week. Routine."},
-{t:"Draft supplier 3 negotiation brief",s:"ON TRACK",sc:"green",d:"Apr 25",desc:"Scope defined. Awaiting Mark's input on volume commitments."},
-{t:"Weekly status to Mark",s:"ON TRACK",sc:"green",d:"Friday recurring",desc:"Stand-up summary covering all three supplier streams."}
-].map(function(a,idx){return(<div key={idx} className="trg-lift" style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(a.sc==="red"?C.red:"#14B8A6"),borderRadius:8,padding:"12px 14px",marginBottom:8,cursor:"pointer"}}>
-<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginBottom:6}}>
-<div style={{fontSize:14,fontWeight:500,color:C.navy}}>{a.t}</div>
-<Pl c={a.sc}>{a.s}</Pl>
-</div>
-<div style={{fontSize:13,color:"#4a5868",lineHeight:1.5,marginBottom:6}}>{a.desc}</div>
-<div style={{fontSize:12,color:C.gray}}>Due {a.d}</div>
-</div>);})}
-</div>
-
-<div style={{minWidth:0}}>
-<Eye><TM s={12}/> TARGA intelligence</Eye>
-<div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12,marginBottom:12}}>
-<div style={{fontSize:14,color:C.navy,lineHeight:1.55}}>Apex Logistics redlines arrived from their counsel at 9:14 AM. Joe is watching this one. Your weekly to Mark is due Friday. I drafted a status based on the last 48 hours of activity.</div>
-<div style={{marginTop:10,padding:"6px 10px",background:C.white,borderRadius:6,fontSize:12,fontWeight:500,color:C.teal,cursor:"pointer",display:"inline-block"}}>Review draft {"\u2192"}</div>
-</div>
-
-<Eye><AI s={12}/> Assigned by others</Eye>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"10px 12px",marginBottom:10}}>
-<div style={{fontSize:13,fontWeight:500,color:C.navy,marginBottom:4}}>Input for CFO cost model</div>
-<div style={{fontSize:12,color:C.gray,lineHeight:1.5,marginBottom:6}}>Assigned by Mark Sternberger . Due Apr 22</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i="MS" bg={C.red} fg="#fff" s={18}/><span style={{fontSize:12,color:C.gray}}>Mark's initiative: OpEx</span></div>
-</div>
-</div>
-</div>
-</div>}
-
-
 {page==="cascade"&&<div>
-<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div className="trg-view-tabs" style={{display:"flex",gap:4}}>{[{k:"hierarchy",l:"Map"},{k:"kanban",l:"Kanban"},{k:"timeline",l:"Timeline"},{k:"people",l:"People"}].map(function(v){var active=cascadeView===v.k;var enabled=v.k==="hierarchy"||v.k==="kanban";return(<div key={v.k} onClick={enabled?function(){setCascadeView(v.k);}:undefined} style={{padding:"6px 14px",background:active?C.white:"transparent",border:active?"1px solid "+C.border:"none",borderRadius:6,fontSize:13,color:active?C.navy:(enabled?C.gray:"#b0bcc9"),fontWeight:active?500:400,cursor:enabled?"pointer":"default",transition:"all 0.18s cubic-bezier(0.4,0,0.2,1)"}}>{v.l}</div>);})}</div>}/>
-
-{cascadeView==="hierarchy"&&<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:"48px 40px",minHeight:620,position:"relative"}}>
+<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div className="trg-view-tabs" style={{display:"flex",gap:4}}>{["Map","Kanban","Timeline","People"].map(function(v,i){return(<div key={v} style={{padding:"6px 14px",background:i===0?C.white:"transparent",border:i===0?"1px solid "+C.border:"none",borderRadius:6,fontSize:13,color:i===0?C.navy:C.gray,fontWeight:i===0?500:400,cursor:"pointer"}}>{v}</div>);})}</div>}/>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:"48px 40px",minHeight:620,position:"relative"}}>
 
 <svg className="trg-cascade-svg" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:0}} viewBox="0 0 1060 620">
 <defs>
@@ -510,68 +429,7 @@ return(
 </div>
 
 </div>
-</div>}
-
-{cascadeView==="kanban"&&<div>
-<div style={{background:C.bg2,border:"1px solid "+C.border,borderRadius:12,padding:"20px 20px 24px",minHeight:620}}>
-<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,padding:"0 4px"}}>
-<div style={{fontSize:14,color:C.gray}}>Same goals and initiatives, grouped by status. Cards stay clickable.</div>
-<div style={{fontSize:12,color:C.gray}}>Updated today</div>
 </div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(4, minmax(0, 1fr))",gap:16}}>
-{[
-{k:"green",label:"ON TRACK",count:null,bar:C.green},
-{k:"amber",label:"AT RISK",count:null,bar:C.amber},
-{k:"red",label:"BLOCKER",count:null,bar:C.red},
-{k:"navy",label:"PLANNING",count:null,bar:C.navy}
-].map(function(col){
-var itemsInCol=[];
-strategies.forEach(function(s){
-var matchGoal=false;
-if(col.k==="green"&&s.sc==="green"&&!s.blocker)matchGoal=true;
-if(col.k==="amber"&&s.sc==="amber"&&!s.blocker)matchGoal=true;
-if(col.k==="red"&&s.blocker)matchGoal=true;
-if(matchGoal)itemsInCol.push({type:"goal",data:s});
-});
-Object.keys(goalContent).forEach(function(gid){
-goalContent[gid].initiatives.forEach(function(ini){
-var matchIni=false;
-if(col.k==="green"&&ini.sc==="green")matchIni=true;
-if(col.k==="amber"&&ini.sc==="amber")matchIni=true;
-if(col.k==="red"&&ini.sc==="red")matchIni=true;
-if(matchIni)itemsInCol.push({type:"initiative",data:ini,parentId:gid,parentTitle:goalContent[gid].t});
-});
-});
-return(<div key={col.k} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"12px 12px 16px",minHeight:520}}>
-<div style={{display:"flex",alignItems:"center",gap:8,paddingBottom:10,marginBottom:10,borderBottom:"2px solid "+col.bar}}>
-<div style={{width:8,height:8,borderRadius:"50%",background:col.bar}}/>
-<span style={{fontSize:11,fontWeight:500,letterSpacing:1,color:C.navy,textTransform:"uppercase"}}>{col.label}</span>
-<span style={{marginLeft:"auto",fontSize:12,color:C.gray,fontWeight:500}}>{itemsInCol.length}</span>
-</div>
-{itemsInCol.length===0&&<div style={{padding:"24px 0",textAlign:"center",fontSize:12,color:"#b0bcc9"}}>None in this status</div>}
-{itemsInCol.map(function(it,idx){
-if(it.type==="goal"){
-var s=it.data;
-return(<div key={"g"+idx} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:8,padding:"10px 12px",marginBottom:8,cursor:"pointer"}}>
-<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}><SI s={10}/><span style={{fontSize:10,fontWeight:500,color:C.tealDk,letterSpacing:0.8}}>GOAL</span></div>
-<div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:8}}>{s.t}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={s.owner} s={16} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:s.owner==="SD"?C.teal:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:11,color:C.gray}}>{s.name}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{s.progress}%</span></div>
-</div>);
-}else{
-var i=it.data;
-return(<div key={"i"+idx} className="trg-lift" onClick={function(){setSelGoalCtx(it.parentId);setSelItemCtx(i);setPage("detail");window.scrollTo({top:0,behavior:"smooth"});}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:8,padding:"10px 12px",marginBottom:8,cursor:"pointer"}}>
-<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}><PI s={10}/><span style={{fontSize:10,fontWeight:500,color:C.pinkDk,letterSpacing:0.8}}>INITIATIVE</span></div>
-<div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:4}}>{i.t}</div>
-<div style={{fontSize:11,color:C.gray,marginBottom:8}}>{it.parentTitle}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={i.av} s={16} bg={i.av==="MS"?C.red:i.av==="KM"?C.teal:i.av==="SD"?C.teal:C.navy} fg="#fff"/><span style={{fontSize:11,color:C.gray}}>{i.ownerName}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{i.prog}%</span></div>
-</div>);
-}
-})}
-</div>);})}
-</div>
-</div>
-</div>}
-
 </div>}
 
 
@@ -999,55 +857,6 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 
 </div>
 </div>
-
-{quickAddOpen&&<div style={{position:"fixed",inset:0,zIndex:100,display:"flex",justifyContent:"flex-end",pointerEvents:"auto"}}>
-<div onClick={function(){setQuickAddOpen(false);}} style={{position:"absolute",inset:0,background:"rgba(15,30,45,0.32)",backdropFilter:"blur(2px)",animation:"fu 0.2s cubic-bezier(0.4,0,0.2,1)"}}/>
-<div style={{position:"relative",width:460,maxWidth:"94vw",background:C.white,height:"100vh",boxShadow:"-8px 0 32px rgba(15,30,45,0.12)",display:"flex",flexDirection:"column",animation:"qaslide 0.28s cubic-bezier(0.4,0,0.2,1)"}}>
-
-<div style={{padding:"20px 24px 16px",borderBottom:"1px solid "+C.border}}>
-<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-<div style={{display:"flex",alignItems:"center",gap:8}}><TM s={16}/><span style={{fontSize:16,fontWeight:500,color:C.navy}}>Quick Add</span><span style={{fontSize:12,color:C.gray,padding:"2px 8px",background:C.bg2,borderRadius:4,fontWeight:500}}>3 pending</span></div>
-<div onClick={function(){setQuickAddOpen(false);}} style={{cursor:"pointer",padding:4,color:C.gray,fontSize:18,lineHeight:1}}>{"\u00D7"}</div>
-</div>
-<div style={{fontSize:13,color:C.gray,lineHeight:1.5}}>Captured items wait here until you categorize them. Voice, text, or forwarded email all land in this queue.</div>
-</div>
-
-<div style={{flex:1,overflowY:"auto",padding:"16px 24px"}}>
-{[
-{t:"Follow up with Apex Logistics counsel on redlines",src:"Voice . 6:42 AM",detail:"Captured while driving. Thought about calling Matt directly rather than waiting for legal."},
-{t:"New market exploration: New Zealand Q3",src:"Text . Yesterday",detail:"Nadia's trip notes suggest opportunity. Contract sales model might work. Need Bill's input."},
-{t:"Schedule Mark 1:1 on OpEx recovery plan",src:"Email forward . Tuesday",detail:"Board materials raised OpEx as a gap. Mark needs a 30-min to walk through his recovery plan."}
-].map(function(q,idx){return(<div key={idx} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"14px 16px",marginBottom:10}}>
-<div style={{fontSize:11,color:C.gray,fontWeight:500,letterSpacing:0.5,marginBottom:6}}>{q.src}</div>
-<div style={{fontSize:15,fontWeight:500,color:C.navy,lineHeight:1.35,marginBottom:6}}>{q.t}</div>
-<div style={{fontSize:13,color:"#4a5868",lineHeight:1.5,marginBottom:12}}>{q.detail}</div>
-<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-<div className="trg-chip" style={{padding:"6px 12px",background:C.white,border:"1px solid "+C.border,borderRadius:999,fontSize:12,fontWeight:500,color:C.navy,cursor:"pointer"}}>Action</div>
-<div className="trg-chip" style={{padding:"6px 12px",background:C.white,border:"1px solid "+C.border,borderRadius:999,fontSize:12,fontWeight:500,color:C.navy,cursor:"pointer"}}>Initiative</div>
-<div className="trg-chip" style={{padding:"6px 12px",background:C.white,border:"1px solid "+C.border,borderRadius:999,fontSize:12,fontWeight:500,color:C.navy,cursor:"pointer"}}>Comment</div>
-<div className="trg-chip" style={{padding:"6px 12px",background:C.white,border:"1px solid "+C.border,borderRadius:999,fontSize:12,fontWeight:500,color:C.navy,cursor:"pointer"}}>Meeting</div>
-<div style={{marginLeft:"auto",padding:"6px 10px",fontSize:12,color:C.gray,cursor:"pointer"}}>Dismiss</div>
-</div>
-</div>);})}
-
-<div style={{marginTop:8,padding:"16px 18px",background:C.bg2,border:"1px dashed "+C.border,borderRadius:10,textAlign:"center"}}>
-<div style={{fontSize:13,color:C.gray,marginBottom:6}}>Add another</div>
-<div style={{display:"flex",gap:8,justifyContent:"center"}}>
-<div className="trg-chip" style={{padding:"6px 12px",background:C.white,border:"1px solid "+C.border,borderRadius:999,fontSize:12,color:C.navy,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2 L12 14 M8 10 L12 14 L16 10" stroke={C.navy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 20 L20 20" stroke={C.navy} strokeWidth="2" strokeLinecap="round"/></svg> Type</div>
-<div className="trg-chip" style={{padding:"6px 12px",background:C.white,border:"1px solid "+C.border,borderRadius:999,fontSize:12,color:C.navy,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="12" rx="3" fill={C.navy}/><path d="M5 11 C5 15 8 18 12 18 C16 18 19 15 19 11 M12 18 L12 22" stroke={C.navy} strokeWidth="2" strokeLinecap="round" fill="none"/></svg> Voice</div>
-<div className="trg-chip" style={{padding:"6px 12px",background:C.white,border:"1px solid "+C.border,borderRadius:999,fontSize:12,color:C.navy,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 8 L12 14 L20 8 M4 8 L4 18 L20 18 L20 8 M4 8 L12 2 L20 8" stroke={C.navy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> Email</div>
-</div>
-</div>
-</div>
-
-<div style={{padding:"14px 24px",borderTop:"1px solid "+C.border,background:C.bg2,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-<div style={{fontSize:12,color:C.gray}}>Items stay here until you categorize them.</div>
-<div onClick={function(){setQuickAddOpen(false);}} style={{fontSize:13,fontWeight:500,color:C.teal,cursor:"pointer",padding:"6px 10px"}}>Done</div>
-</div>
-
-</div>
-</div>}
-
 </div>
 );
 }
