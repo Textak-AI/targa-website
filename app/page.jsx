@@ -184,18 +184,18 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes trg-page{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
 "@keyframes qaslide{from{transform:translateX(100%)}to{transform:translateX(0)}}",
 ".trg-cube-stage{width:72px;height:72px;perspective:280px;flex-shrink:0}",
-".trg-cube-mini-stage{display:none;width:28px;height:28px;perspective:120px;position:absolute;top:-2px;right:-2px;z-index:10}",
+".trg-cube-mini-stage{display:none;width:24px;height:24px;perspective:100px;position:absolute;top:0;right:0;z-index:10}",
 ".trg-cube-mini{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-28deg);transition:transform 0.5s cubic-bezier(0.23,1,0.32,1)}",
 ".trg-cube-mini.kanban{transform:rotateX(-20deg) rotateY(-118deg)}",
 ".trg-cube-mini.timeline{transform:rotateX(-20deg) rotateY(-208deg)}",
 ".trg-cube-mini.people{transform:rotateX(-20deg) rotateY(-298deg)}",
-".trg-cube-mini-face{position:absolute;width:28px;height:28px}",
-".trg-cube-mini-face.front{transform:translateZ(14px)}",
-".trg-cube-mini-face.right{transform:rotateY(90deg) translateZ(14px)}",
-".trg-cube-mini-face.back{transform:rotateY(180deg) translateZ(14px)}",
-".trg-cube-mini-face.left{transform:rotateY(-90deg) translateZ(14px)}",
-".trg-cube-mini-face.top{transform:rotateX(90deg) translateZ(14px)}",
-".trg-cube-mini-face.bottom{transform:rotateX(-90deg) translateZ(14px)}",
+".trg-cube-mini-face{position:absolute;width:24px;height:24px;display:flex;align-items:center;justify-content:center}",
+".trg-cube-mini-face.front{transform:translateZ(12px)}",
+".trg-cube-mini-face.right{transform:rotateY(90deg) translateZ(12px)}",
+".trg-cube-mini-face.back{transform:rotateY(180deg) translateZ(12px)}",
+".trg-cube-mini-face.left{transform:rotateY(-90deg) translateZ(12px)}",
+".trg-cube-mini-face.top{transform:rotateX(90deg) translateZ(12px)}",
+".trg-cube-mini-face.bottom{transform:rotateX(-90deg) translateZ(12px)}",
 ".trg-cube{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-28deg);transition:transform 0.5s cubic-bezier(0.23,1,0.32,1)}",
 ".trg-cube.kanban{transform:rotateX(-20deg) rotateY(-118deg)}",
 ".trg-cube.timeline{transform:rotateX(-20deg) rotateY(-208deg)}",
@@ -494,10 +494,18 @@ return(
 {page==="cascade"&&<div className="trg-strategy-page">
 <div className="trg-cube-mini-stage">
 <div className={"trg-cube-mini "+(cascadeView==="kanban"?"kanban":cascadeView==="timeline"?"timeline":cascadeView==="people"?"people":"")}>
-<div className="trg-cube-mini-face front" style={{background:"linear-gradient(135deg, "+C.teal+" 0%, "+C.tealDk+" 100%)"}}/>
-<div className="trg-cube-mini-face right" style={{background:"linear-gradient(135deg, #db2777 0%, "+C.pinkDk+" 100%)"}}/>
-<div className="trg-cube-mini-face back" style={{background:"linear-gradient(135deg, "+C.gold+" 0%, #d49a0f 100%)"}}/>
-<div className="trg-cube-mini-face left" style={{background:"linear-gradient(135deg, "+C.navy+" 0%, #0f2a3e 100%)"}}/>
+<div className="trg-cube-mini-face front" style={{background:"linear-gradient(135deg, "+C.teal+" 0%, "+C.tealDk+" 100%)"}}>
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" strokeWidth="2"/><ellipse cx="12" cy="12" rx="3" ry="8" stroke="#fff" strokeWidth="2"/></svg>
+</div>
+<div className="trg-cube-mini-face right" style={{background:"linear-gradient(135deg, #db2777 0%, "+C.pinkDk+" 100%)"}}>
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="4" height="16" fill="#fff"/><rect x="10" y="4" width="4" height="16" fill="#fff"/><rect x="16" y="4" width="4" height="16" fill="#fff"/></svg>
+</div>
+<div className="trg-cube-mini-face back" style={{background:"linear-gradient(135deg, "+C.gold+" 0%, #d49a0f 100%)"}}>
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="3" fill={C.navy}/><rect x="4" y="11" width="11" height="3" fill={C.navy}/><rect x="4" y="17" width="8" height="3" fill={C.navy}/></svg>
+</div>
+<div className="trg-cube-mini-face left" style={{background:"linear-gradient(135deg, "+C.navy+" 0%, #0f2a3e 100%)"}}>
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="3" fill="#fff"/><circle cx="16" cy="16" r="3" fill="#fff"/><line x1="8" y1="8" x2="16" y2="16" stroke="#fff" strokeWidth="2"/></svg>
+</div>
 <div className="trg-cube-mini-face top" style={{background:"linear-gradient(135deg, #f4f7fa 0%, #dde6ef 100%)"}}/>
 <div className="trg-cube-mini-face bottom" style={{background:"linear-gradient(135deg, #f4f7fa 0%, #dde6ef 100%)"}}/>
 </div>
