@@ -184,6 +184,18 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes trg-page{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
 "@keyframes qaslide{from{transform:translateX(100%)}to{transform:translateX(0)}}",
 ".trg-cube-stage{width:72px;height:72px;perspective:280px;flex-shrink:0}",
+".trg-cube-mini-stage{display:none;width:40px;height:40px;perspective:160px;position:absolute;top:0;right:0;z-index:10}",
+".trg-cube-mini{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-28deg);transition:transform 0.5s cubic-bezier(0.23,1,0.32,1)}",
+".trg-cube-mini.kanban{transform:rotateX(-20deg) rotateY(-118deg)}",
+".trg-cube-mini.timeline{transform:rotateX(-20deg) rotateY(-208deg)}",
+".trg-cube-mini.people{transform:rotateX(-20deg) rotateY(-298deg)}",
+".trg-cube-mini-face{position:absolute;width:40px;height:40px}",
+".trg-cube-mini-face.front{transform:translateZ(20px)}",
+".trg-cube-mini-face.right{transform:rotateY(90deg) translateZ(20px)}",
+".trg-cube-mini-face.back{transform:rotateY(180deg) translateZ(20px)}",
+".trg-cube-mini-face.left{transform:rotateY(-90deg) translateZ(20px)}",
+".trg-cube-mini-face.top{transform:rotateX(90deg) translateZ(20px)}",
+".trg-cube-mini-face.bottom{transform:rotateX(-90deg) translateZ(20px)}",
 ".trg-cube{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-28deg);transition:transform 0.5s cubic-bezier(0.23,1,0.32,1)}",
 ".trg-cube.kanban{transform:rotateX(-20deg) rotateY(-118deg)}",
 ".trg-cube.timeline{transform:rotateX(-20deg) rotateY(-208deg)}",
@@ -295,7 +307,9 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 ".trg-kanban-grid{grid-template-columns:minmax(0,1fr) !important;gap:10px !important}",
 ".trg-kanban-col-hidden-mobile{display:none !important}",
 ".trg-kanban-mobile-tabs{display:flex !important}",
-".trg-cube-bar{flex-wrap:wrap;gap:12px !important;padding:12px 14px !important}",
+".trg-cube-bar{display:none !important}",
+".trg-cube-mini-stage{display:block !important}",
+".trg-strategy-page{position:relative}",
 ".trg-breadcrumb-replay{display:none}",
 ".trg-tab-labels span{display:none}",
 ".trg-kanban-grid{grid-template-columns:minmax(0, 1fr) !important}",
@@ -477,7 +491,17 @@ return(
 </div>}
 
 
-{page==="cascade"&&<div>
+{page==="cascade"&&<div className="trg-strategy-page">
+<div className="trg-cube-mini-stage">
+<div className={"trg-cube-mini "+(cascadeView==="kanban"?"kanban":cascadeView==="timeline"?"timeline":cascadeView==="people"?"people":"")}>
+<div className="trg-cube-mini-face front" style={{background:"linear-gradient(135deg, "+C.teal+" 0%, "+C.tealDk+" 100%)"}}/>
+<div className="trg-cube-mini-face right" style={{background:"linear-gradient(135deg, #db2777 0%, "+C.pinkDk+" 100%)"}}/>
+<div className="trg-cube-mini-face back" style={{background:"linear-gradient(135deg, "+C.gold+" 0%, #d49a0f 100%)"}}/>
+<div className="trg-cube-mini-face left" style={{background:"linear-gradient(135deg, "+C.navy+" 0%, #0f2a3e 100%)"}}/>
+<div className="trg-cube-mini-face top" style={{background:"linear-gradient(135deg, #f4f7fa 0%, #dde6ef 100%)"}}/>
+<div className="trg-cube-mini-face bottom" style={{background:"linear-gradient(135deg, #f4f7fa 0%, #dde6ef 100%)"}}/>
+</div>
+</div>
 <PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div className="trg-view-tabs" style={{display:"flex",gap:4}}>{[{k:"hierarchy",l:"Map",c:C.teal},{k:"kanban",l:"Kanban",c:"#db2777"},{k:"timeline",l:"Timeline",c:C.gold},{k:"people",l:"People",c:C.navy}].map(function(v){var active=cascadeView===v.k;return(<div key={v.k} onClick={function(){setCascadeView(v.k);}} style={{display:"flex",alignItems:"center",gap:7,padding:"6px 14px",background:active?C.white:"transparent",border:active?"1px solid "+v.c:"1px solid transparent",borderRadius:6,fontSize:13,color:active?C.navy:C.gray,fontWeight:active?500:400,cursor:"pointer",transition:"all 0.18s cubic-bezier(0.4,0,0.2,1)"}}><span style={{width:7,height:7,borderRadius:"50%",background:v.c,flexShrink:0}}/>{v.l}</div>);})}</div>}/>
 
 <div className="trg-cube-bar" style={{display:"flex",alignItems:"center",gap:18,marginBottom:18,padding:"14px 20px",background:C.white,border:"1px solid "+C.border,borderRadius:10}}>
