@@ -182,18 +182,6 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 "@keyframes trg-tri{0%,100%{opacity:0.25;transform:translateY(2px) scale(0.9)}50%{opacity:1;transform:translateY(0) scale(1)}}",
 "@keyframes trg-page{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
 "@keyframes qaslide{from{transform:translateX(100%)}to{transform:translateX(0)}}",
-".trg-cube-stage{width:72px;height:72px;perspective:280px;flex-shrink:0}",
-".trg-cube{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-28deg);transition:transform 0.5s cubic-bezier(0.23,1,0.32,1)}",
-".trg-cube.kanban{transform:rotateX(-20deg) rotateY(-118deg)}",
-".trg-cube.timeline{transform:rotateX(-20deg) rotateY(-208deg)}",
-".trg-cube.people{transform:rotateX(-20deg) rotateY(-298deg)}",
-".trg-cube-face{position:absolute;width:72px;height:72px;display:flex;align-items:center;justify-content:center}",
-".trg-cube-face.front{transform:translateZ(36px)}",
-".trg-cube-face.right{transform:rotateY(90deg) translateZ(36px)}",
-".trg-cube-face.back{transform:rotateY(180deg) translateZ(36px)}",
-".trg-cube-face.left{transform:rotateY(-90deg) translateZ(36px)}",
-".trg-cube-face.top{transform:rotateX(90deg) translateZ(36px)}",
-".trg-cube-face.bottom{transform:rotateX(-90deg) translateZ(36px)}",
 ".trg-page{animation:trg-page 0.3s cubic-bezier(0.4,0,0.2,1)}",
 ".trg-lift{transition:transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s cubic-bezier(0.4,0,0.2,1)}",
 ".trg-lift:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(31,71,106,0.08), 0 0 0 0.5px rgba(31,71,106,0.04) !important;border-color:#c6d1dc !important}",
@@ -465,34 +453,7 @@ return(
 
 
 {page==="cascade"&&<div>
-<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div className="trg-view-tabs" style={{display:"flex",gap:4}}>{[{k:"hierarchy",l:"Map",c:C.teal},{k:"kanban",l:"Kanban",c:"#db2777"},{k:"timeline",l:"Timeline",c:C.gold},{k:"people",l:"People",c:C.navy}].map(function(v){var active=cascadeView===v.k;return(<div key={v.k} onClick={function(){setCascadeView(v.k);}} style={{display:"flex",alignItems:"center",gap:7,padding:"6px 14px",background:active?C.white:"transparent",border:active?"1px solid "+v.c:"1px solid transparent",borderRadius:6,fontSize:13,color:active?C.navy:C.gray,fontWeight:active?500:400,cursor:"pointer",transition:"all 0.18s cubic-bezier(0.4,0,0.2,1)"}}><span style={{width:7,height:7,borderRadius:"50%",background:v.c,flexShrink:0}}/>{v.l}</div>);})}</div>}/>
-
-<div style={{display:"flex",alignItems:"center",gap:18,marginBottom:18,padding:"14px 20px",background:C.white,border:"1px solid "+C.border,borderRadius:10}}>
-<div className="trg-cube-stage">
-<div className={"trg-cube "+(cascadeView==="kanban"?"kanban":cascadeView==="timeline"?"timeline":cascadeView==="people"?"people":"")}>
-<div className="trg-cube-face front" style={{background:"linear-gradient(135deg, "+C.teal+" 0%, "+C.tealDk+" 100%)"}}>
-<svg width="32" height="32" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" strokeWidth="1.6"/><ellipse cx="12" cy="12" rx="3.5" ry="9" stroke="#fff" strokeWidth="1.6"/><line x1="3" y1="12" x2="21" y2="12" stroke="#fff" strokeWidth="1.6"/><line x1="12" y1="3" x2="12" y2="21" stroke="#fff" strokeWidth="1.6"/></svg>
-</div>
-<div className="trg-cube-face right" style={{background:"linear-gradient(135deg, #db2777 0%, "+C.pinkDk+" 100%)"}}>
-<svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="17" stroke="#fff" strokeWidth="1.5"/><rect x="10" y="4" width="5" height="17" stroke="#fff" strokeWidth="1.5"/><rect x="17" y="4" width="4" height="17" stroke="#fff" strokeWidth="1.5"/><rect x="4" y="6" width="3" height="2.5" fill="#fff"/><rect x="4" y="10" width="3" height="2.5" fill="#fff"/><rect x="11" y="6" width="3" height="2.5" fill="#fff"/><rect x="18" y="6" width="2" height="2.5" fill="#fff"/><rect x="18" y="10" width="2" height="2.5" fill="#fff"/><rect x="18" y="14" width="2" height="2.5" fill="#fff"/></svg>
-</div>
-<div className="trg-cube-face back" style={{background:"linear-gradient(135deg, "+C.gold+" 0%, #d49a0f 100%)"}}>
-<svg width="32" height="32" viewBox="0 0 24 24" fill="none"><line x1="3" y1="4" x2="3" y2="21" stroke={C.navy} strokeWidth="1.5"/><line x1="3" y1="21" x2="22" y2="21" stroke={C.navy} strokeWidth="1.5"/><rect x="5" y="6" width="10" height="2.5" fill={C.navy}/><rect x="8" y="11" width="11" height="2.5" fill={C.navy}/><rect x="4" y="16" width="7" height="2.5" fill={C.navy}/></svg>
-</div>
-<div className="trg-cube-face left" style={{background:"linear-gradient(135deg, "+C.navy+" 0%, #0f2a3e 100%)"}}>
-<svg width="32" height="32" viewBox="0 0 24 24" fill="none"><line x1="12" y1="12" x2="5" y2="5" stroke="#fff" strokeWidth="1.4" opacity="0.6"/><line x1="12" y1="12" x2="19" y2="5" stroke="#fff" strokeWidth="1.4" opacity="0.6"/><line x1="12" y1="12" x2="5" y2="19" stroke="#fff" strokeWidth="1.4" opacity="0.6"/><line x1="12" y1="12" x2="19" y2="19" stroke="#fff" strokeWidth="1.4" opacity="0.6"/><circle cx="12" cy="12" r="3" fill="#fff"/><circle cx="5" cy="5" r="2" fill="#fff"/><circle cx="19" cy="5" r="2" fill="#fff"/><circle cx="5" cy="19" r="2" fill="#fff"/><circle cx="19" cy="19" r="2" fill="#fff"/></svg>
-</div>
-<div className="trg-cube-face top" style={{background:"linear-gradient(135deg, #f4f7fa 0%, #dde6ef 100%)"}}/>
-<div className="trg-cube-face bottom" style={{background:"linear-gradient(135deg, #f4f7fa 0%, #dde6ef 100%)"}}/>
-</div>
-</div>
-<div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:10,fontWeight:500,letterSpacing:1.2,color:C.gray,textTransform:"uppercase",marginBottom:4}}>Current view</div>
-<div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.navy,letterSpacing:"-0.015em",lineHeight:1.15,marginBottom:4}}>{cascadeView==="kanban"?"Board view":cascadeView==="timeline"?"Timeline":cascadeView==="people"?"People":"Strategic hierarchy"}</div>
-<div style={{fontSize:13,color:C.gray,lineHeight:1.5}}>{cascadeView==="kanban"?"Goals and initiatives grouped by status. Same cards, rearranged.":cascadeView==="timeline"?"Schedule view. Coming next.":cascadeView==="people"?"Accountability network. Coming next.":"Top-down decomposition from business plan to action."}</div>
-</div>
-<div style={{fontSize:12,color:C.gray,textAlign:"right",minWidth:80}}>Face {cascadeView==="kanban"?"2":cascadeView==="timeline"?"3":cascadeView==="people"?"4":"1"} of 4</div>
-</div>
+<PH eyebrow="Strategy map" title="Enterprise Value Creation - FY26" right={<div className="trg-view-tabs" style={{display:"flex",gap:4}}>{[{k:"hierarchy",l:"Map"},{k:"kanban",l:"Kanban"},{k:"timeline",l:"Timeline"},{k:"people",l:"People"}].map(function(v){var active=cascadeView===v.k;var enabled=v.k==="hierarchy"||v.k==="kanban";return(<div key={v.k} onClick={enabled?function(){setCascadeView(v.k);}:undefined} style={{padding:"6px 14px",background:active?C.white:"transparent",border:active?"1px solid "+C.border:"none",borderRadius:6,fontSize:13,color:active?C.navy:(enabled?C.gray:"#b0bcc9"),fontWeight:active?500:400,cursor:enabled?"pointer":"default",transition:"all 0.18s cubic-bezier(0.4,0,0.2,1)"}}>{v.l}</div>);})}</div>}/>
 
 {cascadeView==="hierarchy"&&<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:"48px 40px",minHeight:620,position:"relative"}}>
 
@@ -608,28 +569,6 @@ return(<div key={"i"+idx} className="trg-lift" onClick={function(){setSelGoalCtx
 })}
 </div>);})}
 </div>
-</div>
-</div>}
-
-{cascadeView==="timeline"&&<div>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:"48px 40px",minHeight:620,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:16}}>
-<div style={{width:64,height:64,borderRadius:"50%",background:"linear-gradient(135deg, "+C.gold+" 0%, #d49a0f 100%)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 12px rgba(251,191,36,0.25)"}}>
-<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><line x1="4" y1="7" x2="20" y2="7" stroke="#fff" strokeWidth="2" strokeLinecap="round"/><line x1="4" y1="12" x2="16" y2="12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/><line x1="4" y1="17" x2="12" y2="17" stroke="#fff" strokeWidth="2" strokeLinecap="round"/><circle cx="4" cy="7" r="2" fill="#fff"/><circle cx="4" cy="12" r="2" fill="#fff"/><circle cx="4" cy="17" r="2" fill="#fff"/></svg>
-</div>
-<div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em"}}>Timeline view</div>
-<div style={{fontSize:15,color:"#4a5868",lineHeight:1.6,maxWidth:440}}>Same goals and initiatives, laid out against the calendar. Gantt-style bars show when each initiative runs, where they overlap, and which quarters carry the most load.</div>
-<div style={{fontSize:12,color:C.teal,fontWeight:500,padding:"6px 12px",background:C.tealBg,borderRadius:999}}>Coming next</div>
-</div>
-</div>}
-
-{cascadeView==="people"&&<div>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:"48px 40px",minHeight:620,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:16}}>
-<div style={{width:64,height:64,borderRadius:"50%",background:"linear-gradient(135deg, "+C.navy+" 0%, #0f2a3e 100%)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 12px rgba(31,71,106,0.25)"}}>
-<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="3" stroke="#fff" strokeWidth="1.8"/><circle cx="16" cy="8" r="3" stroke="#fff" strokeWidth="1.8"/><path d="M3 20 C3 16.5 5 14 8 14 C11 14 13 16.5 13 20" stroke="#fff" strokeWidth="1.8" fill="none"/><path d="M11 20 C11 16.5 13 14 16 14 C19 14 21 16.5 21 20" stroke="#fff" strokeWidth="1.8" fill="none"/></svg>
-</div>
-<div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em"}}>People view</div>
-<div style={{fontSize:15,color:"#4a5868",lineHeight:1.6,maxWidth:440}}>Accountability network. See who owns what, where the workload is concentrated, and which people are becoming bottlenecks. TARGA surfaces when the same person is blocking multiple initiatives.</div>
-<div style={{fontSize:12,color:C.teal,fontWeight:500,padding:"6px 12px",background:C.tealBg,borderRadius:999}}>Coming next</div>
 </div>
 </div>}
 
