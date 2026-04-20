@@ -25,11 +25,7 @@ function AI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0
 function MI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1" fill={C.navy} fillOpacity="0.4"/><rect x="10" y="9" width="4" height="12" rx="1" fill={C.navy} fillOpacity="0.7"/><rect x="17" y="3" width="4" height="18" rx="1" fill={C.navy}/><circle cx="19" cy="4" r="1.5" fill={C.teal}/></svg>);}
 function TI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill={C.navy} fillOpacity="0.12"/><circle cx="12" cy="12" r="9" fill="none" stroke={C.navy} strokeWidth="1.6"/><path d="M12 7 L12 12 L15 14" stroke={C.navy} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/><circle cx="12" cy="12" r="1" fill={C.gold}/></svg>);}
 function XI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="13" rx="2" fill={C.teal} fillOpacity="0.18"/><rect x="3" y="7" width="13" height="13" rx="2" fill="none" stroke={C.teal} strokeWidth="1.6"/><path d="M13 3 L21 3 L21 11" stroke={C.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/><path d="M13 11 L21 3" stroke={C.teal} strokeWidth="1.8" strokeLinecap="round" fill="none"/></svg>);}
-// Neutral avatar palette - color is reserved for system semantics (status, health, tier).
-// Avatars identify people only. Tone is deterministically derived from initials for consistency.
-var AV_TONES=["#3a4a5c","#4a5a6b","#5c6b7a","#6b7a8a","#7a8695"];
-function avTone(i){if(!i)return"#eaf0f6";var h=0;for(var k=0;k<i.length;k++)h=(h*31+i.charCodeAt(k))>>>0;return AV_TONES[h%AV_TONES.length];}
-function Av(p){var i=p.i,s=p.s||22,bg=p.bg||avTone(i),fg=p.fg||(bg==="#eaf0f6"?C.navy:"#fff");return(<div style={{width:s,height:s,borderRadius:"50%",background:bg,fontSize:s*0.43,color:fg,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,flexShrink:0}}>{i}</div>);}
+function Av(p){var i=p.i,bg=p.bg||C.gold,fg=p.fg||C.navy,s=p.s||22;return(<div style={{width:s,height:s,borderRadius:"50%",background:bg,fontSize:s*0.43,color:fg,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,flexShrink:0}}>{i}</div>);}
 function Pl(p){var c=p.c||"green",hide=p.hide||false;var m={green:{color:C.green,background:C.greenBg},amber:{color:C.amber,background:C.amberBg},red:{color:C.red,background:C.redBg},navy:{color:C.navy,background:C.navyLt},teal:{color:C.tealDk,background:C.tealBg}};var s=m[c]||m.green;return(<span style={{fontSize:12,fontWeight:500,padding:"3px 8px",borderRadius:4,letterSpacing:0.3,whiteSpace:"nowrap",opacity:hide?0:1,transform:hide?"scale(0.8)":"scale(1)",transition:"opacity 0.8s, transform 0.8s",color:s.color,background:s.background}}>{p.children}</span>);}
 function Eye(p){return(<div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:8,display:"flex",alignItems:"center",gap:6}}>{p.children}</div>);}
 function Chk(){return(<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>);}
@@ -38,114 +34,6 @@ function Odo(p){var value=p.value,suffix=p.suffix||"",dur=p.dur||1.4;var str=Str
 function StatCard(p){return(<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"16px 18px"}}><div style={{fontSize:12,color:C.gray,marginBottom:4}}>{p.label}</div><div style={{fontSize:26,fontWeight:500,color:p.color||C.navy,letterSpacing:"-0.02em"}}>{p.value}</div>{p.sub&&<div style={{fontSize:13,color:p.subColor||C.green,fontWeight:500,marginTop:4}}>{p.sub}</div>}</div>);}
 function Logo(p){var s=p.s||18;var k=p.k;var maps={netsuite:{bg:"#125ca4",fg:"#fff",t:"N"},sap:{bg:"#0070c0",fg:"#fff",t:"SAP"},sf:{bg:"#00a1e0",fg:"#fff",t:"sf"},gs:{bg:"#0f9d58",fg:"#fff",t:"G"},conf:{bg:"#0052cc",fg:"#fff",t:"C"}};var m=maps[k]||maps.netsuite;return(<div style={{width:s,height:s,borderRadius:4,background:m.bg,color:m.fg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:s*(m.t.length>1?0.4:0.55),fontWeight:700,flexShrink:0,letterSpacing:m.t.length>1?"-0.03em":"0"}}>{m.t}</div>);}
 function PB(p){return(<div style={{height:p.h||5,background:"#e6ecf2",borderRadius:2,overflow:"hidden"}}><div style={{width:p.pct+"%",height:"100%",background:p.color||C.teal,transition:"width 1.4s cubic-bezier(0.4,0,0.2,1)"}}/></div>);}
-
-// Chevron used for expand-in-place affordance on Card
-function Chev(p){var up=p.up,s=p.s||12,c=p.c||C.gray;return(<svg width={s} height={s} viewBox="0 0 24 24" fill="none" style={{transition:"transform 0.32s cubic-bezier(0.4,0,0.2,1)",transform:up?"rotate(180deg)":"rotate(0deg)"}}><path d="M6 9 L12 15 L18 9" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>);}
-
-// Card - single component replacing ad-hoc card markup across pages.
-// Resting state shows 4 elements max: type glyph, title, status, progress-or-value.
-// Active state (revealed via flip or chevron-expand) adds owner, dates, parent, open-detail.
-// Color is reserved for semantics (status, rail). Avatars only appear in active state and use neutral slate.
-function typeGlyph(type,s){if(type==="strategy"||type==="goal")return(<SI s={s||11}/>);if(type==="initiative")return(<PI s={s||11}/>);if(type==="action")return(<AI s={s||11}/>);if(type==="metric")return(<MI s={s||11}/>);return(<SI s={s||11}/>);}
-function typeLabel(type){if(type==="strategy"||type==="goal")return"GOAL";if(type==="initiative")return"INITIATIVE";if(type==="action")return"ACTION";if(type==="metric")return"METRIC";return"";}
-function typeLabelColor(type){if(type==="initiative")return C.pinkDk;if(type==="action")return"#a07509";if(type==="metric")return C.navy;return C.tealDk;}
-
-function Card(p){
-var type=p.type||"goal";
-var expandMode=p.expandMode||"none"; // "flip" | "expand" | "none"
-var openS=useState(false);var open=openS[0];var setOpen=openS[1];
-var progressColor=p.statusColor==="red"?C.red:p.statusColor==="amber"?C.amber:C.teal;
-var railColor=p.accentRail||(p.statusColor==="red"?C.red:p.statusColor==="amber"?C.amber:C.teal);
-var showRail=p.accentRail!==undefined||p.railOnStatus;
-
-function toggle(e){if(expandMode==="none"){if(p.onOpenDetail)p.onOpenDetail();return;}e&&e.stopPropagation&&e.stopPropagation();setOpen(function(o){return!o;});}
-function openDetail(e){e&&e.stopPropagation&&e.stopPropagation();if(p.onOpenDetail)p.onOpenDetail();}
-
-// Resting content varies by type. Four elements max: glyph + title + status + progress-or-value.
-function RestingBody(){
-if(type==="metric"){
-var mx=p.trendPts?Math.max.apply(null,p.trendPts):1;var mn=p.trendPts?Math.min.apply(null,p.trendPts):0;
-var sparkD=p.trendPts?p.trendPts.map(function(pt,pi){return(pi===0?"M":"L")+" "+(pi/(p.trendPts.length-1)*110)+" "+(26-((pt-mn)/(mx-mn||1))*26);}).join(" "):"";
-return(<div>
-<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>{typeGlyph(type,12)}<div style={{flex:1,fontSize:14,fontWeight:500,color:C.navy,minWidth:0,lineHeight:1.3}}>{p.title}</div></div>
-<div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:12}}>
-<div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:24,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{p.value}</div>{p.delta&&<div style={{fontSize:12,color:progressColor,fontWeight:500,marginTop:4}}>{p.delta}</div>}</div>
-{p.trendPts&&<svg width="110" height="30" style={{flexShrink:0}}><path d={sparkD} fill="none" stroke={progressColor} strokeWidth="1.6" strokeLinecap="round"/></svg>}
-</div>
-</div>);
-}
-if(type==="action"){
-return(<div>
-<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>{typeGlyph(type,12)}<div style={{flex:1,fontSize:14,fontWeight:500,color:C.navy,minWidth:0,lineHeight:1.3}}>{p.title}</div><Pl c={p.statusColor}>{p.status}</Pl></div>
-{p.dueDate&&<div style={{fontSize:12,color:C.gray}}>Due {p.dueDate}</div>}
-</div>);
-}
-// goal, strategy, initiative share shape: title + status (+blocker), then progress bar + impact/progress numbers
-return(<div>
-<div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}>
-{typeGlyph(type,14)}
-<div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:p.dense?16:20,fontWeight:500,color:C.navy,lineHeight:1.25,letterSpacing:"-0.018em",minWidth:0}}>{p.title}</div>
-<div style={{display:"flex",gap:5,flexShrink:0,marginTop:2,flexWrap:"wrap",justifyContent:"flex-end"}}><Pl c={p.statusColor}>{p.status}</Pl>{p.hasBlocker&&<Pl c="red">BLOCKER</Pl>}</div>
-</div>
-{(p.impact||p.progress!==undefined)&&<div style={{display:"flex",alignItems:"flex-end",gap:28,marginBottom:12,flexWrap:"wrap"}}>
-{p.impact&&<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Impact</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:p.dense?20:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{p.impact}</div></div>}
-{p.progress!==undefined&&<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Progress</div><div style={{display:"flex",alignItems:"baseline",gap:3}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:p.dense?20:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{p.progress}</span><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:14,color:C.gray,fontWeight:400}}>%</span></div></div>}
-</div>}
-{p.progress!==undefined&&<PB pct={p.progress} h={3} color={progressColor}/>}
-</div>);
-}
-
-function ActiveBody(){
-return(<div style={{paddingTop:14,marginTop:14,borderTop:"1px solid "+C.subtle}}>
-{(p.owner||p.ownerName)&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-{p.owner&&<Av i={p.owner} s={22}/>}
-{p.ownerName&&<span style={{fontSize:13,fontWeight:500,color:C.navy}}>{p.ownerName}</span>}
-{p.ownerRole&&<span style={{fontSize:12,color:C.gray}}>. {p.ownerRole}</span>}
-</div>}
-<div style={{display:"flex",flexWrap:"wrap",gap:"6px 14px",marginBottom:p.onOpenDetail?12:0}}>
-{p.dueDate&&<div style={{fontSize:12,color:C.gray}}><span style={{letterSpacing:0.5,textTransform:"uppercase",fontSize:10,fontWeight:500,marginRight:6}}>Due</span>{p.dueDate}</div>}
-{p.dates&&<div style={{fontSize:12,color:C.gray}}><span style={{letterSpacing:0.5,textTransform:"uppercase",fontSize:10,fontWeight:500,marginRight:6}}>Window</span>{p.dates}</div>}
-{p.reviewDays!==undefined&&<div style={{fontSize:12,color:C.gray}}><span style={{letterSpacing:0.5,textTransform:"uppercase",fontSize:10,fontWeight:500,marginRight:6}}>Review</span>{p.reviewDays}d</div>}
-{p.parentTitle&&<div style={{fontSize:12,color:C.tealDk,display:"flex",alignItems:"center",gap:4}}><SI s={10}/>{p.parentTitle}</div>}
-{p.linkedCount!==undefined&&<div style={{fontSize:12,color:C.gray}}><span style={{letterSpacing:0.5,textTransform:"uppercase",fontSize:10,fontWeight:500,marginRight:6}}>Linked</span>{p.linkedCount}</div>}
-</div>
-{p.onOpenDetail&&<div onClick={openDetail} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:12,fontWeight:500,color:C.teal,cursor:"pointer",padding:"4px 0"}}>Open detail <span style={{fontSize:14}}>{"\u2192"}</span></div>}
-</div>);
-}
-
-var baseShell={background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:p.dense?"14px 16px":"20px 24px",cursor:expandMode==="none"?(p.onOpenDetail?"pointer":"default"):"pointer",marginBottom:p.mb!==undefined?p.mb:12,position:"relative"};
-if(showRail)baseShell.borderLeft="4px solid "+railColor;
-
-// FLIP MODE: front face = resting, back face = active+open-detail
-if(expandMode==="flip"){
-var stageH=p.dense?150:200;
-return(<div className="trg-card-stage" onClick={toggle} style={{perspective:"1400px",marginBottom:p.mb!==undefined?p.mb:12,minHeight:stageH}}>
-<div className={"trg-card-flip "+(open?"is-flipped":"")} style={{position:"relative",width:"100%",transformStyle:"preserve-3d",transition:"transform 0.52s cubic-bezier(0.23,1,0.32,1)",cursor:"pointer",transform:open?"rotateY(180deg)":"rotateY(0deg)",minHeight:stageH}}>
-<div style={Object.assign({},baseShell,{position:"absolute",inset:0,backfaceVisibility:"hidden",WebkitBackfaceVisibility:"hidden",margin:0})}>{RestingBody()}<div style={{position:"absolute",bottom:8,right:12,fontSize:10,color:"#b0bcc9",letterSpacing:0.8,textTransform:"uppercase",fontWeight:500}}>Tap for context</div></div>
-<div style={Object.assign({},baseShell,{position:"absolute",inset:0,backfaceVisibility:"hidden",WebkitBackfaceVisibility:"hidden",margin:0,transform:"rotateY(180deg)"})}>
-<div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}>{typeGlyph(type,12)}<div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:p.dense?15:17,fontWeight:500,color:C.navy,lineHeight:1.3,letterSpacing:"-0.015em",minWidth:0}}>{p.title}</div></div>
-{ActiveBody()}
-<div style={{position:"absolute",bottom:8,right:12,fontSize:10,color:"#b0bcc9",letterSpacing:0.8,textTransform:"uppercase",fontWeight:500}}>Tap to close</div>
-</div>
-</div></div>);
-}
-
-// EXPAND-IN-PLACE MODE: chevron at bottom edge reveals active content downward
-if(expandMode==="expand"){
-return(<div className="trg-lift" onClick={toggle} style={baseShell}>
-{RestingBody()}
-<div style={{overflow:"hidden",maxHeight:open?400:0,opacity:open?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
-{ActiveBody()}
-</div>
-<div onClick={toggle} style={{display:"flex",alignItems:"center",justifyContent:"center",paddingTop:8,marginTop:open?0:2,borderTop:open?"1px solid "+C.subtle:"none"}}><Chev up={open} s={14} c={C.gray}/></div>
-</div>);
-}
-
-// NONE: simple clickable card with resting body only
-return(<div className="trg-lift" onClick={openDetail} style={baseShell}>
-{RestingBody()}
-</div>);
-}
 
 var strategies=[
 {id:"sp1",t:"Expand gross margin by 300bps",status:"ON TRACK",sc:"green",risk:true,progress:54,owner:"JT",name:"Joe Thompson",role:"CEO",impact:"$24M EBITDA",actions:4,blocker:true},
@@ -287,10 +175,6 @@ var sgcS=useState("sp1");var selGoalCtx=sgcS[0];var setSelGoalCtx=sgcS[1];
 var cvS=useState("hierarchy");var cascadeView=cvS[0];var setCascadeView=cvS[1];
 var kmtS=useState("green");var kanbanMobileTab=kmtS[0];var setKanbanMobileTab=kmtS[1];
 var qaS=useState(false);var quickAddOpen=qaS[0];var setQuickAddOpen=qaS[1];
-// Minimal/Full view toggle, per-page. Default is Minimal - executives are the default user.
-// Applies to home, dashboard, pulse. Cascade and detail are excluded (cascade is hierarchy-driven; detail is the full-context destination).
-var vmS=useState({home:"minimal",dashboard:"minimal",pulse:"minimal"});var viewMode=vmS[0];var setViewMode=vmS[1];
-function setVM(key,val){setViewMode(function(prev){var next=Object.assign({},prev);next[key]=val;return next;});}
 var G=goalContent[selGoalCtx]||goalContent.sp1;
 
 useEffect(function(){var s=document.createElement("style");s.textContent=[
@@ -324,9 +208,6 @@ useEffect(function(){var s=document.createElement("style");s.textContent=[
 ".trg-cube-face.top{transform:rotateX(90deg) translateZ(30px)}",
 ".trg-cube-face.bottom{transform:rotateX(-90deg) translateZ(30px)}",
 ".trg-page{animation:trg-page 0.3s cubic-bezier(0.4,0,0.2,1)}",
-".trg-card-stage{position:relative;width:100%;transition:filter 0.18s cubic-bezier(0.4,0,0.2,1)}",
-".trg-card-stage:hover{filter:drop-shadow(0 4px 12px rgba(31,71,106,0.08))}",
-".trg-card-flip{will-change:transform}",
 ".trg-lift{transition:transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s cubic-bezier(0.4,0,0.2,1)}",
 ".trg-lift:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(31,71,106,0.08), 0 0 0 0.5px rgba(31,71,106,0.04) !important;border-color:#c6d1dc !important}",
 ".trg-lift:active{transform:translateY(0)}",
@@ -467,12 +348,6 @@ function NI(p){return(<div className="trg-nav" onClick={function(){setPage(p.pg)
 
 function PH(p){return(<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:18,borderBottom:"1px solid "+C.border,marginBottom:18,gap:12,flexWrap:"wrap"}}><div style={{minWidth:0}}><div style={{fontSize:12,fontWeight:500,letterSpacing:1.5,color:C.teal,textTransform:"uppercase",marginBottom:2}}>{p.eyebrow}</div><div className="trg-ph-title" style={{fontWeight:500,color:C.navy,fontFamily:"Space Grotesk, sans-serif",letterSpacing:"-0.02em"}}>{p.title}</div></div>{p.right&&<div>{p.right}</div>}</div>);}
 
-// View toggle - Minimal | Full. Minimal is the default because executives are the default user.
-function VToggle(p){var mode=p.mode||"minimal";var isMin=mode==="minimal";return(<div style={{display:"inline-flex",alignItems:"center",padding:2,background:C.bg2,border:"1px solid "+C.border,borderRadius:6}}>
-<div onClick={function(){p.onChange&&p.onChange("minimal");}} style={{padding:"4px 12px",fontSize:12,fontWeight:500,letterSpacing:0.3,color:isMin?C.navy:C.gray,background:isMin?C.white:"transparent",borderRadius:4,cursor:"pointer",boxShadow:isMin?"0 1px 2px rgba(31,71,106,0.08)":"none",transition:"all 0.18s cubic-bezier(0.4,0,0.2,1)"}}>Minimal</div>
-<div onClick={function(){p.onChange&&p.onChange("full");}} style={{padding:"4px 12px",fontSize:12,fontWeight:500,letterSpacing:0.3,color:isMin?C.gray:C.navy,background:isMin?"transparent":C.white,borderRadius:4,cursor:"pointer",boxShadow:isMin?"none":"0 1px 2px rgba(31,71,106,0.08)",transition:"all 0.18s cubic-bezier(0.4,0,0.2,1)"}}>Full</div>
-</div>);}
-
 return(
 <div className="trg-shell" style={{fontFamily:"Inter, -apple-system, sans-serif",color:C.navy,background:C.bg2}}>
 
@@ -494,7 +369,7 @@ return(
 <div key={page} className="trg-page">
 
 {page==="home"&&<div>
-<PH eyebrow="Good morning, Joe" title="My world" right={<div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}><VToggle mode={viewMode.home} onChange={function(v){setVM("home",v);}}/><div onClick={function(){setQuickAddOpen(true);}} className="trg-press" style={{display:"flex",alignItems:"center",gap:6,padding:"7px 14px",background:C.navy,color:"#fff",borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",boxShadow:"0 1px 2px rgba(31,71,106,0.15)"}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5 L12 19 M5 12 L19 12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg><span>Quick add</span><span style={{marginLeft:4,padding:"1px 6px",background:"rgba(255,255,255,0.2)",borderRadius:4,fontSize:11,fontWeight:500}}>3</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
+<PH eyebrow="Good morning, Joe" title="My world" right={<div style={{display:"flex",alignItems:"center",gap:12}}><div onClick={function(){setQuickAddOpen(true);}} className="trg-press" style={{display:"flex",alignItems:"center",gap:6,padding:"7px 14px",background:C.navy,color:"#fff",borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",boxShadow:"0 1px 2px rgba(31,71,106,0.15)"}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5 L12 19 M5 12 L19 12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg><span>Quick add</span><span style={{marginLeft:4,padding:"1px 6px",background:"rgba(255,255,255,0.2)",borderRadius:4,fontSize:11,fontWeight:500}}>3</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
 
 <div className="trg-hero" style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,marginBottom:28,boxShadow:"0 1px 3px rgba(31,71,106,0.04)",padding:"28px 32px"}}>
 <div style={{flex:1,minWidth:0}}>
@@ -509,12 +384,20 @@ return(
 </div>
 </div>
 
-<div className="trg-home-grid" style={viewMode.home==="minimal"?{display:"block"}:undefined}>
+<div className="trg-home-grid">
 <div className="trg-home-main">
 <Eye><SI s={12}/> My goals <span style={{color:C.gray,fontWeight:400}}>. 4</span></Eye>
-{strategies.map(function(s){return(<Card key={s.id} type="goal" title={s.t} status={s.status} statusColor={s.sc} progress={s.progress} impact={s.impact} hasBlocker={s.blocker} owner={s.owner} ownerName={s.name} ownerRole={s.role} linkedCount={s.actions} expandMode="flip" onOpenDetail={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}}/>);})}
+{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"22px 26px",marginBottom:12,cursor:"pointer"}}>
+<div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}><SI s={14}/><div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.navy,lineHeight:1.25,letterSpacing:"-0.02em",minWidth:0}}>{s.t}</div><div style={{display:"flex",gap:5,flexShrink:0,marginTop:2}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
+<div style={{display:"flex",alignItems:"flex-end",gap:32,marginBottom:14,flexWrap:"wrap"}}>
+<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Impact</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{s.impact}</div></div>
+<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Progress</div><div style={{display:"flex",alignItems:"baseline",gap:3}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{s.progress}</span><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:16,color:C.gray,fontWeight:400}}>%</span></div></div>
 </div>
-{viewMode.home==="full"&&<div className="trg-home-side">
+<PB pct={s.progress} h={3} color={s.sc==="green"?C.teal:C.amber}/>
+<div style={{display:"flex",alignItems:"center",gap:8,marginTop:16,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i={s.owner} s={22} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:13,fontWeight:500,color:C.navy}}>{s.name}</span><span style={{fontSize:12,color:C.gray}}>. {s.role}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500}}>{s.actions} actions</span></div>
+</div>);})}
+</div>
+<div className="trg-home-side">
 <Eye><TM s={14}/> TARGA Intelligence</Eye>
 <div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12,marginBottom:16}}>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:0.5,color:C.tealDk,textTransform:"uppercase",marginBottom:10}}>This week</div>
@@ -524,15 +407,15 @@ return(
 </div>
 <Eye><TI s={12}/> Recent activity</Eye>
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"4px 14px"}}>
-{[{i:"MS",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago"},{i:"JT",n:"Joe T.",a:"updated margin target",t:"Yesterday"},{i:"SD",n:"Sarah D.",a:"completed 2 interviews",t:"2d ago"}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:idx<2?"1px solid #f0f3f6":"none"}}><Av i={e.i} s={22}/><div style={{fontSize:14,lineHeight:1.45}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><div style={{fontSize:12,color:"#8b99a8",marginTop:2}}>{e.t}</div></div></div>);})}
+{[{i:"MS",bg:C.red,fg:"#fff",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago"},{i:"JT",bg:C.gold,fg:C.navy,n:"Joe T.",a:"updated margin target",t:"Yesterday"},{i:"SD",bg:C.navy,fg:"#fff",n:"Sarah D.",a:"completed 2 interviews",t:"2d ago"}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:idx<2?"1px solid #f0f3f6":"none"}}><Av i={e.i} bg={e.bg} fg={e.fg} s={22}/><div style={{fontSize:14,lineHeight:1.45}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><div style={{fontSize:12,color:"#8b99a8",marginTop:2}}>{e.t}</div></div></div>);})}
 </div>
-</div>}
+</div>
 </div>
 </div>}
 
 
 {page==="vp"&&<div>
-<PH eyebrow="Good morning, Kyle" title="My initiative" right={<div style={{display:"flex",alignItems:"center",gap:12}}><div style={{display:"flex",alignItems:"center",gap:6,padding:"4px 10px",background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:999}}><Av i="KM" s={18}/><span style={{fontSize:12,fontWeight:500,color:C.tealDk}}>Viewing as Kyle Moyer, VP Operations</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
+<PH eyebrow="Good morning, Kyle" title="My initiative" right={<div style={{display:"flex",alignItems:"center",gap:12}}><div style={{display:"flex",alignItems:"center",gap:6,padding:"4px 10px",background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:999}}><Av i="KM" bg={C.teal} fg="#fff" s={18}/><span style={{fontSize:12,fontWeight:500,color:C.tealDk}}>Viewing as Kyle Moyer, VP Operations</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
 
 <div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 14px",marginBottom:20,fontSize:13,color:C.tealDk,lineHeight:1.5}}><strong style={{fontWeight:500}}>Role-aware landing</strong>. Same data, different altitude. Kyle owns one initiative, not the full goal. Joe sees the business plan when he lands; Kyle sees the slice he's accountable for.</div>
 
@@ -570,7 +453,7 @@ return(
 <div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Review</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.amber,letterSpacing:"-0.02em",fontVariantNumeric:"tabular-nums"}}>11d</div></div>
 </div>
 <PB pct={40} h={6} color={C.amber}/>
-<div style={{display:"flex",alignItems:"center",gap:8,marginTop:14,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i="KM" s={22}/><span style={{fontSize:14,fontWeight:500,color:C.navy}}>Kyle Moyer</span><span style={{fontSize:12,color:C.gray}}>. VP Operations . Owner</span><span style={{marginLeft:"auto",fontSize:12,color:C.teal,fontWeight:500}}>Open item {"\u2192"}</span></div>
+<div style={{display:"flex",alignItems:"center",gap:8,marginTop:14,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i="KM" bg={C.teal} fg="#fff" s={22}/><span style={{fontSize:14,fontWeight:500,color:C.navy}}>Kyle Moyer</span><span style={{fontSize:12,color:C.gray}}>. VP Operations . Owner</span><span style={{marginLeft:"auto",fontSize:12,color:C.teal,fontWeight:500}}>Open item {"\u2192"}</span></div>
 </div>
 
 <Eye><AI s={12}/> Your actions <span style={{color:C.gray,fontWeight:400}}>. 4</span></Eye>
@@ -600,7 +483,7 @@ return(
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"10px 12px",marginBottom:10}}>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,marginBottom:4}}>Input for CFO cost model</div>
 <div style={{fontSize:12,color:C.gray,lineHeight:1.5,marginBottom:6}}>Assigned by Mark Sternberger . Due Apr 22</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i="MS" s={18}/><span style={{fontSize:12,color:C.gray}}>Mark's initiative: OpEx</span></div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><Av i="MS" bg={C.red} fg="#fff" s={18}/><span style={{fontSize:12,color:C.gray}}>Mark's initiative: OpEx</span></div>
 </div>
 </div>
 </div>
@@ -685,6 +568,7 @@ return(
 <div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{width:280,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
 <SI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>GOAL</span>
+<div style={{marginLeft:"auto"}}><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
 </div>
 <div style={{fontSize:16,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:8}}>{s.t}</div>
 <div style={{display:"flex",gap:5,marginBottom:8}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div>
@@ -761,7 +645,7 @@ var s=it.data;
 return(<div key={"g"+idx} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:8,padding:"10px 12px",marginBottom:8,cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}><SI s={10}/><span style={{fontSize:10,fontWeight:500,color:C.tealDk,letterSpacing:0.8}}>GOAL</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:8}}>{s.t}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={s.owner} s={16}/><span style={{fontSize:11,color:C.gray}}>{s.name}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{s.progress}%</span></div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={s.owner} s={16} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:s.owner==="SD"?C.teal:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:11,color:C.gray}}>{s.name}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{s.progress}%</span></div>
 </div>);
 }else{
 var i=it.data;
@@ -769,7 +653,7 @@ return(<div key={"i"+idx} className="trg-lift" onClick={function(){setSelGoalCtx
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}><PI s={10}/><span style={{fontSize:10,fontWeight:500,color:C.pinkDk,letterSpacing:0.8}}>INITIATIVE</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:4}}>{i.t}</div>
 <div style={{fontSize:11,color:C.gray,marginBottom:8}}>{it.parentTitle}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={i.av} s={16}/><span style={{fontSize:11,color:C.gray}}>{i.ownerName}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{i.prog}%</span></div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={i.av} s={16} bg={i.av==="MS"?C.red:i.av==="KM"?C.teal:i.av==="SD"?C.teal:C.navy} fg="#fff"/><span style={{fontSize:11,color:C.gray}}>{i.ownerName}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{i.prog}%</span></div>
 </div>);
 }
 })}
@@ -844,7 +728,7 @@ return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isEx
 <div className="trg-focal-title" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.15,letterSpacing:"-0.025em",marginBottom:12}}>{selItemCtx?selItemCtx.t:G.t}</div>
 <div style={{fontSize:16,color:"#4a5868",lineHeight:1.65,marginBottom:18}}>{selItemCtx?selItemCtx.desc:G.desc}</div>
 <div className="trg-owner-row" style={{marginBottom:16}}>
-<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i={selItemCtx?selItemCtx.av:G.ownerInit} s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{selItemCtx?selItemCtx.ownerName:G.ownerName} <span style={{color:C.gray,fontWeight:400}}>. {selItemCtx?selItemCtx.ownerRole:G.ownerRole}</span></div></div></div>
+<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i={selItemCtx?selItemCtx.av:G.ownerInit} bg={selItemCtx?(selItemCtx.av==="MS"?C.red:selItemCtx.av==="KM"?C.teal:C.navy):(G.ownerBg==="gold"?C.gold:G.ownerBg==="red"?C.red:G.ownerBg==="teal"?C.teal:C.navy)} fg={selItemCtx?"#fff":(G.ownerBg==="gold"?C.navy:"#fff")} s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{selItemCtx?selItemCtx.ownerName:G.ownerName} <span style={{color:C.gray,fontWeight:400}}>. {selItemCtx?selItemCtx.ownerRole:G.ownerRole}</span></div></div></div>
 <div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Dates</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{G.dates}</div></div>
 </div>
 <div className="trg-stat-strip" style={{background:C.bg2,borderRadius:10,marginBottom:16}}>
@@ -862,13 +746,13 @@ return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isEx
 <Eye><AI s={12}/> Actions <span style={{color:C.gray,fontWeight:400}}>. {G.hasCascadeDemo?<Odo value={actionCount} dur={1.4}/>:G.actionCount}</span></Eye>
 
 {G.hasBlocker&&G.hasCascadeDemo&&<div style={{overflow:"hidden",maxHeight:showBlocker?300:0,opacity:showBlocker?1:0,marginBottom:showBlocker?5:0,transition:"max-height 0.8s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), margin 0.8s cubic-bezier(0.4,0,0.2,1)"}}>
-<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.32s cubic-bezier(0.4,0,0.2,1)"}}>{G.blockerAction}</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div className="trg-press" onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
+<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.32s cubic-bezier(0.4,0,0.2,1)"}}>{G.blockerAction}</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" bg={C.gold} fg={C.navy} s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div className="trg-press" onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
 </div>}
 
 {G.actions.map(function(aRaw){var bgMap={teal:C.teal,navy:C.navy,gold:C.gold,red:C.red};var a=Object.assign({},aRaw,{bg:bgMap[aRaw.bg]||aRaw.bg,fg:aRaw.fg==="navy"?C.navy:aRaw.fg});var isSel=selAction&&selAction.t===a.t;return(<div key={a.t}>
 <div className="trg-lift" onClick={function(){setSelAction(isSel?null:a);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+a.bc,borderRadius:8,padding:13,marginBottom:8,cursor:"pointer"}}>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{a.t}</div>
-<div style={{display:"flex",alignItems:"center",gap:5}}><Av i={a.i} s={16}/><span style={{fontSize:11,color:C.gray}}>{a.d}</span><span style={{marginLeft:"auto"}}><Pl c={a.sc}>{a.s}</Pl></span></div>
+<div style={{display:"flex",alignItems:"center",gap:5}}><Av i={a.i} bg={a.bg} fg={a.fg} s={16}/><span style={{fontSize:11,color:C.gray}}>{a.d}</span><span style={{marginLeft:"auto"}}><Pl c={a.sc}>{a.s}</Pl></span></div>
 </div>
 <div style={{overflow:"hidden",maxHeight:isSel?300:0,opacity:isSel?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
 <div style={{background:C.bg2,border:"1px solid "+C.subtle,borderRadius:8,padding:10,marginBottom:5,marginTop:-3}}>
@@ -925,7 +809,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div className="trg-lift" onClick={function(){setSelChild(isSC?null:ci);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:8,padding:"9px 11px",cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}><PI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.pinkDk}}>INITIATIVE</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{ch.t}</div>
-<div style={{display:"flex",alignItems:"center",transition:"color 0.8s, opacity 0.8s"}}><Pl c={ch.sc}>{ch.s}</Pl><div style={{marginLeft:"auto"}}><Av i={ch.av} s={16}/></div></div>
+<div style={{display:"flex",alignItems:"center",transition:"color 0.8s, opacity 0.8s"}}><Pl c={ch.sc}>{ch.s}</Pl><div style={{marginLeft:"auto"}}><Av i={ch.av} bg={C.navy} fg="#fff" s={16}/></div></div>
 </div>
 <div style={{overflow:"hidden",maxHeight:isSC?150:0,opacity:isSC?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
 <div style={{background:C.bg2,border:"1px solid "+C.subtle,borderRadius:8,padding:10,marginTop:4}}>
@@ -943,7 +827,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 <div style={{padding:16,minHeight:160}}>
 {bTab==="Comments"&&<div>
-{[{i:"JT",n:"Joe Thompson",t:"2d ago",m:"Make sure pricing is approved before board review. Critical path."},{i:"KM",n:"Kyle Moyer",t:"2d ago",m:"Agreed. Finance sync scheduled Thursday."},{i:"MS",n:"Mark Sternberger",t:"5h ago",m:"Supplier negotiations taking longer. May need to escalate."}].map(function(c,idx){return(<div key={idx} style={{display:"flex",gap:10,marginBottom:18}}><Av i={c.i} s={28}/><div style={{flex:1}}><div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:3}}><span style={{fontSize:15,fontWeight:500,color:C.navy}}>{c.n}</span><span style={{fontSize:12,color:"#8b99a8"}}>{c.t}</span></div><div style={{fontSize:16,color:"#4a5868",lineHeight:1.6}}>{c.m}</div></div></div>);})}
+{[{i:"JT",bg:C.gold,n:"Joe Thompson",t:"2d ago",m:"Make sure pricing is approved before board review. Critical path."},{i:"KM",bg:C.teal,n:"Kyle Moyer",t:"2d ago",m:"Agreed. Finance sync scheduled Thursday."},{i:"MS",bg:C.red,n:"Mark Sternberger",t:"5h ago",m:"Supplier negotiations taking longer. May need to escalate."}].map(function(c,idx){return(<div key={idx} style={{display:"flex",gap:10,marginBottom:18}}><Av i={c.i} bg={c.bg} fg={c.bg===C.gold?C.navy:"#fff"} s={28}/><div style={{flex:1}}><div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:3}}><span style={{fontSize:15,fontWeight:500,color:C.navy}}>{c.n}</span><span style={{fontSize:12,color:"#8b99a8"}}>{c.t}</span></div><div style={{fontSize:16,color:"#4a5868",lineHeight:1.6}}>{c.m}</div></div></div>);})}
 <div style={{display:"flex",gap:8,marginTop:12,paddingTop:12,borderTop:"1px solid "+C.subtle}}><div style={{flex:1,background:C.bg2,borderRadius:8,padding:"10px 12px",fontSize:14,color:"#8b99a8"}}>Add a comment...</div><div style={{padding:"10px 16px",background:C.teal,color:"#fff",borderRadius:8,fontSize:15,fontWeight:500,cursor:"pointer"}}>Send</div></div>
 </div>}
 
@@ -955,7 +839,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>}
 
 {bTab==="History"&&<div>
-{[{i:"MS",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago",sys:false},{i:"JT",n:"Joe T.",a:"updated margin target",t:"Yesterday",sys:false},{i:"KM",n:"Kyle M.",a:"added action Review Q1 margin",t:"2d ago",sys:false},{i:"",n:"",a:"Gross margin synced from NetSuite",t:"Today",sys:true},{i:"JT",n:"Joe T.",a:"changed status to At Risk",t:"Apr 10",sys:false},{i:"KM",n:"Kyle M.",a:"created this goal",t:"Mar 28",sys:false}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:idx<5?"1px solid #f0f3f6":"none"}}><Av i={e.i} bg={e.sys?"#eaf0f6":undefined} fg={e.sys?C.navy:undefined} s={22}/><div style={{fontSize:15,lineHeight:1.5}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><span style={{fontSize:12,color:"#8b99a8",marginLeft:8}}>{e.t}</span></div></div>);})}
+{[{i:"MS",bg:C.red,fg:"#fff",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago"},{i:"JT",bg:C.gold,fg:C.navy,n:"Joe T.",a:"updated margin target",t:"Yesterday"},{i:"KM",bg:C.teal,fg:"#fff",n:"Kyle M.",a:"added action Review Q1 margin",t:"2d ago"},{i:"",bg:"#eaf0f6",fg:C.navy,n:"",a:"Gross margin synced from NetSuite",t:"Today"},{i:"JT",bg:C.gold,fg:C.navy,n:"Joe T.",a:"changed status to At Risk",t:"Apr 10"},{i:"KM",bg:C.teal,fg:"#fff",n:"Kyle M.",a:"created this goal",t:"Mar 28"}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:idx<5?"1px solid #f0f3f6":"none"}}><Av i={e.i} bg={e.bg} fg={e.fg} s={22}/><div style={{fontSize:15,lineHeight:1.5}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><span style={{fontSize:12,color:"#8b99a8",marginLeft:8}}>{e.t}</span></div></div>);})}
 </div>}
 
 {bTab==="Hierarchy"&&<div style={{position:"relative",paddingLeft:20}}>
@@ -973,19 +857,23 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>}
 
 {page==="dashboard"&&<div>
-<PH eyebrow="Executive view" title="Goal Health Dashboard" right={<div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}><VToggle mode={viewMode.dashboard} onChange={function(v){setVM("dashboard",v);}}/><div style={{fontSize:13,color:C.gray}}>FY26 Q1 . Updated today</div></div>}/>
+<PH eyebrow="Executive view" title="Goal Health Dashboard" right={<div style={{fontSize:13,color:C.gray}}>FY26 Q1 . Updated today</div>}/>
 <div className="trg-stat4" style={{marginBottom:32}}>
 <StatCard label="Overall confidence" value="69%" sub={"\u2197 +2% this month"} subColor={C.green}/>
 <StatCard label="Goals" value="4" sub="3 on track, 1 behind"/>
 <StatCard label="Active blockers" value="3" color={C.red} sub="2 overdue" subColor={C.red}/>
 <StatCard label="Value at stake" value="$48M" sub="EBITDA impact"/>
 </div>
-<div className="trg-home-grid" style={viewMode.dashboard==="minimal"?{display:"block"}:undefined}>
+<div className="trg-home-grid">
 <div className="trg-home-main">
 <Eye>Goal health</Eye>
-{strategies.map(function(s){return(<Card key={s.id} type="goal" title={s.t} status={s.status} statusColor={s.sc} progress={s.progress} impact={s.impact} hasBlocker={s.blocker} owner={s.owner} ownerName={s.name} ownerRole={s.role} linkedCount={s.actions} dense={true} expandMode="flip" mb={16} onOpenDetail={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}}/>);})}
+{strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:16,cursor:"pointer"}}>
+<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:8,height:8,borderRadius:"50%",background:s.sc==="green"?C.green:C.amber,flexShrink:0}}/><div style={{flex:1,fontSize:17,fontWeight:500,color:C.navy,minWidth:0}}>{s.t}</div><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
+<div style={{display:"flex",gap:24,marginBottom:8,flexWrap:"wrap"}}><div><div style={{fontSize:11,color:C.gray}}>Progress</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.progress}%</div></div><div><div style={{fontSize:11,color:C.gray}}>Impact</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.impact}</div></div><div style={{marginLeft:"auto",display:"flex",gap:4}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
+<PB pct={s.progress}/>
+</div>);})}
 </div>
-{viewMode.dashboard==="full"&&<div className="trg-home-side">
+<div className="trg-home-side">
 <Eye><TM s={14}/> AI executive summary</Eye>
 <div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:10,padding:12,marginBottom:14}}>
 <div style={{fontSize:15,color:C.navy,lineHeight:1.6,marginBottom:10}}>Three of four goals on track. OpEx dropped 7 confidence points on vendor blockers. Gross margin depends on Apex Logistics. Two goals share that exposure. Recommend resolving both in one conversation.</div>
@@ -995,13 +883,13 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:12}}>
 {boardItems.map(function(b){return(<div key={b.t} style={{marginBottom:14}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,fontWeight:500,color:C.navy}}>{b.t}</span><span style={{fontSize:17,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</span></div><PB pct={b.conf} color={b.status==="green"?C.green:C.red}/><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red,marginTop:3}}>{b.conf>b.prev?"\u2197":"\u2198"} {Math.abs(b.conf-b.prev)} pts vs last week</div></div>);})}
 </div>
-</div>}
+</div>
 </div>
 </div>}
 
 {page==="pulse"&&<div>
-<PH eyebrow="Board pulse" title="Q1 FY26 Board Digest" right={<div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}><VToggle mode={viewMode.pulse} onChange={function(v){setVM("pulse",v);}}/><div style={{display:"flex",alignItems:"center",gap:8}}><TM s={16}/><span style={{fontSize:13,color:C.tealDk,fontWeight:500}}>AI-generated . Read-only</span></div></div>}/>
-{viewMode.pulse==="full"&&<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:24,marginBottom:20}}>
+<PH eyebrow="Board pulse" title="Q1 FY26 Board Digest" right={<div style={{display:"flex",alignItems:"center",gap:8}}><TM s={16}/><span style={{fontSize:13,color:C.tealDk,fontWeight:500}}>AI-generated . Read-only</span></div>}/>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:24,marginBottom:20}}>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:8}}>Executive summary</div>
 <div style={{fontSize:16,color:"#4a5868",lineHeight:1.8,marginBottom:16}}>Enterprise value creation is progressing with three of four goals on track. Combined EBITDA impact across all plans is $48M. Overall confidence sits at 69%, up 2 points month-over-month. The primary risk area is operational efficiency, which has declined 7 confidence points due to vendor delivery delays. Gross margin expansion is tracking to target but has an overdue pricing approval that requires board awareness.</div>
 <div className="trg-pulse-stats">
@@ -1009,15 +897,15 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <StatCard label="Plans on track" value="3 of 4" sub="1 behind"/>
 <StatCard label="Value at stake" value="$48M" sub="Combined EBITDA"/>
 </div>
-</div>}
+</div>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Confidence by initiative</div>
-{boardItems.map(function(b,bi){var isOwned=b.owner==="JT";return(<div key={b.t} className={isOwned?"trg-lift":""} onClick={isOwned?function(){setSelGoalCtx("sp1");setSelItemCtx(null);setPage("detail");}:undefined} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:viewMode.pulse==="minimal"?"14px 18px":20,marginBottom:viewMode.pulse==="minimal"?10:16,cursor:isOwned?"pointer":"default"}}>
-<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}><div style={{fontSize:viewMode.pulse==="minimal"?15:17,fontWeight:500,color:C.navy,flex:1,minWidth:0}}>{b.t}</div>{viewMode.pulse==="full"&&<div style={{display:"flex",alignItems:"center",gap:8}}><Av i={b.owner} s={22}/><span style={{fontSize:13,color:C.gray,whiteSpace:"nowrap"}}>{b.name} . {b.role}</span></div>}<div style={{textAlign:"right"}}><div style={{fontSize:viewMode.pulse==="minimal"?20:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
-<PB pct={b.conf} color={b.status==="green"?C.green:C.red} h={viewMode.pulse==="minimal"?4:6}/>
-{viewMode.pulse==="full"&&<div style={{fontSize:14,color:"#4a5868",lineHeight:1.6,marginTop:10}}>{b.note}</div>}
-{isOwned&&viewMode.pulse==="full"&&<div style={{marginTop:10,paddingTop:10,borderTop:"1px solid "+C.subtle,display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:11,color:C.tealDk,letterSpacing:1,textTransform:"uppercase",fontWeight:500}}>Your goal</span><span style={{fontSize:13,color:C.teal,fontWeight:500}}>Open detail {"\u2192"}</span></div>}
+{boardItems.map(function(b,bi){var isOwned=b.owner==="JT";return(<div key={b.t} className={isOwned?"trg-lift":""} onClick={isOwned?function(){setSelGoalCtx("sp1");setSelItemCtx(null);setPage("detail");}:undefined} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:20,marginBottom:16,cursor:isOwned?"pointer":"default"}}>
+<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}><div style={{fontSize:17,fontWeight:500,color:C.navy,flex:1,minWidth:0}}>{b.t}</div><div style={{display:"flex",alignItems:"center",gap:8}}><Av i={b.owner} s={22} bg={b.owner==="JT"?C.gold:b.owner==="MS"?C.red:C.navy} fg={b.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:13,color:C.gray,whiteSpace:"nowrap"}}>{b.name} . {b.role}</span></div><div style={{textAlign:"right"}}><div style={{fontSize:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
+<PB pct={b.conf} color={b.status==="green"?C.green:C.red} h={6}/>
+<div style={{fontSize:14,color:"#4a5868",lineHeight:1.6,marginTop:10}}>{b.note}</div>
+{isOwned&&<div style={{marginTop:10,paddingTop:10,borderTop:"1px solid "+C.subtle,display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:11,color:C.tealDk,letterSpacing:1,textTransform:"uppercase",fontWeight:500}}>Your goal</span><span style={{fontSize:13,color:C.teal,fontWeight:500}}>Open detail {"\u2192"}</span></div>}
 </div>);})}
-{viewMode.pulse==="full"&&<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:20,marginTop:16}}>
+<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:12,padding:20,marginTop:16}}>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:10,display:"flex",alignItems:"center",gap:6}}><TM s={12}/> AI pattern detection</div>
 <div className="trg-pulse-patterns">
 <div style={{background:C.amberBg,borderRadius:8,padding:12}}><div style={{fontSize:13,fontWeight:500,color:C.amber,marginBottom:4}}>Vendor dependency risk</div><div style={{fontSize:13,color:"#92400e",lineHeight:1.5}}>Two plans have vendor blockers. Cross-plan consolidation may reduce exposure.</div></div>
@@ -1025,7 +913,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div style={{background:C.redBg,borderRadius:8,padding:12}}><div style={{fontSize:13,fontWeight:500,color:C.red,marginBottom:4}}>Approval bottleneck detected</div><div style={{fontSize:13,color:"#7f1d1d",lineHeight:1.5}}>3 actions pending executive approval. Average delay 4 days.</div></div>
 <div style={{background:C.tealBg,borderRadius:8,padding:12}}><div style={{fontSize:13,fontWeight:500,color:C.tealDk,marginBottom:4}}>Talent plan ahead of pace</div><div style={{fontSize:13,color:C.tealDk,lineHeight:1.5}}>Hiring 20% ahead of forecast. Front-load onboarding support.</div></div>
 </div>
-</div>}
+</div>
 </div>}
 
 
@@ -1112,73 +1000,13 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Avatars</div>
-<div style={{background:C.bg2,border:"1px solid "+C.subtle,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"12px 16px",marginBottom:16,fontSize:13,color:"#4a5868",lineHeight:1.55}}><span style={{fontWeight:500,color:C.navy}}>Rule: </span>Avatars identify people only. Tone is neutral slate. Color is reserved for system semantics (status, health, hierarchy, callout tiers). Tone is derived deterministically from initials for consistency across views.</div>
 <div className="trg-icon-row" style={{marginBottom:32,gap:16}}>
-{[["JT","Joe Thompson"],["KM","Kyle Moyer"],["MS","Mark Sternberger"],["SD","Sarah Darlington"],["BA","Bill Adams"]].map(function(a){return(
+{[["JT",C.gold,C.navy,"Joe Thompson"],["KM",C.teal,"#fff","Kyle Moyer"],["MS",C.red,"#fff","Mark Sternberger"],["SD",C.navy,"#fff","Sarah Darlington"],["BA",C.navy,"#fff","Bill Adams"]].map(function(a){return(
 <div key={a[0]} style={{textAlign:"center"}}>
-<div style={{marginBottom:6,display:"flex",justifyContent:"center"}}><Av i={a[0]} s={36}/></div>
-<div style={{fontSize:13,fontWeight:500,color:C.navy}}>{a[1]}</div>
+<div style={{marginBottom:6,display:"flex",justifyContent:"center"}}><Av i={a[0]} bg={a[1]} fg={a[2]} s={36}/></div>
+<div style={{fontSize:13,fontWeight:500,color:C.navy}}>{a[3]}</div>
 </div>
 );})}
-</div>
-
-<div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Card states &amp; progressive disclosure</div>
-<div style={{background:C.bg2,border:"1px solid "+C.subtle,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"12px 16px",marginBottom:16,fontSize:13,color:"#4a5868",lineHeight:1.55}}><span style={{fontWeight:500,color:C.navy}}>Rule: </span>Cards have two states. Resting is what the executive scans - four elements max: type glyph, title, status, progress or value. Active is revealed on tap and adds owner, dates, parent, and one "Open detail" affordance. Quick actions live on the detail page, never on the card surface.</div>
-<div className="trg-init-row" style={{marginBottom:20,gap:20}}>
-<div style={{flex:1}}>
-<div style={{fontSize:13,fontWeight:500,color:C.gray,marginBottom:8}}>Resting - goal</div>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"20px 24px"}}>
-<div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}><SI s={14}/><div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:20,fontWeight:500,color:C.navy,lineHeight:1.25,letterSpacing:"-0.018em"}}>Expand gross margin by 300bps</div><Pl c="green">ON TRACK</Pl></div>
-<div style={{display:"flex",alignItems:"flex-end",gap:28,marginBottom:12}}>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Impact</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1}}>$24M</div></div>
-<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Progress</div><div style={{display:"flex",alignItems:"baseline",gap:3}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1}}>54</span><span style={{fontSize:14,color:C.gray}}>%</span></div></div>
-</div>
-<PB pct={54} h={3} color={C.teal}/>
-</div>
-</div>
-<div style={{flex:1}}>
-<div style={{fontSize:13,fontWeight:500,color:C.gray,marginBottom:8}}>Active - same card, tapped</div>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"20px 24px"}}>
-<div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10}}><SI s={12}/><div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:17,fontWeight:500,color:C.navy,lineHeight:1.3,letterSpacing:"-0.015em"}}>Expand gross margin by 300bps</div></div>
-<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><Av i="JT" s={22}/><span style={{fontSize:13,fontWeight:500,color:C.navy}}>Joe Thompson</span><span style={{fontSize:12,color:C.gray}}>. CEO</span></div>
-<div style={{display:"flex",flexWrap:"wrap",gap:"6px 14px",marginBottom:12}}>
-<div style={{fontSize:12,color:C.gray}}><span style={{letterSpacing:0.5,textTransform:"uppercase",fontSize:10,fontWeight:500,marginRight:6}}>Window</span>Jan 6 {"\u2192"} Mar 31</div>
-<div style={{fontSize:12,color:C.gray}}><span style={{letterSpacing:0.5,textTransform:"uppercase",fontSize:10,fontWeight:500,marginRight:6}}>Linked</span>4</div>
-</div>
-<div style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:12,fontWeight:500,color:C.teal}}>Open detail <span style={{fontSize:14}}>{"\u2192"}</span></div>
-</div>
-</div>
-</div>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"14px 18px",marginBottom:32}}>
-<div style={{fontSize:12,fontWeight:500,letterSpacing:0.8,color:C.tealDk,textTransform:"uppercase",marginBottom:10}}>Resting content by type</div>
-<div style={{display:"grid",gridTemplateColumns:"1fr 2fr",gap:"8px 24px",fontSize:13,lineHeight:1.5}}>
-<div style={{color:C.navy,fontWeight:500,display:"flex",alignItems:"center",gap:6}}><SI s={11}/> Goal</div>
-<div style={{color:"#4a5868"}}>Title, status, impact, progress</div>
-<div style={{color:C.navy,fontWeight:500,display:"flex",alignItems:"center",gap:6}}><PI s={11}/> Initiative</div>
-<div style={{color:"#4a5868"}}>Title, status, progress, blocker indicator if active</div>
-<div style={{color:C.navy,fontWeight:500,display:"flex",alignItems:"center",gap:6}}><AI s={11}/> Action</div>
-<div style={{color:"#4a5868"}}>Title, status, due date</div>
-<div style={{color:C.navy,fontWeight:500,display:"flex",alignItems:"center",gap:6}}><MI s={11}/> Metric</div>
-<div style={{color:"#4a5868"}}>Title, current value, delta, sparkline</div>
-</div>
-</div>
-
-<div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Minimal &amp; Full view pattern</div>
-<div style={{background:C.bg2,border:"1px solid "+C.subtle,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"12px 16px",marginBottom:16,fontSize:13,color:"#4a5868",lineHeight:1.55}}><span style={{fontWeight:500,color:C.navy}}>Rule: </span>Every non-detail screen has a Minimal default view and a Full view the user can toggle into. Minimal is the default because executives are the default user. Toggle sits in the page header. Item Detail is the one screen with no minimal mode - full context is the point.</div>
-<div className="trg-init-row" style={{marginBottom:32,gap:20}}>
-<div style={{flex:1}}>
-<div style={{fontSize:13,fontWeight:500,color:C.gray,marginBottom:8}}>Toggle component</div>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"16px 18px",display:"flex",alignItems:"center",gap:12}}>
-<VToggle mode="minimal" onChange={function(){}}/>
-<span style={{fontSize:12,color:C.gray}}>Default: Minimal</span>
-</div>
-</div>
-<div style={{flex:1}}>
-<div style={{fontSize:13,fontWeight:500,color:C.gray,marginBottom:8}}>What Minimal hides</div>
-<div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"14px 18px",fontSize:13,color:"#4a5868",lineHeight:1.7}}>
-Activity feeds, AI summary panels, pattern-detection blocks, and secondary side rails collapse. Primary content (goals, initiatives, KPI stats) stays.
-</div>
-</div>
 </div>
 
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Card treatments</div>
