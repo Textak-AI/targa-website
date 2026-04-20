@@ -25,7 +25,11 @@ function AI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0
 function MI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1" fill={C.navy} fillOpacity="0.4"/><rect x="10" y="9" width="4" height="12" rx="1" fill={C.navy} fillOpacity="0.7"/><rect x="17" y="3" width="4" height="18" rx="1" fill={C.navy}/><circle cx="19" cy="4" r="1.5" fill={C.teal}/></svg>);}
 function TI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill={C.navy} fillOpacity="0.12"/><circle cx="12" cy="12" r="9" fill="none" stroke={C.navy} strokeWidth="1.6"/><path d="M12 7 L12 12 L15 14" stroke={C.navy} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/><circle cx="12" cy="12" r="1" fill={C.gold}/></svg>);}
 function XI(p){var s=p&&p.s?p.s:11;return(<svg width={s} height={s} viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="13" rx="2" fill={C.teal} fillOpacity="0.18"/><rect x="3" y="7" width="13" height="13" rx="2" fill="none" stroke={C.teal} strokeWidth="1.6"/><path d="M13 3 L21 3 L21 11" stroke={C.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/><path d="M13 11 L21 3" stroke={C.teal} strokeWidth="1.8" strokeLinecap="round" fill="none"/></svg>);}
-function Av(p){var i=p.i,bg=p.bg||C.gold,fg=p.fg||C.navy,s=p.s||22;return(<div style={{width:s,height:s,borderRadius:"50%",background:bg,fontSize:s*0.43,color:fg,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,flexShrink:0}}>{i}</div>);}
+// Neutral avatar palette - color is reserved for system semantics (status, health, tier).
+// Avatars identify people only. Tone is deterministically derived from initials for consistency.
+var AV_TONES=["#3a4a5c","#4a5a6b","#5c6b7a","#6b7a8a","#7a8695"];
+function avTone(i){if(!i)return"#eaf0f6";var h=0;for(var k=0;k<i.length;k++)h=(h*31+i.charCodeAt(k))>>>0;return AV_TONES[h%AV_TONES.length];}
+function Av(p){var i=p.i,s=p.s||22,bg=p.bg||avTone(i),fg=p.fg||(bg==="#eaf0f6"?C.navy:"#fff");return(<div style={{width:s,height:s,borderRadius:"50%",background:bg,fontSize:s*0.43,color:fg,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,flexShrink:0}}>{i}</div>);}
 function Pl(p){var c=p.c||"green",hide=p.hide||false;var m={green:{color:C.green,background:C.greenBg},amber:{color:C.amber,background:C.amberBg},red:{color:C.red,background:C.redBg},navy:{color:C.navy,background:C.navyLt},teal:{color:C.tealDk,background:C.tealBg}};var s=m[c]||m.green;return(<span style={{fontSize:12,fontWeight:500,padding:"3px 8px",borderRadius:4,letterSpacing:0.3,whiteSpace:"nowrap",opacity:hide?0:1,transform:hide?"scale(0.8)":"scale(1)",transition:"opacity 0.8s, transform 0.8s",color:s.color,background:s.background}}>{p.children}</span>);}
 function Eye(p){return(<div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:8,display:"flex",alignItems:"center",gap:6}}>{p.children}</div>);}
 function Chk(){return(<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>);}
@@ -394,7 +398,7 @@ return(
 <div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Progress</div><div style={{display:"flex",alignItems:"baseline",gap:3}}><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:28,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{s.progress}</span><span style={{fontFamily:"Space Grotesk, sans-serif",fontSize:16,color:C.gray,fontWeight:400}}>%</span></div></div>
 </div>
 <PB pct={s.progress} h={3} color={s.sc==="green"?C.teal:C.amber}/>
-<div style={{display:"flex",alignItems:"center",gap:8,marginTop:16,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i={s.owner} s={22} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:13,fontWeight:500,color:C.navy}}>{s.name}</span><span style={{fontSize:12,color:C.gray}}>. {s.role}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500}}>{s.actions} actions</span></div>
+<div style={{display:"flex",alignItems:"center",gap:8,marginTop:16,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i={s.owner} s={22}/><span style={{fontSize:13,fontWeight:500,color:C.navy}}>{s.name}</span><span style={{fontSize:12,color:C.gray}}>. {s.role}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500}}>{s.actions} actions</span></div>
 </div>);})}
 </div>
 <div className="trg-home-side">
@@ -407,7 +411,7 @@ return(
 </div>
 <Eye><TI s={12}/> Recent activity</Eye>
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"4px 14px"}}>
-{[{i:"MS",bg:C.red,fg:"#fff",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago"},{i:"JT",bg:C.gold,fg:C.navy,n:"Joe T.",a:"updated margin target",t:"Yesterday"},{i:"SD",bg:C.navy,fg:"#fff",n:"Sarah D.",a:"completed 2 interviews",t:"2d ago"}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:idx<2?"1px solid #f0f3f6":"none"}}><Av i={e.i} bg={e.bg} fg={e.fg} s={22}/><div style={{fontSize:14,lineHeight:1.45}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><div style={{fontSize:12,color:"#8b99a8",marginTop:2}}>{e.t}</div></div></div>);})}
+{[{i:"MS",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago"},{i:"JT",n:"Joe T.",a:"updated margin target",t:"Yesterday"},{i:"SD",n:"Sarah D.",a:"completed 2 interviews",t:"2d ago"}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"10px 0",borderBottom:idx<2?"1px solid #f0f3f6":"none"}}><Av i={e.i} s={22}/><div style={{fontSize:14,lineHeight:1.45}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><div style={{fontSize:12,color:"#8b99a8",marginTop:2}}>{e.t}</div></div></div>);})}
 </div>
 </div>
 </div>
@@ -415,7 +419,7 @@ return(
 
 
 {page==="vp"&&<div>
-<PH eyebrow="Good morning, Kyle" title="My initiative" right={<div style={{display:"flex",alignItems:"center",gap:12}}><div style={{display:"flex",alignItems:"center",gap:6,padding:"4px 10px",background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:999}}><Av i="KM" bg={C.teal} fg="#fff" s={18}/><span style={{fontSize:12,fontWeight:500,color:C.tealDk}}>Viewing as Kyle Moyer, VP Operations</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
+<PH eyebrow="Good morning, Kyle" title="My initiative" right={<div style={{display:"flex",alignItems:"center",gap:12}}><div style={{display:"flex",alignItems:"center",gap:6,padding:"4px 10px",background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:999}}><Av i="KM" s={18}/><span style={{fontSize:12,fontWeight:500,color:C.tealDk}}>Viewing as Kyle Moyer, VP Operations</span></div><div style={{fontSize:13,color:C.gray}}>Wednesday, April 16, 2026</div></div>}/>
 
 <div style={{background:C.tealBg,border:"1px solid "+C.tealBd,borderRadius:8,padding:"10px 14px",marginBottom:20,fontSize:13,color:C.tealDk,lineHeight:1.5}}><strong style={{fontWeight:500}}>Role-aware landing</strong>. Same data, different altitude. Kyle owns one initiative, not the full goal. Joe sees the business plan when he lands; Kyle sees the slice he's accountable for.</div>
 
@@ -453,7 +457,7 @@ return(
 <div><div style={{fontSize:10,color:C.gray,letterSpacing:1.2,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Review</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:22,fontWeight:500,color:C.amber,letterSpacing:"-0.02em",fontVariantNumeric:"tabular-nums"}}>11d</div></div>
 </div>
 <PB pct={40} h={6} color={C.amber}/>
-<div style={{display:"flex",alignItems:"center",gap:8,marginTop:14,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i="KM" bg={C.teal} fg="#fff" s={22}/><span style={{fontSize:14,fontWeight:500,color:C.navy}}>Kyle Moyer</span><span style={{fontSize:12,color:C.gray}}>. VP Operations . Owner</span><span style={{marginLeft:"auto",fontSize:12,color:C.teal,fontWeight:500}}>Open item {"\u2192"}</span></div>
+<div style={{display:"flex",alignItems:"center",gap:8,marginTop:14,paddingTop:14,borderTop:"1px solid "+C.subtle}}><Av i="KM" s={22}/><span style={{fontSize:14,fontWeight:500,color:C.navy}}>Kyle Moyer</span><span style={{fontSize:12,color:C.gray}}>. VP Operations . Owner</span><span style={{marginLeft:"auto",fontSize:12,color:C.teal,fontWeight:500}}>Open item {"\u2192"}</span></div>
 </div>
 
 <Eye><AI s={12}/> Your actions <span style={{color:C.gray,fontWeight:400}}>. 4</span></Eye>
@@ -483,7 +487,7 @@ return(
 <div style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:"10px 12px",marginBottom:10}}>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,marginBottom:4}}>Input for CFO cost model</div>
 <div style={{fontSize:12,color:C.gray,lineHeight:1.5,marginBottom:6}}>Assigned by Mark Sternberger . Due Apr 22</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i="MS" bg={C.red} fg="#fff" s={18}/><span style={{fontSize:12,color:C.gray}}>Mark's initiative: OpEx</span></div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><Av i="MS" s={18}/><span style={{fontSize:12,color:C.gray}}>Mark's initiative: OpEx</span></div>
 </div>
 </div>
 </div>
@@ -568,7 +572,7 @@ return(
 <div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{width:280,background:C.white,border:"1px solid "+C.border,borderLeft:"4px solid "+(s.sc==="green"?C.teal:C.amber),borderRadius:12,padding:"18px 22px",cursor:"pointer",boxShadow:"0 1px 4px rgba(31,71,106,0.06)"}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
 <SI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.tealDk,letterSpacing:0.5}}>GOAL</span>
-<div style={{marginLeft:"auto"}}><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
+<div style={{marginLeft:"auto"}}><Av i={s.owner} s={20}/></div>
 </div>
 <div style={{fontSize:16,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:8}}>{s.t}</div>
 <div style={{display:"flex",gap:5,marginBottom:8}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div>
@@ -645,7 +649,7 @@ var s=it.data;
 return(<div key={"g"+idx} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:8,padding:"10px 12px",marginBottom:8,cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}><SI s={10}/><span style={{fontSize:10,fontWeight:500,color:C.tealDk,letterSpacing:0.8}}>GOAL</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:8}}>{s.t}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={s.owner} s={16} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:s.owner==="SD"?C.teal:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:11,color:C.gray}}>{s.name}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{s.progress}%</span></div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={s.owner} s={16}/><span style={{fontSize:11,color:C.gray}}>{s.name}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{s.progress}%</span></div>
 </div>);
 }else{
 var i=it.data;
@@ -653,7 +657,7 @@ return(<div key={"i"+idx} className="trg-lift" onClick={function(){setSelGoalCtx
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:6}}><PI s={10}/><span style={{fontSize:10,fontWeight:500,color:C.pinkDk,letterSpacing:0.8}}>INITIATIVE</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:4}}>{i.t}</div>
 <div style={{fontSize:11,color:C.gray,marginBottom:8}}>{it.parentTitle}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={i.av} s={16} bg={i.av==="MS"?C.red:i.av==="KM"?C.teal:i.av==="SD"?C.teal:C.navy} fg="#fff"/><span style={{fontSize:11,color:C.gray}}>{i.ownerName}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{i.prog}%</span></div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><Av i={i.av} s={16}/><span style={{fontSize:11,color:C.gray}}>{i.ownerName}</span><span style={{marginLeft:"auto",fontSize:11,color:C.gray,fontVariantNumeric:"tabular-nums"}}>{i.prog}%</span></div>
 </div>);
 }
 })}
@@ -728,7 +732,7 @@ return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isEx
 <div className="trg-focal-title" style={{fontFamily:"Space Grotesk, sans-serif",fontWeight:500,color:C.navy,lineHeight:1.15,letterSpacing:"-0.025em",marginBottom:12}}>{selItemCtx?selItemCtx.t:G.t}</div>
 <div style={{fontSize:16,color:"#4a5868",lineHeight:1.65,marginBottom:18}}>{selItemCtx?selItemCtx.desc:G.desc}</div>
 <div className="trg-owner-row" style={{marginBottom:16}}>
-<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i={selItemCtx?selItemCtx.av:G.ownerInit} bg={selItemCtx?(selItemCtx.av==="MS"?C.red:selItemCtx.av==="KM"?C.teal:C.navy):(G.ownerBg==="gold"?C.gold:G.ownerBg==="red"?C.red:G.ownerBg==="teal"?C.teal:C.navy)} fg={selItemCtx?"#fff":(G.ownerBg==="gold"?C.navy:"#fff")} s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{selItemCtx?selItemCtx.ownerName:G.ownerName} <span style={{color:C.gray,fontWeight:400}}>. {selItemCtx?selItemCtx.ownerRole:G.ownerRole}</span></div></div></div>
+<div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",display:"flex",alignItems:"center",gap:10,minWidth:0}}><Av i={selItemCtx?selItemCtx.av:G.ownerInit} s={30}/><div style={{minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Owner</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{selItemCtx?selItemCtx.ownerName:G.ownerName} <span style={{color:C.gray,fontWeight:400}}>. {selItemCtx?selItemCtx.ownerRole:G.ownerRole}</span></div></div></div>
 <div style={{background:C.bg2,borderRadius:8,padding:"10px 12px",minWidth:0}}><div style={{fontSize:12,color:C.gray,letterSpacing:0.5,textTransform:"uppercase",fontWeight:500,whiteSpace:"nowrap"}}>Dates</div><div style={{fontSize:15,fontWeight:500,color:C.navy,marginTop:1,whiteSpace:"nowrap"}}>{G.dates}</div></div>
 </div>
 <div className="trg-stat-strip" style={{background:C.bg2,borderRadius:10,marginBottom:16}}>
@@ -746,13 +750,13 @@ return(<div key={m.l} className="trg-lift" onClick={function(){setExpMetric(isEx
 <Eye><AI s={12}/> Actions <span style={{color:C.gray,fontWeight:400}}>. {G.hasCascadeDemo?<Odo value={actionCount} dur={1.4}/>:G.actionCount}</span></Eye>
 
 {G.hasBlocker&&G.hasCascadeDemo&&<div style={{overflow:"hidden",maxHeight:showBlocker?300:0,opacity:showBlocker?1:0,marginBottom:showBlocker?5:0,transition:"max-height 0.8s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), margin 0.8s cubic-bezier(0.4,0,0.2,1)"}}>
-<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.32s cubic-bezier(0.4,0,0.2,1)"}}>{G.blockerAction}</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" bg={C.gold} fg={C.navy} s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div className="trg-press" onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
+<div style={{background:completed?C.teal:C.white,border:"1px solid "+(completed?C.teal:C.border),borderLeft:"3px solid "+(completed?C.teal:C.red),borderRadius:8,padding:9,transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)"}}><div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6,marginBottom:5}}><span style={{fontSize:13,fontWeight:500,color:completed?"#fff":C.navy,lineHeight:1.3,transition:"color 0.32s cubic-bezier(0.4,0,0.2,1)"}}>{G.blockerAction}</span>{!completed&&<Pl c="red">BLOCKER</Pl>}{completed&&<div style={{width:20,height:20,borderRadius:"50%",background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><Chk/></div>}</div><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:completed?0:8}}><Av i="JT" s={16}/><span style={{fontSize:11,color:completed?"rgba(255,255,255,0.8)":C.red,fontWeight:500}}>{completed?"Done":"Overdue"}</span></div>{!completed&&<div className="trg-press" onClick={fire} style={{padding:"8px 0",background:C.teal,color:"#fff",borderRadius:6,textAlign:"center",fontSize:13,fontWeight:500,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:4}}><Chk/> Mark complete</div>}</div>
 </div>}
 
 {G.actions.map(function(aRaw){var bgMap={teal:C.teal,navy:C.navy,gold:C.gold,red:C.red};var a=Object.assign({},aRaw,{bg:bgMap[aRaw.bg]||aRaw.bg,fg:aRaw.fg==="navy"?C.navy:aRaw.fg});var isSel=selAction&&selAction.t===a.t;return(<div key={a.t}>
 <div className="trg-lift" onClick={function(){setSelAction(isSel?null:a);}} style={{background:"#fff",border:"1px solid "+C.border,borderLeft:"3px solid "+a.bc,borderRadius:8,padding:13,marginBottom:8,cursor:"pointer"}}>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{a.t}</div>
-<div style={{display:"flex",alignItems:"center",gap:5}}><Av i={a.i} bg={a.bg} fg={a.fg} s={16}/><span style={{fontSize:11,color:C.gray}}>{a.d}</span><span style={{marginLeft:"auto"}}><Pl c={a.sc}>{a.s}</Pl></span></div>
+<div style={{display:"flex",alignItems:"center",gap:5}}><Av i={a.i} s={16}/><span style={{fontSize:11,color:C.gray}}>{a.d}</span><span style={{marginLeft:"auto"}}><Pl c={a.sc}>{a.s}</Pl></span></div>
 </div>
 <div style={{overflow:"hidden",maxHeight:isSel?300:0,opacity:isSel?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
 <div style={{background:C.bg2,border:"1px solid "+C.subtle,borderRadius:8,padding:10,marginBottom:5,marginTop:-3}}>
@@ -809,7 +813,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div className="trg-lift" onClick={function(){setSelChild(isSC?null:ci);}} style={{background:"#fff",border:"1px solid "+C.border,borderRadius:8,padding:"9px 11px",cursor:"pointer"}}>
 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}><PI s={11}/><span style={{fontSize:11,fontWeight:500,color:C.pinkDk}}>INITIATIVE</span></div>
 <div style={{fontSize:13,fontWeight:500,color:C.navy,lineHeight:1.3,marginBottom:5}}>{ch.t}</div>
-<div style={{display:"flex",alignItems:"center",transition:"color 0.8s, opacity 0.8s"}}><Pl c={ch.sc}>{ch.s}</Pl><div style={{marginLeft:"auto"}}><Av i={ch.av} bg={C.navy} fg="#fff" s={16}/></div></div>
+<div style={{display:"flex",alignItems:"center",transition:"color 0.8s, opacity 0.8s"}}><Pl c={ch.sc}>{ch.s}</Pl><div style={{marginLeft:"auto"}}><Av i={ch.av} s={16}/></div></div>
 </div>
 <div style={{overflow:"hidden",maxHeight:isSC?150:0,opacity:isSC?1:0,transition:"max-height 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s cubic-bezier(0.4,0,0.2,1)"}}>
 <div style={{background:C.bg2,border:"1px solid "+C.subtle,borderRadius:8,padding:10,marginTop:4}}>
@@ -827,7 +831,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 <div style={{padding:16,minHeight:160}}>
 {bTab==="Comments"&&<div>
-{[{i:"JT",bg:C.gold,n:"Joe Thompson",t:"2d ago",m:"Make sure pricing is approved before board review. Critical path."},{i:"KM",bg:C.teal,n:"Kyle Moyer",t:"2d ago",m:"Agreed. Finance sync scheduled Thursday."},{i:"MS",bg:C.red,n:"Mark Sternberger",t:"5h ago",m:"Supplier negotiations taking longer. May need to escalate."}].map(function(c,idx){return(<div key={idx} style={{display:"flex",gap:10,marginBottom:18}}><Av i={c.i} bg={c.bg} fg={c.bg===C.gold?C.navy:"#fff"} s={28}/><div style={{flex:1}}><div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:3}}><span style={{fontSize:15,fontWeight:500,color:C.navy}}>{c.n}</span><span style={{fontSize:12,color:"#8b99a8"}}>{c.t}</span></div><div style={{fontSize:16,color:"#4a5868",lineHeight:1.6}}>{c.m}</div></div></div>);})}
+{[{i:"JT",n:"Joe Thompson",t:"2d ago",m:"Make sure pricing is approved before board review. Critical path."},{i:"KM",n:"Kyle Moyer",t:"2d ago",m:"Agreed. Finance sync scheduled Thursday."},{i:"MS",n:"Mark Sternberger",t:"5h ago",m:"Supplier negotiations taking longer. May need to escalate."}].map(function(c,idx){return(<div key={idx} style={{display:"flex",gap:10,marginBottom:18}}><Av i={c.i} s={28}/><div style={{flex:1}}><div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:3}}><span style={{fontSize:15,fontWeight:500,color:C.navy}}>{c.n}</span><span style={{fontSize:12,color:"#8b99a8"}}>{c.t}</span></div><div style={{fontSize:16,color:"#4a5868",lineHeight:1.6}}>{c.m}</div></div></div>);})}
 <div style={{display:"flex",gap:8,marginTop:12,paddingTop:12,borderTop:"1px solid "+C.subtle}}><div style={{flex:1,background:C.bg2,borderRadius:8,padding:"10px 12px",fontSize:14,color:"#8b99a8"}}>Add a comment...</div><div style={{padding:"10px 16px",background:C.teal,color:"#fff",borderRadius:8,fontSize:15,fontWeight:500,cursor:"pointer"}}>Send</div></div>
 </div>}
 
@@ -839,7 +843,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>}
 
 {bTab==="History"&&<div>
-{[{i:"MS",bg:C.red,fg:"#fff",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago"},{i:"JT",bg:C.gold,fg:C.navy,n:"Joe T.",a:"updated margin target",t:"Yesterday"},{i:"KM",bg:C.teal,fg:"#fff",n:"Kyle M.",a:"added action Review Q1 margin",t:"2d ago"},{i:"",bg:"#eaf0f6",fg:C.navy,n:"",a:"Gross margin synced from NetSuite",t:"Today"},{i:"JT",bg:C.gold,fg:C.navy,n:"Joe T.",a:"changed status to At Risk",t:"Apr 10"},{i:"KM",bg:C.teal,fg:"#fff",n:"Kyle M.",a:"created this goal",t:"Mar 28"}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:idx<5?"1px solid #f0f3f6":"none"}}><Av i={e.i} bg={e.bg} fg={e.fg} s={22}/><div style={{fontSize:15,lineHeight:1.5}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><span style={{fontSize:12,color:"#8b99a8",marginLeft:8}}>{e.t}</span></div></div>);})}
+{[{i:"MS",n:"Mark S.",a:"flagged blocker on COGS",t:"2h ago",sys:false},{i:"JT",n:"Joe T.",a:"updated margin target",t:"Yesterday",sys:false},{i:"KM",n:"Kyle M.",a:"added action Review Q1 margin",t:"2d ago",sys:false},{i:"",n:"",a:"Gross margin synced from NetSuite",t:"Today",sys:true},{i:"JT",n:"Joe T.",a:"changed status to At Risk",t:"Apr 10",sys:false},{i:"KM",n:"Kyle M.",a:"created this goal",t:"Mar 28",sys:false}].map(function(e,idx){return(<div key={idx} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:idx<5?"1px solid #f0f3f6":"none"}}><Av i={e.i} bg={e.sys?"#eaf0f6":undefined} fg={e.sys?C.navy:undefined} s={22}/><div style={{fontSize:15,lineHeight:1.5}}>{e.n&&<span style={{fontWeight:500}}>{e.n} </span>}<span style={{color:C.gray}}>{e.a}</span><span style={{fontSize:12,color:"#8b99a8",marginLeft:8}}>{e.t}</span></div></div>);})}
 </div>}
 
 {bTab==="Hierarchy"&&<div style={{position:"relative",paddingLeft:20}}>
@@ -868,7 +872,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 <div className="trg-home-main">
 <Eye>Goal health</Eye>
 {strategies.map(function(s){return(<div key={s.id} className="trg-lift" onClick={function(){setSelGoalCtx(s.id);setSelItemCtx(null);setPage("detail");}} style={{background:C.white,border:"1px solid "+C.border,borderRadius:10,padding:14,marginBottom:16,cursor:"pointer"}}>
-<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:8,height:8,borderRadius:"50%",background:s.sc==="green"?C.green:C.amber,flexShrink:0}}/><div style={{flex:1,fontSize:17,fontWeight:500,color:C.navy,minWidth:0}}>{s.t}</div><Av i={s.owner} s={20} bg={s.owner==="JT"?C.gold:s.owner==="MS"?C.red:C.navy} fg={s.owner==="JT"?C.navy:"#fff"}/></div>
+<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:8,height:8,borderRadius:"50%",background:s.sc==="green"?C.green:C.amber,flexShrink:0}}/><div style={{flex:1,fontSize:17,fontWeight:500,color:C.navy,minWidth:0}}>{s.t}</div><Av i={s.owner} s={20}/></div>
 <div style={{display:"flex",gap:24,marginBottom:8,flexWrap:"wrap"}}><div><div style={{fontSize:11,color:C.gray}}>Progress</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.progress}%</div></div><div><div style={{fontSize:11,color:C.gray}}>Impact</div><div style={{fontSize:18,fontWeight:500,color:C.navy}}>{s.impact}</div></div><div style={{marginLeft:"auto",display:"flex",gap:4}}><Pl c={s.sc}>{s.status}</Pl>{s.blocker&&<Pl c="red">BLOCKER</Pl>}</div></div>
 <PB pct={s.progress}/>
 </div>);})}
@@ -900,7 +904,7 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Confidence by initiative</div>
 {boardItems.map(function(b,bi){var isOwned=b.owner==="JT";return(<div key={b.t} className={isOwned?"trg-lift":""} onClick={isOwned?function(){setSelGoalCtx("sp1");setSelItemCtx(null);setPage("detail");}:undefined} style={{background:C.white,border:"1px solid "+C.border,borderLeft:"3px solid "+(b.status==="green"?C.green:C.red),borderRadius:10,padding:20,marginBottom:16,cursor:isOwned?"pointer":"default"}}>
-<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}><div style={{fontSize:17,fontWeight:500,color:C.navy,flex:1,minWidth:0}}>{b.t}</div><div style={{display:"flex",alignItems:"center",gap:8}}><Av i={b.owner} s={22} bg={b.owner==="JT"?C.gold:b.owner==="MS"?C.red:C.navy} fg={b.owner==="JT"?C.navy:"#fff"}/><span style={{fontSize:13,color:C.gray,whiteSpace:"nowrap"}}>{b.name} . {b.role}</span></div><div style={{textAlign:"right"}}><div style={{fontSize:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
+<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,flexWrap:"wrap"}}><div style={{fontSize:17,fontWeight:500,color:C.navy,flex:1,minWidth:0}}>{b.t}</div><div style={{display:"flex",alignItems:"center",gap:8}}><Av i={b.owner} s={22}/><span style={{fontSize:13,color:C.gray,whiteSpace:"nowrap"}}>{b.name} . {b.role}</span></div><div style={{textAlign:"right"}}><div style={{fontSize:24,fontWeight:500,color:b.status==="green"?C.green:C.red}}>{b.conf}%</div><div style={{fontSize:12,color:b.conf>b.prev?C.green:C.red}}>{b.conf>b.prev?"\u2197 +":"\u2198 "}{Math.abs(b.conf-b.prev)} pts</div></div></div>
 <PB pct={b.conf} color={b.status==="green"?C.green:C.red} h={6}/>
 <div style={{fontSize:14,color:"#4a5868",lineHeight:1.6,marginTop:10}}>{b.note}</div>
 {isOwned&&<div style={{marginTop:10,paddingTop:10,borderTop:"1px solid "+C.subtle,display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:11,color:C.tealDk,letterSpacing:1,textTransform:"uppercase",fontWeight:500}}>Your goal</span><span style={{fontSize:13,color:C.teal,fontWeight:500}}>Open detail {"\u2192"}</span></div>}
@@ -1000,11 +1004,12 @@ return(<div key={si} onClick={function(){setExpSug(isExpS?null:si);}} style={{ba
 </div>
 
 <div style={{fontSize:12,fontWeight:500,letterSpacing:1.2,color:C.tealDk,textTransform:"uppercase",marginBottom:14}}>Avatars</div>
+<div style={{background:C.bg2,border:"1px solid "+C.subtle,borderLeft:"3px solid "+C.teal,borderRadius:8,padding:"12px 16px",marginBottom:16,fontSize:13,color:"#4a5868",lineHeight:1.55}}><span style={{fontWeight:500,color:C.navy}}>Rule: </span>Avatars identify people only. Tone is neutral slate. Color is reserved for system semantics (status, health, hierarchy, callout tiers). Tone is derived deterministically from initials for consistency across views.</div>
 <div className="trg-icon-row" style={{marginBottom:32,gap:16}}>
-{[["JT",C.gold,C.navy,"Joe Thompson"],["KM",C.teal,"#fff","Kyle Moyer"],["MS",C.red,"#fff","Mark Sternberger"],["SD",C.navy,"#fff","Sarah Darlington"],["BA",C.navy,"#fff","Bill Adams"]].map(function(a){return(
+{[["JT","Joe Thompson"],["KM","Kyle Moyer"],["MS","Mark Sternberger"],["SD","Sarah Darlington"],["BA","Bill Adams"]].map(function(a){return(
 <div key={a[0]} style={{textAlign:"center"}}>
-<div style={{marginBottom:6,display:"flex",justifyContent:"center"}}><Av i={a[0]} bg={a[1]} fg={a[2]} s={36}/></div>
-<div style={{fontSize:13,fontWeight:500,color:C.navy}}>{a[3]}</div>
+<div style={{marginBottom:6,display:"flex",justifyContent:"center"}}><Av i={a[0]} s={36}/></div>
+<div style={{fontSize:13,fontWeight:500,color:C.navy}}>{a[1]}</div>
 </div>
 );})}
 </div>
