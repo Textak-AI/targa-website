@@ -85,7 +85,7 @@ return(<div>
 <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}>
 {typeGlyph(type,14)}
 <div style={{flex:1,fontFamily:"Space Grotesk, sans-serif",fontSize:p.dense?16:20,fontWeight:500,color:C.navy,lineHeight:1.25,letterSpacing:"-0.018em",minWidth:0}}>{p.title}</div>
-<div style={{display:"flex",gap:5,flexShrink:0,marginTop:2,flexWrap:"wrap",justifyContent:"flex-end"}}><Pl c={p.statusColor}>{p.status}</Pl>{p.hasBlocker&&<Pl c="red">BLOCKER</Pl></div>
+<div style={{display:"flex",gap:5,flexShrink:0,marginTop:2,flexWrap:"wrap",justifyContent:"flex-end"}}><Pl c={p.statusColor}>{p.status}</Pl>{p.hasBlocker&&<Pl c="red">BLOCKER</Pl>}</div>
 </div>
 {(p.impact||p.progress!==undefined)&&<div style={{display:"flex",alignItems:"flex-end",gap:28,marginBottom:12,flexWrap:"wrap"}}>
 {p.impact&&<div><div style={{fontSize:10,color:C.gray,letterSpacing:1,textTransform:"uppercase",fontWeight:500,marginBottom:4}}>Impact</div><div style={{fontFamily:"Space Grotesk, sans-serif",fontSize:p.dense?20:26,fontWeight:500,color:C.navy,letterSpacing:"-0.02em",lineHeight:1,fontVariantNumeric:"tabular-nums"}}>{p.impact}</div></div>}
