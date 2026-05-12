@@ -1,5 +1,3 @@
-'use client';
-
 const NAV_BAR = `
 <div style="position:fixed;top:0;left:0;right:0;height:40px;background:#0f2035;z-index:1000;display:flex;align-items:center;padding:0 16px;gap:0;border-bottom:1px solid rgba(255,255,255,0.08);font-family:-apple-system,sans-serif;">
   <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-right:24px;">
