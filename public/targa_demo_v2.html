@@ -1228,11 +1228,11 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .fv-qa-badge { background:var(--primary,#0d8b82); color:#fff; width:18px; height:18px; border-radius:50%; font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-left:4px; }
 
 /* ── PORTFOLIO v2 — Focus-aligned layout ── */
-.pf-wrap { height:100%; display:flex; flex-direction:column; font-family:'Inter',sans-serif; color:#0c1424; background:#eef1f5; }
-.pf-topbar { display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:56px; border-bottom:1px solid rgba(12,20,36,0.08); background:#fff; flex-shrink:0; box-shadow:0 1px 0 rgba(12,20,36,0.04),0 2px 12px rgba(12,20,36,0.04); }
+.pf-wrap { height:100%; display:flex; flex-direction:column; font-family:'Inter',sans-serif; color:#0c1424; background:#e8ecf2; }
+.pf-topbar { display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:56px; border-bottom:1px solid rgba(255,255,255,0.06); background:linear-gradient(180deg,#131f35 0%,rgba(15,28,52,0.98) 100%); flex-shrink:0; box-shadow:0 1px 0 rgba(255,255,255,0.04),0 2px 12px rgba(0,0,0,0.2); }
 .pf-topbar-left { display:flex; align-items:center; gap:16px; }
-.pf-greeting { font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; color:#0c1424; }
-.pf-sub { font-size:12px; color:rgba(12,20,36,0.45); max-width:480px; line-height:1.4; }
+.pf-greeting { font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.pf-sub { font-size:12px; color:rgba(255,255,255,0.45); max-width:480px; line-height:1.4; }
 .pf-topbar-right { display:flex; align-items:center; gap:10px; }
 .pf-meta-pill { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#2c8a5e; padding:4px 10px; background:rgba(44,138,94,0.07); border:1px solid rgba(44,138,94,0.2); border-radius:999px; }
 .pf-new-plan { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; background:#0eb2af; color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; }
@@ -1241,129 +1241,7 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .pf-quick-add:hover { background:#1a2945; }
 .pf-qa-plus { font-size:16px; font-weight:300; line-height:1; }
 .pf-qa-badge { background:#0eb2af; color:#fff; font-size:10px; font-weight:700; padding:1px 6px; border-radius:999px; font-family:'JetBrains Mono',monospace; }
-.pf-ribbon { background:repeating-linear-gradient(0deg,rgba(255,255,255,0.012) 0,rgba(255,255,255,0.012) 1px,transparent 1px,transparent 3px),linear-gradient(180deg,#070d18,#0c1424); border-bottom:1px solid #121d33; padding:12px 32px 16px; position:relative; box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),inset 0 -1px 0 rgba(0,0,0,0.5),inset 0 8px 18px rgba(0,0,0,0.30); flex-shrink:0; }
-.pf-ribbon::before { content:'YOUR VIEW'; position:absolute; top:14px; left:32px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#7adcd2; opacity:0.78; pointer-events:none; }
-.pf-ribbon-track { display:flex; align-items:flex-end; justify-content:center; gap:12px; height:108px; perspective:1200px; overflow:visible; padding-top:8px; }
 
-/* ── TARGA LIVE FEED ── */
-.pf-feed {
-  background:#060e1a;
-  border:1px solid rgba(14,178,175,0.15);
-  border-radius:12px;
-  padding:0;
-  margin-bottom:16px;
-  overflow:hidden;
-  box-shadow:0 2px 24px rgba(0,0,0,0.18),inset 0 1px 0 rgba(255,255,255,0.04);
-}
-.pf-feed-head {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 16px;
-  border-bottom:1px solid rgba(14,178,175,0.1);
-}
-.pf-feed-label {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:0.18em;
-  text-transform:uppercase;
-  color:#7adcd2;
-}
-.pf-feed-pulse {
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:#0eb2af;
-  box-shadow:0 0 8px #0eb2af;
-  animation:pfPulse 2s ease-in-out infinite;
-}
-@keyframes pfPulse {
-  0%,100%{opacity:1;box-shadow:0 0 6px #0eb2af;}
-  50%{opacity:0.5;box-shadow:0 0 2px #0eb2af;}
-}
-.pf-feed-ts {
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;
-  color:rgba(255,255,255,0.2);
-  letter-spacing:0.06em;
-}
-.pf-feed-items {
-  padding:4px 0 8px;
-}
-.pf-feed-item {
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  padding:9px 16px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  opacity:0;
-  transform:translateY(4px);
-  animation:pfFeedIn 0.3s cubic-bezier(0.4,0,0.2,1) forwards;
-  cursor:default;
-  transition:background 120ms;
-}
-.pf-feed-item:last-child { border-bottom:none; }
-.pf-feed-item:hover { background:rgba(255,255,255,0.03); }
-.pf-feed-item:nth-child(1){animation-delay:0.1s;}
-.pf-feed-item:nth-child(2){animation-delay:0.25s;}
-.pf-feed-item:nth-child(3){animation-delay:0.4s;}
-.pf-feed-item:nth-child(4){animation-delay:0.55s;}
-@keyframes pfFeedIn {
-  to{opacity:1;transform:translateY(0);}
-}
-.pf-feed-dot {
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  flex-shrink:0;
-  margin-top:5px;
-}
-.pf-feed-dot.red   { background:#d44a4a; box-shadow:0 0 5px rgba(212,74,74,0.6); }
-.pf-feed-dot.gold  { background:#fbbf24; box-shadow:0 0 5px rgba(251,191,36,0.5); }
-.pf-feed-dot.teal  { background:#0eb2af; box-shadow:0 0 5px rgba(14,178,175,0.5); }
-.pf-feed-dot.green { background:#2c8a5e; box-shadow:0 0 5px rgba(44,138,94,0.5); }
-.pf-feed-content { flex:1; min-width:0; }
-.pf-feed-tag {
-  font-family:'JetBrains Mono',monospace;
-  font-size:8px;
-  font-weight:700;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  margin-bottom:2px;
-}
-.pf-feed-tag.red   { color:#d44a4a; }
-.pf-feed-tag.gold  { color:#d09a2e; }
-.pf-feed-tag.teal  { color:#0eb2af; }
-.pf-feed-tag.green { color:#2c8a5e; }
-.pf-feed-text {
-  font-size:12px;
-  color:rgba(255,255,255,0.72);
-  line-height:1.5;
-  font-family:'Inter',sans-serif;
-}
-.pf-feed-text strong { color:rgba(255,255,255,0.92); font-weight:600; }
-.pf-feed-when {
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;
-  color:rgba(255,255,255,0.2);
-  flex-shrink:0;
-  margin-top:4px;
-}
-.pf-rn { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; padding:4px 6px; min-width:88px; transform:translateY(4px) scale(0.86); opacity:0.55; transition:transform 260ms cubic-bezier(0.34,1.56,0.64,1),opacity 140ms; }
-.pf-rn.active { transform:translateY(0) scale(1.06); opacity:1; }
-.pf-rn.adjacent { transform:translateY(0) scale(0.96); opacity:0.82; }
-.pf-rn:hover:not(.active) { opacity:0.9; }
-.pf-rn-icon { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.05); margin-bottom:2px; }
-.pf-rn.active .pf-rn-icon { border-color:#0eb2af; background:rgba(14,178,175,0.15); box-shadow:0 0 18px rgba(14,178,175,0.35); }
-.pf-rn-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; color:rgba(255,255,255,0.45); text-align:center; max-width:84px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.pf-rn.active .pf-rn-label { color:#7adcd2; }
-.pf-rn-type { font-size:8px; letter-spacing:0.1em; color:rgba(255,255,255,0.25); text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
-.pf-rn-dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.18); margin-top:2px; }
-.pf-rn.active .pf-rn-dot { background:#0eb2af; box-shadow:0 0 6px #0eb2af; }
 .pf-page { flex:1; overflow-y:auto; padding:24px 32px 48px; }
 .pf-grid { display:grid; grid-template-columns:220px 1fr 280px; gap:18px; align-items:start; }
 .pf-panel { background:#fff; border:1px solid rgba(12,20,36,0.06); border-radius:14px; box-shadow:0 2px 8px rgba(12,20,36,0.04); overflow:hidden; margin-bottom:14px; }
@@ -1577,49 +1455,10 @@ input,textarea{font-family:var(--font-b);outline:none;}
         </div>
       </div>
 
-      <!-- HIERARCHY RIBBON — board objective as active, goals as children -->
-      <div class="pf-ribbon">
-        <div class="pf-ribbon-track">
-          <!-- Objective node (active — this is where we are) -->
-          <div class="pf-rn active">
-            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><polygon points="12,3 21,12 12,21 3,12" fill="rgba(14,178,175,0.2)" stroke="#0eb2af" stroke-width="1.5"/></svg></div>
-            <div class="pf-rn-label">Trade Show + 3 Pilots</div>
-            <div class="pf-rn-type">Objective</div>
-            <div class="pf-rn-dot"></div>
-          </div>
-          <!-- Goal children -->
-          <div class="pf-rn adjacent" onclick="openFocus('goal-platform')">
-            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
-            <div class="pf-rn-label">Platform Delivery</div>
-            <div class="pf-rn-type">Goal · At Risk</div>
-            <div class="pf-rn-dot" style="background:#e0903a;box-shadow:0 0 5px #e0903a;"></div>
-          </div>
-          <div class="pf-rn adjacent" onclick="openFocus('goal-pipeline')">
-            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
-            <div class="pf-rn-label">Pipeline to 50 Demos</div>
-            <div class="pf-rn-type">Goal · Behind</div>
-            <div class="pf-rn-dot" style="background:#e0903a;box-shadow:0 0 5px #e0903a;"></div>
-          </div>
-          <div class="pf-rn adjacent" onclick="openFocus('goal-pilots')">
-            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
-            <div class="pf-rn-label">3 Pilot Customers</div>
-            <div class="pf-rn-type">Goal · Blocked</div>
-            <div class="pf-rn-dot" style="background:#d44a4a;box-shadow:0 0 5px #d44a4a;"></div>
-          </div>
-          <div class="pf-rn adjacent" onclick="openFocus('goal-runway')">
-            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
-            <div class="pf-rn-label">18-Month Runway</div>
-            <div class="pf-rn-type">Goal · Ahead</div>
-            <div class="pf-rn-dot" style="background:#2c8a5e;box-shadow:0 0 5px #2c8a5e;"></div>
-          </div>
-          <div class="pf-rn adjacent" onclick="openFocus('goal-brand')">
-            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
-            <div class="pf-rn-label">Brand Presence</div>
-            <div class="pf-rn-type">Goal · On Track</div>
-            <div class="pf-rn-dot" style="background:#0eb2af;box-shadow:0 0 5px #0eb2af;"></div>
-          </div>
-        </div>
-      </div>
+      <!-- HIERARCHY RIBBON — same component as Focus view -->
+      <div class="fv-ribbon" style="flex-shrink:0;">
+        <div class="fv-ribbon-track" id="pfRibbonTrack"></div>
+      </div></div>
 
       <!-- THREE-COLUMN PAGE -->
       <div class="pf-page">
@@ -4379,7 +4218,48 @@ function dismissAlert() {
 }
 
 /* ── INIT ── */
+
+/* ── PORTFOLIO RIBBON ── */
+function buildPortfolioRibbon() {
+  var track = document.getElementById('pfRibbonTrack');
+  if (!track) return;
+
+  // Only nodes with real screens — objective (active) + 3 goals with full Focus data
+  var nodes = [
+    { label:'Trade Show + 3 Pil.', type:'OBJECTIVE', mod:'objective', status:'warn', focus:true, action:null },
+    { label:'Platform Delivery',   type:'GOAL · AT RISK',  mod:'goal', status:'warn', focus:false, action:"openFocus('goal-platform')" },
+    { label:'Pipeline to 50 Dem.', type:'GOAL · BEHIND',   mod:'goal', status:'warn', focus:false, action:"openFocus('goal-pipeline')" },
+    { label:'3 Pilot Customers',   type:'GOAL · BLOCKED',  mod:'goal', status:'risk', focus:false, action:"openFocus('goal-pilots')" },
+    { label:'18-Month Runway',     type:'GOAL · AHEAD',    mod:'goal', status:'ok',   focus:false, action:"openFocus('goal-runway')" },
+    { label:'Brand Presence',      type:'GOAL · ON TRACK', mod:'goal', status:'ok',   focus:false, action:"openFocus('goal-brand')" },
+  ];
+
+  var glyphs = {
+    objective: '<polygon points="12,2 22,12 12,22 2,12" fill="currentColor"/>',
+    goal:      '<circle cx="12" cy="12" r="9" fill="currentColor"/><circle cx="12" cy="12" r="3" fill="#070d18"/>',
+    milestone: '<path d="M4 6 L12 14 L20 6" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M4 12 L12 20 L20 12" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+    metric:    '<rect x="3" y="12" width="4" height="9" fill="currentColor"/><rect x="10" y="7" width="4" height="14" fill="currentColor"/><rect x="17" y="3" width="4" height="18" fill="currentColor"/>'
+  };
+
+  track.innerHTML = nodes.map(function(n) {
+    var sc = n.status === 'ok' ? 'ok' : n.status === 'warn' ? 'warn' : 'risk';
+    var cls = 'fv-rn' + (n.focus ? ' focus' : '');
+    var onclick = n.action ? ' onclick="' + n.action + '"' : '';
+    var style = !n.action ? ' style="cursor:default;"' : '';
+    return '<div class="' + cls + '"' + onclick + style + '>' +
+      '<div class="fv-rn-silk">' + (n.focus ? 'BOARD' : '') + '</div>' +
+      '<div class="fv-rn-chip">' +
+        '<span class="fv-rn-glyph"><svg width="30" height="30" viewBox="0 0 24 24">' + (glyphs[n.mod] || glyphs.goal) + '</svg></span>' +
+        '<span class="fv-rn-status ' + sc + '"></span>' +
+      '</div>' +
+      '<div class="fv-rn-label">' + n.label + '</div>' +
+      '<div class="fv-rn-meta">' + n.type + '</div>' +
+    '</div>';
+  }).join('');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+  buildPortfolioRibbon();
   var s0=document.getElementById('s0');
   var app=document.getElementById('app');
   if(s0&&app){s0.style.display='';app.classList.add('hidden');}
