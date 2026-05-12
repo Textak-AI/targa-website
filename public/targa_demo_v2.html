@@ -1413,16 +1413,19 @@ input,textarea{font-family:var(--font-b);outline:none;}
         <span class="tb-logo-text">TARGA AI</span>
       </div>
       <span class="tb-sep">/</span>
-      <span class="tb-context" id="tbContext">TARGATEK INC. · CEO PORTFOLIO</span>
+      <span class="tb-context" id="tbContext">TARGATEK INC. · CEO PORTFOLIO · JOE THOMPSON</span>
     </div>
     <div class="tb-right">
       <div class="blink-dot"></div>
       <span style="font-family:var(--font-m);font-size:10px;color:var(--text-4);">5 agents monitoring · Live</span>
+      <button class="btn" style="font-size:11px;padding:6px 14px;background:#0eb2af;color:#fff;border:none;border-radius:var(--r-md);display:flex;align-items:center;gap:6px;" onclick="openNewPlan()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Plan
+      </button>
       <button class="btn" style="font-size:11px;padding:6px 14px;background:var(--p-navy-800);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-md);display:flex;align-items:center;gap:6px;" onclick="openDesktopQA()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Quick Add
+        Quick Add <span style="background:#0eb2af;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:999px;margin-left:2px;font-family:'JetBrains Mono',monospace;">3</span>
       </button>
-      <button class="btn btn-ghost" style="font-size:11px;padding:6px 12px;" onclick="resetApp()">← Rebuild thesis</button>
     </div>
   </div>
 
@@ -1465,26 +1468,6 @@ input,textarea{font-family:var(--font-b);outline:none;}
   <!-- CEO VIEW — Focus-aligned layout -->
   <div class="role-view active" id="rv0" style="overflow:hidden;">
     <div class="pf-wrap">
-
-      <!-- TOPBAR -->
-      <div class="pf-topbar">
-        <div class="pf-topbar-left">
-          <div>
-            <div class="pf-greeting">Good morning, Joe.</div>
-            <div class="pf-sub">2 items need your attention. Platform delivery is the risk to watch — Mark&#8217;s team is 3 days behind on the critical path to July.</div>
-          </div>
-        </div>
-        <div class="pf-topbar-right">
-          <span class="pf-meta-pill">5 agents monitoring · Live</span>
-          <button class="pf-new-plan" onclick="openNewPlan()">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Plan
-          </button>
-          <button class="pf-quick-add" onclick="openDesktopQA()">
-            <span class="pf-qa-plus">+</span> Quick add <span class="pf-qa-badge">3</span>
-          </button>
-        </div>
-      </div>
 
       <!-- HIERARCHY RIBBON — same component as Focus view -->
       <div class="fv-ribbon" style="flex-shrink:0;">
