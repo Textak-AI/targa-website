@@ -748,6 +748,40 @@ input,textarea{font-family:var(--font-b);outline:none;}
 </style>
 
 /* ── NEW PLAN MODAL ── */
+
+.dqa-overlay{
+  position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+.dqa-overlay.vis{opacity:1;pointer-events:all;}
+.dqa-modal{
+  width:100%;max-width:520px;background:#0c1424;
+  border:1px solid rgba(255,255,255,0.1);border-radius:18px;
+  box-shadow:0 32px 80px rgba(0,0,0,0.5);overflow:hidden;
+  transform:translateY(16px);transition:transform 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+.dqa-overlay.vis .dqa-modal{transform:none;}
+.dqa-head{padding:22px 24px 18px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.dqa-eye{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#0eb2af;margin-bottom:6px;}
+.dqa-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;}
+.dqa-types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 24px;}
+.dqa-type{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 140ms;}
+.dqa-type:hover{background:rgba(14,178,175,0.1);border-color:rgba(14,178,175,0.3);}
+.dqa-type-icon{display:block;font-size:22px;margin-bottom:6px;}
+.dqa-type-label{font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);}
+.dqa-form{padding:0 24px 20px;display:flex;flex-direction:column;gap:10px;}
+.dqa-input{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:14px;color:#fff;outline:none;width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;}
+.dqa-input:focus{border-color:rgba(14,178,175,0.5);}
+.dqa-input::placeholder{color:rgba(255,255,255,0.3);}
+.dqa-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.dqa-footer{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-top:1px solid rgba(255,255,255,0.08);}
+.dqa-btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;}
+.dqa-btn-primary{background:#0eb2af;border:none;color:#fff;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
+.dqa-confirm{padding:40px 24px;text-align:center;display:none;}
+.dqa-confirm-icon{font-size:40px;margin-bottom:12px;color:#0eb2af;}
+.dqa-confirm-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;}
+.dqa-confirm-sub{font-size:14px;color:rgba(255,255,255,0.5);}
 .np-overlay{
   position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:100;
   display:flex;align-items:center;justify-content:center;
@@ -892,8 +926,8 @@ input,textarea{font-family:var(--font-b);outline:none;}
   position:relative;
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),inset 0 -1px 0 rgba(0,0,0,0.5),inset 0 8px 18px rgba(0,0,0,0.30);
 }
-.fv-ribbon::before { content:'HIERARCHY'; position:absolute; top:14px; left:32px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#7adcd2; opacity:0.78; pointer-events:none; }
-.fv-ribbon-track { display:flex; align-items:flex-end; justify-content:center; gap:14px; height:100px; perspective:1200px; overflow:hidden; }
+.fv-ribbon::before { content:'YOUR VIEW'; position:absolute; top:14px; left:32px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#7adcd2; opacity:0.78; pointer-events:none; }
+.fv-ribbon-track { display:flex; align-items:flex-end; justify-content:center; gap:14px; height:108px; perspective:1200px; overflow:visible; padding-top:8px; }
 
 /* Ribbon nodes */
 .fv-rn { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; padding:4px 6px; position:relative; min-width:92px; transform:translateY(4px) scale(0.86); opacity:0.62; transition:transform 260ms cubic-bezier(0.34,1.56,0.64,1),opacity 140ms; }
@@ -1192,6 +1226,199 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .fv-rn:not(.focus):hover .fv-rn-nav-hint { opacity:1; }
 
 .fv-qa-badge { background:var(--primary,#0d8b82); color:#fff; width:18px; height:18px; border-radius:50%; font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-left:4px; }
+
+/* ── PORTFOLIO v2 — Focus-aligned layout ── */
+.pf-wrap { height:100%; display:flex; flex-direction:column; font-family:'Inter',sans-serif; color:#0c1424; background:#eef1f5; }
+.pf-topbar { display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:56px; border-bottom:1px solid rgba(12,20,36,0.08); background:#fff; flex-shrink:0; box-shadow:0 1px 0 rgba(12,20,36,0.04),0 2px 12px rgba(12,20,36,0.04); }
+.pf-topbar-left { display:flex; align-items:center; gap:16px; }
+.pf-greeting { font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; color:#0c1424; }
+.pf-sub { font-size:12px; color:rgba(12,20,36,0.45); max-width:480px; line-height:1.4; }
+.pf-topbar-right { display:flex; align-items:center; gap:10px; }
+.pf-meta-pill { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#2c8a5e; padding:4px 10px; background:rgba(44,138,94,0.07); border:1px solid rgba(44,138,94,0.2); border-radius:999px; }
+.pf-new-plan { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; background:#0eb2af; color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; }
+.pf-new-plan:hover { background:#0cc7c4; }
+.pf-quick-add { display:flex; align-items:center; gap:8px; padding:7px 14px 7px 12px; background:#0c1424; color:#fff; border:none; border-radius:999px; font-size:13px; font-weight:500; cursor:pointer; }
+.pf-quick-add:hover { background:#1a2945; }
+.pf-qa-plus { font-size:16px; font-weight:300; line-height:1; }
+.pf-qa-badge { background:#0eb2af; color:#fff; font-size:10px; font-weight:700; padding:1px 6px; border-radius:999px; font-family:'JetBrains Mono',monospace; }
+.pf-ribbon { background:repeating-linear-gradient(0deg,rgba(255,255,255,0.012) 0,rgba(255,255,255,0.012) 1px,transparent 1px,transparent 3px),linear-gradient(180deg,#070d18,#0c1424); border-bottom:1px solid #121d33; padding:12px 32px 16px; position:relative; box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),inset 0 -1px 0 rgba(0,0,0,0.5),inset 0 8px 18px rgba(0,0,0,0.30); flex-shrink:0; }
+.pf-ribbon::before { content:'YOUR VIEW'; position:absolute; top:14px; left:32px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#7adcd2; opacity:0.78; pointer-events:none; }
+.pf-ribbon-track { display:flex; align-items:flex-end; justify-content:center; gap:12px; height:108px; perspective:1200px; overflow:visible; padding-top:8px; }
+
+/* ── TARGA LIVE FEED ── */
+.pf-feed {
+  background:#060e1a;
+  border:1px solid rgba(14,178,175,0.15);
+  border-radius:12px;
+  padding:0;
+  margin-bottom:16px;
+  overflow:hidden;
+  box-shadow:0 2px 24px rgba(0,0,0,0.18),inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.pf-feed-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 16px;
+  border-bottom:1px solid rgba(14,178,175,0.1);
+}
+.pf-feed-label {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:#7adcd2;
+}
+.pf-feed-pulse {
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#0eb2af;
+  box-shadow:0 0 8px #0eb2af;
+  animation:pfPulse 2s ease-in-out infinite;
+}
+@keyframes pfPulse {
+  0%,100%{opacity:1;box-shadow:0 0 6px #0eb2af;}
+  50%{opacity:0.5;box-shadow:0 0 2px #0eb2af;}
+}
+.pf-feed-ts {
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:rgba(255,255,255,0.2);
+  letter-spacing:0.06em;
+}
+.pf-feed-items {
+  padding:4px 0 8px;
+}
+.pf-feed-item {
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:9px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  opacity:0;
+  transform:translateY(4px);
+  animation:pfFeedIn 0.3s cubic-bezier(0.4,0,0.2,1) forwards;
+  cursor:default;
+  transition:background 120ms;
+}
+.pf-feed-item:last-child { border-bottom:none; }
+.pf-feed-item:hover { background:rgba(255,255,255,0.03); }
+.pf-feed-item:nth-child(1){animation-delay:0.1s;}
+.pf-feed-item:nth-child(2){animation-delay:0.25s;}
+.pf-feed-item:nth-child(3){animation-delay:0.4s;}
+.pf-feed-item:nth-child(4){animation-delay:0.55s;}
+@keyframes pfFeedIn {
+  to{opacity:1;transform:translateY(0);}
+}
+.pf-feed-dot {
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  flex-shrink:0;
+  margin-top:5px;
+}
+.pf-feed-dot.red   { background:#d44a4a; box-shadow:0 0 5px rgba(212,74,74,0.6); }
+.pf-feed-dot.gold  { background:#fbbf24; box-shadow:0 0 5px rgba(251,191,36,0.5); }
+.pf-feed-dot.teal  { background:#0eb2af; box-shadow:0 0 5px rgba(14,178,175,0.5); }
+.pf-feed-dot.green { background:#2c8a5e; box-shadow:0 0 5px rgba(44,138,94,0.5); }
+.pf-feed-content { flex:1; min-width:0; }
+.pf-feed-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:2px;
+}
+.pf-feed-tag.red   { color:#d44a4a; }
+.pf-feed-tag.gold  { color:#d09a2e; }
+.pf-feed-tag.teal  { color:#0eb2af; }
+.pf-feed-tag.green { color:#2c8a5e; }
+.pf-feed-text {
+  font-size:12px;
+  color:rgba(255,255,255,0.72);
+  line-height:1.5;
+  font-family:'Inter',sans-serif;
+}
+.pf-feed-text strong { color:rgba(255,255,255,0.92); font-weight:600; }
+.pf-feed-when {
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:rgba(255,255,255,0.2);
+  flex-shrink:0;
+  margin-top:4px;
+}
+.pf-rn { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; padding:4px 6px; min-width:88px; transform:translateY(4px) scale(0.86); opacity:0.55; transition:transform 260ms cubic-bezier(0.34,1.56,0.64,1),opacity 140ms; }
+.pf-rn.active { transform:translateY(0) scale(1.06); opacity:1; }
+.pf-rn.adjacent { transform:translateY(0) scale(0.96); opacity:0.82; }
+.pf-rn:hover:not(.active) { opacity:0.9; }
+.pf-rn-icon { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.05); margin-bottom:2px; }
+.pf-rn.active .pf-rn-icon { border-color:#0eb2af; background:rgba(14,178,175,0.15); box-shadow:0 0 18px rgba(14,178,175,0.35); }
+.pf-rn-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; color:rgba(255,255,255,0.45); text-align:center; max-width:84px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pf-rn.active .pf-rn-label { color:#7adcd2; }
+.pf-rn-type { font-size:8px; letter-spacing:0.1em; color:rgba(255,255,255,0.25); text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
+.pf-rn-dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.18); margin-top:2px; }
+.pf-rn.active .pf-rn-dot { background:#0eb2af; box-shadow:0 0 6px #0eb2af; }
+.pf-page { flex:1; overflow-y:auto; padding:24px 32px 48px; }
+.pf-grid { display:grid; grid-template-columns:220px 1fr 280px; gap:18px; align-items:start; }
+.pf-panel { background:#fff; border:1px solid rgba(12,20,36,0.06); border-radius:14px; box-shadow:0 2px 8px rgba(12,20,36,0.04); overflow:hidden; margin-bottom:14px; }
+.pf-panel-head { display:flex; align-items:center; gap:6px; padding:11px 14px; border-bottom:1px solid rgba(12,20,36,0.05); }
+.pf-panel-title { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(12,20,36,0.38); }
+.pf-panel-body { padding:12px 14px; }
+.pf-kpi { padding:11px 0; border-bottom:1px solid rgba(12,20,36,0.05); }
+.pf-kpi:last-child { border-bottom:none; padding-bottom:0; }
+.pf-kpi-ey { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(12,20,36,0.38); margin-bottom:3px; }
+.pf-kpi-val { font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:700; letter-spacing:-0.02em; color:#0c1424; line-height:1; margin-bottom:2px; }
+.pf-kpi-sub { font-size:11px; color:rgba(12,20,36,0.42); margin-bottom:4px; }
+.pf-kpi-trend { font-size:11px; font-weight:600; margin-bottom:5px; }
+.pf-kpi-trend.up { color:#2c8a5e; }
+.pf-kpi-trend.warn { color:#c05a1a; }
+.pf-kpi-bar { height:3px; background:rgba(12,20,36,0.06); border-radius:999px; overflow:hidden; }
+.pf-kpi-fill { height:100%; border-radius:999px; background:#0eb2af; }
+.pf-kpi-fill.warn { background:#e0903a; }
+.pf-center-eyebrow { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#0eb2af; margin-bottom:4px; }
+.pf-center-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.pf-center-title { font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:#0c1424; }
+.pf-cascade-link { font-family:'JetBrains Mono',monospace; font-size:10px; color:#0eb2af; cursor:pointer; }
+.pf-goal { background:#fff; border:1px solid rgba(12,20,36,0.06); border-radius:12px; padding:15px 16px; margin-bottom:8px; cursor:pointer; transition:box-shadow 140ms,border-color 140ms; display:flex; align-items:center; gap:12px; }
+.pf-goal:hover { box-shadow:0 4px 16px rgba(12,20,36,0.09); border-color:rgba(14,178,175,0.2); }
+.pf-goal-stripe { width:3px; border-radius:999px; align-self:stretch; flex-shrink:0; }
+.pf-goal-main { flex:1; min-width:0; }
+.pf-goal-name { font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; color:#0c1424; margin-bottom:2px; }
+.pf-goal-sub { font-size:11px; color:rgba(12,20,36,0.42); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pf-goal-right { display:flex; align-items:center; gap:9px; flex-shrink:0; }
+.pf-goal-owner { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(12,20,36,0.35); }
+.pf-goal-pct { font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:#0c1424; min-width:40px; text-align:right; }
+.pf-goal-badge { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:3px 9px; border-radius:999px; white-space:nowrap; }
+.pf-goal-badge.warn { background:rgba(224,144,58,0.1); color:#c05a1a; border:1px solid rgba(224,144,58,0.25); }
+.pf-goal-badge.blocked2 { background:rgba(212,74,74,0.1); color:#b02020; border:1px solid rgba(212,74,74,0.25); }
+.pf-goal-badge.ok { background:rgba(14,178,175,0.1); color:#0d8b82; border:1px solid rgba(14,178,175,0.25); }
+.pf-goal-badge.ahead { background:rgba(44,138,94,0.1); color:#2c6e49; border:1px solid rgba(44,138,94,0.25); }
+.pf-ask { background:#fff; border:1px solid rgba(12,20,36,0.06); border-radius:14px; padding:16px 18px; margin-top:4px; }
+.pf-ask-head { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
+.pf-ask-title { font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:#0c1424; }
+.pf-ask-live { display:flex; align-items:center; gap:5px; font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#2c8a5e; }
+.pf-intel-head { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(12,20,36,0.38); margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+.pf-ic { background:#fff; border:1px solid rgba(12,20,36,0.06); border-radius:12px; overflow:hidden; margin-bottom:10px; }
+.pf-ic-stripe { height:3px; }
+.pf-ic-stripe.red { background:#d44a4a; }
+.pf-ic-stripe.gold { background:#fbbf24; }
+.pf-ic-stripe.teal { background:#0eb2af; }
+.pf-ic-body { padding:13px 14px; }
+.pf-ic-badge { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:7px; display:flex; align-items:center; gap:5px; }
+.pf-ic-badge.alert { color:#d44a4a; }
+.pf-ic-badge.ai { color:#d09a2e; }
+.pf-ic-badge.signal { color:#0eb2af; }
+.pf-ic-text { font-size:13px; color:#0c1424; line-height:1.55; margin-bottom:10px; }
+.pf-ic-actions { display:flex; gap:6px; flex-wrap:wrap; }
+.pf-ic-btn-p { background:#0eb2af; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; }
+.pf-ic-btn-g { background:transparent; color:rgba(12,20,36,0.5); border:1px solid rgba(12,20,36,0.12); padding:6px 10px; border-radius:6px; font-size:11px; cursor:pointer; }
+
 </style>
 <div class="screen" id="s0">
 
@@ -1326,185 +1553,296 @@ input,textarea{font-family:var(--font-b);outline:none;}
 
   <!-- ── ROLE VIEWS ── -->
 
-  <!-- CEO VIEW -->
+  <!-- CEO VIEW — Focus-aligned layout -->
   <div class="role-view active" id="rv0">
-    <div class="view-scroll">
-      <div class="view-header" style="display:flex;align-items:flex-start;justify-content:space-between;">
-        <div>
-          <div class="view-greeting">Good morning, Joe.</div>
-          <div class="view-sub">2 items need your attention. Platform delivery is the risk to watch — Mark's team is 3 days behind on the critical path to July.</div>
+    <div class="pf-wrap">
+
+      <!-- TOPBAR -->
+      <div class="pf-topbar">
+        <div class="pf-topbar-left">
+          <div>
+            <div class="pf-greeting">Good morning, Joe.</div>
+            <div class="pf-sub">2 items need your attention. Platform delivery is the risk to watch — Mark&#8217;s team is 3 days behind on the critical path to July.</div>
+          </div>
         </div>
-        <button onclick="openNewPlan()" style="
-          display:inline-flex;align-items:center;gap:7px;padding:9px 18px;
-          background:var(--primary);color:#fff;border:none;border-radius:var(--r-md);
-          font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;margin-top:3px;
-          transition:background var(--dur-fast) var(--ease);"
-          onmouseover="this.style.background='var(--primary-h)'"
-          onmouseout="this.style.background='var(--primary)'">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          New Plan
-        </button>
-      </div>
-      <div class="kpi-strip">
-        <div class="kpi">
-          <div class="kpi-ey">July Readiness</div>
-          <div class="kpi-val">68%</div>
-          <div class="kpi-sub">87 days to show · At risk</div>
-          <div class="kpi-trend warn">→ Behind 9-day pace</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill warn" style="width:68%"></div></div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-ey">Pilot Pipeline</div>
-          <div class="kpi-val">18</div>
-          <div class="kpi-sub">Qualified demos · Target: 50</div>
-          <div class="kpi-trend up">↑ +4 this month</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:36%"></div></div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-ey">Runway</div>
-          <div class="kpi-val">21mo</div>
-          <div class="kpi-sub">At current burn · Target: 18mo</div>
-          <div class="kpi-trend up">↑ Ahead of plan</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:88%"></div></div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-ey">Pilots Closed</div>
-          <div class="kpi-val">0</div>
-          <div class="kpi-sub">Target: 3 by Q3</div>
-          <div class="kpi-trend warn">→ Demo-ready first</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill warn" style="width:5%"></div></div>
+        <div class="pf-topbar-right">
+          <span class="pf-meta-pill">5 agents monitoring · Live</span>
+          <button class="pf-new-plan" onclick="openNewPlan()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Plan
+          </button>
+          <button class="pf-quick-add" onclick="openDesktopQA()">
+            <span class="pf-qa-plus">+</span> Quick add <span class="pf-qa-badge">3</span>
+          </button>
         </div>
       </div>
 
-      <div class="two-col">
-        <div class="col">
-          <div class="sec-head">
-            <span class="sec-title">Executive Goals — H1 2026</span>
-            <span class="sec-link">Cascade view →</span>
+      <!-- HIERARCHY RIBBON — board objective as active, goals as children -->
+      <div class="pf-ribbon">
+        <div class="pf-ribbon-track">
+          <!-- Objective node (active — this is where we are) -->
+          <div class="pf-rn active">
+            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><polygon points="12,3 21,12 12,21 3,12" fill="rgba(14,178,175,0.2)" stroke="#0eb2af" stroke-width="1.5"/></svg></div>
+            <div class="pf-rn-label">Trade Show + 3 Pilots</div>
+            <div class="pf-rn-type">Objective</div>
+            <div class="pf-rn-dot"></div>
           </div>
-          <div class="item-list">
-            <div class="item-row" data-risk onclick="openFocus('goal-platform')">
-              <div class="ir-dot" style="background:var(--mod-goal)"></div>
-              <div><div class="ir-name">Platform delivery — trade show ready</div><div class="ir-sub">Mark S. · 3 milestones · 1 overdue · Sigma Solve</div></div>
-              <span class="ir-owner">CTO</span>
-              <span class="ir-pct">68%</span>
-              <span class="ir-badge warn">At Risk</span>
-            </div>
-            <div class="item-row" onclick="openFocus('goal-pipeline')">
-              <div class="ir-dot" style="background:var(--mod-goal)"></div>
-              <div><div class="ir-name">Pipeline to 50 qualified demos</div><div class="ir-sub">Kyle M. · LinkedIn + outbound + content</div></div>
-              <span class="ir-owner">CMO</span>
-              <span class="ir-pct">36%</span>
-              <span class="ir-badge warn">Behind</span>
-            </div>
-            <div class="item-row" onclick="openFocus('goal-pilots')">
-              <div class="ir-dot" style="background:var(--mod-goal)"></div>
-              <div><div class="ir-name">3 pilot customers by Q3</div><div class="ir-sub">Dana P. · Demo conversion · Requires platform delivery</div></div>
-              <span class="ir-owner">VP Sales</span>
-              <span class="ir-pct">5%</span>
-              <span class="ir-badge warn">Blocked</span>
-            </div>
-            <div class="item-row" onclick="openFocus('goal-runway')">
-              <div class="ir-dot" style="background:var(--mod-goal)"></div>
-              <div><div class="ir-name">18-month runway maintained</div><div class="ir-sub">Linda A. · Cash position · Burn rate · OpEx</div></div>
-              <span class="ir-owner">CFO</span>
-              <span class="ir-pct">88%</span>
-              <span class="ir-badge ahead">Ahead</span>
-            </div>
-            <div class="item-row" onclick="openFocus('goal-brand')">
-              <div class="ir-dot" style="background:var(--mod-goal)"></div>
-              <div><div class="ir-name">Brand presence — C-suite awareness</div><div class="ir-sub">Kyle M. · Joe LinkedIn · Targatek media</div></div>
-              <span class="ir-owner">CMO</span>
-              <span class="ir-pct">55%</span>
-              <span class="ir-badge ok">On Track</span>
-            </div>
+          <!-- Goal children -->
+          <div class="pf-rn adjacent" onclick="openFocus('goal-platform')">
+            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
+            <div class="pf-rn-label">Platform Delivery</div>
+            <div class="pf-rn-type">Goal · At Risk</div>
+            <div class="pf-rn-dot" style="background:#e0903a;box-shadow:0 0 5px #e0903a;"></div>
           </div>
-
-          <div class="ask-block">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <svg class="icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-              <span style="font-family:var(--font-d);font-size:14px;font-weight:600;">Ask TARGA</span>
-              <div class="ask-live"><div class="live-dot"></div>LIVE</div>
-            </div>
-            <div style="font-size:11px;color:var(--text-4);margin-bottom:10px;">Context-aware across your full portfolio.</div>
-            <div class="ask-chips">
-              <span class="ask-chip" onclick="askChip(this,'ceo')">What's the biggest risk to July?</span>
-              <span class="ask-chip" onclick="askChip(this,'ceo')">Draft a board update on platform status</span>
-              <span class="ask-chip" onclick="askChip(this,'ceo')">What should I focus on today?</span>
-            </div>
-            <div class="ask-row">
-              <input class="ask-input" id="askCEO" type="text" placeholder="Ask anything about your portfolio…">
-              <button class="ask-send" onclick="sendAsk('ceo')">→</button>
-            </div>
-            <div class="ask-loading" id="ldCEO"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span style="font-size:11px;color:var(--text-4);margin-left:6px;">TARGA is thinking…</span></div>
-            <div class="ask-resp" id="respCEO"></div>
+          <div class="pf-rn adjacent" onclick="openFocus('goal-pipeline')">
+            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
+            <div class="pf-rn-label">Pipeline to 50 Demos</div>
+            <div class="pf-rn-type">Goal · Behind</div>
+            <div class="pf-rn-dot" style="background:#e0903a;box-shadow:0 0 5px #e0903a;"></div>
           </div>
-        </div>
-
-        <div class="col">
-          <div class="sec-head"><span class="sec-title">Intelligence Feed</span></div>
-          <div class="intel-stack">
-            <div class="intel-card">
-              <div class="ic-stripe red"></div>
-              <div class="ic-body">
-                <div class="ic-badge alert">⚠ Critical · 3 days ago</div>
-                <div class="ic-text">Sigma Solve missed the <strong>Item Architecture milestone</strong> (due May 3). Mark has not updated the item. <span>This is directly on the July critical path — every week of slip compresses the demo window.</span></div>
-                <div class="ic-actions">
-                  <button class="ic-btn ic-btn-p" onclick="switchRole(2)">Open CTO view</button>
-                  <button class="ic-btn ic-btn-g">Assign action</button>
-                </div>
-              </div>
-            </div>
-            <div class="intel-card">
-              <div class="ic-stripe gold"></div>
-              <div class="ic-body">
-                <div class="ic-badge ai">✦ TARGA Insight</div>
-                <div class="ic-text">Pilot pipeline is at 36% of target but the conversion rate from demo to pilot is <strong>unknown — no closed demos yet</strong>. <span>Platform delivery is the blocker. Once demo-ready, this number will accelerate.</span></div>
-                <div class="ic-actions">
-                  <button class="ic-btn ic-btn-p" onclick="switchRole(4)">View VP Sales</button>
-                  <button class="ic-btn ic-btn-g">Dismiss</button>
-                </div>
-              </div>
-            </div>
-            <div class="intel-card">
-              <div class="ic-stripe teal"></div>
-              <div class="ic-body">
-                <div class="ic-badge signal">↑ Signal · This week</div>
-                <div class="ic-text">Joe's LinkedIn post on the quarterly meeting problem reached <strong>14,200 impressions</strong>. <span>3 inbound demo requests sourced to that post — highest conversion post to date.</span></div>
-                <div class="ic-actions">
-                  <button class="ic-btn ic-btn-p" onclick="switchRole(3)">View CMO pipeline</button>
-                  <button class="ic-btn ic-btn-g">See post</button>
-                </div>
-              </div>
-            </div>
+          <div class="pf-rn adjacent" onclick="openFocus('goal-pilots')">
+            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
+            <div class="pf-rn-label">3 Pilot Customers</div>
+            <div class="pf-rn-type">Goal · Blocked</div>
+            <div class="pf-rn-dot" style="background:#d44a4a;box-shadow:0 0 5px #d44a4a;"></div>
           </div>
-
-          <div style="margin-top:16px;">
-            <div class="sec-head"><span class="sec-title">Watchlist</span></div>
-            <div class="panel">
-              <div class="panel-body" style="padding-top:12px;">
-                <div class="milestone-row">
-                  <div class="ms-dot blocked"></div>
-                  <div class="ms-name">Sigma Solve — Item Architecture CR</div>
-                  <span class="ms-date">3d overdue</span>
-                </div>
-                <div class="milestone-row">
-                  <div class="ms-dot warn"></div>
-                  <div class="ms-name">Demo pipeline — 32 demos behind pace</div>
-                  <span class="ms-date">Q2 risk</span>
-                </div>
-                <div class="milestone-row">
-                  <div class="ms-dot ok"></div>
-                  <div class="ms-name">Runway — 21 months confirmed</div>
-                  <span class="ms-date">Ahead</span>
-                </div>
-              </div>
-            </div>
+          <div class="pf-rn adjacent" onclick="openFocus('goal-runway')">
+            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
+            <div class="pf-rn-label">18-Month Runway</div>
+            <div class="pf-rn-type">Goal · Ahead</div>
+            <div class="pf-rn-dot" style="background:#2c8a5e;box-shadow:0 0 5px #2c8a5e;"></div>
+          </div>
+          <div class="pf-rn adjacent" onclick="openFocus('goal-brand')">
+            <div class="pf-rn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/></svg></div>
+            <div class="pf-rn-label">Brand Presence</div>
+            <div class="pf-rn-type">Goal · On Track</div>
+            <div class="pf-rn-dot" style="background:#0eb2af;box-shadow:0 0 5px #0eb2af;"></div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+
+      <!-- THREE-COLUMN PAGE -->
+      <div class="pf-page">
+        <div class="pf-grid">
+
+          <!-- LEFT: KPI panel -->
+          <aside>
+            <div class="pf-panel">
+              <div class="pf-panel-head">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(12,20,36,0.38)" stroke-width="2"><path d="M3 21H21M5 21V14M11 21V9M17 21V5"/></svg>
+                <div class="pf-panel-title">Board KPIs</div>
+              </div>
+              <div class="pf-panel-body">
+                <div class="pf-kpi">
+                  <div class="pf-kpi-ey">July Readiness</div>
+                  <div class="pf-kpi-val">68%</div>
+                  <div class="pf-kpi-sub">87 days to show · At risk</div>
+                  <div class="pf-kpi-trend warn">→ Behind 9-day pace</div>
+                  <div class="pf-kpi-bar"><div class="pf-kpi-fill warn" style="width:68%"></div></div>
+                </div>
+                <div class="pf-kpi">
+                  <div class="pf-kpi-ey">Pilot Pipeline</div>
+                  <div class="pf-kpi-val">18</div>
+                  <div class="pf-kpi-sub">Qualified demos · Target: 50</div>
+                  <div class="pf-kpi-trend up">↑ +4 this month</div>
+                  <div class="pf-kpi-bar"><div class="pf-kpi-fill" style="width:36%"></div></div>
+                </div>
+                <div class="pf-kpi">
+                  <div class="pf-kpi-ey">Runway</div>
+                  <div class="pf-kpi-val">21mo</div>
+                  <div class="pf-kpi-sub">At current burn · Target: 18mo</div>
+                  <div class="pf-kpi-trend up">↑ Ahead of plan</div>
+                  <div class="pf-kpi-bar"><div class="pf-kpi-fill" style="width:88%"></div></div>
+                </div>
+                <div class="pf-kpi">
+                  <div class="pf-kpi-ey">Pilots Closed</div>
+                  <div class="pf-kpi-val">0</div>
+                  <div class="pf-kpi-sub">Target: 3 by Q3</div>
+                  <div class="pf-kpi-trend warn">→ Demo-ready first</div>
+                  <div class="pf-kpi-bar"><div class="pf-kpi-fill warn" style="width:5%"></div></div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- CENTER: Goal list + Ask TARGA -->
+          <div>
+            <!-- TARGA LIVE FEED -->
+            <div class="pf-feed">
+              <div class="pf-feed-head">
+                <div class="pf-feed-label">
+                  <div class="pf-feed-pulse"></div>
+                  TARGA · Live Feed
+                </div>
+                <div class="pf-feed-ts">Updated just now</div>
+              </div>
+              <div class="pf-feed-items">
+                <div class="pf-feed-item">
+                  <div class="pf-feed-dot red"></div>
+                  <div class="pf-feed-content">
+                    <div class="pf-feed-tag red">Critical · Platform</div>
+                    <div class="pf-feed-text"><strong>Item Architecture CR</strong> is 3 days overdue. Mark has not logged an update. This is on the July critical path.</div>
+                  </div>
+                  <div class="pf-feed-when">3d ago</div>
+                </div>
+                <div class="pf-feed-item">
+                  <div class="pf-feed-dot gold"></div>
+                  <div class="pf-feed-content">
+                    <div class="pf-feed-tag gold">TARGA Insight · Pipeline</div>
+                    <div class="pf-feed-text">Demo-to-pilot conversion rate is <strong>unknown — no closed demos yet.</strong> Platform delivery is the unlock event.</div>
+                  </div>
+                  <div class="pf-feed-when">today</div>
+                </div>
+                <div class="pf-feed-item">
+                  <div class="pf-feed-dot teal"></div>
+                  <div class="pf-feed-content">
+                    <div class="pf-feed-tag teal">Signal · Brand</div>
+                    <div class="pf-feed-text">Joe&#8217;s LinkedIn post reached <strong>14,200 impressions.</strong> 3 inbound demo requests sourced directly — highest conversion post to date.</div>
+                  </div>
+                  <div class="pf-feed-when">2d ago</div>
+                </div>
+                <div class="pf-feed-item">
+                  <div class="pf-feed-dot green"></div>
+                  <div class="pf-feed-content">
+                    <div class="pf-feed-tag green">On Track · Runway</div>
+                    <div class="pf-feed-text">Burn rate confirmed at $142K vs $160K budget. <strong>Runway extended to 21 months</strong> — 3 months ahead of plan.</div>
+                  </div>
+                  <div class="pf-feed-when">1d ago</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pf-center-head">
+              <div>
+                <div class="pf-center-eyebrow">Executive Goals · H1 2026</div>
+                <div class="pf-center-title">Trade Show + 3 Pilots</div>
+              </div>
+              <span class="pf-cascade-link" onclick="switchRole(0);openFocus('goal-platform')">Cascade view →</span>
+            </div>
+
+            <div class="pf-goal" onclick="openFocus('goal-platform')" style="border-left:3px solid #e0903a;">
+              <div class="pf-goal-main">
+                <div class="pf-goal-name">Platform delivery — trade show ready</div>
+                <div class="pf-goal-sub">Mark S. · 3 milestones · 1 overdue · Sigma Solve</div>
+              </div>
+              <div class="pf-goal-right">
+                <span class="pf-goal-owner">CTO</span>
+                <span class="pf-goal-pct">68%</span>
+                <span class="pf-goal-badge warn">At Risk</span>
+              </div>
+            </div>
+            <div class="pf-goal" onclick="openFocus('goal-pipeline')" style="border-left:3px solid #e0903a;">
+              <div class="pf-goal-main">
+                <div class="pf-goal-name">Pipeline to 50 qualified demos</div>
+                <div class="pf-goal-sub">Kyle M. · LinkedIn + outbound + content</div>
+              </div>
+              <div class="pf-goal-right">
+                <span class="pf-goal-owner">CMO</span>
+                <span class="pf-goal-pct">36%</span>
+                <span class="pf-goal-badge warn">Behind</span>
+              </div>
+            </div>
+            <div class="pf-goal" onclick="openFocus('goal-pilots')" style="border-left:3px solid #d44a4a;">
+              <div class="pf-goal-main">
+                <div class="pf-goal-name">3 pilot customers by Q3</div>
+                <div class="pf-goal-sub">Dana P. · Demo conversion · Requires platform delivery</div>
+              </div>
+              <div class="pf-goal-right">
+                <span class="pf-goal-owner">VP Sales</span>
+                <span class="pf-goal-pct">5%</span>
+                <span class="pf-goal-badge blocked2">Blocked</span>
+              </div>
+            </div>
+            <div class="pf-goal" onclick="openFocus('goal-runway')" style="border-left:3px solid #2c8a5e;">
+              <div class="pf-goal-main">
+                <div class="pf-goal-name">18-month runway maintained</div>
+                <div class="pf-goal-sub">Linda A. · Cash position · Burn rate · OpEx</div>
+              </div>
+              <div class="pf-goal-right">
+                <span class="pf-goal-owner">CFO</span>
+                <span class="pf-goal-pct">88%</span>
+                <span class="pf-goal-badge ahead">Ahead</span>
+              </div>
+            </div>
+            <div class="pf-goal" onclick="openFocus('goal-brand')" style="border-left:3px solid #0eb2af;">
+              <div class="pf-goal-main">
+                <div class="pf-goal-name">Brand presence — C-suite awareness</div>
+                <div class="pf-goal-sub">Kyle M. · Joe LinkedIn · Targatek media</div>
+              </div>
+              <div class="pf-goal-right">
+                <span class="pf-goal-owner">CMO</span>
+                <span class="pf-goal-pct">55%</span>
+                <span class="pf-goal-badge ok">On Track</span>
+              </div>
+            </div>
+
+            <!-- Ask TARGA -->
+            <div class="pf-ask">
+              <div class="pf-ask-head">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                <span class="pf-ask-title">Ask TARGA</span>
+                <div class="pf-ask-live"><div class="live-dot"></div>LIVE</div>
+              </div>
+              <div style="font-size:11px;color:rgba(12,20,36,0.42);margin-bottom:10px;">Context-aware across your full portfolio.</div>
+              <div class="ask-chips">
+                <span class="ask-chip" onclick="askChip(this,'ceo')">What's the biggest risk to July?</span>
+                <span class="ask-chip" onclick="askChip(this,'ceo')">Draft a board update on platform status</span>
+                <span class="ask-chip" onclick="askChip(this,'ceo')">What should I focus on today?</span>
+              </div>
+              <div class="ask-row">
+                <input class="ask-input" id="askCEO" type="text" placeholder="Ask anything about your portfolio…">
+                <button class="ask-send" onclick="sendAsk('ceo')">→</button>
+              </div>
+              <div class="ask-loading" id="ldCEO"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span style="font-size:11px;color:rgba(12,20,36,0.42);margin-left:6px;">TARGA is thinking…</span></div>
+              <div class="ask-resp" id="respCEO"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Intelligence feed -->
+          <aside>
+            <div class="pf-intel-head">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(12,20,36,0.38)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+              Intelligence Feed
+            </div>
+            <div class="pf-ic">
+              <div class="pf-ic-stripe red"></div>
+              <div class="pf-ic-body">
+                <div class="pf-ic-badge alert">⚠ Critical · 3 days ago</div>
+                <div class="pf-ic-text">Sigma Solve missed the <strong>Item Architecture milestone</strong> (due May 3). Mark has not updated the item. This is directly on the July critical path — every week of slip compresses the demo window.</div>
+                <div class="pf-ic-actions">
+                  <button class="pf-ic-btn-p" onclick="switchRole(2)">Open CTO view</button>
+                  <button class="pf-ic-btn-g">Assign action</button>
+                </div>
+              </div>
+            </div>
+            <div class="pf-ic">
+              <div class="pf-ic-stripe gold"></div>
+              <div class="pf-ic-body">
+                <div class="pf-ic-badge ai">✦ TARGA Insight</div>
+                <div class="pf-ic-text">Pilot pipeline is at 36% of target but conversion rate from demo to pilot is <strong>unknown — no closed demos yet</strong>. Platform delivery is the blocker. Once demo-ready, this number will accelerate.</div>
+                <div class="pf-ic-actions">
+                  <button class="pf-ic-btn-p" onclick="switchRole(4)">View VP Sales</button>
+                  <button class="pf-ic-btn-g">Dismiss</button>
+                </div>
+              </div>
+            </div>
+            <div class="pf-ic">
+              <div class="pf-ic-stripe teal"></div>
+              <div class="pf-ic-body">
+                <div class="pf-ic-badge signal">↑ Signal · This week</div>
+                <div class="pf-ic-text">Joe&#8217;s LinkedIn post on the quarterly meeting problem reached <strong>14,200 impressions</strong>. 3 inbound demo requests sourced to that post — highest conversion post to date.</div>
+                <div class="pf-ic-actions">
+                  <button class="pf-ic-btn-p" onclick="switchRole(3)">View CMO pipeline</button>
+                  <button class="pf-ic-btn-g">See post</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+        </div><!-- /pf-grid -->
+      </div><!-- /pf-page -->
+    </div><!-- /pf-wrap -->
+  </div><!-- /rv0 -->
 
   <!-- CFO VIEW -->
   <div class="role-view" id="rv1">
