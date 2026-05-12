@@ -9,6 +9,7 @@ const NAV_BAR = `
   <a href="/reference" style="padding:0 14px;height:40px;display:inline-flex;align-items:center;font-size:12px;font-weight:600;color:#0eb2af;letter-spacing:0.04em;text-decoration:none;border-bottom:2px solid #0eb2af;">Technical Reference</a>
   <div style="margin-left:auto;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.12em;text-transform:uppercase;">HBC-TARGA-UX-2026</div>
 </div>
+<style>.sidebar{top:40px!important;height:calc(100vh - 40px)!important;width:200px!important}.main{margin-left:200px!important}</style>
 `;
 
 export const metadata = {
@@ -44,7 +45,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 
 /* ── SIDEBAR ── */
 .sidebar{
-  position:fixed;top:0;left:0;width:240px;height:100vh;
+  position:fixed;top:0;left:0;width:200px;height:100vh;
   background:var(--bg1);border-right:1px solid var(--border);
   overflow-y:auto;padding:0;z-index:50;
   display:flex;flex-direction:column;
@@ -76,8 +77,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .sidebar-footer{padding:12px 20px;border-top:1px solid var(--border);font-family:var(--mono);font-size:9px;color:var(--text3);line-height:1.6;}
 
 /* ── MAIN ── */
-.main{margin-left:240px;padding:0;min-width:0;}
-.main-inner{max-width:900px;width:100%;padding:48px 56px 96px;box-sizing:border-box;}
+.main{margin-left:200px;padding:0;min-width:0;}
+.main-inner{max-width:1100px;width:100%;padding:48px 48px 96px;box-sizing:border-box;}
 
 /* ── PAGE HEADER ── */
 .page-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
@@ -248,7 +249,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 hr.thin{border:none;border-top:1px solid var(--border-s);margin:24px 0;}
 
       ` }} />
-      <div dangerouslySetInnerHTML={{ __html: NAV_BAR + `<style>.sidebar{top:40px!important;height:calc(100vh - 40px)!important}.main{padding-top:48px!important}</style>` + `
+      <div dangerouslySetInnerHTML={{ __html: NAV_BAR + `
 <div class="layout">
 
 <!-- SIDEBAR -->
