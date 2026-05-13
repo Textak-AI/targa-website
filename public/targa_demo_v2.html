@@ -542,7 +542,7 @@ input,textarea{font-family:var(--font-b);outline:none;}
 /* ── INTELLIGENCE METRIC SYSTEM ── */
 
 /* Metric drawer — slides in from right */
-.im-overlay{position:fixed;inset:0;z-index:200;pointer-events:none;}
+.im-overlay{position:fixed;inset:0;z-index:9999;pointer-events:none;}
 .im-overlay.vis{pointer-events:all;}
 .im-backdrop{position:absolute;inset:0;background:rgba(12,20,36,0.25);
   opacity:0;transition:opacity var(--dur-med) var(--ease);}
@@ -750,7 +750,7 @@ input,textarea{font-family:var(--font-b);outline:none;}
 /* ── NEW PLAN MODAL ── */
 
 .dqa-overlay{
-  position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:100;
+  position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:9999;
   display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity 0.22s cubic-bezier(0.4,0,0.2,1);
 }
@@ -783,7 +783,7 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .dqa-confirm-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;}
 .dqa-confirm-sub{font-size:14px;color:rgba(255,255,255,0.5);}
 .np-overlay{
-  position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:100;
+  position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:9999;
   display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity var(--dur-med) var(--ease);
   
@@ -3321,7 +3321,7 @@ function askChip(el, role) {
 }
 
 /* ── NEW PLAN MODAL ── */
-function openNewPlan() { console.log("openNewPlan called"); var o = document.getElementById('npOverlay'); if(o) { o.classList.add('vis'); console.log("vis added"); } else { console.log("npOverlay not found"); } }
+function openNewPlan() { var o = document.getElementById('npOverlay'); if(o) o.classList.add('vis'); }
 function closeNewPlan() { var o = document.getElementById('npOverlay'); if(o) o.classList.remove('vis'); resetNewPlan(); }
 function handleOverlayClick(e) { if(e.target.id==='npOverlay') closeNewPlan(); }
 function npFill(el) { var t = document.getElementById('npThesis'); if(t) t.value = el.textContent; }
@@ -3383,7 +3383,7 @@ var DQA_TYPES_BY_ROLE = {
   4:[{icon:'◎',label:'Prospect',color:'var(--mod-goal)'},{icon:'◆',label:'Meeting',color:'var(--mod-initiative)'},{icon:'⚡',label:'Follow-up',color:'var(--mod-action)'},{icon:'⬡',label:'Pipeline metric',color:'var(--mod-metric)'}]
 };
 
-function openDesktopQA() { console.log("openDesktopQA called");
+function openDesktopQA() {
   var overlay = document.getElementById('dqaOverlay'); if (!overlay) return;
   var tag = document.getElementById('dqaRoleTag'); if(tag) tag.textContent = ROLE_NAMES[currentRole].split(' ')[0];
   var types = DQA_TYPES_BY_ROLE[currentRole] || DQA_TYPES_BY_ROLE[0];
