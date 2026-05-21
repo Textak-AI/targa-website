@@ -745,7 +745,6 @@ input,textarea{font-family:var(--font-b);outline:none;}
 
 @keyframes ldp { 0%,80%,100%{transform:scale(0.6);opacity:0.3} 40%{transform:scale(1);opacity:1} }
 @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
-</style>
 
 /* ── NEW PLAN MODAL ── */
 
@@ -889,10 +888,6 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .np-btn-gold{background:var(--p-gold-500);color:var(--p-navy-900);}
 .np-btn-gold:hover{background:var(--p-gold-400);}
 
-
-
-
-<style>
 /* ═══════════════════════════════════════════════════════
    FOCUS VIEW — rv6
    Faithful to targa_focus_v2_light_mode.html
@@ -2952,6 +2947,9 @@ function switchRole(n) {
       alert.style.display = 'none';
     }
   }
+  // Clear any open modal state — prevents stale form input persisting across personas.
+  if (typeof closeNewPlan === 'function') closeNewPlan();
+  if (typeof closeDesktopQA === 'function') closeDesktopQA();
 }
 
 /* ── TARGA_STATE — Full validated dataset ── */
@@ -3328,7 +3326,7 @@ function npFill(el) { var t = document.getElementById('npThesis'); if(t) t.value
 function resetNewPlan() {
   ['npStream','npClarify','npPreview'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
   var inp = document.getElementById('npInputWrap'); if(inp) inp.style.display='block';
-  var btn = document.getElementById('npAnalyzeBtn'); if(btn){ btn.disabled=false; btn.textContent='Analyze'; }
+  var btn = document.getElementById('npAnalyzeBtn'); if(btn){ btn.disabled=false; btn.textContent='Analyze'; btn.onclick=runNewPlanParse; }
   for(var i=0;i<5;i++){var l=document.getElementById('npl'+i);if(l)l.textContent='';}
   var t=document.getElementById('npThesis');if(t)t.value='';
 }
@@ -3348,29 +3346,38 @@ async function runNewPlanParse() {
   var clarify = document.getElementById('npClarify');
   var clarifyText = document.getElementById('npClarifyText');
   if(clarify && clarifyText) { clarifyText.textContent = 'Who should own the monitoring and escalation for this plan?'; clarify.style.display='block'; }
-  if(btn){btn.disabled=false;btn.textContent='Confirm plan →';btn.onclick=function(){npConfirm(thesis);};}
+  if(btn){btn.disabled=false;btn.textContent='Confirm plan →';btn.onclick=npConfirm;}
 }
 
-async function npConfirm(thesis) {
+async function npConfirm() {
+  var thesis = (document.getElementById('npThesis')?.value || '').trim();
+  if (!thesis) return;
   var clarify = document.getElementById('npClarify'); if(clarify) clarify.style.display='none';
   var preview = document.getElementById('npPreview'); if(preview) preview.style.display='block';
   var nameEl = document.getElementById('npPreviewName'); if(nameEl) nameEl.textContent = thesis.split(' ').slice(0,6).join(' ') + '…';
   var metaEl = document.getElementById('npPreviewMeta');
   if(metaEl) metaEl.textContent = '3 milestones · Dana Park · Monitor: September slip alert · TARGA agent active';
-  var btn = document.getElementById('npAnalyzeBtn'); if(btn){btn.textContent='Create plan →';btn.onclick=function(){npCreate(thesis);};}
+  var btn = document.getElementById('npAnalyzeBtn'); if(btn){btn.textContent='Create plan →';btn.onclick=npCreate;}
 }
 
-function npCreate(thesis) {
-  closeNewPlan();
+function npCreate() {
+  // Read thesis fresh at click time — avoids stale-closure data.
+  var thesis = (document.getElementById('npThesis')?.value || '').trim();
+  if (!thesis) { closeNewPlan(); return; }
 
-  // Build a structured plan object from the thesis
+  // Build a structured plan object from the thesis BEFORE closing the modal,
+  // since closeNewPlan() clears the thesis textarea via resetNewPlan().
   var plan = buildPlanFromThesis(thesis);
   TARGA_STATE.userPlans.push(plan);
+  closeNewPlan();
 
-  // Insert intel card into the current role's intel-stack if present, otherwise CEO's
-  var intel = document.querySelector('#rv' + currentRole + ' .intel-stack');
-  if (!intel) intel = document.querySelector('#rv0 .intel-stack');
-  if (intel) {
+  // Intel insertion: try in order
+  //   1. .intel-stack  (Kyle / rv3)
+  //   2. .pf-intel-head sibling — insert .pf-ic card (Joe / rv0)
+  //   3. toast only    (Linda, Mark, Dana — no intel feed in view)
+  var inserted = false;
+  var stackHost = document.querySelector('#rv' + currentRole + ' .intel-stack');
+  if (stackHost) {
     var card = document.createElement('div');
     card.className = 'intel-card';
     card.style.cursor = 'pointer';
@@ -3381,15 +3388,31 @@ function npCreate(thesis) {
       + '<div class="ic-text"><strong>' + plan.name + '</strong> — ' + plan.owner + ' · ' + plan.deadline + '</div>'
       + '<div class="ic-text" style="font-size:11px;opacity:0.7;margin-top:4px;">Click to open plan →</div>'
       + '</div>';
-    intel.insertBefore(card, intel.firstChild);
+    stackHost.insertBefore(card, stackHost.firstChild);
+    inserted = true;
+  } else {
+    var head = document.querySelector('#rv' + currentRole + ' .pf-intel-head');
+    if (head && head.parentNode) {
+      var pfCard = document.createElement('div');
+      pfCard.className = 'pf-ic';
+      pfCard.style.cursor = 'pointer';
+      pfCard.setAttribute('data-plan-id', plan.id);
+      pfCard.onclick = function() { openUserPlan(plan.id); };
+      pfCard.innerHTML = '<div class="pf-ic-stripe teal"></div>'
+        + '<div class="pf-ic-body">'
+        +   '<div class="pf-ic-badge signal">✦ Plan Created</div>'
+        +   '<div class="pf-ic-text"><strong>' + plan.name + '</strong> — ' + plan.owner + ' · ' + plan.deadline + '</div>'
+        +   '<div class="pf-ic-text" style="font-size:11px;opacity:0.7;margin-top:4px;">Click to open plan →</div>'
+        + '</div>';
+      head.parentNode.insertBefore(pfCard, head.nextSibling);
+      inserted = true;
+    }
   }
 
-  // Toast varies based on whether the current role can see the new card
-  var hasLocalIntel = !!document.querySelector('#rv' + currentRole + ' .intel-stack');
-  if (hasLocalIntel || currentRole === 0) {
+  if (inserted) {
     showToast('Plan created — TARGA agent monitoring active', true);
   } else {
-    showToast('Plan created — see CEO view for monitoring feed', true);
+    showToast('Plan created — TARGA is monitoring (no intel feed in this view)', true);
   }
 }
 
