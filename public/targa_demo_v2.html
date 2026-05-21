@@ -3327,7 +3327,7 @@ function resetNewPlan() {
   ['npStream','npClarify','npPreview'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
   var inp = document.getElementById('npInputWrap'); if(inp) inp.style.display='block';
   var btn = document.getElementById('npAnalyzeBtn'); if(btn){ btn.disabled=false; btn.textContent='Analyze'; btn.onclick=runNewPlanParse; }
-  for(var i=0;i<5;i++){var l=document.getElementById('npl'+i);if(l)l.textContent='';}
+  for(var i=0;i<5;i++){var l=document.getElementById('npl'+i);if(l){l.textContent='';l.classList.remove('vis');}}
   var t=document.getElementById('npThesis');if(t)t.value='';
 }
 
@@ -3340,7 +3340,8 @@ async function runNewPlanParse() {
   var lines = ['Parsing goal structure…','Identifying milestone dependencies…','Assigning ownership from org model…','Configuring monitoring thresholds…','Proposing plan…'];
   for (var i=0;i<5;i++) {
     await new Promise(function(r){setTimeout(r,600+i*200);});
-    var l = document.getElementById('npl'+i); if(l) l.textContent = lines[i];
+    var l = document.getElementById('npl'+i);
+    if(l) { l.textContent = lines[i]; l.classList.add('vis'); }
   }
   if(stream) stream.style.display='none';
   var clarify = document.getElementById('npClarify');
