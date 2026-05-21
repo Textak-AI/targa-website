@@ -1464,25 +1464,6 @@ input,textarea{font-family:var(--font-b);outline:none;}
   <div class="role-view active" id="rv0" style="overflow:hidden;">
     <div class="pf-wrap">
 
-      <!-- PORTFOLIO ACTION BAR — inside iframe, above ribbon -->
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 28px;background:linear-gradient(180deg,#0f1c33,#0c1829);border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:#0eb2af;box-shadow:0 0 6px #0eb2af;animation:pfPulse 2s ease-in-out infinite;"></div>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);">5 agents monitoring · Live</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <button onclick="openNewPlan()" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#0eb2af;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Plan
-          </button>
-          <button onclick="openDesktopQA()" style="display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Quick Add <span style="background:#0eb2af;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:999px;font-family:'JetBrains Mono',monospace;">3</span>
-          </button>
-        </div>
-      </div>
-
-
       <!-- HIERARCHY RIBBON — same component as Focus view -->
       <div class="fv-ribbon" style="flex-shrink:0;">
         <div class="fv-ribbon-track" id="pfRibbonTrack"></div>
@@ -1584,7 +1565,7 @@ input,textarea{font-family:var(--font-b);outline:none;}
                 <div class="pf-center-eyebrow">Executive Goals · H1 2026</div>
                 <div class="pf-center-title">Trade Show + 3 Pilots</div>
               </div>
-              <span class="pf-cascade-link" onclick="switchRole(0);openFocus('goal-platform')">Cascade view →</span>
+              <span class="pf-cascade-link" onclick="showToast('Cascade view — coming in the V5.1 release', true); event.stopPropagation();">Cascade view →</span>
             </div>
 
             <div class="pf-goal" onclick="openFocus('goal-platform')" style="border-left:3px solid #e0903a;">
@@ -2983,6 +2964,12 @@ const TARGA_STATE = {
   pendingChanges:{}, currentItemId:null, userPlans:[]
 };
 
+/* Restore previously-created plans across reloads (data only — intel cards are not re-rendered). */
+try {
+  var savedPlans = localStorage.getItem('targa_plans');
+  if (savedPlans) { TARGA_STATE.userPlans = JSON.parse(savedPlans) || []; }
+} catch(e) { TARGA_STATE.userPlans = []; }
+
 /* ── CALCULATIONS ── */
 function calcExpected(item) {
   var now = new Date();
@@ -3370,6 +3357,7 @@ function npCreate() {
   // since closeNewPlan() clears the thesis textarea via resetNewPlan().
   var plan = buildPlanFromThesis(thesis);
   TARGA_STATE.userPlans.push(plan);
+  try { localStorage.setItem('targa_plans', JSON.stringify(TARGA_STATE.userPlans)); } catch(e) {}
   closeNewPlan();
 
   // Intel insertion: try in order
@@ -3427,18 +3415,14 @@ function buildPlanFromThesis(thesis) {
   if (words.length > 60) words = words.slice(0, 57) + '…';
   var name = words || 'New Strategic Plan';
 
-  // Owner: scan for known names in the thesis, fall back by keyword
-  var owner = 'Dana Park · Owner';
-  if (/\bjoe\b/i.test(t))              owner = 'Joe Thompson · Owner';
-  else if (/\blinda\b|\bcfo\b|\bbudget\b|\brunway\b|\bburn\b/i.test(t)) owner = 'Linda Adams · Owner';
-  else if (/\bmark\b|\bcto\b|\bplatform\b|\bbuild\b|\bsigma\b/i.test(t)) owner = 'Mark Sternberger · Owner';
-  else if (/\bkyle\b|\bcmo\b|\bmarketing\b|\bbrand\b|\bdemo\b/i.test(t)) owner = 'Kyle Moyer · Owner';
-  else if (/\bdana\b|\bsales\b|\bpilot\b|\bprospect\b|\bchannel\b/i.test(t)) owner = 'Dana Park · Owner';
-  else {
-    // No name/keyword match — assign to the persona currently logged in
-    var roleOwnerMap = ['Joe Thompson · Owner','Linda Adams · Owner','Mark Sternberger · Owner','Kyle Moyer · Owner','Dana Park · Owner'];
-    owner = roleOwnerMap[currentRole] || 'Dana Park · Owner';
-  }
+  // Owner: if a known persona name is mentioned in the thesis, use it; otherwise default to the creator.
+  var roleOwnerMap = ['Joe Thompson · Owner','Linda Adams · Owner','Mark Sternberger · Owner','Kyle Moyer · Owner','Dana Park · Owner'];
+  var owner = roleOwnerMap[currentRole] || 'Joe Thompson · Owner';
+  if      (/\bjoe\b/i.test(t))   owner = 'Joe Thompson · Owner';
+  else if (/\blinda\b/i.test(t)) owner = 'Linda Adams · Owner';
+  else if (/\bmark\b/i.test(t))  owner = 'Mark Sternberger · Owner';
+  else if (/\bkyle\b/i.test(t))  owner = 'Kyle Moyer · Owner';
+  else if (/\bdana\b/i.test(t))  owner = 'Dana Park · Owner';
 
   // Deadline: scan for explicit quarter/month references, fall back to Q4 2026
   var deadline = 'Q4 2026 · Deadline';
@@ -4428,6 +4412,13 @@ function npSubmitClarify() {
 /* ── MOBILE PANEL COLORS ── */
 var panelColors = { center:'var(--panel-center,#0d8b82)', intel:'var(--panel-intel,#b07f1f)', actions:'var(--panel-actions,#1a2f5a)', metrics:'var(--panel-metrics,#2c8a5e)', connections:'var(--panel-connections,#6b3fa0)' };
 
+/* Escape key closes any open modal. closeNewPlan/closeDesktopQA are no-ops when their overlay isn't visible. */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (typeof closeNewPlan === 'function') closeNewPlan();
+    if (typeof closeDesktopQA === 'function') closeDesktopQA();
+  }
+});
 
 </script>
 </body>
