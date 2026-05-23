@@ -1568,18 +1568,144 @@ input,textarea{font-family:var(--font-b);outline:none;}
 }
 
 /* ══════════════════════════════════════════════
-   PROSPECT MODE — hide existing pf-grid below the four-category strip;
-   show a dedicated command-center surface instead (PS-01 ground state):
-   brief band → four pillars → dark Live Feed + light Intel rail → Ask TARGA.
+   PROSPECT MODE — three-column grid layout
+   Matches Joe's approved targa_focus_v2 light-mode pattern:
+   240px KPI rail | flex center workspace | 320px Intelligence rail.
+   Center column swaps between ground state (brief+pillars+feed+ask)
+   and focus state (in-place Goal detail card).
 ══════════════════════════════════════════════ */
 body.prospect-mode #rv0 .pf-grid{display:none!important;}
 body:not(.prospect-mode) #prospectAsk,
+body:not(.prospect-mode) #prospectKpis,
+body:not(.prospect-mode) #prospectFocus,
 body:not(.prospect-mode) #prospectCenter{display:none!important;}
 
-/* Two-column command-center band: dark Live Feed left, light Intel rail right */
-#prospectCenter{
-  display:grid;grid-template-columns:1fr 320px;gap:18px;margin-bottom:14px;
+/* In prospect mode, pf-page becomes the 3-column grid container */
+body.prospect-mode #rv0 .pf-page{
+  display:grid;
+  grid-template-columns:240px 1fr 320px;
+  grid-template-rows:auto;
+  gap:20px;
+  align-items:start;
+  padding:20px 32px 40px;
 }
+
+/* Grid placement: KPIs left, center spans middle column with stacked blocks, Intel right */
+body.prospect-mode #prospectKpis{grid-column:1;grid-row:1;position:sticky;top:20px;}
+body.prospect-mode #rv0 .mb-band{grid-column:2;grid-row:1;margin-bottom:0;}
+body.prospect-mode #rv0 .fc-strip{grid-column:2;grid-row:2;margin-bottom:0;grid-template-columns:repeat(2,1fr);}
+body.prospect-mode #prospectCenter{grid-column:2;grid-row:3;display:block;}
+body.prospect-mode #prospectAsk{grid-column:2;grid-row:4;margin-top:0;}
+body.prospect-mode #prospectIntel{grid-column:3;grid-row:1 / span 4;position:sticky;top:20px;display:flex;flex-direction:column;gap:10px;}
+
+/* In prospect mode, the Live Feed band (formerly 2-col) becomes single-col since Intel moved out */
+body.prospect-mode #prospectCenter{margin-bottom:0;}
+body.prospect-mode #prospectCenter > .pc-intel{display:none;}
+
+/* Focus state: hide ground-state blocks, show focus block */
+body.prospect-mode.focus-mode #rv0 .mb-band,
+body.prospect-mode.focus-mode #rv0 .fc-strip,
+body.prospect-mode.focus-mode #prospectCenter,
+body.prospect-mode.focus-mode #prospectAsk{display:none;}
+body.prospect-mode.focus-mode #prospectFocus{
+  display:block;grid-column:2;grid-row:1 / span 4;
+  animation:focusFadeIn 220ms cubic-bezier(0.2,0,0.2,1);
+}
+@keyframes focusFadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* ── Left KPI rail ── */
+#prospectKpis{
+  display:flex;flex-direction:column;gap:12px;
+}
+.pk-head{
+  font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--text-4);font-weight:700;
+  margin-bottom:2px;display:flex;align-items:center;gap:7px;padding:0 2px;
+}
+.pk-head::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--p-teal-500);
+}
+.pk-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:14px 14px 13px;
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 2px 8px rgba(12,20,36,0.04);
+  transition:all var(--dur-fast) var(--ease);
+}
+.pk-card:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(12,20,36,0.06);}
+.pk-label{
+  font-family:var(--font-m);font-size:9px;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--text-3);font-weight:600;
+  margin-bottom:6px;
+}
+.pk-val{
+  font-family:var(--font-d);font-size:24px;font-weight:700;
+  letter-spacing:-0.025em;color:var(--text-1);line-height:1;margin-bottom:4px;
+}
+.pk-sub{font-size:10.5px;color:var(--text-3);line-height:1.4;margin-bottom:8px;}
+.pk-trend{font-family:var(--font-m);font-size:10px;letter-spacing:0.02em;
+  font-weight:600;margin-bottom:8px;}
+.pk-trend.up{color:var(--ok);}
+.pk-trend.warn{color:var(--warn);}
+.pk-trend.flat{color:var(--text-3);}
+.pk-bar{height:4px;background:rgba(12,20,36,0.06);border-radius:100px;
+  overflow:hidden;}
+.pk-bar-fill{height:100%;background:var(--ok);border-radius:100px;
+  transition:width var(--dur-med) var(--ease);}
+.pk-bar-fill.warn{background:var(--warn);}
+.pk-bar-fill.risk{background:var(--danger);}
+
+/* ── In-place focus card (center column on pillar click) ── */
+#prospectFocus{
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);
+  padding:0;overflow:hidden;display:none;
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 4px 20px rgba(12,20,36,0.06);
+}
+.pf-focus-head{
+  padding:18px 24px 16px;border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,#fafbfc 0%,#f5f7fa 100%);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+}
+.pf-focus-back{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-m);font-size:10px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-3);font-weight:600;
+  cursor:pointer;padding:6px 10px;border-radius:var(--r-md);
+  border:1px solid transparent;
+  transition:all var(--dur-fast) var(--ease);
+  margin-bottom:8px;
+}
+.pf-focus-back:hover{color:var(--text-1);background:var(--bg);border-color:var(--border);}
+.pf-focus-titles{flex:1;min-width:0;}
+.pf-focus-eyebrow{font-family:var(--font-m);font-size:9px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--primary);font-weight:700;
+  display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.pf-focus-name{
+  font-family:var(--font-d);font-size:22px;font-weight:700;
+  color:var(--text-1);letter-spacing:-0.02em;line-height:1.15;
+}
+.pf-focus-status{
+  display:inline-flex;align-items:center;font-family:var(--font-m);
+  font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 11px;border-radius:var(--r-pill);
+  background:var(--ok-soft);color:var(--ok);font-weight:700;
+  flex-shrink:0;align-self:flex-start;margin-top:18px;
+}
+.pf-focus-status.warn{background:var(--warn-soft);color:var(--warn);}
+.pf-focus-status.risk{background:var(--danger-soft);color:var(--danger);}
+.pf-focus-body{padding:22px 24px 26px;}
+
+/* Reuse captain-drawer atoms inside the focus card */
+.pf-focus-body .cd-paradox{margin-bottom:20px;}
+.pf-focus-body .cd-section-label{margin-bottom:10px;margin-top:6px;}
+.pf-focus-body .cd-traj{margin-bottom:20px;}
+.pf-focus-body .cd-owner{margin-bottom:20px;}
+.pf-focus-body .cd-loop{margin-bottom:22px;}
+.pf-focus-body .cd-actions{margin-top:10px;}
+
+/* ── Right Intel rail (lifted from prospectCenter into its own column) ── */
+body.prospect-mode #prospectIntel .pc-intel-head{margin-top:2px;}
+
 
 /* ── Dark TARGA Live Feed (left column) ── */
 .pc-feed{
@@ -2234,6 +2360,45 @@ body.prospect-mode .pm-nav{display:block;}
       <div class="pf-page">
 
         <!-- ═══════════════════════════════════
+             LEFT COLUMN — PROSPECT KPI RAIL (sticky, persists in ground and focus states)
+        ═══════════════════════════════════ -->
+        <aside id="prospectKpis">
+          <div class="pk-head">Board KPIs</div>
+
+          <div class="pk-card">
+            <div class="pk-label">Plan Health</div>
+            <div class="pk-val">76%</div>
+            <div class="pk-sub">Composite across 4 Goals &middot; Target 80%</div>
+            <div class="pk-trend warn">&rarr; 1 Goal needs attention</div>
+            <div class="pk-bar"><div class="pk-bar-fill warn" style="width:76%;"></div></div>
+          </div>
+
+          <div class="pk-card">
+            <div class="pk-label">Revenue Pacing</div>
+            <div class="pk-val">+8%</div>
+            <div class="pk-sub">$135M annualized &middot; Target $150M</div>
+            <div class="pk-trend up">&uarr; Ahead of plan</div>
+            <div class="pk-bar"><div class="pk-bar-fill" style="width:90%;"></div></div>
+          </div>
+
+          <div class="pk-card">
+            <div class="pk-label">Cash Runway</div>
+            <div class="pk-val">18mo</div>
+            <div class="pk-sub">At current burn &middot; Target 18mo</div>
+            <div class="pk-trend flat">&rarr; On target</div>
+            <div class="pk-bar"><div class="pk-bar-fill" style="width:100%;"></div></div>
+          </div>
+
+          <div class="pk-card">
+            <div class="pk-label">Mid-year Pulse</div>
+            <div class="pk-val">76</div>
+            <div class="pk-sub">Engagement score &middot; Target &ge; 78</div>
+            <div class="pk-trend up">&uarr; +12% participation YoY</div>
+            <div class="pk-bar"><div class="pk-bar-fill" style="width:97%;"></div></div>
+          </div>
+        </aside>
+
+        <!-- ═══════════════════════════════════
              MORNING BRIEF BAND  (PS-01 ground state)
              People-first ordering, single-line synthesis, "needs you today" hook
         ═══════════════════════════════════ -->
@@ -2351,47 +2516,48 @@ body.prospect-mode .pm-nav{display:block;}
             </div>
           </div>
 
-          <!-- RIGHT: LIGHT INTELLIGENCE FEED RAIL -->
-          <div class="pc-intel">
-            <div class="pc-intel-head">Intelligence Feed</div>
+        </div>
 
-            <div class="pc-intel-card">
-              <div class="pc-intel-stripe red"></div>
-              <div class="pc-intel-body">
-                <div class="pc-intel-badge alert">&#9888; Critical &middot; 4 days</div>
-                <div class="pc-intel-text">Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.</div>
-                <div class="pc-intel-acts">
-                  <button class="pc-intel-btn-p" onclick="openCaptainDrawer('ops')">Open Ops view</button>
-                  <button class="pc-intel-btn-g" onclick="showToast('Action assigned to your queue',true)">Assign</button>
-                </div>
+        <!-- RIGHT COLUMN: Intelligence Feed (sticky, persists in ground and focus states) -->
+        <div id="prospectIntel">
+          <div class="pc-intel-head">Intelligence Feed</div>
+
+          <div class="pc-intel-card">
+            <div class="pc-intel-stripe red"></div>
+            <div class="pc-intel-body">
+              <div class="pc-intel-badge alert">&#9888; Critical &middot; 4 days</div>
+              <div class="pc-intel-text">Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.</div>
+              <div class="pc-intel-acts">
+                <button class="pc-intel-btn-p" onclick="openProspectFocus('ops')">Open Ops view</button>
+                <button class="pc-intel-btn-g" onclick="showToast('Action assigned to your queue',true)">Assign</button>
               </div>
             </div>
-
-            <div class="pc-intel-card">
-              <div class="pc-intel-stripe gold"></div>
-              <div class="pc-intel-body">
-                <div class="pc-intel-badge ai">&#10022; TARGA Insight</div>
-                <div class="pc-intel-text">Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.</div>
-                <div class="pc-intel-acts">
-                  <button class="pc-intel-btn-p" onclick="openCaptainDrawer('revenue')">Open Revenue view</button>
-                  <button class="pc-intel-btn-g" onclick="showToast('Dismissed',true)">Dismiss</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="pc-intel-card">
-              <div class="pc-intel-stripe teal"></div>
-              <div class="pc-intel-body">
-                <div class="pc-intel-badge signal">&uarr; Signal &middot; This week</div>
-                <div class="pc-intel-text">Customer NPS up <strong>6 points</strong> in latest cut. CS team driving the lift. <strong>Wins like this compound</strong> when executives surface them &mdash; consider naming the team in the next all-hands.</div>
-                <div class="pc-intel-acts">
-                  <button class="pc-intel-btn-p" onclick="showToast('Draft sent to your inbox',true)">Draft recognition</button>
-                  <button class="pc-intel-btn-g" onclick="showToast('Saved to portfolio notes',true)">Save</button>
-                </div>
-              </div>
-            </div>
-
           </div>
+
+          <div class="pc-intel-card">
+            <div class="pc-intel-stripe gold"></div>
+            <div class="pc-intel-body">
+              <div class="pc-intel-badge ai">&#10022; TARGA Insight</div>
+              <div class="pc-intel-text">Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.</div>
+              <div class="pc-intel-acts">
+                <button class="pc-intel-btn-p" onclick="openProspectFocus('revenue')">Open Revenue view</button>
+                <button class="pc-intel-btn-g" onclick="showToast('Dismissed',true)">Dismiss</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pc-intel-card">
+            <div class="pc-intel-stripe teal"></div>
+            <div class="pc-intel-body">
+              <div class="pc-intel-badge signal">&uarr; Signal &middot; This week</div>
+              <div class="pc-intel-text">Customer NPS up <strong>6 points</strong> in latest cut. CS team driving the lift. <strong>Wins like this compound</strong> when executives surface them &mdash; consider naming the team in the next all-hands.</div>
+              <div class="pc-intel-acts">
+                <button class="pc-intel-btn-p" onclick="showToast('Draft sent to your inbox',true)">Draft recognition</button>
+                <button class="pc-intel-btn-g" onclick="showToast('Saved to portfolio notes',true)">Save</button>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <!-- ═══════════════════════════════════
@@ -2422,6 +2588,64 @@ body.prospect-mode .pm-nav{display:block;}
             <span class="pa-loading-label">TARGA is thinking&hellip;</span>
           </div>
           <div class="pa-resp" id="prospectAskResp"></div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             PROSPECT FOCUS CARD (in-place drill-in for pillar clicks)
+             Replaces ground state in the center column when focus-mode is active.
+             Content swapped per-pillar by openProspectFocus(); back button calls closeProspectFocus().
+             Reuses captain-drawer content atoms (.cd-paradox, .cd-traj, .cd-owner, .cd-loop, .cd-actions).
+        ═══════════════════════════════════ -->
+        <div id="prospectFocus">
+          <div class="pf-focus-head">
+            <div class="pf-focus-titles">
+              <div class="pf-focus-back" onclick="closeProspectFocus()">
+                <span style="font-size:14px;line-height:1;">&larr;</span> All Goals
+              </div>
+              <div class="pf-focus-eyebrow" id="pfFocusEyebrow">OPS GOAL</div>
+              <div class="pf-focus-name" id="pfFocusName">99.5% SLA, zero P1 outages</div>
+            </div>
+            <span class="pf-focus-status" id="pfFocusStatus">Needs You</span>
+          </div>
+          <div class="pf-focus-body">
+
+            <div class="cd-paradox" id="pfParadox">
+              <div class="cd-paradox-eye"><span class="cd-paradox-dot"></span><span id="pfParadoxLabel">Team Strain Detected</span></div>
+              <div class="cd-paradox-text" id="pfParadoxText"></div>
+            </div>
+
+            <div class="cd-section-label">Trajectory &middot; Last 60 days</div>
+            <div class="cd-traj">
+              <div class="cd-traj-head">
+                <div class="cd-traj-title" id="pfTrajTitle">Platform SLA &mdash; rolling 30d</div>
+                <div class="cd-traj-val" id="pfTrajVal">99.7%</div>
+              </div>
+              <svg class="cd-traj-svg" viewBox="0 0 280 48" preserveAspectRatio="none" id="pfTrajSvg">
+                <line x1="0" y1="14" x2="280" y2="14" stroke="rgba(12,20,36,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+                <path d="" fill="none" stroke="#2c8a5e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+                <path d="" fill="rgba(44,138,94,0.08)"/>
+                <circle cx="280" cy="10" r="3" fill="#2c8a5e"/>
+              </svg>
+            </div>
+
+            <div class="cd-owner">
+              <div class="cd-owner-avatar" id="pfOwnerAvatar">ME</div>
+              <div class="cd-owner-info">
+                <div class="cd-owner-name" id="pfOwnerName">Marcus Ellis</div>
+                <div class="cd-owner-role" id="pfOwnerRole">VP Engineering &middot; Owner</div>
+              </div>
+              <div class="cd-owner-tag">Owner</div>
+            </div>
+
+            <div class="cd-section-label">Engagement Loop</div>
+            <div class="cd-loop" id="pfLoop"></div>
+
+            <div class="cd-actions" id="pfActions">
+              <button class="cd-btn-p" onclick="cdAction('1on1')">Open 15-min with Marcus</button>
+              <button class="cd-btn-s" onclick="cdAction('approve')">Approve comp band review</button>
+            </div>
+
+          </div>
         </div>
 
         <div class="pf-grid">
@@ -4163,6 +4387,11 @@ const CAPTAIN_DRAWERS = {
 };
 
 function openCaptainDrawer(pillar) {
+  // In prospect mode, route to in-place focus view instead of the right drawer.
+  // The right drawer remains the internal-mode drill-in pattern.
+  if (document.body.classList.contains('prospect-mode')) {
+    return openProspectFocus(pillar);
+  }
   var d = CAPTAIN_DRAWERS[pillar];
   if (!d) return;
   document.getElementById('cdEyebrow').textContent = d.eyebrow;
@@ -4234,12 +4463,103 @@ function cdAction(kind) {
   var btns = document.querySelectorAll('.cd-actions button');
   var msg = 'Action queued';
   for (var i = 0; i < btns.length; i++) {
-    if (btns[i].getAttribute('onclick').indexOf("'" + kind + "'") !== -1) {
+    var oc = btns[i].getAttribute('onclick') || '';
+    if (oc.indexOf("'" + kind + "'") !== -1) {
       msg = btns[i].getAttribute('data-toast') || msg;
       break;
     }
   }
+  // In prospect-mode focus, the cd-action button is inside #prospectFocus, not the captain drawer.
+  // Get the matching action button there for the data-toast.
+  var focusBtns = document.querySelectorAll('#prospectFocus .cd-actions button');
+  for (var j = 0; j < focusBtns.length; j++) {
+    var oc2 = focusBtns[j].getAttribute('onclick') || '';
+    if (oc2.indexOf("'" + kind + "'") !== -1) {
+      var t = focusBtns[j].getAttribute('data-toast');
+      if (t) msg = t;
+      break;
+    }
+  }
   showToast(msg, true);
+}
+
+/* ── In-place Focus Card (prospect mode) ──
+   Replaces the right-side captain drawer with a center-column in-place
+   focus view. Side panels (KPIs left, Intel right) stay visible.
+   Matches Joe's approved targa_focus_v2 light-mode pattern.
+   Named openProspectFocus to avoid collision with internal-mode openFocus. */
+function openProspectFocus(pillar) {
+  var d = CAPTAIN_DRAWERS[pillar];
+  if (!d) return;
+
+  // Header
+  document.getElementById('pfFocusEyebrow').textContent = d.eyebrow;
+  document.getElementById('pfFocusName').textContent = d.name;
+  var statusEl = document.getElementById('pfFocusStatus');
+  statusEl.textContent = d.status;
+  statusEl.classList.remove('warn','risk');
+  if (d.statusClass === 'warn') statusEl.classList.add('warn');
+  else if (d.statusClass === 'risk' || d.status === 'Needs You') statusEl.classList.add('risk');
+
+  // Paradox card
+  var paradoxEl = document.getElementById('pfParadox');
+  if (paradoxEl) paradoxEl.style.display = d.paradoxOn ? '' : 'none';
+  if (d.paradoxOn) document.getElementById('pfParadoxText').innerHTML = d.paradoxText;
+
+  // Trajectory
+  document.getElementById('pfTrajTitle').textContent = d.trajTitle;
+  var trajVal = document.getElementById('pfTrajVal');
+  trajVal.textContent = d.trajVal;
+  trajVal.style.color = d.trajColor;
+  var svg = document.getElementById('pfTrajSvg');
+  if (svg) {
+    var paths = svg.querySelectorAll('path');
+    if (paths.length >= 2) {
+      paths[0].setAttribute('d', d.trajPath);
+      paths[0].setAttribute('stroke', d.trajColor);
+      paths[1].setAttribute('d', d.trajPath + ' L280,48 L0,48 Z');
+      paths[1].setAttribute('fill', d.trajFill);
+    }
+    var endpoint = svg.querySelector('circle');
+    if (endpoint) {
+      var lastY = d.trajPath.split(/[, ]/).slice(-1)[0];
+      endpoint.setAttribute('cy', lastY);
+      endpoint.setAttribute('fill', d.trajColor);
+    }
+  }
+
+  // Owner block
+  var avatar = document.getElementById('pfOwnerAvatar');
+  avatar.textContent = d.ownerInitials;
+  avatar.style.background = d.ownerGradient;
+  document.getElementById('pfOwnerName').textContent = d.ownerName;
+  document.getElementById('pfOwnerRole').textContent = d.ownerRole;
+
+  // Engagement loop
+  var loopEl = document.getElementById('pfLoop');
+  loopEl.innerHTML = d.loop.map(function(entry) {
+    return '<div class="cd-loop-item' + (entry.open ? ' open' : '') + '">' +
+      '<div class="cd-loop-date">' + entry.date + '</div>' +
+      '<div class="cd-loop-body">' + entry.body + '</div>' +
+    '</div>';
+  }).join('');
+
+  // Action buttons (these live inside #prospectFocus, separate from the captain drawer set)
+  var actions = document.querySelectorAll('#prospectFocus .cd-actions button');
+  if (actions.length >= 2) {
+    actions[0].textContent = d.actionPrimary;
+    actions[1].textContent = d.actionSecondary;
+    actions[0].setAttribute('data-toast', d.actionPrimaryToast);
+    actions[1].setAttribute('data-toast', d.actionSecondaryToast);
+  }
+
+  // Switch to focus mode
+  document.body.classList.add('focus-mode');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeProspectFocus() {
+  document.body.classList.remove('focus-mode');
 }
 
 /* ── Prospect menu nav (hover-with-delay + click-to-lock) ──
@@ -4413,6 +4733,7 @@ function switchRole(n) {
   if (typeof closeNewPlan === 'function') closeNewPlan();
   if (typeof closeDesktopQA === 'function') closeDesktopQA();
   if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
+  if (typeof closeProspectFocus === 'function') closeProspectFocus();
   // Re-apply prospect personalization when entering CEO view in prospect mode.
   if (n === 0 && TARGA_PROSPECT && TARGA_PROSPECT.mode === 'entry' && TARGA_PROSPECT.name) {
     applyProspectPersonalization();
@@ -5959,6 +6280,7 @@ document.addEventListener('keydown', function(e) {
     if (typeof closeDesktopQA === 'function') closeDesktopQA();
     if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
     if (typeof closePmAll === 'function') closePmAll();
+    if (typeof closeProspectFocus === 'function') closeProspectFocus();
   }
 });
 
