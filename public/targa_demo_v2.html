@@ -1631,7 +1631,7 @@ body.prospect-mode .pcs-scroll{
   flex:1;min-height:0;
   overflow-y:auto;overflow-x:hidden;
   display:flex;flex-direction:column;gap:16px;
-  padding-right:6px;
+  padding:4px 6px 0 0;
   scrollbar-gutter:stable;
 }
 body.prospect-mode .pcs-scroll > *{margin:0;}
@@ -2609,48 +2609,6 @@ body.prospect-mode .pm-nav{display:block;}
 
         </div>
 
-        <!-- RIGHT COLUMN: Intelligence Feed (sticky, persists in ground and focus states) -->
-        <div id="prospectIntel">
-          <div class="pc-intel-head">Intelligence Feed</div>
-
-          <div class="pc-intel-card">
-            <div class="pc-intel-stripe red"></div>
-            <div class="pc-intel-body">
-              <div class="pc-intel-badge alert">&#9888; Critical &middot; 4 days</div>
-              <div class="pc-intel-text">Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.</div>
-              <div class="pc-intel-acts">
-                <button class="pc-intel-btn-p" onclick="openProspectFocus('ops')">Open Ops view</button>
-                <button class="pc-intel-btn-g" onclick="showToast('Action assigned to your queue',true)">Assign</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="pc-intel-card">
-            <div class="pc-intel-stripe gold"></div>
-            <div class="pc-intel-body">
-              <div class="pc-intel-badge ai">&#10022; TARGA Insight</div>
-              <div class="pc-intel-text">Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.</div>
-              <div class="pc-intel-acts">
-                <button class="pc-intel-btn-p" onclick="openProspectFocus('revenue')">Open Revenue view</button>
-                <button class="pc-intel-btn-g" onclick="showToast('Dismissed',true)">Dismiss</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="pc-intel-card">
-            <div class="pc-intel-stripe teal"></div>
-            <div class="pc-intel-body">
-              <div class="pc-intel-badge signal">&uarr; Signal &middot; This week</div>
-              <div class="pc-intel-text">Customer NPS up <strong>6 points</strong> in latest cut. CS team driving the lift. <strong>Wins like this compound</strong> when executives surface them &mdash; consider naming the team in the next all-hands.</div>
-              <div class="pc-intel-acts">
-                <button class="pc-intel-btn-p" onclick="showToast('Draft sent to your inbox',true)">Draft recognition</button>
-                <button class="pc-intel-btn-g" onclick="showToast('Saved to portfolio notes',true)">Save</button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
           </div><!-- /pcs-scroll.pcs-ground -->
 
           <!-- ═══════════════════════════════════
@@ -2740,6 +2698,48 @@ body.prospect-mode .pm-nav{display:block;}
           </div>
 
         </div><!-- /prospect-center-shell -->
+
+        <!-- RIGHT COLUMN: Intelligence Feed (sibling of prospect-center-shell — grid column 3) -->
+        <div id="prospectIntel">
+          <div class="pc-intel-head">Intelligence Feed</div>
+
+          <div class="pc-intel-card">
+            <div class="pc-intel-stripe red"></div>
+            <div class="pc-intel-body">
+              <div class="pc-intel-badge alert">&#9888; Critical &middot; 4 days</div>
+              <div class="pc-intel-text">Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.</div>
+              <div class="pc-intel-acts">
+                <button class="pc-intel-btn-p" onclick="openProspectFocus('ops')">Open Ops view</button>
+                <button class="pc-intel-btn-g" onclick="showToast('Action assigned to your queue',true)">Assign</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pc-intel-card">
+            <div class="pc-intel-stripe gold"></div>
+            <div class="pc-intel-body">
+              <div class="pc-intel-badge ai">&#10022; TARGA Insight</div>
+              <div class="pc-intel-text">Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.</div>
+              <div class="pc-intel-acts">
+                <button class="pc-intel-btn-p" onclick="openProspectFocus('revenue')">Open Revenue view</button>
+                <button class="pc-intel-btn-g" onclick="showToast('Dismissed',true)">Dismiss</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pc-intel-card">
+            <div class="pc-intel-stripe teal"></div>
+            <div class="pc-intel-body">
+              <div class="pc-intel-badge signal">&uarr; Signal &middot; This week</div>
+              <div class="pc-intel-text">Customer NPS up <strong>6 points</strong> in latest cut. CS team driving the lift. <strong>Wins like this compound</strong> when executives surface them &mdash; consider naming the team in the next all-hands.</div>
+              <div class="pc-intel-acts">
+                <button class="pc-intel-btn-p" onclick="showToast('Draft sent to your inbox',true)">Draft recognition</button>
+                <button class="pc-intel-btn-g" onclick="showToast('Saved to portfolio notes',true)">Save</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
 
         <div class="pf-grid">
 
