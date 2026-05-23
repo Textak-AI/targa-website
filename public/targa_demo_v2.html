@@ -1567,6 +1567,64 @@ input,textarea{font-family:var(--font-b);outline:none;}
   background:linear-gradient(135deg,var(--p-teal-500),var(--p-navy-500))!important;
 }
 
+/* ══════════════════════════════════════════════
+   PROSPECT MODE — hide existing pf-grid below the four-category strip;
+   show a dedicated Ask TARGA block instead. The PS-01 brief band and
+   pillar strip become the entire dashboard surface for the prospect.
+══════════════════════════════════════════════ */
+body.prospect-mode #rv0 .pf-grid{display:none!important;}
+body:not(.prospect-mode) #prospectAsk{display:none!important;}
+
+#prospectAsk{
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);
+  padding:18px 20px 16px;margin-top:6px;
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 2px 12px rgba(12,20,36,0.04);
+}
+.pa-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.pa-head svg{color:var(--primary);}
+.pa-title{font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--text-1);
+  letter-spacing:-0.01em;}
+.pa-live{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-m);
+  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ok);
+  font-weight:700;margin-left:4px;}
+.pa-live-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);
+  animation:pulse 1.6s ease-in-out infinite;box-shadow:0 0 0 3px rgba(44,138,94,0.18);}
+.pa-sub{font-size:12px;color:var(--text-3);margin-bottom:14px;line-height:1.5;}
+.pa-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.pa-chip{font-size:12px;padding:8px 14px;background:var(--bg);
+  border:1px solid var(--border);border-radius:var(--r-pill);cursor:pointer;
+  color:var(--text-2);font-family:var(--font-b);
+  transition:all var(--dur-fast) var(--ease);}
+.pa-chip:hover{background:rgba(14,178,175,0.06);border-color:var(--p-teal-400);
+  color:var(--primary);}
+.pa-row{display:flex;gap:8px;}
+.pa-input{flex:1;background:var(--bg);border:1px solid var(--border-md);
+  border-radius:var(--r-md);padding:11px 14px;color:var(--text-1);font-size:13px;
+  font-family:var(--font-b);transition:all var(--dur-fast) var(--ease);}
+.pa-input:focus{border-color:var(--p-teal-400);background:#fff;
+  box-shadow:0 0 0 3px rgba(14,178,175,0.1);}
+.pa-input::placeholder{color:var(--text-4);}
+.pa-send{background:var(--primary);color:#fff;border:none;width:42px;
+  border-radius:var(--r-md);font-size:16px;cursor:pointer;
+  transition:all var(--dur-fast) var(--ease);}
+.pa-send:hover{background:var(--primary-h);}
+.pa-resp{margin-top:14px;padding:14px 16px;background:var(--bg);
+  border:1px solid var(--border);border-radius:var(--r-lg);font-size:13px;
+  color:var(--text-2);line-height:1.55;display:none;}
+.pa-resp.vis{display:block;}
+.pa-resp strong{color:var(--text-1);font-weight:600;}
+.pa-loading{display:none;align-items:center;gap:5px;margin-top:14px;
+  padding:14px 16px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-lg);}
+.pa-loading.vis{display:flex;}
+.pa-loading-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);
+  animation:loadingPulse 1.4s ease-in-out infinite;}
+.pa-loading-dot:nth-child(2){animation-delay:0.2s;}
+.pa-loading-dot:nth-child(3){animation-delay:0.4s;}
+.pa-loading-label{font-size:11px;color:var(--text-4);margin-left:6px;
+  font-family:var(--font-m);letter-spacing:0.04em;}
+@keyframes loadingPulse{0%,80%,100%{opacity:0.3;}40%{opacity:1;}}
+
 </style>
 
 <!-- ═══════════════════════════════════════════
@@ -1822,6 +1880,36 @@ input,textarea{font-family:var(--font-b);outline:none;}
               <span class="fc-owner">VP Eng</span>
             </div>
           </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             PROSPECT-MODE ASK TARGA (only renders when body.prospect-mode)
+             Smoke-and-mirrors AI affordance for "would the app actually do X" questions
+        ═══════════════════════════════════ -->
+        <div id="prospectAsk">
+          <div class="pa-head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <span class="pa-title">Ask TARGA</span>
+            <div class="pa-live"><span class="pa-live-dot"></span>Live</div>
+          </div>
+          <div class="pa-sub">Context-aware across your full portfolio. Ask anything &mdash; trajectory, ownership, history, what to focus on next.</div>
+          <div class="pa-chips">
+            <span class="pa-chip" onclick="prospectAskChip(this)">What needs my attention today?</span>
+            <span class="pa-chip" onclick="prospectAskChip(this)">What changed since I last opened TARGA?</span>
+            <span class="pa-chip" onclick="prospectAskChip(this)">Draft a board update on where we stand</span>
+            <span class="pa-chip" onclick="prospectAskChip(this)">Which Goal is most at risk?</span>
+          </div>
+          <div class="pa-row">
+            <input class="pa-input" id="prospectAskInput" type="text" placeholder="Ask anything about your portfolio…">
+            <button class="pa-send" onclick="prospectAskSubmit()" aria-label="Send">&rarr;</button>
+          </div>
+          <div class="pa-loading" id="prospectAskLoading">
+            <div class="pa-loading-dot"></div>
+            <div class="pa-loading-dot"></div>
+            <div class="pa-loading-dot"></div>
+            <span class="pa-loading-label">TARGA is thinking&hellip;</span>
+          </div>
+          <div class="pa-resp" id="prospectAskResp"></div>
         </div>
 
         <div class="pf-grid">
@@ -3410,6 +3498,7 @@ function enterDemo() {
 function enterPersonaMode() {
   TARGA_PROSPECT.mode = 'internal';
   saveProspectState();
+  document.body.classList.remove('prospect-mode');
   var sEntry = document.getElementById('sEntry');
   if (sEntry) { sEntry.classList.add('hidden'); sEntry.style.display = 'none'; }
   var s0 = document.getElementById('s0');
@@ -3418,6 +3507,7 @@ function enterPersonaMode() {
 
 function applyProspectPersonalization() {
   if (!TARGA_PROSPECT.name) return;
+  document.body.classList.add('prospect-mode');
   var initials = getInitials(TARGA_PROSPECT.name);
   // Brief band greeting
   var mbName = document.getElementById('mbName');
@@ -3638,6 +3728,58 @@ function cdAction(kind) {
     }
   }
   showToast(msg, true);
+}
+
+/* ── Prospect-mode Ask TARGA ──
+   Canned answers keyed to chip text. Free-text input falls through to a
+   generic acknowledgment. The point is for the prospect to ask a "would
+   this actually work for X" question and get a plausible response — not
+   a real LLM call. */
+const PROSPECT_ANSWERS = {
+  'attention': '<strong>Your Ops Goal needs you today.</strong> The Goal itself is on track (SLA at 99.7%), but VP Engineering is showing strain — a key initiative has been at-risk for 8 days, comment activity dropped 60%, and a senior hire fell through last week. The engagement loop on the comp band review has been open for 4 days. <strong>Suggested action:</strong> a 15-minute 1:1 with Marcus before standup.',
+  'changed': '<strong>14 changes across your portfolio since Friday.</strong> Notable: Revenue Goal pacing improved +8% to plan (two enterprise contracts signed). Cost Goal recovery on track — $3.1M of the $4.2M vendor consolidation now closed. Culture pulse participation up 12% YoY. The Ops Goal team strain signal is new — flagged Monday after the second candidate declined.',
+  'board': '<strong>Draft board update — Q2 status:</strong><br><br>Three of four annual Goals on track. Revenue pacing +8% to plan, $135M annualized target now fully covered by signed pipeline. Cost recovery ahead — $3.1M of $4.2M Q3 vendor consolidation closed, $2.1M of margin pulled forward via warehouse work. Culture pulse participation up 12% YoY, on track for ≥76 mid-year score.<br><br>Operational SLA holds at 99.7% (target 99.5%), but engineering team is showing strain — a key role search has stalled on comp band, and team comment activity has dropped materially. We are addressing this week.<br><br><em>Want me to send this to your editor?</em>',
+  'risk': '<strong>Ops Goal carries the highest leading-indicator risk.</strong> The Goal status is green, but the team behind it is showing strain — that\'s the pattern that historically precedes a Goal flip. The Cost Goal is yellow on raw metrics but has a credible recovery narrative from the CFO. Revenue and Culture are both clean. Net: Ops needs your attention now, before the lagging indicator catches up to the leading one.'
+};
+
+function getProspectAnswerKey(text) {
+  text = text.toLowerCase();
+  if (text.indexOf('attention') !== -1 || text.indexOf('focus') !== -1 || text.indexOf('today') !== -1) return 'attention';
+  if (text.indexOf('chang') !== -1 || text.indexOf('since') !== -1 || text.indexOf('last open') !== -1) return 'changed';
+  if (text.indexOf('board') !== -1 || text.indexOf('update') !== -1 || text.indexOf('draft') !== -1) return 'board';
+  if (text.indexOf('risk') !== -1 || text.indexOf('worst') !== -1 || text.indexOf('most at') !== -1) return 'risk';
+  return null;
+}
+
+function prospectAskChip(el) {
+  var text = el.textContent || el.innerText;
+  var input = document.getElementById('prospectAskInput');
+  if (input) input.value = text;
+  prospectAskRun(text);
+}
+
+function prospectAskSubmit() {
+  var input = document.getElementById('prospectAskInput');
+  if (!input || !input.value.trim()) return;
+  prospectAskRun(input.value.trim());
+}
+
+function prospectAskRun(text) {
+  var loading = document.getElementById('prospectAskLoading');
+  var resp = document.getElementById('prospectAskResp');
+  if (resp) { resp.classList.remove('vis'); resp.innerHTML = ''; }
+  if (loading) loading.classList.add('vis');
+  // Simulate thinking
+  setTimeout(function() {
+    if (loading) loading.classList.remove('vis');
+    var key = getProspectAnswerKey(text);
+    var answer = key ? PROSPECT_ANSWERS[key] :
+      '<strong>Working on that.</strong> In the live platform this would draw on your full portfolio context — Goal trajectory, owner narrative, engagement loop history, and the Strategy Overlay — to give you a grounded answer. For the demo, try one of the suggested questions to see the response shape.';
+    if (resp) {
+      resp.innerHTML = answer;
+      resp.classList.add('vis');
+    }
+  }, 950);
 }
 
 function enterAs(n) { switchRole(n); }
@@ -5182,6 +5324,14 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     if (nameField && sEntry && !sEntry.classList.contains('hidden')) nameField.focus();
   }, 200);
+
+  // Prospect Ask TARGA — Enter key submits.
+  var paInput = document.getElementById('prospectAskInput');
+  if (paInput) {
+    paInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') prospectAskSubmit();
+    });
+  }
 });
 
 setTimeout(makeClickable, 100);
