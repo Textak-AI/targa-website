@@ -1584,11 +1584,13 @@ body:not(.prospect-mode) #prospectCenter{display:none!important;}
 /* Hide Targatek persona bar — competes with prospect identity */
 body.prospect-mode .persona-bar{display:none!important;}
 
-/* Lock the shell — no page scroll, exactly viewport tall */
-body.prospect-mode{overflow:hidden;height:100vh;}
-body.prospect-mode #app{height:100vh;display:flex;flex-direction:column;overflow:hidden;}
-body.prospect-mode .role-view{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
-body.prospect-mode .pf-wrap{flex:1;min-height:0;overflow:hidden;}
+/* Lock the shell — no page scroll, fill available container height.
+   The html element also gets .prospect-host class set in JS for height:100%. */
+html.prospect-host{height:100%;}
+body.prospect-mode{overflow:hidden;height:100%;}
+body.prospect-mode #app{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+body.prospect-mode .role-view.active{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+body.prospect-mode .role-view.active .pf-wrap{flex:1;min-height:0;overflow:hidden;}
 
 /* pf-page becomes the fixed three-column grid filling remaining shell height */
 body.prospect-mode #rv0 .pf-page{
@@ -1773,8 +1775,8 @@ body.prospect-mode .pf-focus-body-scroll::-webkit-scrollbar-thumb:hover{
 @media (max-width:1100px), (max-height:700px){
   body.prospect-mode{overflow:auto;height:auto;}
   body.prospect-mode #app,
-  body.prospect-mode .role-view,
-  body.prospect-mode .pf-wrap{height:auto;overflow:visible;}
+  body.prospect-mode .role-view.active,
+  body.prospect-mode .role-view.active .pf-wrap{height:auto;overflow:visible;}
   body.prospect-mode #rv0 .pf-page{
     grid-template-columns:1fr;height:auto;overflow:visible;
   }
@@ -4326,6 +4328,7 @@ function enterPersonaMode() {
   TARGA_PROSPECT.mode = 'internal';
   saveProspectState();
   document.body.classList.remove('prospect-mode');
+  document.documentElement.classList.remove('prospect-host');
   var sEntry = document.getElementById('sEntry');
   if (sEntry) { sEntry.classList.add('hidden'); sEntry.style.display = 'none'; }
   var s0 = document.getElementById('s0');
@@ -4335,6 +4338,7 @@ function enterPersonaMode() {
 function applyProspectPersonalization() {
   if (!TARGA_PROSPECT.name) return;
   document.body.classList.add('prospect-mode');
+  document.documentElement.classList.add('prospect-host');
   var initials = getInitials(TARGA_PROSPECT.name);
   // Brief band greeting
   var mbName = document.getElementById('mbName');
