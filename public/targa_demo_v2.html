@@ -1634,7 +1634,7 @@ body.prospect-mode .pcs-scroll{
   padding:4px 6px 0 0;
   scrollbar-gutter:stable;
 }
-body.prospect-mode .pcs-scroll > *{margin:0;}
+body.prospect-mode .pcs-scroll > *{margin:0;flex-shrink:0;}
 
 /* Ask TARGA pins to bottom of center column */
 body.prospect-mode #prospectAsk{
@@ -1704,8 +1704,9 @@ body.prospect-mode .pcs-focus{
 .pk-bar-fill.warn{background:var(--warn);}
 .pk-bar-fill.risk{background:var(--danger);}
 
-/* ── Focus card atoms ── */
-#prospectFocus{display:none;}
+/* ── Focus card atoms ──
+   The pcs-focus rule above handles show/hide based on focus-mode class.
+   No unconditional display:none here. */
 .pf-focus-head{
   padding:18px 24px 16px;border-bottom:1px solid var(--border);
   background:linear-gradient(180deg,#fafbfc 0%,#f5f7fa 100%);
