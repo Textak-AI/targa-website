@@ -749,35 +749,148 @@ input,textarea{font-family:var(--font-b);outline:none;}
 /* ── NEW PLAN MODAL ── */
 
 .dqa-overlay{
-  position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:9999;
-  display:flex;align-items:center;justify-content:center;
+  position:fixed;inset:0;background:rgba(7,13,24,0.78);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  z-index:9999;display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity 0.22s cubic-bezier(0.4,0,0.2,1);
 }
 .dqa-overlay.vis{opacity:1;pointer-events:all;}
 .dqa-modal{
-  width:100%;max-width:520px;background:#0c1424;
-  border:1px solid rgba(255,255,255,0.1);border-radius:18px;
-  box-shadow:0 32px 80px rgba(0,0,0,0.5);overflow:hidden;
-  transform:translateY(16px);transition:transform 0.22s cubic-bezier(0.4,0,0.2,1);
+  width:100%;max-width:560px;
+  background:linear-gradient(180deg,#0e1729 0%,#0a1322 100%);
+  border:1px solid rgba(255,255,255,0.08);border-radius:18px;
+  box-shadow:0 32px 80px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.04);
+  overflow:hidden;
+  transform:translateY(16px) scale(0.98);
+  transition:transform 0.22s cubic-bezier(0.4,0,0.2,1);
 }
 .dqa-overlay.vis .dqa-modal{transform:none;}
-.dqa-head{padding:22px 24px 18px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.dqa-eye{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#0eb2af;margin-bottom:6px;}
-.dqa-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;}
-.dqa-types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 24px;}
-.dqa-type{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 140ms;}
-.dqa-type:hover{background:rgba(14,178,175,0.1);border-color:rgba(14,178,175,0.3);}
-.dqa-type-icon{display:block;font-size:22px;margin-bottom:6px;}
-.dqa-type-label{font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);}
-.dqa-form{padding:0 24px 20px;display:flex;flex-direction:column;gap:10px;}
-.dqa-input{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:14px;color:#fff;outline:none;width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;}
-.dqa-input:focus{border-color:rgba(14,178,175,0.5);}
-.dqa-input::placeholder{color:rgba(255,255,255,0.3);}
+
+.dqa-head{
+  padding:24px 28px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  background:linear-gradient(180deg,rgba(14,178,175,0.04),transparent);
+}
+.dqa-eye{
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  letter-spacing:0.18em;text-transform:uppercase;color:#3dc8c4;margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.dqa-eye::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:#0eb2af;box-shadow:0 0 8px rgba(14,178,175,0.6);
+}
+.dqa-title{
+  font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;
+  color:#fff;letter-spacing:-0.015em;line-height:1.15;
+}
+.dqa-title-sub{
+  font-size:12px;color:rgba(255,255,255,0.45);margin-top:6px;
+  font-family:'Inter',sans-serif;
+}
+
+.dqa-types{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+  padding:20px 28px 24px;
+}
+.dqa-type{
+  --tc:#0eb2af;
+  position:relative;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;
+  padding:18px 16px 16px;cursor:pointer;
+  text-align:left;
+  display:flex;align-items:center;gap:14px;
+  transition:all 160ms cubic-bezier(0.2,0,0.2,1);
+  overflow:hidden;
+}
+.dqa-type::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--tc);opacity:0;
+  transition:opacity 160ms ease;
+}
+.dqa-type:hover{
+  background:rgba(255,255,255,0.04);
+  border-color:rgba(255,255,255,0.14);
+  transform:translateY(-1px);
+}
+.dqa-type:hover::before{opacity:0.9;}
+.dqa-type:hover .dqa-type-icon{
+  background:color-mix(in srgb,var(--tc) 22%,transparent);
+  border-color:color-mix(in srgb,var(--tc) 45%,transparent);
+  color:#fff;
+}
+.dqa-type:hover .dqa-type-kbd{opacity:0.55;}
+
+.dqa-type-icon{
+  width:38px;height:38px;border-radius:9px;flex-shrink:0;
+  background:color-mix(in srgb,var(--tc) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--tc) 28%,transparent);
+  color:var(--tc);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 160ms ease;
+}
+.dqa-type-icon svg{width:18px;height:18px;display:block;}
+.dqa-type-body{flex:1;min-width:0;}
+.dqa-type-label{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:14px;font-weight:600;color:rgba(255,255,255,0.92);
+  line-height:1.15;display:block;letter-spacing:-0.005em;
+}
+.dqa-type-hint{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:rgba(255,255,255,0.32);
+  letter-spacing:0.1em;text-transform:uppercase;
+  margin-top:3px;display:block;
+}
+.dqa-type-kbd{
+  position:absolute;top:10px;right:10px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;
+  color:rgba(255,255,255,0.28);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:4px;padding:1px 5px;
+  opacity:0.35;transition:opacity 140ms ease;
+  letter-spacing:0.04em;
+}
+
+.dqa-form{padding:0 28px 20px;display:flex;flex-direction:column;gap:10px;}
+.dqa-input{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);border-radius:8px;
+  padding:11px 14px;font-size:14px;color:#fff;outline:none;
+  width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;
+  transition:border-color 140ms ease,background 140ms ease;
+}
+.dqa-input:focus{
+  border-color:rgba(14,178,175,0.55);
+  background:rgba(255,255,255,0.06);
+  box-shadow:0 0 0 3px rgba(14,178,175,0.12);
+}
+.dqa-input::placeholder{color:rgba(255,255,255,0.28);}
 .dqa-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.dqa-footer{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-top:1px solid rgba(255,255,255,0.08);}
-.dqa-btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;}
-.dqa-btn-primary{background:#0eb2af;border:none;color:#fff;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
-.dqa-confirm{padding:40px 24px;text-align:center;display:none;}
+.dqa-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 28px;border-top:1px solid rgba(255,255,255,0.06);
+  background:rgba(0,0,0,0.15);
+}
+.dqa-btn-ghost{
+  background:transparent;border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.6);padding:8px 16px;border-radius:8px;
+  font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all 140ms ease;
+}
+.dqa-btn-ghost:hover{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.85);}
+.dqa-btn-primary{
+  background:#0eb2af;border:none;color:#fff;padding:9px 22px;
+  border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+  font-family:'Inter',sans-serif;
+  transition:all 140ms ease;
+}
+.dqa-btn-primary:hover{background:#0cc7c4;transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(14,178,175,0.25);}
+.dqa-confirm{padding:48px 24px;text-align:center;display:none;}
 .dqa-confirm-icon{font-size:40px;margin-bottom:12px;color:#0eb2af;}
 .dqa-confirm-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;}
 .dqa-confirm-sub{font-size:14px;color:rgba(255,255,255,0.5);}
@@ -5578,12 +5691,48 @@ function openUserPlan(planId) {
 
 /* ── DESKTOP QUICK ADD ── */
 var dqaSelectedType = null;
+/* SVG icon set for Quick Add types — consistent with the brand's geometric vocabulary.
+   Each shape encodes the type semantically: ◎ Goal (target/aim), ◆ Initiative (work),
+   ⚡ Action (impulse), ⬡ Metric (measurement). */
+var DQA_ICONS = {
+  goal:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>',
+  initiative: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3 L21 12 L12 21 L3 12 Z"/></svg>',
+  action:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M13 2 L4 14 L11 14 L11 22 L20 10 L13 10 Z"/></svg>',
+  metric:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2 L20.66 7 L20.66 17 L12 22 L3.34 17 L3.34 7 Z"/></svg>'
+};
+/* Per-type hints add context for what each is for at a glance. */
+var DQA_HINTS = {
+  'Goal':'Outcome you commit to',
+  'Initiative':'Work that drives the goal',
+  'Action':'Next step you own',
+  'Metric':'Measure of progress',
+  'Budget item':'Line of spend',
+  'OpEx item':'Operating expense',
+  'Approval':'Decision needed',
+  'KPI':'Tracked indicator',
+  'Milestone':'Date-bound delivery',
+  'Sprint':'Bounded work cycle',
+  'Blocker':'Issue to clear',
+  'Campaign':'Coordinated push',
+  'Content':'Asset to produce',
+  'Lead metric':'Demand indicator',
+  'Prospect':'Account in motion',
+  'Meeting':'Touchpoint to run',
+  'Follow-up':'Next outreach',
+  'Pipeline metric':'Funnel measure'
+};
+function dqaIconForLabel(label) {
+  // Each role's 4 types map to the same 4 shapes by position (Goal-like, Initiative-like, Action-like, Metric-like).
+  // The original glyph in DQA_TYPES_BY_ROLE encodes which shape; map it here.
+  return null; // resolved by position in the renderer below
+}
+
 var DQA_TYPES_BY_ROLE = {
-  0:[{icon:'◎',label:'Goal',color:'var(--mod-goal)'},{icon:'◆',label:'Initiative',color:'var(--mod-initiative)'},{icon:'⚡',label:'Action',color:'var(--mod-action)'},{icon:'⬡',label:'Metric',color:'var(--mod-metric)'}],
-  1:[{icon:'◎',label:'Budget item',color:'var(--mod-goal)'},{icon:'◆',label:'OpEx item',color:'var(--mod-initiative)'},{icon:'⚡',label:'Approval',color:'var(--mod-action)'},{icon:'⬡',label:'KPI',color:'var(--mod-metric)'}],
-  2:[{icon:'◎',label:'Milestone',color:'var(--mod-goal)'},{icon:'◆',label:'Sprint',color:'var(--mod-initiative)'},{icon:'⚡',label:'Blocker',color:'var(--mod-action)'},{icon:'⬡',label:'Metric',color:'var(--mod-metric)'}],
-  3:[{icon:'◎',label:'Campaign',color:'var(--mod-goal)'},{icon:'◆',label:'Content',color:'var(--mod-initiative)'},{icon:'⚡',label:'Action',color:'var(--mod-action)'},{icon:'⬡',label:'Lead metric',color:'var(--mod-metric)'}],
-  4:[{icon:'◎',label:'Prospect',color:'var(--mod-goal)'},{icon:'◆',label:'Meeting',color:'var(--mod-initiative)'},{icon:'⚡',label:'Follow-up',color:'var(--mod-action)'},{icon:'⬡',label:'Pipeline metric',color:'var(--mod-metric)'}]
+  0:[{shape:'goal',label:'Goal',color:'var(--mod-goal)'},{shape:'initiative',label:'Initiative',color:'var(--mod-initiative)'},{shape:'action',label:'Action',color:'var(--mod-action)'},{shape:'metric',label:'Metric',color:'var(--mod-metric)'}],
+  1:[{shape:'goal',label:'Budget item',color:'var(--mod-goal)'},{shape:'initiative',label:'OpEx item',color:'var(--mod-initiative)'},{shape:'action',label:'Approval',color:'var(--mod-action)'},{shape:'metric',label:'KPI',color:'var(--mod-metric)'}],
+  2:[{shape:'goal',label:'Milestone',color:'var(--mod-goal)'},{shape:'initiative',label:'Sprint',color:'var(--mod-initiative)'},{shape:'action',label:'Blocker',color:'var(--mod-action)'},{shape:'metric',label:'Metric',color:'var(--mod-metric)'}],
+  3:[{shape:'goal',label:'Campaign',color:'var(--mod-goal)'},{shape:'initiative',label:'Content',color:'var(--mod-initiative)'},{shape:'action',label:'Action',color:'var(--mod-action)'},{shape:'metric',label:'Lead metric',color:'var(--mod-metric)'}],
+  4:[{shape:'goal',label:'Prospect',color:'var(--mod-goal)'},{shape:'initiative',label:'Meeting',color:'var(--mod-initiative)'},{shape:'action',label:'Follow-up',color:'var(--mod-action)'},{shape:'metric',label:'Pipeline metric',color:'var(--mod-metric)'}]
 };
 
 function openDesktopQA() {
@@ -5593,7 +5742,16 @@ function openDesktopQA() {
   var typesEl = document.getElementById('dqaTypes');
   if (typesEl) {
     typesEl.innerHTML = types.map(function(t,i) {
-      return '<div class="dqa-type" onclick="dqaSelectType('+i+')" style="--tc:'+t.color+'"><span class="dqa-type-icon">'+t.icon+'</span><span class="dqa-type-label">'+t.label+'</span></div>';
+      var icon = DQA_ICONS[t.shape] || DQA_ICONS.goal;
+      var hint = DQA_HINTS[t.label] || '';
+      return '<div class="dqa-type" onclick="dqaSelectType('+i+')" style="--tc:'+t.color+'">' +
+        '<div class="dqa-type-icon">'+icon+'</div>' +
+        '<div class="dqa-type-body">' +
+          '<span class="dqa-type-label">'+t.label+'</span>' +
+          (hint ? '<span class="dqa-type-hint">'+hint+'</span>' : '') +
+        '</div>' +
+        '<span class="dqa-type-kbd">'+(i+1)+'</span>' +
+      '</div>';
     }).join('');
   }
   ['dqaStep1','dqaStep2','dqaStep3'].forEach(function(id,i){ var el=document.getElementById(id); if(el) el.style.display=i===0?'block':'none'; });
@@ -6600,6 +6758,20 @@ document.addEventListener('keydown', function(e) {
     if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
     if (typeof closePmAll === 'function') closePmAll();
     if (typeof closeProspectFocus === 'function') closeProspectFocus();
+  }
+  // Quick Add: numeric shortcuts 1-4 select a type when step 1 is visible.
+  // Only fire if the modal is visible, step 1 is showing, and no text input is focused.
+  if (/^[1-4]$/.test(e.key)) {
+    var overlay = document.getElementById('dqaOverlay');
+    var s1 = document.getElementById('dqaStep1');
+    var active = document.activeElement;
+    var typingInInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+    if (overlay && overlay.classList.contains('vis') && s1 && s1.style.display !== 'none' && !typingInInput) {
+      e.preventDefault();
+      var idx = parseInt(e.key, 10) - 1;
+      var types = DQA_TYPES_BY_ROLE[currentRole] || DQA_TYPES_BY_ROLE[0];
+      if (types[idx]) dqaSelectType(idx);
+    }
   }
 });
 
