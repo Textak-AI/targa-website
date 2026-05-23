@@ -1568,59 +1568,106 @@ input,textarea{font-family:var(--font-b);outline:none;}
 }
 
 /* ══════════════════════════════════════════════
-   PROSPECT MODE — three-column grid layout
-   Matches Joe's approved targa_focus_v2 light-mode pattern:
-   240px KPI rail | flex center workspace | 320px Intelligence rail.
-   Center column swaps between ground state (brief+pillars+feed+ask)
-   and focus state (in-place Goal detail card).
+   PROSPECT MODE — fixed command-center shell.
+   No page-level scroll. Each column is an independent scroll region.
+   Ask TARGA pins to the bottom of the center column.
+   Persona bar (Targatek names) is hidden in prospect mode.
 ══════════════════════════════════════════════ */
 body.prospect-mode #rv0 .pf-grid{display:none!important;}
 body:not(.prospect-mode) #prospectAsk,
 body:not(.prospect-mode) #prospectKpis,
 body:not(.prospect-mode) #prospectFocus,
+body:not(.prospect-mode) #prospectIntel,
+body:not(.prospect-mode) .prospect-center-shell,
 body:not(.prospect-mode) #prospectCenter{display:none!important;}
 
-/* In prospect mode, pf-page becomes the 3-column grid container */
+/* Hide Targatek persona bar — competes with prospect identity */
+body.prospect-mode .persona-bar{display:none!important;}
+
+/* Lock the shell — no page scroll, exactly viewport tall */
+body.prospect-mode{overflow:hidden;height:100vh;}
+body.prospect-mode #app{height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+body.prospect-mode .role-view{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+body.prospect-mode .pf-wrap{flex:1;min-height:0;overflow:hidden;}
+
+/* pf-page becomes the fixed three-column grid filling remaining shell height */
 body.prospect-mode #rv0 .pf-page{
   display:grid;
   grid-template-columns:240px 1fr 320px;
-  grid-template-rows:auto;
+  grid-template-rows:1fr;
   gap:20px;
-  align-items:start;
-  padding:20px 32px 40px;
+  padding:20px 32px;
+  height:100%;
+  overflow:hidden;
+  align-items:stretch;
 }
 
-/* Grid placement: KPIs left, center spans middle column with stacked blocks, Intel right */
-body.prospect-mode #prospectKpis{grid-column:1;grid-row:1;position:sticky;top:20px;}
-body.prospect-mode #rv0 .mb-band{grid-column:2;grid-row:1;margin-bottom:0;}
-body.prospect-mode #rv0 .fc-strip{grid-column:2;grid-row:2;margin-bottom:0;grid-template-columns:repeat(2,1fr);}
-body.prospect-mode #prospectCenter{grid-column:2;grid-row:3;display:block;}
-body.prospect-mode #prospectAsk{grid-column:2;grid-row:4;margin-top:0;}
-body.prospect-mode #prospectIntel{grid-column:3;grid-row:1 / span 4;position:sticky;top:20px;display:flex;flex-direction:column;gap:10px;}
+/* Left KPI rail — own scroll region */
+body.prospect-mode #prospectKpis{
+  grid-column:1;grid-row:1;
+  overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;gap:12px;
+  padding-right:4px;
+  scrollbar-gutter:stable;
+}
 
-/* In prospect mode, the Live Feed band (formerly 2-col) becomes single-col since Intel moved out */
-body.prospect-mode #prospectCenter{margin-bottom:0;}
-body.prospect-mode #prospectCenter > .pc-intel{display:none;}
+/* Right Intel rail — own scroll region */
+body.prospect-mode #prospectIntel{
+  grid-column:3;grid-row:1;
+  overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;gap:10px;
+  padding-right:4px;
+  scrollbar-gutter:stable;
+}
 
-/* Focus state: hide ground-state blocks, show focus block */
-body.prospect-mode.focus-mode #rv0 .mb-band,
-body.prospect-mode.focus-mode #rv0 .fc-strip,
-body.prospect-mode.focus-mode #prospectCenter,
-body.prospect-mode.focus-mode #prospectAsk{display:none;}
-body.prospect-mode.focus-mode #prospectFocus{
-  display:block;grid-column:2;grid-row:1 / span 4;
+/* Center column shell — scroll zone on top + pinned Ask TARGA on bottom */
+body.prospect-mode .prospect-center-shell{
+  grid-column:2;grid-row:1;
+  display:flex;flex-direction:column;min-height:0;overflow:hidden;gap:0;
+}
+body.prospect-mode .pcs-scroll{
+  flex:1;min-height:0;
+  overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;gap:16px;
+  padding-right:6px;
+  scrollbar-gutter:stable;
+}
+body.prospect-mode .pcs-scroll > *{margin:0;}
+
+/* Ask TARGA pins to bottom of center column */
+body.prospect-mode #prospectAsk{
+  flex:0 0 auto;
+  margin-top:14px;
+  background:#fff;
+  box-shadow:0 -2px 12px rgba(12,20,36,0.06),0 1px 0 rgba(255,255,255,1) inset;
+}
+
+/* Focus state — center scroll swaps content, Ask TARGA stays pinned */
+body.prospect-mode.focus-mode .pcs-ground{display:none;}
+body.prospect-mode:not(.focus-mode) .pcs-focus{display:none;}
+body.prospect-mode .pcs-focus{
+  flex:1;min-height:0;
+  display:flex;flex-direction:column;
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 4px 20px rgba(12,20,36,0.06);
+  overflow:hidden;
   animation:focusFadeIn 220ms cubic-bezier(0.2,0,0.2,1);
 }
 @keyframes focusFadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
-/* ── Left KPI rail ── */
-#prospectKpis{
-  display:flex;flex-direction:column;gap:12px;
+/* Focus card: fixed header + scrolling body */
+.pf-focus-body-scroll{
+  flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
+  padding:22px 24px 26px;
+  scrollbar-gutter:stable;
 }
+
+/* ── Left KPI rail (atoms) ── */
 .pk-head{
   font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;
   text-transform:uppercase;color:var(--text-4);font-weight:700;
-  margin-bottom:2px;display:flex;align-items:center;gap:7px;padding:0 2px;
+  display:flex;align-items:center;gap:7px;padding:2px 2px 8px;
+  position:sticky;top:0;background:var(--bg);z-index:2;flex-shrink:0;
 }
 .pk-head::before{
   content:'';width:6px;height:6px;border-radius:50%;
@@ -1631,6 +1678,7 @@ body.prospect-mode.focus-mode #prospectFocus{
   padding:14px 14px 13px;
   box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 2px 8px rgba(12,20,36,0.04);
   transition:all var(--dur-fast) var(--ease);
+  flex-shrink:0;
 }
 .pk-card:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(12,20,36,0.06);}
 .pk-label{
@@ -1648,23 +1696,19 @@ body.prospect-mode.focus-mode #prospectFocus{
 .pk-trend.up{color:var(--ok);}
 .pk-trend.warn{color:var(--warn);}
 .pk-trend.flat{color:var(--text-3);}
-.pk-bar{height:4px;background:rgba(12,20,36,0.06);border-radius:100px;
-  overflow:hidden;}
+.pk-bar{height:4px;background:rgba(12,20,36,0.06);border-radius:100px;overflow:hidden;}
 .pk-bar-fill{height:100%;background:var(--ok);border-radius:100px;
   transition:width var(--dur-med) var(--ease);}
 .pk-bar-fill.warn{background:var(--warn);}
 .pk-bar-fill.risk{background:var(--danger);}
 
-/* ── In-place focus card (center column on pillar click) ── */
-#prospectFocus{
-  background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);
-  padding:0;overflow:hidden;display:none;
-  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 4px 20px rgba(12,20,36,0.06);
-}
+/* ── Focus card atoms ── */
+#prospectFocus{display:none;}
 .pf-focus-head{
   padding:18px 24px 16px;border-bottom:1px solid var(--border);
   background:linear-gradient(180deg,#fafbfc 0%,#f5f7fa 100%);
   display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+  flex:0 0 auto;
 }
 .pf-focus-back{
   display:inline-flex;align-items:center;gap:6px;
@@ -1693,20 +1737,56 @@ body.prospect-mode.focus-mode #prospectFocus{
 }
 .pf-focus-status.warn{background:var(--warn-soft);color:var(--warn);}
 .pf-focus-status.risk{background:var(--danger-soft);color:var(--danger);}
-.pf-focus-body{padding:22px 24px 26px;}
+.pf-focus-body-scroll .cd-paradox{margin-bottom:20px;}
+.pf-focus-body-scroll .cd-section-label{margin-bottom:10px;margin-top:6px;}
+.pf-focus-body-scroll .cd-traj{margin-bottom:20px;}
+.pf-focus-body-scroll .cd-owner{margin-bottom:20px;}
+.pf-focus-body-scroll .cd-loop{margin-bottom:22px;}
+.pf-focus-body-scroll .cd-actions{margin-top:10px;padding-bottom:8px;}
 
-/* Reuse captain-drawer atoms inside the focus card */
-.pf-focus-body .cd-paradox{margin-bottom:20px;}
-.pf-focus-body .cd-section-label{margin-bottom:10px;margin-top:6px;}
-.pf-focus-body .cd-traj{margin-bottom:20px;}
-.pf-focus-body .cd-owner{margin-bottom:20px;}
-.pf-focus-body .cd-loop{margin-bottom:22px;}
-.pf-focus-body .cd-actions{margin-top:10px;}
+/* ── Right Intel rail (atoms) ── */
+body.prospect-mode #prospectIntel .pc-intel-head{
+  position:sticky;top:0;background:var(--bg);z-index:2;flex-shrink:0;
+  padding-top:2px;padding-bottom:8px;
+}
+body.prospect-mode #prospectIntel .pc-intel-card{flex-shrink:0;}
 
-/* ── Right Intel rail (lifted from prospectCenter into its own column) ── */
-body.prospect-mode #prospectIntel .pc-intel-head{margin-top:2px;}
+/* Thin scrollbars in scroll regions */
+body.prospect-mode #prospectKpis::-webkit-scrollbar,
+body.prospect-mode #prospectIntel::-webkit-scrollbar,
+body.prospect-mode .pcs-scroll::-webkit-scrollbar,
+body.prospect-mode .pf-focus-body-scroll::-webkit-scrollbar{width:6px;}
+body.prospect-mode #prospectKpis::-webkit-scrollbar-thumb,
+body.prospect-mode #prospectIntel::-webkit-scrollbar-thumb,
+body.prospect-mode .pcs-scroll::-webkit-scrollbar-thumb,
+body.prospect-mode .pf-focus-body-scroll::-webkit-scrollbar-thumb{
+  background:rgba(12,20,36,0.18);border-radius:100px;
+}
+body.prospect-mode #prospectKpis::-webkit-scrollbar-thumb:hover,
+body.prospect-mode #prospectIntel::-webkit-scrollbar-thumb:hover,
+body.prospect-mode .pcs-scroll::-webkit-scrollbar-thumb:hover,
+body.prospect-mode .pf-focus-body-scroll::-webkit-scrollbar-thumb:hover{
+  background:rgba(12,20,36,0.32);
+}
 
-
+/* Below ~1100px width or ~700px height, fall back to scrollable layout */
+@media (max-width:1100px), (max-height:700px){
+  body.prospect-mode{overflow:auto;height:auto;}
+  body.prospect-mode #app,
+  body.prospect-mode .role-view,
+  body.prospect-mode .pf-wrap{height:auto;overflow:visible;}
+  body.prospect-mode #rv0 .pf-page{
+    grid-template-columns:1fr;height:auto;overflow:visible;
+  }
+  body.prospect-mode #prospectKpis,
+  body.prospect-mode #prospectIntel,
+  body.prospect-mode .prospect-center-shell{
+    grid-column:1;overflow:visible;height:auto;
+  }
+  body.prospect-mode .pcs-scroll,
+  body.prospect-mode .pf-focus-body-scroll{overflow:visible;height:auto;}
+  body.prospect-mode #prospectAsk{position:static;}
+}
 /* ── Dark TARGA Live Feed (left column) ── */
 .pc-feed{
   background:linear-gradient(180deg,#0a1424 0%,#060e1a 100%);
@@ -2399,6 +2479,15 @@ body.prospect-mode .pm-nav{display:block;}
         </aside>
 
         <!-- ═══════════════════════════════════
+             PROSPECT CENTER SHELL — fixed-height container with three zones:
+             1. pcs-scroll.pcs-ground — ground-state stack (brief, pillars, feed)
+             2. pcs-focus — drill-in card (replaces ground when focus-mode active)
+             3. prospectAsk — pinned to the bottom
+        ═══════════════════════════════════ -->
+        <div class="prospect-center-shell">
+          <div class="pcs-scroll pcs-ground">
+
+        <!-- ═══════════════════════════════════
              MORNING BRIEF BAND  (PS-01 ground state)
              People-first ordering, single-line synthesis, "needs you today" hook
         ═══════════════════════════════════ -->
@@ -2560,93 +2649,95 @@ body.prospect-mode .pm-nav{display:block;}
 
         </div>
 
-        <!-- ═══════════════════════════════════
-             PROSPECT-MODE ASK TARGA (only renders when body.prospect-mode)
-             Smoke-and-mirrors AI affordance for "would the app actually do X" questions
-        ═══════════════════════════════════ -->
-        <div id="prospectAsk">
-          <div class="pa-head">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            <span class="pa-title">Ask TARGA</span>
-            <div class="pa-live"><span class="pa-live-dot"></span>Live</div>
-          </div>
-          <div class="pa-sub">Context-aware across your full portfolio. Ask anything &mdash; trajectory, ownership, history, what to focus on next.</div>
-          <div class="pa-chips">
-            <span class="pa-chip" onclick="prospectAskChip(this)">What needs my attention today?</span>
-            <span class="pa-chip" onclick="prospectAskChip(this)">What changed since I last opened TARGA?</span>
-            <span class="pa-chip" onclick="prospectAskChip(this)">Draft a board update on where we stand</span>
-            <span class="pa-chip" onclick="prospectAskChip(this)">Which Goal is most at risk?</span>
-          </div>
-          <div class="pa-row">
-            <input class="pa-input" id="prospectAskInput" type="text" placeholder="Ask anything about your portfolio…">
-            <button class="pa-send" onclick="prospectAskSubmit()" aria-label="Send">&rarr;</button>
-          </div>
-          <div class="pa-loading" id="prospectAskLoading">
-            <div class="pa-loading-dot"></div>
-            <div class="pa-loading-dot"></div>
-            <div class="pa-loading-dot"></div>
-            <span class="pa-loading-label">TARGA is thinking&hellip;</span>
-          </div>
-          <div class="pa-resp" id="prospectAskResp"></div>
-        </div>
+          </div><!-- /pcs-scroll.pcs-ground -->
 
-        <!-- ═══════════════════════════════════
-             PROSPECT FOCUS CARD (in-place drill-in for pillar clicks)
-             Replaces ground state in the center column when focus-mode is active.
-             Content swapped per-pillar by openProspectFocus(); back button calls closeProspectFocus().
-             Reuses captain-drawer content atoms (.cd-paradox, .cd-traj, .cd-owner, .cd-loop, .cd-actions).
-        ═══════════════════════════════════ -->
-        <div id="prospectFocus">
-          <div class="pf-focus-head">
-            <div class="pf-focus-titles">
-              <div class="pf-focus-back" onclick="closeProspectFocus()">
-                <span style="font-size:14px;line-height:1;">&larr;</span> All Goals
+          <!-- ═══════════════════════════════════
+               PROSPECT FOCUS CARD (in-place drill-in for pillar clicks)
+               Replaces ground state when focus-mode is active.
+               Content swapped per-pillar by openProspectFocus(); back button calls closeProspectFocus().
+          ═══════════════════════════════════ -->
+          <div class="pcs-focus" id="prospectFocus">
+            <div class="pf-focus-head">
+              <div class="pf-focus-titles">
+                <div class="pf-focus-back" onclick="closeProspectFocus()">
+                  <span style="font-size:14px;line-height:1;">&larr;</span> All Goals
+                </div>
+                <div class="pf-focus-eyebrow" id="pfFocusEyebrow">OPS GOAL</div>
+                <div class="pf-focus-name" id="pfFocusName">99.5% SLA, zero P1 outages</div>
               </div>
-              <div class="pf-focus-eyebrow" id="pfFocusEyebrow">OPS GOAL</div>
-              <div class="pf-focus-name" id="pfFocusName">99.5% SLA, zero P1 outages</div>
+              <span class="pf-focus-status" id="pfFocusStatus">Needs You</span>
             </div>
-            <span class="pf-focus-status" id="pfFocusStatus">Needs You</span>
-          </div>
-          <div class="pf-focus-body">
+            <div class="pf-focus-body-scroll">
 
-            <div class="cd-paradox" id="pfParadox">
-              <div class="cd-paradox-eye"><span class="cd-paradox-dot"></span><span id="pfParadoxLabel">Team Strain Detected</span></div>
-              <div class="cd-paradox-text" id="pfParadoxText"></div>
-            </div>
-
-            <div class="cd-section-label">Trajectory &middot; Last 60 days</div>
-            <div class="cd-traj">
-              <div class="cd-traj-head">
-                <div class="cd-traj-title" id="pfTrajTitle">Platform SLA &mdash; rolling 30d</div>
-                <div class="cd-traj-val" id="pfTrajVal">99.7%</div>
+              <div class="cd-paradox" id="pfParadox">
+                <div class="cd-paradox-eye"><span class="cd-paradox-dot"></span><span id="pfParadoxLabel">Team Strain Detected</span></div>
+                <div class="cd-paradox-text" id="pfParadoxText"></div>
               </div>
-              <svg class="cd-traj-svg" viewBox="0 0 280 48" preserveAspectRatio="none" id="pfTrajSvg">
-                <line x1="0" y1="14" x2="280" y2="14" stroke="rgba(12,20,36,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
-                <path d="" fill="none" stroke="#2c8a5e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-                <path d="" fill="rgba(44,138,94,0.08)"/>
-                <circle cx="280" cy="10" r="3" fill="#2c8a5e"/>
-              </svg>
-            </div>
 
-            <div class="cd-owner">
-              <div class="cd-owner-avatar" id="pfOwnerAvatar">ME</div>
-              <div class="cd-owner-info">
-                <div class="cd-owner-name" id="pfOwnerName">Marcus Ellis</div>
-                <div class="cd-owner-role" id="pfOwnerRole">VP Engineering &middot; Owner</div>
+              <div class="cd-section-label">Trajectory &middot; Last 60 days</div>
+              <div class="cd-traj">
+                <div class="cd-traj-head">
+                  <div class="cd-traj-title" id="pfTrajTitle">Platform SLA &mdash; rolling 30d</div>
+                  <div class="cd-traj-val" id="pfTrajVal">99.7%</div>
+                </div>
+                <svg class="cd-traj-svg" viewBox="0 0 280 48" preserveAspectRatio="none" id="pfTrajSvg">
+                  <line x1="0" y1="14" x2="280" y2="14" stroke="rgba(12,20,36,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+                  <path d="" fill="none" stroke="#2c8a5e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+                  <path d="" fill="rgba(44,138,94,0.08)"/>
+                  <circle cx="280" cy="10" r="3" fill="#2c8a5e"/>
+                </svg>
               </div>
-              <div class="cd-owner-tag">Owner</div>
+
+              <div class="cd-owner">
+                <div class="cd-owner-avatar" id="pfOwnerAvatar">ME</div>
+                <div class="cd-owner-info">
+                  <div class="cd-owner-name" id="pfOwnerName">Marcus Ellis</div>
+                  <div class="cd-owner-role" id="pfOwnerRole">VP Engineering &middot; Owner</div>
+                </div>
+                <div class="cd-owner-tag">Owner</div>
+              </div>
+
+              <div class="cd-section-label">Engagement Loop</div>
+              <div class="cd-loop" id="pfLoop"></div>
+
+              <div class="cd-actions" id="pfActions">
+                <button class="cd-btn-p" onclick="cdAction('1on1')">Open 15-min with Marcus</button>
+                <button class="cd-btn-s" onclick="cdAction('approve')">Approve comp band review</button>
+              </div>
+
             </div>
+          </div><!-- /pcs-focus -->
 
-            <div class="cd-section-label">Engagement Loop</div>
-            <div class="cd-loop" id="pfLoop"></div>
-
-            <div class="cd-actions" id="pfActions">
-              <button class="cd-btn-p" onclick="cdAction('1on1')">Open 15-min with Marcus</button>
-              <button class="cd-btn-s" onclick="cdAction('approve')">Approve comp band review</button>
+          <!-- ═══════════════════════════════════
+               PROSPECT-MODE ASK TARGA (pinned to bottom of center column)
+          ═══════════════════════════════════ -->
+          <div id="prospectAsk">
+            <div class="pa-head">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              <span class="pa-title">Ask TARGA</span>
+              <div class="pa-live"><span class="pa-live-dot"></span>Live</div>
             </div>
-
+            <div class="pa-sub">Context-aware across your full portfolio. Ask anything &mdash; trajectory, ownership, history, what to focus on next.</div>
+            <div class="pa-chips">
+              <span class="pa-chip" onclick="prospectAskChip(this)">What needs my attention today?</span>
+              <span class="pa-chip" onclick="prospectAskChip(this)">What changed since I last opened TARGA?</span>
+              <span class="pa-chip" onclick="prospectAskChip(this)">Draft a board update on where we stand</span>
+              <span class="pa-chip" onclick="prospectAskChip(this)">Which Goal is most at risk?</span>
+            </div>
+            <div class="pa-row">
+              <input class="pa-input" id="prospectAskInput" type="text" placeholder="Ask anything about your portfolio…">
+              <button class="pa-send" onclick="prospectAskSubmit()" aria-label="Send">&rarr;</button>
+            </div>
+            <div class="pa-loading" id="prospectAskLoading">
+              <div class="pa-loading-dot"></div>
+              <div class="pa-loading-dot"></div>
+              <div class="pa-loading-dot"></div>
+              <span class="pa-loading-label">TARGA is thinking&hellip;</span>
+            </div>
+            <div class="pa-resp" id="prospectAskResp"></div>
           </div>
-        </div>
+
+        </div><!-- /prospect-center-shell -->
 
         <div class="pf-grid">
 
