@@ -749,8 +749,8 @@ input,textarea{font-family:var(--font-b);outline:none;}
 /* ── NEW PLAN MODAL ── */
 
 .dqa-overlay{
-  position:fixed;inset:0;background:rgba(7,13,24,0.78);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  position:fixed;inset:0;background:rgba(4,8,16,0.92);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   z-index:9999;display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity 0.22s cubic-bezier(0.4,0,0.2,1);
 }
@@ -895,8 +895,9 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .dqa-confirm-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;}
 .dqa-confirm-sub{font-size:14px;color:rgba(255,255,255,0.5);}
 .np-overlay{
-  position:fixed;inset:0;background:rgba(7,13,24,0.82);z-index:9999;
-  display:flex;align-items:center;justify-content:center;
+  position:fixed;inset:0;background:rgba(4,8,16,0.92);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  z-index:9999;display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity var(--dur-med) var(--ease);
   
 }
@@ -1717,6 +1718,62 @@ input,textarea{font-family:var(--font-b);outline:none;}
 }
 
 /* ══════════════════════════════════════════════
+   GROUND-STATE RESOLVED STATES
+   When an Ops action closes the loop, surfaces re-render to reflect it.
+══════════════════════════════════════════════ */
+
+/* Ops tile: resolving state — amber, "responding" */
+.fc-tile.resolving::before{background:var(--warn)!important;}
+.fc-tile.resolving .fc-status-dot{background:var(--warn);box-shadow:0 0 0 3px rgba(207,138,42,0.18);animation:pulse 1.6s ease-in-out infinite;}
+.fc-tile.resolving .fc-badge{background:var(--warn-soft);color:var(--warn);}
+
+/* Ops tile: resolved state — green, "handled" */
+.fc-tile.resolved::before{background:var(--ok)!important;}
+.fc-tile.resolved .fc-status-dot{background:var(--ok);animation:none;box-shadow:none;}
+.fc-tile.resolved .fc-badge{background:var(--ok-soft);color:var(--ok);}
+
+/* Brief band chip — resolved/resolving variants */
+.mb-needs-chip.resolving{
+  background:rgba(207,138,42,0.08);border-color:rgba(207,138,42,0.25);
+  color:var(--warn);
+}
+.mb-needs-chip.resolving .mb-needs-dot{
+  background:var(--warn);box-shadow:0 0 0 3px rgba(207,138,42,0.18);
+}
+.mb-needs-chip.resolved{
+  background:rgba(13,139,130,0.08);border-color:rgba(13,139,130,0.25);
+  color:var(--primary);cursor:default;
+}
+.mb-needs-chip.resolved .mb-needs-dot{
+  background:var(--ok);animation:none;box-shadow:none;
+}
+.mb-needs-chip.resolved:hover{transform:none;box-shadow:none;}
+.mb-strain.resolving{color:var(--warn);}
+.mb-strain.resolved{color:var(--ok);}
+
+/* Intel card: dismissed/saved/handled states */
+.pc-intel-card.dismissed{
+  opacity:0;transform:translateY(-8px);max-height:0;
+  margin:0;padding:0;border:0;
+  transition:opacity 240ms ease,transform 240ms ease,max-height 240ms 240ms ease,
+             margin 240ms 240ms ease,padding 240ms 240ms ease;
+  overflow:hidden;
+}
+.pc-intel-card.handled{
+  background:rgba(13,139,130,0.04);
+  border-color:rgba(13,139,130,0.18);
+}
+.pc-intel-card.handled .pc-intel-stripe{background:var(--primary)!important;}
+.pc-intel-card.handled .pc-intel-badge{color:var(--primary)!important;}
+.pc-intel-saved-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--font-m);font-size:9px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);
+  padding:5px 10px;background:rgba(13,139,130,0.1);
+  border:1px solid rgba(13,139,130,0.2);border-radius:var(--r-pill);
+}
+
+/* ══════════════════════════════════════════════
    PROSPECT MODE — fixed command-center shell.
    No page-level scroll. Each column is an independent scroll region.
    Ask TARGA pins to the bottom of the center column.
@@ -2198,6 +2255,12 @@ body.prospect-mode .pm-nav{display:block;}
   transition:opacity 160ms ease,transform 160ms ease;
   z-index:60;
 }
+/* Invisible hover bridge — extends submenu hitbox 10px upward into the menu bar
+   so the pointer can travel from menu item to submenu without falling into a dead-zone. */
+.pm-sub::before{
+  content:'';position:absolute;left:0;right:0;top:-10px;height:10px;
+  background:transparent;pointer-events:auto;
+}
 .pm-item.open .pm-sub{
   opacity:1;transform:none;pointer-events:auto;
 }
@@ -2258,7 +2321,7 @@ body.prospect-mode .pm-nav{display:block;}
     </div>
     <div class="en-eyebrow">Live Demo · Personalize Your Walkthrough</div>
     <div class="en-title">Walk the deck<br>as your own <span>CEO</span>.</div>
-    <div class="en-sub">We&rsquo;ll personalize this walkthrough so you can see what TARGA looks like running your business. No account, no signup &mdash; just type your name and walk in.</div>
+    <div class="en-sub">Type your name to walk in. We&rsquo;ll personalize the deck so you can see what TARGA looks like running your business.</div>
 
     <div class="en-form">
       <div class="en-field">
@@ -2375,7 +2438,7 @@ body.prospect-mode .pm-nav{display:block;}
     </div>
     <div class="tb-right">
       <div class="blink-dot"></div>
-      <span style="font-family:var(--font-m);font-size:10px;color:var(--text-4);">5 agents monitoring · Live</span>
+      <span style="font-family:var(--font-m);font-size:10px;color:var(--text-4);">5 agents monitoring</span>
       <button class="btn" style="font-size:11px;padding:6px 14px;background:#0eb2af;color:#fff;border:none;border-radius:var(--r-md);display:flex;align-items:center;gap:6px;" onclick="openNewPlan()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New Plan
@@ -2555,20 +2618,20 @@ body.prospect-mode .pm-nav{display:block;}
                 <div class="pm-sub-title">99.5% SLA, zero P1 outages</div>
               </div>
               <div class="pm-sub-items">
-                <div class="pm-sub-row" onclick="openCaptainDrawer('ops');closePmAll();">
+                <div class="pm-sub-row" onclick="openProspectFocus('ops');closePmAll();">
                   <span class="pm-sub-row-text">Open Goal detail</span>
                   <span class="pm-sub-arrow">&rarr;</span>
                 </div>
-                <div class="pm-sub-row alert" onclick="openCaptainDrawer('ops');closePmAll();">
+                <div class="pm-sub-row alert" id="pmOpsLoop" onclick="openProspectFocus('ops');closePmAll();">
                   <span class="pm-sub-row-text">Engagement loop with Marcus</span>
-                  <span class="pm-sub-row-meta">Open &middot; 4 days</span>
+                  <span class="pm-sub-row-meta" id="pmOpsLoopMeta">Open &middot; 4 days</span>
                   <span class="pm-sub-arrow">&rarr;</span>
                 </div>
-                <div class="pm-sub-row" onclick="showToast('Calendar invite drafted &mdash; Marcus, 15 min today',true);closePmAll();">
+                <div class="pm-sub-row" onclick="submenuAction('ops','primary');closePmAll();">
                   <span class="pm-sub-row-text">Open 15-min with Marcus</span>
                   <span class="pm-sub-arrow">&rarr;</span>
                 </div>
-                <div class="pm-sub-row" onclick="showToast('Comp band review queued for HR partner',true);closePmAll();">
+                <div class="pm-sub-row" onclick="submenuAction('ops','secondary');closePmAll();">
                   <span class="pm-sub-row-text">Approve comp band review</span>
                   <span class="pm-sub-arrow">&rarr;</span>
                 </div>
@@ -2648,18 +2711,18 @@ body.prospect-mode .pm-nav{display:block;}
             <div class="mb-greeting">Good morning, <strong id="mbName">Captain</strong>.</div>
             <div class="mb-date" id="mbDate">TUESDAY, MAY 22 · CEO VIEW</div>
           </div>
-          <div class="mb-summary">
-            <span class="mb-strain">Engineering team showing strain.</span>
-            Your four annual Goals: <strong>3 green, 1 needs you today.</strong>
+          <div class="mb-summary" id="mbSummary">
+            <span class="mb-strain" id="mbStrainText">Engineering team showing strain.</span>
+            Your four annual Goals: <strong id="mbStatusCount">3 green, 1 needs you today.</strong>
             14 changes across your portfolio since Friday. 2 wins to amplify.
           </div>
-          <div class="mb-actions">
-            <div class="mb-needs-chip" onclick="openCaptainDrawer('ops')">
+          <div class="mb-actions" id="mbActions">
+            <div class="mb-needs-chip" id="mbChip" onclick="openCaptainDrawer('ops')">
               <span class="mb-needs-dot"></span>
-              Open the Ops Goal &mdash; team strain detected
+              <span id="mbChipText">Open the Ops Goal &mdash; team strain detected</span>
               <span class="mb-needs-arrow">&rarr;</span>
             </div>
-            <div class="mb-since">Last open: 3 days ago</div>
+            <div class="mb-since" id="mbSince">Last open: 3 days ago</div>
           </div>
         </div>
 
@@ -2695,12 +2758,12 @@ body.prospect-mode .pm-nav{display:block;}
               <span class="fc-owner">CHRO</span>
             </div>
           </div>
-          <div class="fc-tile danger" onclick="openCaptainDrawer('ops')">
+          <div class="fc-tile danger" id="fcOpsTile" onclick="openCaptainDrawer('ops')">
             <div class="fc-pillar"><span class="fc-status-dot"></span>Ops</div>
             <div class="fc-goal">99.5% SLA, zero P1 outages</div>
-            <div class="fc-milestone">SLA at 99.7% &middot; <strong style="color:var(--danger);">team strain signal</strong></div>
+            <div class="fc-milestone" id="fcOpsMilestone">SLA at 99.7% &middot; <strong style="color:var(--danger);">team strain signal</strong></div>
             <div class="fc-foot">
-              <span class="fc-badge">Needs you</span>
+              <span class="fc-badge" id="fcOpsBadge">Needs you</span>
               <span class="fc-owner">VP Eng</span>
             </div>
           </div>
@@ -2827,7 +2890,7 @@ body.prospect-mode .pm-nav{display:block;}
               <span class="pa-title">Ask TARGA</span>
               <div class="pa-live"><span class="pa-live-dot"></span>Live</div>
             </div>
-            <div class="pa-sub">Context-aware across your full portfolio. Ask anything &mdash; trajectory, ownership, history, what to focus on next.</div>
+            <div class="pa-sub" style="display:none;"></div>
             <div class="pa-chips">
               <span class="pa-chip" onclick="prospectAskChip(this)">What needs my attention today?</span>
               <span class="pa-chip" onclick="prospectAskChip(this)">What changed since I last opened TARGA?</span>
@@ -2853,38 +2916,38 @@ body.prospect-mode .pm-nav{display:block;}
         <div id="prospectIntel">
           <div class="pc-intel-head">Intelligence Feed</div>
 
-          <div class="pc-intel-card">
+          <div class="pc-intel-card" id="intelCritical">
             <div class="pc-intel-stripe red"></div>
             <div class="pc-intel-body">
-              <div class="pc-intel-badge alert">&#9888; Critical &middot; 4 days</div>
-              <div class="pc-intel-text">Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.</div>
-              <div class="pc-intel-acts">
+              <div class="pc-intel-badge alert" id="intelCriticalBadge">&#9888; Critical &middot; 4 days</div>
+              <div class="pc-intel-text" id="intelCriticalText">Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.</div>
+              <div class="pc-intel-acts" id="intelCriticalActs">
                 <button class="pc-intel-btn-p" onclick="openProspectFocus('ops')">Open Ops view</button>
-                <button class="pc-intel-btn-g" onclick="showToast('Action assigned to your queue',true)">Assign</button>
+                <button class="pc-intel-btn-g" onclick="intelAction('critical','assign')">Assign</button>
               </div>
             </div>
           </div>
 
-          <div class="pc-intel-card">
+          <div class="pc-intel-card" id="intelInsight">
             <div class="pc-intel-stripe gold"></div>
             <div class="pc-intel-body">
-              <div class="pc-intel-badge ai">&#10022; TARGA Insight</div>
-              <div class="pc-intel-text">Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.</div>
-              <div class="pc-intel-acts">
+              <div class="pc-intel-badge ai" id="intelInsightBadge">&#10022; TARGA Insight</div>
+              <div class="pc-intel-text" id="intelInsightText">Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.</div>
+              <div class="pc-intel-acts" id="intelInsightActs">
                 <button class="pc-intel-btn-p" onclick="openProspectFocus('revenue')">Open Revenue view</button>
-                <button class="pc-intel-btn-g" onclick="showToast('Dismissed',true)">Dismiss</button>
+                <button class="pc-intel-btn-g" onclick="intelAction('insight','dismiss')">Dismiss</button>
               </div>
             </div>
           </div>
 
-          <div class="pc-intel-card">
+          <div class="pc-intel-card" id="intelSignal">
             <div class="pc-intel-stripe teal"></div>
             <div class="pc-intel-body">
-              <div class="pc-intel-badge signal">&uarr; Signal &middot; This week</div>
-              <div class="pc-intel-text">Customer NPS up <strong>6 points</strong> in latest cut. CS team driving the lift. <strong>Wins like this compound</strong> when executives surface them &mdash; consider naming the team in the next all-hands.</div>
-              <div class="pc-intel-acts">
-                <button class="pc-intel-btn-p" onclick="showToast('Draft sent to your inbox',true)">Draft recognition</button>
-                <button class="pc-intel-btn-g" onclick="showToast('Saved to portfolio notes',true)">Save</button>
+              <div class="pc-intel-badge signal" id="intelSignalBadge">&uarr; Signal &middot; This week</div>
+              <div class="pc-intel-text" id="intelSignalText">Customer NPS up <strong>6 points</strong> in latest cut. CS team driving the lift. <strong>Wins like this compound</strong> when executives surface them &mdash; consider naming the team in the next all-hands.</div>
+              <div class="pc-intel-acts" id="intelSignalActs">
+                <button class="pc-intel-btn-p" onclick="intelAction('signal','draft')">Draft recognition</button>
+                <button class="pc-intel-btn-g" onclick="intelAction('signal','save')">Save</button>
               </div>
             </div>
           </div>
@@ -4306,7 +4369,7 @@ body.prospect-mode .pm-nav{display:block;}
     <div class="dqa-modal">
       <div class="dqa-head">
         <div class="dqa-eye">Quick Add &middot; <span id="dqaRoleTag">CEO</span></div>
-        <div class="dqa-title">What are you adding?</div>
+        <div class="dqa-title">Add to your plan</div>
       </div>
       <div id="dqaStep1">
         <div class="dqa-types" id="dqaTypes"></div>
@@ -4342,7 +4405,7 @@ body.prospect-mode .pm-nav{display:block;}
         <div class="np-modal-titles">
           <div class="np-modal-eye">New Plan &middot; Thesis-Driven Setup</div>
           <div class="np-modal-title">Describe what you want to build</div>
-          <div class="np-modal-sub">Tell TARGA in plain language. It will propose the structure, assign ownership, and configure monitoring.</div>
+          <div class="np-modal-sub">Describe what you want to build.</div>
         </div>
         <button class="np-close" onclick="closeNewPlan()">&times;</button>
       </div>
@@ -4523,6 +4586,9 @@ function applyProspectPersonalization() {
     if (nameSpan) nameSpan.textContent = TARGA_PROSPECT.name;
     pc0.classList.add('prospect-active');
   }
+
+  // Initial ground-state render — reflects any actions already taken (none on fresh entry).
+  renderGroundState();
 }
 
 /* ── Captain Drawer ── */
@@ -4738,11 +4804,242 @@ function resetProspectActions() {
     cost:    { primary: false, secondary: false },
     culture: { primary: false, secondary: false }
   };
+  INTEL_STATE = { critical: 'active', insight: 'active', signal: 'active' };
 }
+
+/* INTEL_STATE — per right-rail Intel card.
+   active = default | assigned/dismissed/saved/handled = state-changed */
+var INTEL_STATE = { critical: 'active', insight: 'active', signal: 'active' };
 
 /* Track which pillar is currently open in the focus view, so executeAction knows
    which CAPTAIN_DRAWERS config to read. Set by openProspectFocus(). */
 var PROSPECT_FOCUS_PILLAR = null;
+
+/* ── Ground-state copy variants ──
+   Centralized so renderGroundState() can swap surface copy when state changes.
+   Resolving = action taken (Marcus scheduled). Resolved = both Ops actions done. */
+var GROUND_STATE_COPY = {
+  active: {
+    strain: 'Engineering team showing strain.',
+    summary: 'Your four annual Goals: <strong>3 green, 1 needs you today.</strong> 14 changes across your portfolio since Friday. 2 wins to amplify.',
+    chip: 'Open the Ops Goal &mdash; team strain detected',
+    chipClass: '',
+    since: 'Last open: 3 days ago',
+    opsMilestone: 'SLA at 99.7% &middot; <strong style="color:var(--danger);">team strain signal</strong>',
+    opsBadge: 'Needs you',
+    opsTileClass: 'danger',
+    intelCriticalBadge: '\u26A0 Critical \u00B7 4 days',
+    intelCriticalText: 'Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.'
+  },
+  resolving: {
+    strain: 'Engineering loop closing.',
+    summary: '<strong>Marcus on calendar today.</strong> Three Goals on track. Strain signal expected to resolve within 24 hours.',
+    chip: 'Open Ops Goal &mdash; loop closing',
+    chipClass: 'resolving',
+    since: 'Action taken: just now',
+    opsMilestone: 'SLA at 99.7% &middot; <strong style="color:var(--warn);">recovery in progress</strong>',
+    opsBadge: 'Resolving',
+    opsTileClass: 'resolving',
+    intelCriticalBadge: '\u2713 Handled \u00B7 just now',
+    intelCriticalText: '<strong>Engagement loop closing.</strong> 15-min with Marcus on calendar today. Comp band decision in motion. Critical signal cleared from the top of the stack.'
+  },
+  resolved: {
+    strain: 'All four Goals on track.',
+    summary: 'Engineering strain resolved. Four annual Goals: <strong>all green.</strong> 14 changes across your portfolio since Friday. 2 wins to amplify.',
+    chip: '\u2713 Ops loop closed',
+    chipClass: 'resolved',
+    since: 'Resolved: just now',
+    opsMilestone: 'SLA at 99.7% &middot; <strong style="color:var(--ok);">strain resolved</strong>',
+    opsBadge: 'On Track',
+    opsTileClass: 'resolved',
+    intelCriticalBadge: '\u2713 Resolved \u00B7 just now',
+    intelCriticalText: '<strong>Ops loop fully closed.</strong> Marcus on calendar, comp band review routed to HR. Engineering strain signal cleared. Critical alert archived.'
+  }
+};
+
+/* Map current Ops action state to a ground-state variant key */
+function getOpsGroundStateKey() {
+  var s = PROSPECT_ACTIONS.ops;
+  if (s.primary && s.secondary) return 'resolved';
+  if (s.primary || s.secondary) return 'resolving';
+  return 'active';
+}
+
+/* renderGroundState — single source of truth for prospect-mode ground UI.
+   Reads PROSPECT_ACTIONS + INTEL_STATE, writes the brief band, Ops pillar tile,
+   and right-rail Intel cards. Called from applyProspectPersonalization and
+   from executeAction so any action propagates outward to the rest of the surface. */
+function renderGroundState() {
+  if (!document.body.classList.contains('prospect-mode')) return;
+  var key = getOpsGroundStateKey();
+  var copy = GROUND_STATE_COPY[key];
+  if (!copy) return;
+
+  // Brief band — strain text, summary, chip, since
+  var strainEl = document.getElementById('mbStrainText');
+  if (strainEl) {
+    strainEl.textContent = copy.strain;
+    strainEl.classList.remove('resolving', 'resolved');
+    if (key !== 'active') strainEl.classList.add(key);
+  }
+  var summaryEl = document.getElementById('mbSummary');
+  if (summaryEl) {
+    // Keep the strain span; replace what's after it.
+    summaryEl.innerHTML = '<span class="mb-strain' + (key !== 'active' ? ' ' + key : '') + '" id="mbStrainText">' + copy.strain + '</span> ' + copy.summary;
+  }
+  var chipEl = document.getElementById('mbChip');
+  if (chipEl) {
+    var chipTextEl = chipEl.querySelector('#mbChipText') || chipEl.querySelector('span:not(.mb-needs-dot):not(.mb-needs-arrow)');
+    if (chipTextEl) chipTextEl.innerHTML = copy.chip;
+    chipEl.classList.remove('resolving', 'resolved');
+    if (copy.chipClass) chipEl.classList.add(copy.chipClass);
+    // When resolved, the chip is no longer a click target
+    if (key === 'resolved') chipEl.removeAttribute('onclick');
+    else chipEl.setAttribute('onclick', "openCaptainDrawer('ops')");
+  }
+  var sinceEl = document.getElementById('mbSince');
+  if (sinceEl) sinceEl.textContent = copy.since;
+
+  // Ops pillar tile — class swap, milestone copy, badge
+  var opsTile = document.getElementById('fcOpsTile');
+  if (opsTile) {
+    opsTile.classList.remove('danger', 'resolving', 'resolved');
+    if (copy.opsTileClass) opsTile.classList.add(copy.opsTileClass);
+  }
+  var opsMilestone = document.getElementById('fcOpsMilestone');
+  if (opsMilestone) opsMilestone.innerHTML = copy.opsMilestone;
+  var opsBadge = document.getElementById('fcOpsBadge');
+  if (opsBadge) opsBadge.textContent = copy.opsBadge;
+
+  // Intel Critical card — reflects Ops state OR INTEL_STATE.critical
+  var critCard = document.getElementById('intelCritical');
+  if (critCard) {
+    if (INTEL_STATE.critical === 'dismissed') {
+      critCard.classList.add('dismissed');
+    } else {
+      critCard.classList.remove('dismissed');
+      var critBadge = document.getElementById('intelCriticalBadge');
+      var critText = document.getElementById('intelCriticalText');
+      if (critBadge) critBadge.innerHTML = copy.intelCriticalBadge;
+      if (critText) critText.innerHTML = copy.intelCriticalText;
+      if (key !== 'active') critCard.classList.add('handled');
+      else critCard.classList.remove('handled');
+      // When Ops is resolved, the action buttons should reflect that
+      var critActs = document.getElementById('intelCriticalActs');
+      if (critActs) {
+        if (key === 'resolved') {
+          critActs.innerHTML = '<span class="pc-intel-saved-tag">\u2713 Archived</span>';
+        } else if (key === 'resolving') {
+          critActs.innerHTML = '<button class="pc-intel-btn-p" onclick="openProspectFocus(\'ops\')">Open Ops view</button><button class="pc-intel-btn-g" onclick="intelAction(\'critical\',\'assign\')">Assign</button>';
+        } else {
+          critActs.innerHTML = '<button class="pc-intel-btn-p" onclick="openProspectFocus(\'ops\')">Open Ops view</button><button class="pc-intel-btn-g" onclick="intelAction(\'critical\',\'assign\')">Assign</button>';
+        }
+      }
+    }
+  }
+
+  // Intel Insight — when Revenue Goal action is taken, reflect that the concentration risk concern has eased
+  var insightCard = document.getElementById('intelInsight');
+  if (insightCard) {
+    if (INTEL_STATE.insight === 'dismissed') {
+      insightCard.classList.add('dismissed');
+    } else {
+      insightCard.classList.remove('dismissed');
+      var insightText = document.getElementById('intelInsightText');
+      if (insightText) {
+        if (PROSPECT_ACTIONS.revenue.primary) {
+          // Revenue acted — reconcile with the resolved Q3 narrative
+          insightText.innerHTML = '<strong>Revenue Goal on track at +8%.</strong> Two whale contracts signed this morning &mdash; Q3 milestone now fully covered. Concentration risk on the AE pod has eased. Worth keeping an eye on bandwidth.';
+          insightCard.classList.add('handled');
+          var insightActs = document.getElementById('intelInsightActs');
+          if (insightActs) insightActs.innerHTML = '<button class="pc-intel-btn-p" onclick="openProspectFocus(\'revenue\')">Open Revenue view</button><button class="pc-intel-btn-g" onclick="intelAction(\'insight\',\'dismiss\')">Dismiss</button>';
+        } else {
+          insightText.innerHTML = 'Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.';
+          insightCard.classList.remove('handled');
+        }
+      }
+    }
+  }
+
+  // Intel Signal — saved/dismissed reflection
+  var signalCard = document.getElementById('intelSignal');
+  if (signalCard) {
+    if (INTEL_STATE.signal === 'dismissed') {
+      signalCard.classList.add('dismissed');
+    } else {
+      signalCard.classList.remove('dismissed');
+      var signalActs = document.getElementById('intelSignalActs');
+      if (signalActs) {
+        if (INTEL_STATE.signal === 'saved') {
+          signalActs.innerHTML = '<span class="pc-intel-saved-tag">\u2713 Saved to portfolio notes</span>';
+          signalCard.classList.add('handled');
+        } else if (INTEL_STATE.signal === 'drafted') {
+          signalActs.innerHTML = '<span class="pc-intel-saved-tag">\u2713 Draft in your inbox</span>';
+          signalCard.classList.add('handled');
+        } else {
+          signalActs.innerHTML = '<button class="pc-intel-btn-p" onclick="intelAction(\'signal\',\'draft\')">Draft recognition</button><button class="pc-intel-btn-g" onclick="intelAction(\'signal\',\'save\')">Save</button>';
+          signalCard.classList.remove('handled');
+        }
+      }
+    }
+  }
+
+  // Menu submenu — Ops loop row meta reflects resolved state
+  var pmOpsRow = document.getElementById('pmOpsLoop');
+  var pmOpsMeta = document.getElementById('pmOpsLoopMeta');
+  if (pmOpsRow && pmOpsMeta) {
+    pmOpsRow.classList.remove('alert');
+    if (key === 'active') {
+      pmOpsRow.classList.add('alert');
+      pmOpsMeta.textContent = 'Open \u00B7 4 days';
+    } else if (key === 'resolving') {
+      pmOpsMeta.textContent = 'Closing today';
+    } else {
+      pmOpsMeta.textContent = '\u2713 Closed';
+    }
+  }
+}
+
+/* submenuAction — submenu shortcuts route through the focus card so the prospect
+   sees the state change happen, and idempotency is enforced. Already-done actions
+   just open the focus card without re-firing. */
+function submenuAction(pillar, kind) {
+  var state = PROSPECT_ACTIONS[pillar];
+  var alreadyDone = state && state[kind];
+  openProspectFocus(pillar);
+  if (alreadyDone) return;
+  // Defer the action one tick so the focus card finishes its open animation first.
+  setTimeout(function() { executeAction(kind); }, 60);
+}
+
+/* intelAction — handle the right-rail card buttons.
+   Each action mutates INTEL_STATE then re-renders the ground state. */
+function intelAction(card, kind) {
+  if (card === 'critical' && kind === 'assign') {
+    INTEL_STATE.critical = 'assigned';
+    showToast('Assigned to your today queue', true);
+    renderGroundState();
+    return;
+  }
+  if (card === 'insight' && kind === 'dismiss') {
+    INTEL_STATE.insight = 'dismissed';
+    showToast('Insight dismissed', true);
+    renderGroundState();
+    return;
+  }
+  if (card === 'signal' && kind === 'draft') {
+    INTEL_STATE.signal = 'drafted';
+    showToast('Recognition drafted to your inbox', true);
+    renderGroundState();
+    return;
+  }
+  if (card === 'signal' && kind === 'save') {
+    INTEL_STATE.signal = 'saved';
+    showToast('Saved to portfolio notes', true);
+    renderGroundState();
+    return;
+  }
+}
 
 /* executeAction — in prospect mode, mutate the focus card to reflect the action.
    - Appends a new loop entry showing what just happened
@@ -4814,6 +5111,9 @@ function executeAction(kind) {
   // Mark state
   if (isPrimary) state.primary = true;
   else state.secondary = true;
+
+  // Propagate to ground-state surfaces (brief band, Ops tile, Intel critical card)
+  renderGroundState();
 
   // Fire toast
   showToast(toast || 'Action complete', true);
@@ -5737,7 +6037,15 @@ var DQA_TYPES_BY_ROLE = {
 
 function openDesktopQA() {
   var overlay = document.getElementById('dqaOverlay'); if (!overlay) return;
-  var tag = document.getElementById('dqaRoleTag'); if(tag) tag.textContent = ROLE_NAMES[currentRole].split(' ')[0];
+  var tag = document.getElementById('dqaRoleTag');
+  if (tag) {
+    // In prospect mode, show the prospect's name. Otherwise show the role name.
+    if (document.body.classList.contains('prospect-mode') && TARGA_PROSPECT && TARGA_PROSPECT.name) {
+      tag.textContent = TARGA_PROSPECT.name;
+    } else {
+      tag.textContent = ROLE_NAMES[currentRole].split(' ')[0];
+    }
+  }
   var types = DQA_TYPES_BY_ROLE[currentRole] || DQA_TYPES_BY_ROLE[0];
   var typesEl = document.getElementById('dqaTypes');
   if (typesEl) {
@@ -6750,14 +7058,39 @@ function npSubmitClarify() {
 /* ── MOBILE PANEL COLORS ── */
 var panelColors = { center:'var(--panel-center,#0d8b82)', intel:'var(--panel-intel,#b07f1f)', actions:'var(--panel-actions,#1a2f5a)', metrics:'var(--panel-metrics,#2c8a5e)', connections:'var(--panel-connections,#6b3fa0)' };
 
-/* Escape key closes any open modal. closeNewPlan/closeDesktopQA/closeCaptainDrawer are no-ops when their overlay isn't visible. */
+/* Escape key closes the topmost open layer only.
+   Priority: modals (Quick Add, New Plan) > drawer/focus > submenus.
+   Each `return` after a close ensures lower layers stay open. */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    if (typeof closeNewPlan === 'function') closeNewPlan();
-    if (typeof closeDesktopQA === 'function') closeDesktopQA();
-    if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
-    if (typeof closePmAll === 'function') closePmAll();
-    if (typeof closeProspectFocus === 'function') closeProspectFocus();
+    // Topmost: Quick Add modal
+    var dqaOv = document.getElementById('dqaOverlay');
+    if (dqaOv && dqaOv.classList.contains('vis')) {
+      if (typeof closeDesktopQA === 'function') closeDesktopQA();
+      return;
+    }
+    // Next: New Plan modal
+    var npOv = document.getElementById('npOverlay');
+    if (npOv && npOv.classList.contains('vis')) {
+      if (typeof closeNewPlan === 'function') closeNewPlan();
+      return;
+    }
+    // Next: Captain drawer (internal mode only — prospect mode uses focus card)
+    var cdOv = document.getElementById('cdOverlay');
+    if (cdOv && cdOv.classList.contains('vis')) {
+      if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
+      return;
+    }
+    // Next: Prospect focus card
+    if (document.body.classList.contains('focus-mode')) {
+      if (typeof closeProspectFocus === 'function') closeProspectFocus();
+      return;
+    }
+    // Next: open menu submenu (prospect mode)
+    if (document.querySelector('.pm-item.open, .pm-item.locked')) {
+      if (typeof closePmAll === 'function') closePmAll();
+      return;
+    }
   }
   // Quick Add: numeric shortcuts 1-4 select a type when step 1 is visible.
   // Only fire if the modal is visible, step 1 is showing, and no text input is focused.
