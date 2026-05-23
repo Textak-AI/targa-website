@@ -749,10 +749,12 @@ input,textarea{font-family:var(--font-b);outline:none;}
 /* ── NEW PLAN MODAL ── */
 
 .dqa-overlay{
-  position:fixed;inset:0;background:rgba(4,8,16,0.92);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  z-index:9999;display:flex;align-items:center;justify-content:center;
+  position:fixed;inset:0;background:rgba(4,8,16,0.96);
+  backdrop-filter:blur(20px) saturate(0.85);
+  -webkit-backdrop-filter:blur(20px) saturate(0.85);
+  z-index:99999;display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity 0.22s cubic-bezier(0.4,0,0.2,1);
+  isolation:isolate;
 }
 .dqa-overlay.vis{opacity:1;pointer-events:all;}
 .dqa-modal{
@@ -895,10 +897,12 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .dqa-confirm-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;}
 .dqa-confirm-sub{font-size:14px;color:rgba(255,255,255,0.5);}
 .np-overlay{
-  position:fixed;inset:0;background:rgba(4,8,16,0.92);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  z-index:9999;display:flex;align-items:center;justify-content:center;
+  position:fixed;inset:0;background:rgba(4,8,16,0.96);
+  backdrop-filter:blur(20px) saturate(0.85);
+  -webkit-backdrop-filter:blur(20px) saturate(0.85);
+  z-index:99999;display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity var(--dur-med) var(--ease);
+  isolation:isolate;
   
 }
 .np-overlay.vis{opacity:1;pointer-events:all;}
@@ -2282,6 +2286,7 @@ body.prospect-mode .pm-nav{display:block;}
 }
 .pm-sub-status.warn{background:rgba(207,138,42,0.16);color:#e0a851;}
 .pm-sub-status.risk{background:rgba(196,72,72,0.16);color:#e07171;}
+.pm-sub-status.ok{background:rgba(58,167,118,0.16);color:#5bc28a;}
 .pm-sub-title{
   font-family:var(--font-d);font-size:14px;font-weight:600;
   color:#fff;letter-spacing:-0.01em;line-height:1.25;
@@ -2606,15 +2611,15 @@ body.prospect-mode .pm-nav{display:block;}
             </div>
           </div>
 
-          <div class="pm-item" data-pillar="ops" data-status="risk">
-            <span class="pm-dot risk"></span>
+          <div class="pm-item" data-pillar="ops" data-status="risk" id="pmOpsItem">
+            <span class="pm-dot risk" id="pmOpsDot"></span>
             <div class="pm-label">
               <span class="pm-label-top">Ops</span>
-              <span class="pm-label-sub">Needs you &middot; team strain</span>
+              <span class="pm-label-sub" id="pmOpsLabelSub">Needs you &middot; team strain</span>
             </div>
             <div class="pm-sub" style="left:auto;right:0;border-radius:var(--r-lg) 0 var(--r-lg) var(--r-lg);">
               <div class="pm-sub-head">
-                <div class="pm-sub-eye"><span>Ops Goal</span><span class="pm-sub-status risk">Needs You</span></div>
+                <div class="pm-sub-eye"><span>Ops Goal</span><span class="pm-sub-status risk" id="pmOpsSubStatus">Needs You</span></div>
                 <div class="pm-sub-title">99.5% SLA, zero P1 outages</div>
               </div>
               <div class="pm-sub-items">
@@ -2660,12 +2665,12 @@ body.prospect-mode .pm-nav{display:block;}
         <aside id="prospectKpis">
           <div class="pk-head">Board KPIs</div>
 
-          <div class="pk-card">
+          <div class="pk-card" id="pkPlanHealth">
             <div class="pk-label">Plan Health</div>
-            <div class="pk-val">76%</div>
+            <div class="pk-val" id="pkPlanHealthVal">76%</div>
             <div class="pk-sub">Composite across 4 Goals &middot; Target 80%</div>
-            <div class="pk-trend warn">&rarr; 1 Goal needs attention</div>
-            <div class="pk-bar"><div class="pk-bar-fill warn" style="width:76%;"></div></div>
+            <div class="pk-trend warn" id="pkPlanHealthTrend">&rarr; 1 Goal needs attention</div>
+            <div class="pk-bar"><div class="pk-bar-fill warn" id="pkPlanHealthBar" style="width:76%;"></div></div>
           </div>
 
           <div class="pk-card">
@@ -4829,7 +4834,16 @@ var GROUND_STATE_COPY = {
     opsBadge: 'Needs you',
     opsTileClass: 'danger',
     intelCriticalBadge: '\u26A0 Critical \u00B7 4 days',
-    intelCriticalText: 'Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.'
+    intelCriticalText: 'Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.',
+    pmOpsDotClass: 'risk',
+    pmOpsLabelSub: 'Needs you &middot; team strain',
+    pmOpsSubStatus: 'Needs You',
+    pmOpsSubStatusClass: 'risk',
+    planHealthVal: '76%',
+    planHealthTrend: '&rarr; 1 Goal needs attention',
+    planHealthTrendClass: 'warn',
+    planHealthBarWidth: '76%',
+    planHealthBarClass: 'warn'
   },
   resolving: {
     strain: 'Engineering loop closing.',
@@ -4841,7 +4855,16 @@ var GROUND_STATE_COPY = {
     opsBadge: 'Resolving',
     opsTileClass: 'resolving',
     intelCriticalBadge: '\u2713 Handled \u00B7 just now',
-    intelCriticalText: '<strong>Engagement loop closing.</strong> 15-min with Marcus on calendar today. Comp band decision in motion. Critical signal cleared from the top of the stack.'
+    intelCriticalText: '<strong>Engagement loop closing.</strong> 15-min with Marcus on calendar today. Comp band decision in motion. Critical signal cleared from the top of the stack.',
+    pmOpsDotClass: 'warn',
+    pmOpsLabelSub: 'Resolving &middot; closing today',
+    pmOpsSubStatus: 'Resolving',
+    pmOpsSubStatusClass: 'warn',
+    planHealthVal: '84%',
+    planHealthTrend: '\u2192 Loop closing today',
+    planHealthTrendClass: 'warn',
+    planHealthBarWidth: '84%',
+    planHealthBarClass: 'warn'
   },
   resolved: {
     strain: 'All four Goals on track.',
@@ -4853,7 +4876,16 @@ var GROUND_STATE_COPY = {
     opsBadge: 'On Track',
     opsTileClass: 'resolved',
     intelCriticalBadge: '\u2713 Resolved \u00B7 just now',
-    intelCriticalText: '<strong>Ops loop fully closed.</strong> Marcus on calendar, comp band review routed to HR. Engineering strain signal cleared. Critical alert archived.'
+    intelCriticalText: '<strong>Ops loop fully closed.</strong> Marcus on calendar, comp band review routed to HR. Engineering strain signal cleared. Critical alert archived.',
+    pmOpsDotClass: 'ok',
+    pmOpsLabelSub: 'On Track &middot; resolved',
+    pmOpsSubStatus: 'On Track',
+    pmOpsSubStatusClass: 'ok',
+    planHealthVal: '92%',
+    planHealthTrend: '\u2191 All four Goals on track',
+    planHealthTrendClass: 'up',
+    planHealthBarWidth: '92%',
+    planHealthBarClass: ''
   }
 };
 
@@ -4916,6 +4948,12 @@ function renderGroundState() {
   if (critCard) {
     if (INTEL_STATE.critical === 'dismissed') {
       critCard.classList.add('dismissed');
+    } else if (INTEL_STATE.critical === 'assigned') {
+      // Manual assign — card becomes muted with assigned pill, regardless of Ops state.
+      critCard.classList.remove('dismissed');
+      critCard.classList.add('handled');
+      var critActs0 = document.getElementById('intelCriticalActs');
+      if (critActs0) critActs0.innerHTML = '<span class="pc-intel-saved-tag">\u2713 Assigned to today</span>';
     } else {
       critCard.classList.remove('dismissed');
       var critBadge = document.getElementById('intelCriticalBadge');
@@ -4930,7 +4968,8 @@ function renderGroundState() {
         if (key === 'resolved') {
           critActs.innerHTML = '<span class="pc-intel-saved-tag">\u2713 Archived</span>';
         } else if (key === 'resolving') {
-          critActs.innerHTML = '<button class="pc-intel-btn-p" onclick="openProspectFocus(\'ops\')">Open Ops view</button><button class="pc-intel-btn-g" onclick="intelAction(\'critical\',\'assign\')">Assign</button>';
+          // HANDLED state — drop the Assign secondary action; the card identity has changed
+          critActs.innerHTML = '<button class="pc-intel-btn-p" onclick="openProspectFocus(\'ops\')">Open Ops view</button>';
         } else {
           critActs.innerHTML = '<button class="pc-intel-btn-p" onclick="openProspectFocus(\'ops\')">Open Ops view</button><button class="pc-intel-btn-g" onclick="intelAction(\'critical\',\'assign\')">Assign</button>';
         }
@@ -4948,8 +4987,9 @@ function renderGroundState() {
       var insightText = document.getElementById('intelInsightText');
       if (insightText) {
         if (PROSPECT_ACTIONS.revenue.primary) {
-          // Revenue acted — reconcile with the resolved Q3 narrative
-          insightText.innerHTML = '<strong>Revenue Goal on track at +8%.</strong> Two whale contracts signed this morning &mdash; Q3 milestone now fully covered. Concentration risk on the AE pod has eased. Worth keeping an eye on bandwidth.';
+          // Revenue acted — Q3 is resolved per the focus card loop. Pivot the concern to Q4
+          // so the insight doesn't contradict the focus card while still surfacing real risk.
+          insightText.innerHTML = '<strong>Q3 closed clean.</strong> Two whales signed this morning, milestone fully covered. Note: <strong>Q4 carries the same concentration pattern</strong> — one AE pod will own three of the four open Q4 milestones. Worth a CRO conversation before the bandwidth conversation becomes urgent.';
           insightCard.classList.add('handled');
           var insightActs = document.getElementById('intelInsightActs');
           if (insightActs) insightActs.innerHTML = '<button class="pc-intel-btn-p" onclick="openProspectFocus(\'revenue\')">Open Revenue view</button><button class="pc-intel-btn-g" onclick="intelAction(\'insight\',\'dismiss\')">Dismiss</button>';
@@ -4997,6 +5037,37 @@ function renderGroundState() {
     } else {
       pmOpsMeta.textContent = '\u2713 Closed';
     }
+  }
+
+  // Top-nav Ops pm-item — dot color, label sub, submenu status pill
+  var pmOpsDot = document.getElementById('pmOpsDot');
+  if (pmOpsDot) {
+    pmOpsDot.classList.remove('risk', 'warn', 'ok');
+    pmOpsDot.classList.add(copy.pmOpsDotClass);
+  }
+  var pmOpsLabelSub = document.getElementById('pmOpsLabelSub');
+  if (pmOpsLabelSub) pmOpsLabelSub.innerHTML = copy.pmOpsLabelSub;
+  var pmOpsSubStatus = document.getElementById('pmOpsSubStatus');
+  if (pmOpsSubStatus) {
+    pmOpsSubStatus.textContent = copy.pmOpsSubStatus;
+    pmOpsSubStatus.classList.remove('risk', 'warn', 'ok');
+    pmOpsSubStatus.classList.add(copy.pmOpsSubStatusClass);
+  }
+
+  // Left-rail Plan Health KPI — value, trend, bar width and color
+  var pkPlanHealthVal = document.getElementById('pkPlanHealthVal');
+  if (pkPlanHealthVal) pkPlanHealthVal.textContent = copy.planHealthVal;
+  var pkPlanHealthTrend = document.getElementById('pkPlanHealthTrend');
+  if (pkPlanHealthTrend) {
+    pkPlanHealthTrend.innerHTML = copy.planHealthTrend;
+    pkPlanHealthTrend.classList.remove('up', 'warn', 'flat');
+    if (copy.planHealthTrendClass) pkPlanHealthTrend.classList.add(copy.planHealthTrendClass);
+  }
+  var pkPlanHealthBar = document.getElementById('pkPlanHealthBar');
+  if (pkPlanHealthBar) {
+    pkPlanHealthBar.style.width = copy.planHealthBarWidth;
+    pkPlanHealthBar.classList.remove('warn', 'risk');
+    if (copy.planHealthBarClass) pkPlanHealthBar.classList.add(copy.planHealthBarClass);
   }
 }
 
@@ -5386,14 +5457,22 @@ function scrollToProspectAsk() {
 
 /* ── Prospect-mode Ask TARGA ──
    Canned answers keyed to chip text. Free-text input falls through to a
-   generic acknowledgment. The point is for the prospect to ask a "would
-   this actually work for X" question and get a plausible response — not
-   a real LLM call. */
+   generic acknowledgment. Each canonical answer has pre-action and post-action
+   variants so the assistant doesn't tell the prospect to do what they just did. */
 const PROSPECT_ANSWERS = {
   'attention': '<strong>Your Ops Goal needs you today.</strong> The Goal itself is on track (SLA at 99.7%), but VP Engineering is showing strain — a key initiative has been at-risk for 8 days, comment activity dropped 60%, and a senior hire fell through last week. The engagement loop on the comp band review has been open for 4 days. <strong>Suggested action:</strong> a 15-minute 1:1 with Marcus before standup.',
   'changed': '<strong>14 changes across your portfolio since Friday.</strong> Notable: Revenue Goal pacing improved +8% to plan (two enterprise contracts signed). Cost Goal recovery on track — $3.1M of the $4.2M vendor consolidation now closed. Culture pulse participation up 12% YoY. The Ops Goal team strain signal is new — flagged Monday after the second candidate declined.',
-  'board': '<strong>Draft board update — Q2 status:</strong><br><br>Three of four annual Goals on track. Revenue pacing +8% to plan, $135M annualized target now fully covered by signed pipeline. Cost recovery ahead — $3.1M of $4.2M Q3 vendor consolidation closed, $2.1M of margin pulled forward via warehouse work. Culture pulse participation up 12% YoY, on track for ≥76 mid-year score.<br><br>Operational SLA holds at 99.7% (target 99.5%), but engineering team is showing strain — a key role search has stalled on comp band, and team comment activity has dropped materially. We are addressing this week.<br><br><em>Want me to send this to your editor?</em>',
+  'board': '<strong>Draft board update — Q2 status:</strong><br><br>Three of four annual Goals on track. Revenue pacing +8% to plan, $135M annualized target now fully covered by signed pipeline. Cost recovery ahead — $3.1M of $4.2M Q3 vendor consolidation closed, $2.1M of margin pulled forward via warehouse work. Culture pulse participation up 12% YoY, on track for &ge;76 mid-year score.<br><br>Operational SLA holds at 99.7% (target 99.5%), but engineering team is showing strain — a key role search has stalled on comp band, and team comment activity has dropped materially. We are addressing this week.<br><br><em>Want me to send this to your editor?</em>',
   'risk': '<strong>Ops Goal carries the highest leading-indicator risk.</strong> The Goal status is green, but the team behind it is showing strain — that\'s the pattern that historically precedes a Goal flip. The Cost Goal is yellow on raw metrics but has a credible recovery narrative from the CFO. Revenue and Culture are both clean. Net: Ops needs your attention now, before the lagging indicator catches up to the leading one.'
+};
+
+/* Post-action variants. Used when PROSPECT_ACTIONS.ops shows at least one action taken.
+   These reflect the same questions answered against a resolved/resolving state. */
+const PROSPECT_ANSWERS_POST = {
+  'attention': '<strong>You\'re on top of it.</strong> Engagement loop with Marcus closing today (15-min on calendar). Strain signal expected to resolve within 24 hours. <strong>Nothing else needs you right now</strong> — Revenue is +8% ahead, Cost on track at $3.1M / $4.2M consolidated, Culture pulse projecting 76-78.',
+  'changed': '<strong>15 changes across your portfolio since Friday.</strong> Most recent: <strong>you scheduled a 15-min with Marcus</strong>, closing the comp band loop that had been open for 4 days. Two whale contracts signed this morning on the Revenue side. Cost consolidation crossed the $3M mark Tuesday. Culture pulse participation up 12% YoY.',
+  'board': '<strong>Draft board update — Q2 status:</strong><br><br>Four annual Goals on track or recovering. Revenue pacing +8% to plan, $135M annualized target now fully covered by signed pipeline. Cost recovery ahead — $3.1M of $4.2M Q3 vendor consolidation closed, $2.1M of margin pulled forward. Culture pulse participation up 12% YoY, on track for &ge;76 mid-year score.<br><br>Operational SLA holds at 99.7% (target 99.5%). The engineering strain signal we flagged Monday is closing — 15-min with VP Eng on calendar today, comp band review routed to HR.<br><br><em>Want me to send this to your editor?</em>',
+  'risk': '<strong>No active risk requiring your attention.</strong> The Ops engagement loop you closed this morning was the highest-priority leading-indicator concern. Cost Goal continues to show a yellow raw-metric pattern but has a credible CFO recovery narrative. Revenue and Culture remain clean. Net: keep watching Cost; nothing urgent.'
 };
 
 function getProspectAnswerKey(text) {
@@ -5427,7 +5506,11 @@ function prospectAskRun(text) {
   setTimeout(function() {
     if (loading) loading.classList.remove('vis');
     var key = getProspectAnswerKey(text);
-    var answer = key ? PROSPECT_ANSWERS[key] :
+    // Post-action variants kick in once any Ops action is taken (resolving or resolved).
+    var opsActed = PROSPECT_ACTIONS && PROSPECT_ACTIONS.ops &&
+                   (PROSPECT_ACTIONS.ops.primary || PROSPECT_ACTIONS.ops.secondary);
+    var source = opsActed ? PROSPECT_ANSWERS_POST : PROSPECT_ANSWERS;
+    var answer = key ? source[key] :
       '<strong>Working on that.</strong> In the live platform this would draw on your full portfolio context — Goal trajectory, owner narrative, engagement loop history, and the Strategy Overlay — to give you a grounded answer. For the demo, try one of the suggested questions to see the response shape.';
     if (resp) {
       resp.innerHTML = answer;
@@ -6058,7 +6141,6 @@ function openDesktopQA() {
           '<span class="dqa-type-label">'+t.label+'</span>' +
           (hint ? '<span class="dqa-type-hint">'+hint+'</span>' : '') +
         '</div>' +
-        '<span class="dqa-type-kbd">'+(i+1)+'</span>' +
       '</div>';
     }).join('');
   }
@@ -7090,20 +7172,6 @@ document.addEventListener('keydown', function(e) {
     if (document.querySelector('.pm-item.open, .pm-item.locked')) {
       if (typeof closePmAll === 'function') closePmAll();
       return;
-    }
-  }
-  // Quick Add: numeric shortcuts 1-4 select a type when step 1 is visible.
-  // Only fire if the modal is visible, step 1 is showing, and no text input is focused.
-  if (/^[1-4]$/.test(e.key)) {
-    var overlay = document.getElementById('dqaOverlay');
-    var s1 = document.getElementById('dqaStep1');
-    var active = document.activeElement;
-    var typingInInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
-    if (overlay && overlay.classList.contains('vis') && s1 && s1.style.display !== 'none' && !typingInInput) {
-      e.preventDefault();
-      var idx = parseInt(e.key, 10) - 1;
-      var types = DQA_TYPES_BY_ROLE[currentRole] || DQA_TYPES_BY_ROLE[0];
-      if (types[idx]) dqaSelectType(idx);
     }
   }
 });
