@@ -1569,11 +1569,124 @@ input,textarea{font-family:var(--font-b);outline:none;}
 
 /* ══════════════════════════════════════════════
    PROSPECT MODE — hide existing pf-grid below the four-category strip;
-   show a dedicated Ask TARGA block instead. The PS-01 brief band and
-   pillar strip become the entire dashboard surface for the prospect.
+   show a dedicated command-center surface instead (PS-01 ground state):
+   brief band → four pillars → dark Live Feed + light Intel rail → Ask TARGA.
 ══════════════════════════════════════════════ */
 body.prospect-mode #rv0 .pf-grid{display:none!important;}
-body:not(.prospect-mode) #prospectAsk{display:none!important;}
+body:not(.prospect-mode) #prospectAsk,
+body:not(.prospect-mode) #prospectCenter{display:none!important;}
+
+/* Two-column command-center band: dark Live Feed left, light Intel rail right */
+#prospectCenter{
+  display:grid;grid-template-columns:1fr 320px;gap:18px;margin-bottom:14px;
+}
+
+/* ── Dark TARGA Live Feed (left column) ── */
+.pc-feed{
+  background:linear-gradient(180deg,#0a1424 0%,#060e1a 100%);
+  border:1px solid rgba(14,178,175,0.18);border-radius:var(--r-xl);
+  overflow:hidden;
+  box-shadow:0 2px 24px rgba(0,0,0,0.22),inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.pc-feed-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 18px;border-bottom:1px solid rgba(14,178,175,0.12);
+  background:linear-gradient(180deg,rgba(14,178,175,0.04),transparent);
+}
+.pc-feed-label{
+  display:flex;align-items:center;gap:9px;
+  font-family:var(--font-m);font-size:9.5px;font-weight:700;
+  letter-spacing:0.18em;text-transform:uppercase;color:#7adcd2;
+}
+.pc-feed-pulse{width:7px;height:7px;border-radius:50%;background:#0eb2af;
+  box-shadow:0 0 8px #0eb2af,0 0 0 3px rgba(14,178,175,0.18);
+  animation:pulse 1.8s ease-in-out infinite;}
+.pc-feed-ts{font-family:var(--font-m);font-size:9px;
+  color:rgba(255,255,255,0.28);letter-spacing:0.08em;}
+.pc-feed-items{padding:6px 0;}
+.pc-feed-item{
+  display:flex;align-items:flex-start;gap:12px;padding:13px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:background var(--dur-fast) var(--ease);
+  opacity:0;transform:translateY(4px);
+  animation:pcFeedIn 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+.pc-feed-item:last-child{border-bottom:none;}
+.pc-feed-item:hover{background:rgba(255,255,255,0.025);cursor:pointer;}
+.pc-feed-item:nth-child(1){animation-delay:0.12s;}
+.pc-feed-item:nth-child(2){animation-delay:0.26s;}
+.pc-feed-item:nth-child(3){animation-delay:0.40s;}
+.pc-feed-item:nth-child(4){animation-delay:0.54s;}
+@keyframes pcFeedIn{to{opacity:1;transform:none;}}
+.pc-feed-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.pc-feed-dot.green{background:#2c8a5e;box-shadow:0 0 6px rgba(44,138,94,0.6),0 0 0 3px rgba(44,138,94,0.15);}
+.pc-feed-dot.red{background:#d44a4a;box-shadow:0 0 6px rgba(212,74,74,0.65),0 0 0 3px rgba(212,74,74,0.15);}
+.pc-feed-dot.gold{background:#fbbf24;box-shadow:0 0 6px rgba(251,191,36,0.55),0 0 0 3px rgba(251,191,36,0.15);}
+.pc-feed-dot.teal{background:#0eb2af;box-shadow:0 0 6px rgba(14,178,175,0.55),0 0 0 3px rgba(14,178,175,0.15);}
+.pc-feed-body{flex:1;min-width:0;}
+.pc-feed-tag{
+  font-family:var(--font-m);font-size:8.5px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;margin-bottom:3px;
+}
+.pc-feed-tag.green{color:#5cb888;}
+.pc-feed-tag.red{color:#e07171;}
+.pc-feed-tag.gold{color:#e5a93a;}
+.pc-feed-tag.teal{color:#3dc8c4;}
+.pc-feed-text{font-size:12.5px;color:rgba(255,255,255,0.78);
+  line-height:1.55;font-family:var(--font-b);}
+.pc-feed-text strong{color:rgba(255,255,255,0.96);font-weight:600;}
+.pc-feed-when{font-family:var(--font-m);font-size:9px;
+  color:rgba(255,255,255,0.22);flex-shrink:0;margin-top:5px;letter-spacing:0.04em;}
+
+/* ── Light Intelligence Feed (right rail) ── */
+.pc-intel{display:flex;flex-direction:column;gap:10px;}
+.pc-intel-head{
+  font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--text-4);font-weight:700;
+  margin-bottom:4px;display:flex;align-items:center;gap:7px;
+}
+.pc-intel-head::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--p-teal-500);box-shadow:0 0 0 3px rgba(14,178,175,0.15);
+}
+.pc-intel-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:0;overflow:hidden;
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 2px 8px rgba(12,20,36,0.04);
+  display:flex;
+  transition:all var(--dur-fast) var(--ease);
+}
+.pc-intel-card:hover{transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(12,20,36,0.08);}
+.pc-intel-stripe{width:3px;flex-shrink:0;}
+.pc-intel-stripe.red{background:var(--danger);}
+.pc-intel-stripe.gold{background:var(--warn);}
+.pc-intel-stripe.teal{background:var(--primary);}
+.pc-intel-body{padding:12px 14px 13px;flex:1;min-width:0;}
+.pc-intel-badge{
+  font-family:var(--font-m);font-size:9px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.pc-intel-badge.alert{color:var(--danger);}
+.pc-intel-badge.ai{color:var(--warn);}
+.pc-intel-badge.signal{color:var(--primary);}
+.pc-intel-text{font-size:12px;color:var(--text-2);line-height:1.5;margin-bottom:9px;}
+.pc-intel-text strong{color:var(--text-1);font-weight:600;}
+.pc-intel-acts{display:flex;gap:6px;flex-wrap:wrap;}
+.pc-intel-btn-p{
+  background:var(--primary);color:#fff;border:none;padding:6px 11px;
+  border-radius:var(--r-md);font-size:11px;font-weight:600;cursor:pointer;
+  font-family:var(--font-b);transition:all var(--dur-fast) var(--ease);
+}
+.pc-intel-btn-p:hover{background:var(--primary-h);}
+.pc-intel-btn-g{
+  background:transparent;color:var(--text-3);
+  border:1px solid var(--border-md);padding:6px 10px;border-radius:var(--r-md);
+  font-size:11px;cursor:pointer;font-family:var(--font-b);
+  transition:all var(--dur-fast) var(--ease);
+}
+.pc-intel-btn-g:hover{background:var(--bg);color:var(--text-2);}
 
 #prospectAsk{
   background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);
@@ -1879,6 +1992,100 @@ body:not(.prospect-mode) #prospectAsk{display:none!important;}
               <span class="fc-badge">Needs you</span>
               <span class="fc-owner">VP Eng</span>
             </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             PROSPECT COMMAND-CENTER BAND
+             Left: dark TARGA Live Feed (wins, changes, signals).
+             Right: light Intelligence Feed rail (alerts + insights).
+             Together they restore the "command center" visual density
+             after the existing pf-grid is hidden in prospect mode.
+        ═══════════════════════════════════ -->
+        <div id="prospectCenter">
+
+          <!-- LEFT: DARK TARGA LIVE FEED -->
+          <div class="pc-feed">
+            <div class="pc-feed-head">
+              <div class="pc-feed-label"><span class="pc-feed-pulse"></span>TARGA &middot; Live Feed</div>
+              <div class="pc-feed-ts">Updated just now</div>
+            </div>
+            <div class="pc-feed-items">
+              <div class="pc-feed-item">
+                <div class="pc-feed-dot green"></div>
+                <div class="pc-feed-body">
+                  <div class="pc-feed-tag green">Win &middot; Revenue</div>
+                  <div class="pc-feed-text"><strong>$340K mid-market deal closed</strong> this morning. Largest of 3 closed-won this week. CRO flagged the AE pod for recognition &mdash; opportunity to amplify.</div>
+                </div>
+                <div class="pc-feed-when">2h ago</div>
+              </div>
+              <div class="pc-feed-item">
+                <div class="pc-feed-dot red"></div>
+                <div class="pc-feed-body">
+                  <div class="pc-feed-tag red">Change &middot; Ops</div>
+                  <div class="pc-feed-text"><strong>Second senior engineering hire declined.</strong> VP Eng flagged comp band gap in two key geos. Engagement loop has been open <strong>4 days</strong>. Tied to Ops Goal.</div>
+                </div>
+                <div class="pc-feed-when">3d ago</div>
+              </div>
+              <div class="pc-feed-item">
+                <div class="pc-feed-dot gold"></div>
+                <div class="pc-feed-body">
+                  <div class="pc-feed-tag gold">Signal &middot; Strategy</div>
+                  <div class="pc-feed-text"><strong>Top competitor announced pricing change</strong> on Friday. Early read: limited impact on Q3 pipeline (CRO confirmed two whale contracts unaffected). Flagged against Revenue Goal trajectory.</div>
+                </div>
+                <div class="pc-feed-when">5d ago</div>
+              </div>
+              <div class="pc-feed-item">
+                <div class="pc-feed-dot teal"></div>
+                <div class="pc-feed-body">
+                  <div class="pc-feed-tag teal">Amplify &middot; Culture</div>
+                  <div class="pc-feed-text"><strong>Customer NPS up 6 points</strong> in latest quarterly cut. CS team called out for executive recognition. Worth a thank-you in the all-hands.</div>
+                </div>
+                <div class="pc-feed-when">1d ago</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: LIGHT INTELLIGENCE FEED RAIL -->
+          <div class="pc-intel">
+            <div class="pc-intel-head">Intelligence Feed</div>
+
+            <div class="pc-intel-card">
+              <div class="pc-intel-stripe red"></div>
+              <div class="pc-intel-body">
+                <div class="pc-intel-badge alert">&#9888; Critical &middot; 4 days</div>
+                <div class="pc-intel-text">Engagement loop open on Ops Goal &mdash; VP Eng waiting on comp band decision. <strong>Every day of delay compresses the hiring window.</strong> The Goal itself stays green for now, but the leading indicator is degrading.</div>
+                <div class="pc-intel-acts">
+                  <button class="pc-intel-btn-p" onclick="openCaptainDrawer('ops')">Open Ops view</button>
+                  <button class="pc-intel-btn-g" onclick="showToast('Action assigned to your queue',true)">Assign</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="pc-intel-card">
+              <div class="pc-intel-stripe gold"></div>
+              <div class="pc-intel-body">
+                <div class="pc-intel-badge ai">&#10022; TARGA Insight</div>
+                <div class="pc-intel-text">Revenue Goal is on track at +8%, but <strong>3 of 4 Q3 milestones are owner-loaded on one AE pod</strong>. Concentration risk if comp band negotiations spill into Q3. Consider rebalancing or surfacing to CRO.</div>
+                <div class="pc-intel-acts">
+                  <button class="pc-intel-btn-p" onclick="openCaptainDrawer('revenue')">Open Revenue view</button>
+                  <button class="pc-intel-btn-g" onclick="showToast('Dismissed',true)">Dismiss</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="pc-intel-card">
+              <div class="pc-intel-stripe teal"></div>
+              <div class="pc-intel-body">
+                <div class="pc-intel-badge signal">&uarr; Signal &middot; This week</div>
+                <div class="pc-intel-text">Customer NPS up <strong>6 points</strong> in latest cut. CS team driving the lift. <strong>Wins like this compound</strong> when executives surface them &mdash; consider naming the team in the next all-hands.</div>
+                <div class="pc-intel-acts">
+                  <button class="pc-intel-btn-p" onclick="showToast('Draft sent to your inbox',true)">Draft recognition</button>
+                  <button class="pc-intel-btn-g" onclick="showToast('Saved to portfolio notes',true)">Save</button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
