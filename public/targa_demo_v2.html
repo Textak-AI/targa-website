@@ -1548,6 +1548,31 @@ input,textarea{font-family:var(--font-b);outline:none;}
   letter-spacing:0.08em;text-transform:uppercase;color:var(--warn);font-weight:700;
   padding:2px 7px;background:var(--warn-soft);border-radius:var(--r-pill);margin-left:6px;}
 
+/* Closed/closing loop badges — teal-toned positive variants of the amber open tag */
+.cd-loop-closed-tag{display:inline-block;font-family:var(--font-m);font-size:9px;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--primary);font-weight:700;
+  padding:2px 7px;background:rgba(13,139,130,0.1);border-radius:var(--r-pill);margin-left:6px;}
+
+/* When a prior loop entry's "open" tag has been resolved by an action,
+   we re-style it in place: neutral gray instead of amber red. */
+.cd-loop-item.open.resolved .cd-loop-body{color:var(--text-2);}
+.cd-loop-item.open.resolved .cd-loop-body strong{color:var(--text-1);}
+.cd-loop-item.open.resolved .cd-loop-open-tag{
+  color:var(--text-4);background:rgba(12,20,36,0.06);
+}
+.cd-loop-item.open.resolved .cd-loop-open-tag::before{
+  content:'\2713  ';
+}
+
+/* New entry that just got appended — soft fade-in highlight */
+.cd-loop-item.just-added{
+  animation:loopEntryIn 420ms cubic-bezier(0.2,0,0.2,1);
+}
+@keyframes loopEntryIn{
+  from{opacity:0;transform:translateX(-6px);background:rgba(13,139,130,0.06);}
+  to{opacity:1;transform:none;background:transparent;}
+}
+
 /* Action row */
 .cd-actions{display:flex;gap:10px;margin-top:8px;}
 .cd-btn-p{flex:1;background:var(--primary);color:#fff;border:none;
@@ -1561,6 +1586,17 @@ input,textarea{font-family:var(--font-b);outline:none;}
   font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-b);
   transition:all var(--dur-fast) var(--ease);}
 .cd-btn-s:hover{background:var(--bg);border-color:var(--border-strong);}
+
+/* Disabled state after action is executed — visually "done" not "broken" */
+.cd-btn-p.done,
+.cd-btn-s.done{
+  cursor:default;pointer-events:none;
+  background:rgba(13,139,130,0.08);color:var(--primary);
+  border:1px solid rgba(13,139,130,0.25);
+  transform:none;box-shadow:none;
+}
+.cd-btn-p.done:hover,
+.cd-btn-s.done:hover{transform:none;box-shadow:none;background:rgba(13,139,130,0.08);}
 
 /* Persona chip override when prospect mode is on — JT avatar becomes prospect initials */
 .persona-chip.prospect-active .persona-dot{
@@ -4314,6 +4350,8 @@ function enterDemo() {
   TARGA_PROSPECT.company = (coEl && coEl.value || '').trim();
   TARGA_PROSPECT.mode = 'entry';
   saveProspectState();
+  // Fresh walk — reset all per-pillar action state so executed actions don't bleed across demos.
+  resetProspectActions();
   applyProspectPersonalization();
   // Hide entry, jump straight to app as CEO
   var sEntry = document.getElementById('sEntry');
@@ -4403,7 +4441,13 @@ const CAPTAIN_DRAWERS = {
     actionPrimary: 'Open 15-min with Marcus',
     actionSecondary: 'Approve comp band review',
     actionPrimaryToast: 'Calendar invite drafted — Marcus, 15 min today',
-    actionSecondaryToast: 'Comp band review queued for HR partner'
+    actionSecondaryToast: 'Comp band review queued for HR partner',
+    actionPrimaryDone: '\u2713 Scheduled for 3pm today',
+    actionSecondaryDone: '\u2713 Approved',
+    actionPrimaryLoop: { date: 'May 23', body: '<strong>You scheduled:</strong> &ldquo;15-min with Marcus today, 3pm. Will close the comp band loop.&rdquo;<span class="cd-loop-closed-tag">Loop closing</span>', closing: true },
+    actionSecondaryLoop: { date: 'May 23', body: '<strong>You approved:</strong> &ldquo;Comp band review for two key geos. HR partner queued to lead.&rdquo;<span class="cd-loop-closed-tag">Loop closed</span>', closed: true },
+    paradoxTextAfterPrimary: 'The Goal is <strong>on track</strong>. Engagement loop now scheduled to close &mdash; Marcus has time on the calendar today. Strain signal expected to resolve within 24 hours.',
+    paradoxTextAfterSecondary: 'The Goal is <strong>on track</strong>. Comp band review routed to HR. Marcus unblocked on the senior hiring pipeline &mdash; recovery underway.'
   },
   revenue: {
     eyebrow: 'REVENUE GOAL',
@@ -4428,7 +4472,10 @@ const CAPTAIN_DRAWERS = {
     actionPrimary: 'Send a recognition note',
     actionSecondary: 'View pipeline detail',
     actionPrimaryToast: 'Recognition drafted to CRO + AE team',
-    actionSecondaryToast: 'Pipeline detail coming in V5.1'
+    actionSecondaryToast: 'Pipeline detail coming in V5.1',
+    actionPrimaryDone: '\u2713 Recognition sent',
+    actionSecondaryDone: null,
+    actionPrimaryLoop: { date: 'May 23', body: '<strong>You sent:</strong> &ldquo;Recognition note to CRO + AE team for the $340K mid-market close. Wins like this compound.&rdquo;<span class="cd-loop-closed-tag">Loop closed</span>', closed: true }
   },
   cost: {
     eyebrow: 'COST GOAL',
@@ -4453,7 +4500,10 @@ const CAPTAIN_DRAWERS = {
     actionPrimary: 'Acknowledge recovery plan',
     actionSecondary: 'View margin breakdown',
     actionPrimaryToast: 'Acknowledgment sent — loop closed',
-    actionSecondaryToast: 'Margin detail coming in V5.1'
+    actionSecondaryToast: 'Margin detail coming in V5.1',
+    actionPrimaryDone: '\u2713 Acknowledged',
+    actionSecondaryDone: null,
+    actionPrimaryLoop: { date: 'May 23', body: '<strong>You acknowledged:</strong> &ldquo;Recovery plan approved. Continue execution &mdash; Q3 milestone on glide path.&rdquo;<span class="cd-loop-closed-tag">Loop closed</span>', closed: true }
   },
   culture: {
     eyebrow: 'CULTURE GOAL',
@@ -4478,7 +4528,10 @@ const CAPTAIN_DRAWERS = {
     actionPrimary: 'Send team thank-you',
     actionSecondary: 'Preview pulse results',
     actionPrimaryToast: 'Thank-you note drafted to all-hands',
-    actionSecondaryToast: 'Pulse preview coming in V5.1'
+    actionSecondaryToast: 'Pulse preview coming in V5.1',
+    actionPrimaryDone: '\u2713 Thank-you sent',
+    actionSecondaryDone: null,
+    actionPrimaryLoop: { date: 'May 23', body: '<strong>You sent:</strong> &ldquo;Thank-you to all-hands. Pulse participation up 12% YoY &mdash; the team is showing up.&rdquo;<span class="cd-loop-closed-tag">Loop closed</span>', closed: true }
   }
 };
 
@@ -4555,24 +4608,130 @@ function handleCdOverlayClick(e) {
   if (e.target.classList.contains('cd-backdrop')) closeCaptainDrawer();
 }
 
+/* Prospect-mode action state. Keys: ops/revenue/cost/culture.
+   Each pillar tracks whether primary/secondary actions have been executed.
+   Reset on enterDemo() so every fresh walk starts clean. */
+var PROSPECT_ACTIONS = {
+  ops:     { primary: false, secondary: false },
+  revenue: { primary: false, secondary: false },
+  cost:    { primary: false, secondary: false },
+  culture: { primary: false, secondary: false }
+};
+
+function resetProspectActions() {
+  PROSPECT_ACTIONS = {
+    ops:     { primary: false, secondary: false },
+    revenue: { primary: false, secondary: false },
+    cost:    { primary: false, secondary: false },
+    culture: { primary: false, secondary: false }
+  };
+}
+
+/* Track which pillar is currently open in the focus view, so executeAction knows
+   which CAPTAIN_DRAWERS config to read. Set by openProspectFocus(). */
+var PROSPECT_FOCUS_PILLAR = null;
+
+/* executeAction — in prospect mode, mutate the focus card to reflect the action.
+   - Appends a new loop entry showing what just happened
+   - Marks prior "open" entries as resolved (resolves the amber tag)
+   - Disables the button and changes its label to the done-state
+   - For Ops, softens the paradox card text
+   - Still fires the brief toast for confirmation */
+function executeAction(kind) {
+  var pillar = PROSPECT_FOCUS_PILLAR;
+  if (!pillar) return;
+  var d = CAPTAIN_DRAWERS[pillar];
+  if (!d) return;
+  var state = PROSPECT_ACTIONS[pillar];
+  if (!state) return;
+
+  var isPrimary = (kind === 'primary');
+  if (isPrimary && state.primary) return;        // already done
+  if (!isPrimary && state.secondary) return;
+
+  var doneLabel = isPrimary ? d.actionPrimaryDone : d.actionSecondaryDone;
+  var loopEntry = isPrimary ? d.actionPrimaryLoop : d.actionSecondaryLoop;
+  var toast = isPrimary ? d.actionPrimaryToast : d.actionSecondaryToast;
+
+  if (!doneLabel) {
+    // Secondary action with no state-change definition — just toast it.
+    showToast(toast || 'Action queued', true);
+    return;
+  }
+
+  // Mark the prior open loop entry (if any) as resolved
+  if (loopEntry) {
+    var loopEl = document.getElementById('pfLoop');
+    if (loopEl) {
+      var openItems = loopEl.querySelectorAll('.cd-loop-item.open');
+      for (var i = 0; i < openItems.length; i++) {
+        openItems[i].classList.add('resolved');
+      }
+      // Append the new entry
+      var newItem = document.createElement('div');
+      newItem.className = 'cd-loop-item just-added' + (loopEntry.open ? ' open' : '');
+      newItem.innerHTML =
+        '<div class="cd-loop-date">' + loopEntry.date + '</div>' +
+        '<div class="cd-loop-body">' + loopEntry.body + '</div>';
+      loopEl.appendChild(newItem);
+    }
+  }
+
+  // Disable the button and update label
+  var btns = document.querySelectorAll('#prospectFocus .cd-actions button');
+  if (btns.length >= 2) {
+    var btn = isPrimary ? btns[0] : btns[1];
+    btn.textContent = doneLabel;
+    btn.classList.add('done');
+  }
+
+  // Ops primary — soften the paradox card text
+  if (pillar === 'ops' && isPrimary && d.paradoxTextAfterPrimary) {
+    var pt = document.getElementById('pfParadoxText');
+    var pl = document.getElementById('pfParadoxLabel');
+    if (pt) pt.innerHTML = d.paradoxTextAfterPrimary;
+    if (pl) pl.textContent = 'Loop Closing — Marcus on Calendar';
+  } else if (pillar === 'ops' && !isPrimary && d.paradoxTextAfterSecondary) {
+    var pt2 = document.getElementById('pfParadoxText');
+    var pl2 = document.getElementById('pfParadoxLabel');
+    if (pt2) pt2.innerHTML = d.paradoxTextAfterSecondary;
+    if (pl2) pl2.textContent = 'Strain Recovery Underway';
+  }
+
+  // Mark state
+  if (isPrimary) state.primary = true;
+  else state.secondary = true;
+
+  // Fire toast
+  showToast(toast || 'Action complete', true);
+}
+
 function cdAction(kind) {
+  // In prospect mode, every focus-card action routes through executeAction.
+  if (document.body.classList.contains('prospect-mode') && PROSPECT_FOCUS_PILLAR) {
+    // Map legacy kind names ('1on1', 'approve', etc) to primary/secondary.
+    // The action buttons were originally onclick="cdAction('1on1')" / cdAction('approve').
+    // For prospect mode, the first button is always primary, the second is always secondary.
+    var btns = document.querySelectorAll('#prospectFocus .cd-actions button');
+    var isPrimary = true;
+    for (var i = 0; i < btns.length; i++) {
+      var oc = btns[i].getAttribute('onclick') || '';
+      if (oc.indexOf("'" + kind + "'") !== -1) {
+        isPrimary = (i === 0);
+        break;
+      }
+    }
+    executeAction(isPrimary ? 'primary' : 'secondary');
+    return;
+  }
+
+  // Legacy internal-mode path — captain drawer cdAction lookup by data-toast.
   var btns = document.querySelectorAll('.cd-actions button');
   var msg = 'Action queued';
   for (var i = 0; i < btns.length; i++) {
     var oc = btns[i].getAttribute('onclick') || '';
     if (oc.indexOf("'" + kind + "'") !== -1) {
       msg = btns[i].getAttribute('data-toast') || msg;
-      break;
-    }
-  }
-  // In prospect-mode focus, the cd-action button is inside #prospectFocus, not the captain drawer.
-  // Get the matching action button there for the data-toast.
-  var focusBtns = document.querySelectorAll('#prospectFocus .cd-actions button');
-  for (var j = 0; j < focusBtns.length; j++) {
-    var oc2 = focusBtns[j].getAttribute('onclick') || '';
-    if (oc2.indexOf("'" + kind + "'") !== -1) {
-      var t = focusBtns[j].getAttribute('data-toast');
-      if (t) msg = t;
       break;
     }
   }
@@ -4587,6 +4746,7 @@ function cdAction(kind) {
 function openProspectFocus(pillar) {
   var d = CAPTAIN_DRAWERS[pillar];
   if (!d) return;
+  PROSPECT_FOCUS_PILLAR = pillar;
 
   // Header
   document.getElementById('pfFocusEyebrow').textContent = d.eyebrow;
@@ -4600,7 +4760,11 @@ function openProspectFocus(pillar) {
   // Paradox card
   var paradoxEl = document.getElementById('pfParadox');
   if (paradoxEl) paradoxEl.style.display = d.paradoxOn ? '' : 'none';
-  if (d.paradoxOn) document.getElementById('pfParadoxText').innerHTML = d.paradoxText;
+  if (d.paradoxOn) {
+    document.getElementById('pfParadoxText').innerHTML = d.paradoxText;
+    var pl0 = document.getElementById('pfParadoxLabel');
+    if (pl0) pl0.textContent = 'Team Strain Detected';
+  }
 
   // Trajectory
   document.getElementById('pfTrajTitle').textContent = d.trajTitle;
@@ -4647,6 +4811,15 @@ function openProspectFocus(pillar) {
     actions[1].textContent = d.actionSecondary;
     actions[0].setAttribute('data-toast', d.actionPrimaryToast);
     actions[1].setAttribute('data-toast', d.actionSecondaryToast);
+    actions[0].classList.remove('done');
+    actions[1].classList.remove('done');
+  }
+
+  // Replay executed actions for this pillar (so reopening after acting preserves state)
+  var state = PROSPECT_ACTIONS[pillar];
+  if (state) {
+    if (state.primary && d.actionPrimaryDone) replayProspectAction(pillar, 'primary');
+    if (state.secondary && d.actionSecondaryDone) replayProspectAction(pillar, 'secondary');
   }
 
   // Switch to focus mode
@@ -4654,8 +4827,58 @@ function openProspectFocus(pillar) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* Replay an action without re-firing the toast or animation —
+   used when reopening a focus card that previously had actions taken on it. */
+function replayProspectAction(pillar, kind) {
+  var d = CAPTAIN_DRAWERS[pillar];
+  if (!d) return;
+  var isPrimary = (kind === 'primary');
+  var doneLabel = isPrimary ? d.actionPrimaryDone : d.actionSecondaryDone;
+  var loopEntry = isPrimary ? d.actionPrimaryLoop : d.actionSecondaryLoop;
+  if (!doneLabel) return;
+
+  // Mark prior open entries as resolved + append the executed entry (without animation)
+  if (loopEntry) {
+    var loopEl = document.getElementById('pfLoop');
+    if (loopEl) {
+      var openItems = loopEl.querySelectorAll('.cd-loop-item.open');
+      for (var i = 0; i < openItems.length; i++) {
+        openItems[i].classList.add('resolved');
+      }
+      var newItem = document.createElement('div');
+      newItem.className = 'cd-loop-item' + (loopEntry.open ? ' open' : '');
+      newItem.innerHTML =
+        '<div class="cd-loop-date">' + loopEntry.date + '</div>' +
+        '<div class="cd-loop-body">' + loopEntry.body + '</div>';
+      loopEl.appendChild(newItem);
+    }
+  }
+
+  // Disable the button
+  var btns = document.querySelectorAll('#prospectFocus .cd-actions button');
+  if (btns.length >= 2) {
+    var btn = isPrimary ? btns[0] : btns[1];
+    btn.textContent = doneLabel;
+    btn.classList.add('done');
+  }
+
+  // Ops paradox softening, replayed
+  if (pillar === 'ops') {
+    var pt = document.getElementById('pfParadoxText');
+    var pl = document.getElementById('pfParadoxLabel');
+    if (isPrimary && d.paradoxTextAfterPrimary && pt && pl) {
+      pt.innerHTML = d.paradoxTextAfterPrimary;
+      pl.textContent = 'Loop Closing — Marcus on Calendar';
+    } else if (!isPrimary && d.paradoxTextAfterSecondary && pt && pl) {
+      pt.innerHTML = d.paradoxTextAfterSecondary;
+      pl.textContent = 'Strain Recovery Underway';
+    }
+  }
+}
+
 function closeProspectFocus() {
   document.body.classList.remove('focus-mode');
+  PROSPECT_FOCUS_PILLAR = null;
 }
 
 /* ── Prospect menu nav (hover-with-delay + click-to-lock) ──
