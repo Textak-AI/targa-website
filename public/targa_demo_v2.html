@@ -1323,8 +1323,293 @@ input,textarea{font-family:var(--font-b);outline:none;}
 .pf-ic-btn-p { background:#0eb2af; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; }
 .pf-ic-btn-g { background:transparent; color:rgba(12,20,36,0.5); border:1px solid rgba(12,20,36,0.12); padding:6px 10px; border-radius:6px; font-size:11px; cursor:pointer; }
 
+/* ══════════════════════════════════════════════
+   SCREEN -1 — ENTRY (Captain on the Deck)
+══════════════════════════════════════════════ */
+#sEntry{
+  background:var(--p-navy-900);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;height:100vh;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.012) 0,rgba(255,255,255,0.012) 1px,transparent 1px,transparent 3px);
+}
+.en-wrap{width:100%;max-width:520px;padding:0 32px;}
+.en-logo{display:flex;align-items:center;gap:10px;margin-bottom:42px;justify-content:flex-start;}
+.en-logo svg{width:28px;height:28px;}
+.en-logo-text{font-family:var(--font-d);font-size:15px;font-weight:700;
+  color:rgba(255,255,255,0.9);letter-spacing:0.06em;}
+.en-logo-text span{color:var(--p-teal-300);}
+.en-eyebrow{font-family:var(--font-m);font-size:9px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--p-teal-300);margin-bottom:12px;}
+.en-title{font-family:var(--font-d);font-size:34px;font-weight:700;color:#fff;
+  letter-spacing:-0.02em;line-height:1.05;margin-bottom:10px;}
+.en-title span{color:var(--p-teal-300);}
+.en-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.55;
+  margin-bottom:36px;}
+.en-form{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+.en-field{display:flex;flex-direction:column;gap:6px;}
+.en-label{font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;
+  text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:600;}
+.en-input{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-md);padding:13px 16px;color:#fff;font-size:15px;
+  font-family:var(--font-b);transition:all var(--dur-fast) var(--ease);}
+.en-input:focus{border-color:var(--p-teal-400);background:rgba(255,255,255,0.06);
+  box-shadow:0 0 0 3px rgba(14,178,175,0.12);}
+.en-input::placeholder{color:rgba(255,255,255,0.25);}
+.en-btn{background:var(--p-teal-500);color:#fff;border:none;padding:14px 24px;
+  border-radius:var(--r-md);font-size:14px;font-weight:600;cursor:pointer;
+  font-family:var(--font-b);transition:all var(--dur-fast) var(--ease);
+  display:flex;align-items:center;justify-content:center;gap:8px;}
+.en-btn:hover{background:var(--p-teal-400);transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(14,178,175,0.25);}
+.en-btn:active{transform:translateY(0);}
+.en-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.en-escape{margin-top:24px;text-align:center;font-size:11px;
+  color:rgba(255,255,255,0.3);font-family:var(--font-m);letter-spacing:0.04em;}
+.en-escape a{color:rgba(255,255,255,0.5);text-decoration:none;
+  border-bottom:1px dotted rgba(255,255,255,0.2);cursor:pointer;}
+.en-escape a:hover{color:var(--p-teal-300);border-color:var(--p-teal-300);}
+.en-context{margin-top:48px;display:flex;align-items:center;gap:10px;justify-content:center;}
+.en-context-line{flex:1;max-width:60px;height:1px;background:rgba(255,255,255,0.08);}
+.en-context-text{font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;
+  text-transform:uppercase;color:rgba(255,255,255,0.25);}
+
+/* ══════════════════════════════════════════════
+   MORNING BRIEF BAND (top of CEO view)
+══════════════════════════════════════════════ */
+.mb-band{
+  background:linear-gradient(180deg,#fafbfc 0%,#f5f7fa 100%);
+  border:1px solid var(--border);border-radius:var(--r-xl);
+  padding:18px 22px 16px;margin-bottom:16px;
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 2px 12px rgba(12,20,36,0.04);
+  position:relative;overflow:hidden;
+}
+.mb-band::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--p-teal-500),var(--p-teal-400));
+}
+.mb-greeting-row{display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:6px;flex-wrap:wrap;gap:8px;}
+.mb-greeting{font-family:var(--font-d);font-size:22px;font-weight:700;
+  color:var(--text-1);letter-spacing:-0.02em;line-height:1.1;}
+.mb-greeting strong{color:var(--primary);}
+.mb-date{font-family:var(--font-m);font-size:10px;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);}
+.mb-summary{font-size:13.5px;color:var(--text-2);line-height:1.55;
+  margin-bottom:12px;max-width:78ch;}
+.mb-summary strong{color:var(--text-1);font-weight:600;}
+.mb-summary .mb-strain{color:var(--danger);font-weight:600;}
+.mb-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.mb-needs-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(212,74,74,0.08);border:1px solid rgba(212,74,74,0.25);
+  color:var(--danger);padding:7px 14px 7px 11px;border-radius:var(--r-pill);
+  font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-b);
+  transition:all var(--dur-fast) var(--ease);
+}
+.mb-needs-chip:hover{background:rgba(212,74,74,0.13);transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(212,74,74,0.18);}
+.mb-needs-dot{width:7px;height:7px;border-radius:50%;background:var(--danger);
+  animation:pulse 1.6s ease-in-out infinite;box-shadow:0 0 0 3px rgba(212,74,74,0.18);}
+.mb-needs-arrow{font-size:14px;line-height:1;opacity:0.7;}
+.mb-since{font-family:var(--font-m);font-size:10px;color:var(--text-4);
+  letter-spacing:0.04em;}
+
+/* ══════════════════════════════════════════════
+   FOUR-CATEGORY GOAL STRIP (PS-01 canonical)
+══════════════════════════════════════════════ */
+.fc-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.fc-tile{
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);
+  padding:14px 16px 14px;cursor:pointer;
+  transition:all var(--dur-fast) var(--ease);position:relative;overflow:hidden;
+  box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 2px 8px rgba(12,20,36,0.04);
+}
+.fc-tile::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--ok);
+}
+.fc-tile.warn::before{background:var(--warn);}
+.fc-tile.danger::before{background:var(--danger);}
+.fc-tile:hover{transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(12,20,36,0.09);border-color:rgba(14,178,175,0.18);}
+.fc-tile.danger:hover{border-color:rgba(212,74,74,0.3);
+  box-shadow:0 6px 20px rgba(212,74,74,0.12);}
+.fc-pillar{font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--text-4);font-weight:700;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;}
+.fc-status-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);}
+.fc-tile.warn .fc-status-dot{background:var(--warn);}
+.fc-tile.danger .fc-status-dot{background:var(--danger);
+  box-shadow:0 0 0 3px rgba(212,74,74,0.18);animation:pulse 1.6s ease-in-out infinite;}
+.fc-goal{font-family:var(--font-d);font-size:13.5px;font-weight:600;
+  color:var(--text-1);line-height:1.3;margin-bottom:8px;letter-spacing:-0.01em;}
+.fc-milestone{font-size:11px;color:var(--text-3);line-height:1.4;margin-bottom:10px;}
+.fc-foot{display:flex;align-items:center;justify-content:space-between;}
+.fc-badge{font-family:var(--font-m);font-size:9px;letter-spacing:0.08em;
+  text-transform:uppercase;padding:3px 9px;border-radius:var(--r-pill);font-weight:700;
+  background:var(--ok-soft);color:var(--ok);}
+.fc-tile.warn .fc-badge{background:var(--warn-soft);color:var(--warn);}
+.fc-tile.danger .fc-badge{background:var(--danger-soft);color:var(--danger);}
+.fc-owner{font-family:var(--font-m);font-size:9px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-4);font-weight:600;}
+
+/* ══════════════════════════════════════════════
+   CAPTAIN DRAWER — curated drill-in for hero click target
+══════════════════════════════════════════════ */
+.cd-overlay{position:fixed;inset:0;z-index:9999;pointer-events:none;}
+.cd-overlay.vis{pointer-events:all;}
+.cd-backdrop{position:absolute;inset:0;background:rgba(12,20,36,0.28);
+  opacity:0;transition:opacity var(--dur-med) var(--ease);}
+.cd-overlay.vis .cd-backdrop{opacity:1;}
+.cd-drawer{
+  position:absolute;right:0;top:0;bottom:0;width:480px;
+  background:var(--surface);border-left:2px solid var(--border);
+  box-shadow:-12px 0 40px rgba(12,20,36,0.14);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform var(--dur-med) var(--ease);
+}
+.cd-overlay.vis .cd-drawer{transform:none;}
+.cd-head{padding:20px 24px 18px;border-bottom:2px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;
+  background:var(--raised);}
+.cd-head-titles{flex:1;min-width:0;}
+.cd-eyebrow{font-family:var(--font-m);font-size:9px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--primary);margin-bottom:6px;
+  display:flex;align-items:center;gap:8px;}
+.cd-name{font-family:var(--font-d);font-size:19px;font-weight:700;
+  color:var(--text-1);letter-spacing:-0.015em;margin-bottom:4px;line-height:1.15;}
+.cd-name-status{display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-m);font-size:10px;letter-spacing:0.1em;
+  text-transform:uppercase;padding:3px 9px;border-radius:var(--r-pill);
+  background:var(--ok-soft);color:var(--ok);font-weight:700;margin-left:8px;
+  vertical-align:middle;}
+.cd-close{background:transparent;color:var(--text-3);font-size:24px;padding:0;
+  cursor:pointer;border:none;line-height:1;transition:color var(--dur-fast) var(--ease);
+  flex-shrink:0;margin-left:12px;}
+.cd-close:hover{color:var(--text-1);}
+.cd-scroll{flex:1;overflow-y:auto;padding:22px 24px 32px;}
+
+/* Paradox callout — the green-Goal/strained-team reveal */
+.cd-paradox{
+  background:linear-gradient(135deg,rgba(212,74,74,0.06),rgba(212,74,74,0.03));
+  border:1px solid rgba(212,74,74,0.2);border-left:3px solid var(--danger);
+  border-radius:var(--r-lg);padding:14px 16px;margin-bottom:18px;
+}
+.cd-paradox-eye{font-family:var(--font-m);font-size:9px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--danger);font-weight:700;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;}
+.cd-paradox-dot{width:7px;height:7px;border-radius:50%;background:var(--danger);
+  animation:pulse 1.6s ease-in-out infinite;box-shadow:0 0 0 3px rgba(212,74,74,0.18);}
+.cd-paradox-text{font-size:13px;color:var(--text-1);line-height:1.55;font-weight:500;}
+.cd-paradox-text strong{font-weight:700;}
+
+.cd-section-label{font-family:var(--font-m);font-size:9px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--text-4);font-weight:700;margin-bottom:10px;
+  margin-top:8px;}
+
+/* Trajectory mini-chart */
+.cd-traj{background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:12px 14px;margin-bottom:18px;}
+.cd-traj-head{display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:10px;}
+.cd-traj-title{font-family:var(--font-b);font-size:12px;font-weight:600;color:var(--text-2);}
+.cd-traj-val{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--ok);}
+.cd-traj-svg{display:block;width:100%;height:48px;}
+
+/* Owner block */
+.cd-owner{display:flex;align-items:center;gap:12px;padding:12px 0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  margin-bottom:18px;}
+.cd-owner-avatar{width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-m);font-size:13px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,#6b54b3,#1a2945);flex-shrink:0;}
+.cd-owner-info{flex:1;min-width:0;}
+.cd-owner-name{font-family:var(--font-d);font-size:14px;font-weight:600;
+  color:var(--text-1);line-height:1.1;}
+.cd-owner-role{font-size:11px;color:var(--text-3);margin-top:2px;}
+.cd-owner-tag{font-family:var(--font-m);font-size:9px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-4);font-weight:600;
+  padding:3px 9px;border:1px solid var(--border);border-radius:var(--r-pill);}
+
+/* Engagement loop */
+.cd-loop{margin-bottom:20px;}
+.cd-loop-item{display:flex;gap:12px;padding:10px 0;
+  border-bottom:1px solid var(--border);}
+.cd-loop-item:last-child{border-bottom:none;}
+.cd-loop-date{font-family:var(--font-m);font-size:9px;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--text-4);font-weight:600;
+  min-width:60px;flex-shrink:0;padding-top:2px;}
+.cd-loop-body{flex:1;min-width:0;font-size:12.5px;color:var(--text-2);line-height:1.5;}
+.cd-loop-body strong{color:var(--text-1);font-weight:600;}
+.cd-loop-item.open{position:relative;}
+.cd-loop-item.open .cd-loop-body{color:var(--warn);}
+.cd-loop-item.open .cd-loop-body strong{color:var(--warn);}
+.cd-loop-open-tag{display:inline-block;font-family:var(--font-m);font-size:9px;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--warn);font-weight:700;
+  padding:2px 7px;background:var(--warn-soft);border-radius:var(--r-pill);margin-left:6px;}
+
+/* Action row */
+.cd-actions{display:flex;gap:10px;margin-top:8px;}
+.cd-btn-p{flex:1;background:var(--primary);color:#fff;border:none;
+  padding:12px 16px;border-radius:var(--r-md);font-size:13px;font-weight:600;
+  cursor:pointer;font-family:var(--font-b);
+  transition:all var(--dur-fast) var(--ease);}
+.cd-btn-p:hover{background:var(--primary-h);transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(13,139,130,0.25);}
+.cd-btn-s{background:transparent;color:var(--text-2);
+  border:1px solid var(--border-md);padding:12px 16px;border-radius:var(--r-md);
+  font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-b);
+  transition:all var(--dur-fast) var(--ease);}
+.cd-btn-s:hover{background:var(--bg);border-color:var(--border-strong);}
+
+/* Persona chip override when prospect mode is on — JT avatar becomes prospect initials */
+.persona-chip.prospect-active .persona-dot{
+  background:linear-gradient(135deg,var(--p-teal-500),var(--p-navy-500))!important;
+}
+
 </style>
-<div class="screen" id="s0">
+
+<!-- ═══════════════════════════════════════════
+     SCREEN -1 — ENTRY (Captain on the Deck)
+═══════════════════════════════════════════ -->
+<div class="screen" id="sEntry">
+  <div class="en-wrap">
+    <div class="en-logo" id="enLogo" title="Shift+click to enter persona mode">
+      <svg viewBox="0 0 55.86 58.3"><polygon fill="#1f476a" points="55.86 58.06 45.8 58.1 28.11 21.08 10.19 58.25 0 58.3 22.65 11.33 26.39 3.56 28.11 0 55.86 58.06"/><polygon fill="#0eb2af" points="33.67 45.26 22.31 45.31 28.03 33.46 33.67 45.26"/></svg>
+      <span class="en-logo-text">TARGA <span>AI</span></span>
+    </div>
+    <div class="en-eyebrow">Live Demo · Personalize Your Walkthrough</div>
+    <div class="en-title">Walk the deck<br>as your own <span>CEO</span>.</div>
+    <div class="en-sub">We&rsquo;ll personalize this walkthrough so you can see what TARGA looks like running your business. No account, no signup &mdash; just type your name and walk in.</div>
+
+    <div class="en-form">
+      <div class="en-field">
+        <label class="en-label" for="enName">Your first name</label>
+        <input class="en-input" id="enName" type="text" placeholder="Kyle" autocomplete="off" maxlength="40">
+      </div>
+      <div class="en-field">
+        <label class="en-label" for="enCompany">Your company <span style="text-transform:none;letter-spacing:0;color:rgba(255,255,255,0.25);font-weight:400;">&mdash; optional</span></label>
+        <input class="en-input" id="enCompany" type="text" placeholder="Acme Corp" autocomplete="off" maxlength="60">
+      </div>
+      <button class="en-btn" id="enBtn" onclick="enterDemo()">
+        Walk the deck
+        <span style="font-size:16px;line-height:1;">&rarr;</span>
+      </button>
+    </div>
+
+    <div class="en-escape">
+      Internal demo? <a onclick="enterPersonaMode()">Switch to persona mode &rarr;</a>
+    </div>
+
+    <div class="en-context">
+      <div class="en-context-line"></div>
+      <div class="en-context-text">Targatek Inc. &middot; Executive Demo</div>
+      <div class="en-context-line"></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen hidden" id="s0">
 
   <div class="ps-wrap">
     <div class="ps-logo">
@@ -1471,6 +1756,74 @@ input,textarea{font-family:var(--font-b);outline:none;}
 
       <!-- THREE-COLUMN PAGE -->
       <div class="pf-page">
+
+        <!-- ═══════════════════════════════════
+             MORNING BRIEF BAND  (PS-01 ground state)
+             People-first ordering, single-line synthesis, "needs you today" hook
+        ═══════════════════════════════════ -->
+        <div class="mb-band" id="mbBand">
+          <div class="mb-greeting-row">
+            <div class="mb-greeting">Good morning, <strong id="mbName">Captain</strong>.</div>
+            <div class="mb-date" id="mbDate">TUESDAY, MAY 22 · CEO VIEW</div>
+          </div>
+          <div class="mb-summary">
+            <span class="mb-strain">Engineering team showing strain.</span>
+            Your four annual Goals: <strong>3 green, 1 needs you today.</strong>
+            14 changes across your portfolio since Friday. 2 wins to amplify.
+          </div>
+          <div class="mb-actions">
+            <div class="mb-needs-chip" onclick="openCaptainDrawer('ops')">
+              <span class="mb-needs-dot"></span>
+              Open the Ops Goal &mdash; team strain detected
+              <span class="mb-needs-arrow">&rarr;</span>
+            </div>
+            <div class="mb-since">Last open: 3 days ago</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             FOUR-CATEGORY GOAL STRIP (PS-01 canonical pillars)
+             Revenue · Cost · Culture · Ops
+        ═══════════════════════════════════ -->
+        <div class="fc-strip">
+          <div class="fc-tile" onclick="openCaptainDrawer('revenue')">
+            <div class="fc-pillar"><span class="fc-status-dot"></span>Revenue</div>
+            <div class="fc-goal">Reach $150M ARR by FY end</div>
+            <div class="fc-milestone">$135M annualized by Sept 30 &middot; pacing +8% to plan</div>
+            <div class="fc-foot">
+              <span class="fc-badge">On Track</span>
+              <span class="fc-owner">CRO</span>
+            </div>
+          </div>
+          <div class="fc-tile" onclick="openCaptainDrawer('cost')">
+            <div class="fc-pillar"><span class="fc-status-dot"></span>Cost</div>
+            <div class="fc-goal">6-point gross margin improvement</div>
+            <div class="fc-milestone">$4.2M vendor consolidation by Sept 30 &middot; CFO recovery plan</div>
+            <div class="fc-foot">
+              <span class="fc-badge">On Track</span>
+              <span class="fc-owner">CFO</span>
+            </div>
+          </div>
+          <div class="fc-tile" onclick="openCaptainDrawer('culture')">
+            <div class="fc-pillar"><span class="fc-status-dot"></span>Culture</div>
+            <div class="fc-goal">Engagement score &ge; 78 (from 74)</div>
+            <div class="fc-milestone">Mid-year pulse &ge; 76 &middot; participation +12% YoY</div>
+            <div class="fc-foot">
+              <span class="fc-badge">On Track</span>
+              <span class="fc-owner">CHRO</span>
+            </div>
+          </div>
+          <div class="fc-tile danger" onclick="openCaptainDrawer('ops')">
+            <div class="fc-pillar"><span class="fc-status-dot"></span>Ops</div>
+            <div class="fc-goal">99.5% SLA, zero P1 outages</div>
+            <div class="fc-milestone">SLA at 99.7% &middot; <strong style="color:var(--danger);">team strain signal</strong></div>
+            <div class="fc-foot">
+              <span class="fc-badge">Needs you</span>
+              <span class="fc-owner">VP Eng</span>
+            </div>
+          </div>
+        </div>
+
         <div class="pf-grid">
 
           <!-- LEFT: KPI panel -->
@@ -2791,6 +3144,90 @@ input,textarea{font-family:var(--font-b);outline:none;}
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════
+       CAPTAIN DRAWER — curated drill-in for hero click target.
+       Reused for all four pillars, with per-pillar content loaded by openCaptainDrawer().
+  ═══════════════════════════════════ -->
+  <div class="cd-overlay" id="cdOverlay" onclick="handleCdOverlayClick(event)">
+    <div class="cd-backdrop"></div>
+    <div class="cd-drawer">
+      <div class="cd-head">
+        <div class="cd-head-titles">
+          <div class="cd-eyebrow" id="cdEyebrow">OPS GOAL</div>
+          <div class="cd-name">
+            <span id="cdName">99.5% SLA, zero P1 outages</span><span class="cd-name-status" id="cdStatus">On Track</span>
+          </div>
+        </div>
+        <button class="cd-close" onclick="closeCaptainDrawer()" aria-label="Close">&times;</button>
+      </div>
+      <div class="cd-scroll">
+
+        <!-- The paradox: green Goal, strained team -->
+        <div class="cd-paradox" id="cdParadox">
+          <div class="cd-paradox-eye"><span class="cd-paradox-dot"></span>Team Strain Detected</div>
+          <div class="cd-paradox-text" id="cdParadoxText">
+            The Goal is <strong>on track</strong>, but the team delivering it is showing strain. VP Eng has had a key Initiative at-risk for <strong>8 days</strong>. Comment activity has dropped <strong>60%</strong> vs. the prior 30-day baseline. One senior hire fell through last week.
+          </div>
+        </div>
+
+        <!-- Trajectory mini-chart -->
+        <div class="cd-section-label">Trajectory &middot; Last 60 days</div>
+        <div class="cd-traj">
+          <div class="cd-traj-head">
+            <div class="cd-traj-title" id="cdTrajTitle">Platform SLA &mdash; rolling 30d</div>
+            <div class="cd-traj-val" id="cdTrajVal">99.7%</div>
+          </div>
+          <svg class="cd-traj-svg" viewBox="0 0 280 48" preserveAspectRatio="none" id="cdTrajSvg">
+            <!-- Target line -->
+            <line x1="0" y1="14" x2="280" y2="14" stroke="rgba(12,20,36,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+            <!-- Actual trajectory (green, hovering above target) -->
+            <path d="M0,16 L20,14 L40,15 L60,12 L80,13 L100,11 L120,12 L140,10 L160,11 L180,9 L200,10 L220,10 L240,9 L260,10 L280,10"
+                  fill="none" stroke="#2c8a5e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- Subtle fill under line -->
+            <path d="M0,16 L20,14 L40,15 L60,12 L80,13 L100,11 L120,12 L140,10 L160,11 L180,9 L200,10 L220,10 L240,9 L260,10 L280,10 L280,48 L0,48 Z"
+                  fill="rgba(44,138,94,0.08)"/>
+            <!-- Endpoint dot -->
+            <circle cx="280" cy="10" r="3" fill="#2c8a5e"/>
+          </svg>
+        </div>
+
+        <!-- Owner block -->
+        <div class="cd-owner" id="cdOwnerBlock">
+          <div class="cd-owner-avatar" id="cdOwnerAvatar">ME</div>
+          <div class="cd-owner-info">
+            <div class="cd-owner-name" id="cdOwnerName">Marcus Ellis</div>
+            <div class="cd-owner-role" id="cdOwnerRole">VP Engineering &middot; Owner</div>
+          </div>
+          <div class="cd-owner-tag">Owner</div>
+        </div>
+
+        <!-- Engagement loop -->
+        <div class="cd-section-label">Engagement Loop</div>
+        <div class="cd-loop" id="cdLoop">
+          <div class="cd-loop-item">
+            <div class="cd-loop-date">May 8</div>
+            <div class="cd-loop-body"><strong>You commented:</strong> &ldquo;Are we still on track with the platform hire pipeline? I want to make sure we&rsquo;re not losing time on backfill.&rdquo;</div>
+          </div>
+          <div class="cd-loop-item">
+            <div class="cd-loop-date">May 9</div>
+            <div class="cd-loop-body"><strong>Marcus responded:</strong> &ldquo;Two senior candidates in final rounds. Decisions by end of week. I&rsquo;ll loop you once we have offers out.&rdquo;</div>
+          </div>
+          <div class="cd-loop-item open">
+            <div class="cd-loop-date">May 18</div>
+            <div class="cd-loop-body"><strong>Marcus update:</strong> &ldquo;Both candidates declined. Comp band gap in two key geos. Need to discuss raising the band or shifting headcount allocation.&rdquo;<span class="cd-loop-open-tag">Loop open &middot; 4 days</span></div>
+          </div>
+        </div>
+
+        <!-- Action row -->
+        <div class="cd-actions">
+          <button class="cd-btn-p" onclick="cdAction('1on1')">Open 15-min with Marcus</button>
+          <button class="cd-btn-s" onclick="cdAction('approve')">Approve comp band review</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- PERMISSION TOAST -->
   <div class="im-toast" id="imToast">
     <span class="im-toast-icon">&#128274;</span>
@@ -2903,6 +3340,306 @@ const TB_CONTEXTS = [
 
 let currentRole = 0;
 
+/* ═══════════════════════════════════════════
+   CAPTAIN ON THE DECK — entry, personalization, drawer
+═══════════════════════════════════════════ */
+
+/* Prospect state — populated by the entry screen, persisted to localStorage. */
+const TARGA_PROSPECT = {
+  name: '',
+  company: '',
+  mode: 'entry'  // 'entry' = prospect path, 'internal' = persona selector path
+};
+
+function loadProspectState() {
+  try {
+    var raw = localStorage.getItem('targa_prospect');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      TARGA_PROSPECT.name = parsed.name || '';
+      TARGA_PROSPECT.company = parsed.company || '';
+      TARGA_PROSPECT.mode = parsed.mode || 'entry';
+    }
+  } catch(e) {}
+  // URL override — ?mode=internal jumps past the entry screen
+  if (window.location.search.indexOf('mode=internal') !== -1) {
+    TARGA_PROSPECT.mode = 'internal';
+  }
+}
+
+function saveProspectState() {
+  try {
+    localStorage.setItem('targa_prospect', JSON.stringify({
+      name: TARGA_PROSPECT.name,
+      company: TARGA_PROSPECT.company,
+      mode: TARGA_PROSPECT.mode
+    }));
+  } catch(e) {}
+}
+
+function getInitials(name) {
+  if (!name) return 'JT';
+  var parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function enterDemo() {
+  var nameEl = document.getElementById('enName');
+  var coEl = document.getElementById('enCompany');
+  var name = (nameEl && nameEl.value || '').trim();
+  if (!name) {
+    if (nameEl) { nameEl.focus(); nameEl.style.borderColor = 'var(--p-red-500)'; setTimeout(function(){ nameEl.style.borderColor = ''; }, 1600); }
+    return;
+  }
+  TARGA_PROSPECT.name = name;
+  TARGA_PROSPECT.company = (coEl && coEl.value || '').trim();
+  TARGA_PROSPECT.mode = 'entry';
+  saveProspectState();
+  applyProspectPersonalization();
+  // Hide entry, jump straight to app as CEO
+  var sEntry = document.getElementById('sEntry');
+  if (sEntry) { sEntry.classList.add('hidden'); sEntry.style.display = 'none'; }
+  var s0 = document.getElementById('s0');
+  if (s0) { s0.classList.add('hidden'); s0.style.display = 'none'; }
+  var app = document.getElementById('app');
+  if (app) { app.classList.remove('hidden'); }
+  switchRole(0);
+}
+
+function enterPersonaMode() {
+  TARGA_PROSPECT.mode = 'internal';
+  saveProspectState();
+  var sEntry = document.getElementById('sEntry');
+  if (sEntry) { sEntry.classList.add('hidden'); sEntry.style.display = 'none'; }
+  var s0 = document.getElementById('s0');
+  if (s0) { s0.classList.remove('hidden'); s0.style.display = ''; }
+}
+
+function applyProspectPersonalization() {
+  if (!TARGA_PROSPECT.name) return;
+  var initials = getInitials(TARGA_PROSPECT.name);
+  // Brief band greeting
+  var mbName = document.getElementById('mbName');
+  if (mbName) mbName.textContent = TARGA_PROSPECT.name;
+  // Date line
+  var mbDate = document.getElementById('mbDate');
+  if (mbDate) {
+    var d = new Date();
+    var days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    var dayLong = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+    mbDate.textContent = dayLong[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ' · CEO VIEW';
+  }
+  // Topbar context — substitute prospect name + company if provided
+  var tbCtx = document.getElementById('tbContext');
+  if (tbCtx) {
+    var companyPart = TARGA_PROSPECT.company ? TARGA_PROSPECT.company.toUpperCase() : 'TARGATEK INC.';
+    tbCtx.textContent = companyPart + ' · CEO PORTFOLIO · ' + TARGA_PROSPECT.name.toUpperCase();
+    // Also patch TB_CONTEXTS[0] so role switching back to CEO keeps the personalization.
+    if (typeof TB_CONTEXTS !== 'undefined') {
+      TB_CONTEXTS[0] = companyPart + ' · CEO PORTFOLIO · ' + TARGA_PROSPECT.name.toUpperCase();
+    }
+  }
+  // CEO persona chip avatar — flip JT to prospect initials, mark as prospect-active
+  var pc0 = document.getElementById('pc0');
+  if (pc0) {
+    var dot = pc0.querySelector('.persona-dot');
+    if (dot) dot.textContent = initials;
+    var nameSpan = pc0.querySelector('span:not(.persona-role)');
+    if (nameSpan) nameSpan.textContent = TARGA_PROSPECT.name;
+    pc0.classList.add('prospect-active');
+  }
+}
+
+/* ── Captain Drawer ── */
+
+/* Per-pillar drawer content. Ops is the hero (PS-01 Story 1 distilled);
+   the other three exist so clicks on any tile feel finished, not broken. */
+const CAPTAIN_DRAWERS = {
+  ops: {
+    eyebrow: 'OPS GOAL',
+    name: '99.5% SLA, zero P1 outages',
+    status: 'On Track',
+    statusClass: 'ok',
+    paradoxOn: true,
+    paradoxText: 'The Goal is <strong>on track</strong>, but the team delivering it is showing strain. VP Eng has had a key Initiative at-risk for <strong>8 days</strong>. Comment activity has dropped <strong>60%</strong> vs. the prior 30-day baseline. One senior hire fell through last week.',
+    trajTitle: 'Platform SLA — rolling 30d',
+    trajVal: '99.7%',
+    trajPath: 'M0,16 L20,14 L40,15 L60,12 L80,13 L100,11 L120,12 L140,10 L160,11 L180,9 L200,10 L220,10 L240,9 L260,10 L280,10',
+    trajColor: '#2c8a5e',
+    trajFill: 'rgba(44,138,94,0.08)',
+    ownerInitials: 'ME',
+    ownerName: 'Marcus Ellis',
+    ownerRole: 'VP Engineering · Owner',
+    ownerGradient: 'linear-gradient(135deg,#6b54b3,#1a2945)',
+    loop: [
+      { date: 'May 8', body: '<strong>You commented:</strong> &ldquo;Are we still on track with the platform hire pipeline? I want to make sure we&rsquo;re not losing time on backfill.&rdquo;', open: false },
+      { date: 'May 9', body: '<strong>Marcus responded:</strong> &ldquo;Two senior candidates in final rounds. Decisions by end of week. I&rsquo;ll loop you once we have offers out.&rdquo;', open: false },
+      { date: 'May 18', body: '<strong>Marcus update:</strong> &ldquo;Both candidates declined. Comp band gap in two key geos. Need to discuss raising the band or shifting headcount allocation.&rdquo;<span class="cd-loop-open-tag">Loop open · 4 days</span>', open: true }
+    ],
+    actionPrimary: 'Open 15-min with Marcus',
+    actionSecondary: 'Approve comp band review',
+    actionPrimaryToast: 'Calendar invite drafted — Marcus, 15 min today',
+    actionSecondaryToast: 'Comp band review queued for HR partner'
+  },
+  revenue: {
+    eyebrow: 'REVENUE GOAL',
+    name: 'Reach $150M ARR by FY end',
+    status: 'On Track',
+    statusClass: 'ok',
+    paradoxOn: false,
+    trajTitle: 'ARR pacing — current quarter',
+    trajVal: '+8% to plan',
+    trajPath: 'M0,32 L20,30 L40,28 L60,26 L80,22 L100,20 L120,18 L140,15 L160,13 L180,12 L200,10 L220,9 L240,8 L260,7 L280,6',
+    trajColor: '#2c8a5e',
+    trajFill: 'rgba(44,138,94,0.08)',
+    ownerInitials: 'AC',
+    ownerName: 'Alex Chen',
+    ownerRole: 'Chief Revenue Officer · Owner',
+    ownerGradient: 'linear-gradient(135deg,#0d8b82,#26395f)',
+    loop: [
+      { date: 'May 12', body: '<strong>You commented:</strong> &ldquo;Q2 close looking strong — what&rsquo;s the read on Q3 pipeline coverage?&rdquo;', open: false },
+      { date: 'May 14', body: '<strong>Alex responded:</strong> &ldquo;Pipeline coverage at 3.2x for Q3 — comfortable. Two whales in final mutual-NDA review.&rdquo;', open: false },
+      { date: 'May 20', body: '<strong>Alex update:</strong> &ldquo;Both whales signed contracts this morning. Q3 milestone now fully covered.&rdquo;', open: false }
+    ],
+    actionPrimary: 'Send a recognition note',
+    actionSecondary: 'View pipeline detail',
+    actionPrimaryToast: 'Recognition drafted to CRO + AE team',
+    actionSecondaryToast: 'Pipeline detail coming in V5.1'
+  },
+  cost: {
+    eyebrow: 'COST GOAL',
+    name: '6-point gross margin improvement',
+    status: 'On Track',
+    statusClass: 'ok',
+    paradoxOn: false,
+    trajTitle: 'Vendor consolidation — $ closed',
+    trajVal: '$3.1M / $4.2M',
+    trajPath: 'M0,40 L30,36 L60,34 L90,30 L120,28 L150,24 L180,22 L210,18 L240,16 L260,14 L280,12',
+    trajColor: '#2c8a5e',
+    trajFill: 'rgba(44,138,94,0.08)',
+    ownerInitials: 'PR',
+    ownerName: 'Priya Rao',
+    ownerRole: 'Chief Financial Officer · Owner',
+    ownerGradient: 'linear-gradient(135deg,#2a8aa3,#1a2945)',
+    loop: [
+      { date: 'Apr 28', body: '<strong>You commented:</strong> &ldquo;Two vendor renewals slipped to Q4. What&rsquo;s the recovery plan?&rdquo;', open: false },
+      { date: 'May 1', body: '<strong>Priya responded:</strong> &ldquo;Accelerating data warehouse consolidation — $2.1M of margin pulled forward. Q3 milestone recovers by Sept 15.&rdquo;', open: false },
+      { date: 'May 19', body: '<strong>Priya update:</strong> &ldquo;Consolidation tracking ahead of plan. Q3 milestone now on glide path.&rdquo;', open: false }
+    ],
+    actionPrimary: 'Acknowledge recovery plan',
+    actionSecondary: 'View margin breakdown',
+    actionPrimaryToast: 'Acknowledgment sent — loop closed',
+    actionSecondaryToast: 'Margin detail coming in V5.1'
+  },
+  culture: {
+    eyebrow: 'CULTURE GOAL',
+    name: 'Engagement score ≥ 78 (from 74)',
+    status: 'On Track',
+    statusClass: 'ok',
+    paradoxOn: false,
+    trajTitle: 'Mid-year pulse participation',
+    trajVal: '+12% YoY',
+    trajPath: 'M0,30 L40,28 L80,24 L120,20 L160,18 L200,15 L240,12 L280,10',
+    trajColor: '#2c8a5e',
+    trajFill: 'rgba(44,138,94,0.08)',
+    ownerInitials: 'JT',
+    ownerName: 'Jordan Tate',
+    ownerRole: 'Chief People Officer · Owner',
+    ownerGradient: 'linear-gradient(135deg,#8b6ed4,#1a2945)',
+    loop: [
+      { date: 'May 5', body: '<strong>You commented:</strong> &ldquo;Pulse participation is the leading indicator — how are we tracking?&rdquo;', open: false },
+      { date: 'May 7', body: '<strong>Jordan responded:</strong> &ldquo;Participation up 12% YoY at the 2-week mark. Engineering and CS both ahead of org average.&rdquo;', open: false },
+      { date: 'May 19', body: '<strong>Jordan update:</strong> &ldquo;Final response window closes Friday. Projecting score of 76-78.&rdquo;', open: false }
+    ],
+    actionPrimary: 'Send team thank-you',
+    actionSecondary: 'Preview pulse results',
+    actionPrimaryToast: 'Thank-you note drafted to all-hands',
+    actionSecondaryToast: 'Pulse preview coming in V5.1'
+  }
+};
+
+function openCaptainDrawer(pillar) {
+  var d = CAPTAIN_DRAWERS[pillar];
+  if (!d) return;
+  document.getElementById('cdEyebrow').textContent = d.eyebrow;
+  document.getElementById('cdName').textContent = d.name;
+  var statusEl = document.getElementById('cdStatus');
+  statusEl.textContent = d.status;
+  statusEl.style.background = d.statusClass === 'ok' ? 'var(--ok-soft)' : d.statusClass === 'warn' ? 'var(--warn-soft)' : 'var(--danger-soft)';
+  statusEl.style.color = d.statusClass === 'ok' ? 'var(--ok)' : d.statusClass === 'warn' ? 'var(--warn)' : 'var(--danger)';
+  // Paradox card visibility
+  var paradoxEl = document.getElementById('cdParadox');
+  if (paradoxEl) paradoxEl.style.display = d.paradoxOn ? '' : 'none';
+  if (d.paradoxOn) document.getElementById('cdParadoxText').innerHTML = d.paradoxText;
+  // Trajectory
+  document.getElementById('cdTrajTitle').textContent = d.trajTitle;
+  document.getElementById('cdTrajVal').textContent = d.trajVal;
+  document.getElementById('cdTrajVal').style.color = d.trajColor;
+  var svg = document.getElementById('cdTrajSvg');
+  if (svg) {
+    var paths = svg.querySelectorAll('path');
+    if (paths.length >= 2) {
+      paths[0].setAttribute('d', d.trajPath);
+      paths[0].setAttribute('stroke', d.trajColor);
+      paths[1].setAttribute('d', d.trajPath + ' L280,48 L0,48 Z');
+      paths[1].setAttribute('fill', d.trajFill);
+    }
+    var endpoint = svg.querySelector('circle');
+    if (endpoint) {
+      // Match endpoint to last y of path
+      var lastY = d.trajPath.split(/[, ]/).slice(-1)[0];
+      endpoint.setAttribute('cy', lastY);
+      endpoint.setAttribute('fill', d.trajColor);
+    }
+  }
+  // Owner block
+  var avatar = document.getElementById('cdOwnerAvatar');
+  avatar.textContent = d.ownerInitials;
+  avatar.style.background = d.ownerGradient;
+  document.getElementById('cdOwnerName').textContent = d.ownerName;
+  document.getElementById('cdOwnerRole').textContent = d.ownerRole;
+  // Loop
+  var loopEl = document.getElementById('cdLoop');
+  loopEl.innerHTML = d.loop.map(function(entry) {
+    return '<div class="cd-loop-item' + (entry.open ? ' open' : '') + '">' +
+      '<div class="cd-loop-date">' + entry.date + '</div>' +
+      '<div class="cd-loop-body">' + entry.body + '</div>' +
+    '</div>';
+  }).join('');
+  // Actions
+  var actions = document.querySelectorAll('.cd-actions button');
+  if (actions.length >= 2) {
+    actions[0].textContent = d.actionPrimary;
+    actions[1].textContent = d.actionSecondary;
+    actions[0].setAttribute('data-toast', d.actionPrimaryToast);
+    actions[1].setAttribute('data-toast', d.actionSecondaryToast);
+  }
+  // Show
+  document.getElementById('cdOverlay').classList.add('vis');
+}
+
+function closeCaptainDrawer() {
+  document.getElementById('cdOverlay').classList.remove('vis');
+}
+
+function handleCdOverlayClick(e) {
+  if (e.target.classList.contains('cd-backdrop')) closeCaptainDrawer();
+}
+
+function cdAction(kind) {
+  var btns = document.querySelectorAll('.cd-actions button');
+  var msg = 'Action queued';
+  for (var i = 0; i < btns.length; i++) {
+    if (btns[i].getAttribute('onclick').indexOf("'" + kind + "'") !== -1) {
+      msg = btns[i].getAttribute('data-toast') || msg;
+      break;
+    }
+  }
+  showToast(msg, true);
+}
+
 function enterAs(n) { switchRole(n); }
 
 function switchRole(n) {
@@ -2931,6 +3668,11 @@ function switchRole(n) {
   // Clear any open modal state — prevents stale form input persisting across personas.
   if (typeof closeNewPlan === 'function') closeNewPlan();
   if (typeof closeDesktopQA === 'function') closeDesktopQA();
+  if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
+  // Re-apply prospect personalization when entering CEO view in prospect mode.
+  if (n === 0 && TARGA_PROSPECT && TARGA_PROSPECT.mode === 'entry' && TARGA_PROSPECT.name) {
+    applyProspectPersonalization();
+  }
 }
 
 /* ── TARGA_STATE — Full validated dataset ── */
@@ -4394,9 +5136,52 @@ function buildPortfolioRibbon() {
 
 document.addEventListener('DOMContentLoaded', function() {
   buildPortfolioRibbon();
-  var s0=document.getElementById('s0');
-  var app=document.getElementById('app');
-  if(s0&&app){s0.style.display='';app.classList.add('hidden');}
+  loadProspectState();
+
+  var sEntry = document.getElementById('sEntry');
+  var s0 = document.getElementById('s0');
+  var app = document.getElementById('app');
+
+  // Default: hide app, show entry screen as the front door.
+  if (app) app.classList.add('hidden');
+  if (s0) { s0.classList.add('hidden'); s0.style.display = 'none'; }
+  if (sEntry) { sEntry.classList.remove('hidden'); sEntry.style.display = ''; }
+
+  // Internal mode (URL ?mode=internal, or shift-click on the entry logo) jumps to persona selector.
+  if (TARGA_PROSPECT.mode === 'internal') {
+    if (sEntry) { sEntry.classList.add('hidden'); sEntry.style.display = 'none'; }
+    if (s0) { s0.classList.remove('hidden'); s0.style.display = ''; }
+  }
+
+  // If a prospect already entered earlier (localStorage), restore their personalization
+  // but still show the entry screen — Joe and Kyle reuse the same browser for live demos.
+  // The previous name pre-fills the input so a quick re-entry is one click.
+  if (TARGA_PROSPECT.name && sEntry && !sEntry.classList.contains('hidden')) {
+    var nameInput = document.getElementById('enName');
+    if (nameInput) nameInput.value = TARGA_PROSPECT.name;
+    var coInput = document.getElementById('enCompany');
+    if (coInput) coInput.value = TARGA_PROSPECT.company;
+  }
+
+  // Shift-click on the entry logo flips to persona mode (internal demo escape hatch).
+  var enLogo = document.getElementById('enLogo');
+  if (enLogo) {
+    enLogo.addEventListener('click', function(e) {
+      if (e.shiftKey) enterPersonaMode();
+    });
+  }
+
+  // Enter key in either field submits.
+  var nameField = document.getElementById('enName');
+  var coField = document.getElementById('enCompany');
+  function submitOnEnter(e) { if (e.key === 'Enter') enterDemo(); }
+  if (nameField) nameField.addEventListener('keydown', submitOnEnter);
+  if (coField) coField.addEventListener('keydown', submitOnEnter);
+
+  // Autofocus name field after a tick so the prospect can start typing immediately.
+  setTimeout(function() {
+    if (nameField && sEntry && !sEntry.classList.contains('hidden')) nameField.focus();
+  }, 200);
 });
 
 setTimeout(makeClickable, 100);
@@ -4412,11 +5197,12 @@ function npSubmitClarify() {
 /* ── MOBILE PANEL COLORS ── */
 var panelColors = { center:'var(--panel-center,#0d8b82)', intel:'var(--panel-intel,#b07f1f)', actions:'var(--panel-actions,#1a2f5a)', metrics:'var(--panel-metrics,#2c8a5e)', connections:'var(--panel-connections,#6b3fa0)' };
 
-/* Escape key closes any open modal. closeNewPlan/closeDesktopQA are no-ops when their overlay isn't visible. */
+/* Escape key closes any open modal. closeNewPlan/closeDesktopQA/closeCaptainDrawer are no-ops when their overlay isn't visible. */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     if (typeof closeNewPlan === 'function') closeNewPlan();
     if (typeof closeDesktopQA === 'function') closeDesktopQA();
+    if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
   }
 });
 
