@@ -1738,6 +1738,155 @@ body:not(.prospect-mode) #prospectCenter{display:none!important;}
   font-family:var(--font-m);letter-spacing:0.04em;}
 @keyframes loadingPulse{0%,80%,100%{opacity:0.3;}40%{opacity:1;}}
 
+/* ══════════════════════════════════════════════
+   PROSPECT MODE — replace the hierarchy ribbon with a quiet menu nav.
+   Matte filled circles, no glow, no animation pulses.
+   Hover (150ms delay) opens a submenu; click locks it.
+   Four-tile pillar strip below the menu remains as the dashboard surface.
+══════════════════════════════════════════════ */
+body.prospect-mode .fv-ribbon{display:none!important;}
+
+/* The menu bar itself — sits where the ribbon used to */
+.pm-nav{
+  display:none;
+  background:linear-gradient(180deg,#0a1322,#070d18);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0 32px;
+  position:relative;
+  z-index:50;
+}
+body.prospect-mode .pm-nav{display:block;}
+.pm-nav-inner{
+  display:flex;align-items:stretch;justify-content:flex-start;
+  max-width:100%;height:54px;gap:0;
+}
+.pm-spacer{flex:1;}
+
+/* Individual menu item — matte, quiet */
+.pm-item{
+  display:flex;align-items:center;gap:10px;
+  padding:0 18px;cursor:pointer;position:relative;
+  color:rgba(220,228,236,0.62);
+  font-family:var(--font-b);font-size:13px;font-weight:500;
+  letter-spacing:-0.005em;
+  border-bottom:2px solid transparent;
+  transition:color 140ms ease,background-color 140ms ease,border-color 140ms ease;
+}
+.pm-item:hover{
+  color:#fff;background:rgba(255,255,255,0.03);
+}
+.pm-item.locked{
+  color:#fff;background:rgba(255,255,255,0.05);
+  border-bottom-color:rgba(14,178,175,0.7);
+}
+
+/* The matte status dot */
+.pm-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+  background:#3aa776;          /* default = ok matte green */
+  transition:transform 140ms ease,background 140ms ease,border-color 140ms ease;
+  border:1.5px solid transparent;
+}
+.pm-dot.ok{background:#3aa776;}
+.pm-dot.warn{background:#cf8a2a;}
+.pm-dot.risk{background:#c44848;}
+/* Hover/focus inverts dot to matte outline */
+.pm-item:hover .pm-dot,
+.pm-item.locked .pm-dot{
+  background:transparent;
+  border-color:#3aa776;
+}
+.pm-item:hover .pm-dot.warn,
+.pm-item.locked .pm-dot.warn{border-color:#cf8a2a;}
+.pm-item:hover .pm-dot.risk,
+.pm-item.locked .pm-dot.risk{border-color:#c44848;}
+
+/* Two-line label: pillar name + tiny meta line */
+.pm-label{display:flex;flex-direction:column;line-height:1.15;gap:2px;}
+.pm-label-top{font-size:13px;font-weight:600;letter-spacing:-0.005em;}
+.pm-label-sub{
+  font-family:var(--font-m);font-size:9px;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:rgba(220,228,236,0.38);
+}
+.pm-item:hover .pm-label-sub,
+.pm-item.locked .pm-label-sub{color:rgba(220,228,236,0.6);}
+
+/* Right-side affordance: Ask anchor */
+.pm-ask{
+  display:flex;align-items:center;gap:8px;
+  padding:0 18px;cursor:pointer;
+  color:rgba(220,228,236,0.62);
+  font-family:var(--font-b);font-size:12.5px;font-weight:500;
+  border-left:1px solid rgba(255,255,255,0.06);
+  transition:color 140ms ease,background-color 140ms ease;
+}
+.pm-ask:hover{color:#fff;background:rgba(255,255,255,0.03);}
+.pm-ask-icon{
+  width:16px;height:16px;display:flex;align-items:center;justify-content:center;
+  color:rgba(14,178,175,0.85);
+}
+
+/* Submenu — slides down beneath its parent item */
+.pm-sub{
+  position:absolute;top:54px;left:0;
+  min-width:340px;max-width:380px;
+  background:#0c1424;
+  border:1px solid rgba(255,255,255,0.08);
+  border-top:none;
+  border-radius:0 0 var(--r-lg) var(--r-lg);
+  box-shadow:0 12px 32px rgba(0,0,0,0.4),0 2px 0 rgba(14,178,175,0.4) inset;
+  opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity 160ms ease,transform 160ms ease;
+  z-index:60;
+}
+.pm-item.open .pm-sub{
+  opacity:1;transform:none;pointer-events:auto;
+}
+.pm-sub-head{
+  padding:14px 18px 10px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.pm-sub-eye{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--font-m);font-size:9px;letter-spacing:0.14em;
+  text-transform:uppercase;color:rgba(220,228,236,0.45);
+  font-weight:700;margin-bottom:6px;
+}
+.pm-sub-status{
+  font-family:var(--font-m);font-size:9px;letter-spacing:0.08em;
+  text-transform:uppercase;font-weight:700;
+  padding:2px 8px;border-radius:var(--r-pill);
+  background:rgba(58,167,118,0.14);color:#5cc188;
+}
+.pm-sub-status.warn{background:rgba(207,138,42,0.16);color:#e0a851;}
+.pm-sub-status.risk{background:rgba(196,72,72,0.16);color:#e07171;}
+.pm-sub-title{
+  font-family:var(--font-d);font-size:14px;font-weight:600;
+  color:#fff;letter-spacing:-0.01em;line-height:1.25;
+}
+.pm-sub-items{padding:6px 0 10px;}
+.pm-sub-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;cursor:pointer;
+  font-size:12.5px;color:rgba(220,228,236,0.78);
+  font-family:var(--font-b);
+  transition:background 120ms ease,color 120ms ease;
+}
+.pm-sub-row:hover{background:rgba(255,255,255,0.04);color:#fff;}
+.pm-sub-row-text{flex:1;min-width:0;}
+.pm-sub-row-meta{
+  font-family:var(--font-m);font-size:9px;letter-spacing:0.06em;
+  color:rgba(220,228,236,0.4);font-weight:600;
+  margin-left:12px;flex-shrink:0;
+}
+.pm-sub-row.alert .pm-sub-row-meta{color:#e07171;}
+.pm-sub-arrow{
+  margin-left:10px;color:rgba(220,228,236,0.32);
+  transition:transform 120ms ease,color 120ms ease;flex-shrink:0;
+}
+.pm-sub-row:hover .pm-sub-arrow{transform:translateX(2px);color:rgba(14,178,175,0.9);}
+
 </style>
 
 <!-- ═══════════════════════════════════════════
@@ -1924,6 +2073,162 @@ body:not(.prospect-mode) #prospectCenter{display:none!important;}
       <div class="fv-ribbon" style="flex-shrink:0;">
         <div class="fv-ribbon-track" id="pfRibbonTrack"></div>
       </div>
+
+      <!-- ═══════════════════════════════════
+           PROSPECT-MODE MENU NAV
+           Replaces the ribbon in prospect mode. Matte filled circles, no glow.
+           Hover-with-150ms-delay opens submenu; click locks it open.
+           Click outside or Esc closes. Internal mode keeps the ribbon above.
+      ═══════════════════════════════════ -->
+      <nav class="pm-nav" id="pmNav">
+        <div class="pm-nav-inner">
+
+          <div class="pm-item" data-pillar="revenue" data-status="ok">
+            <span class="pm-dot ok"></span>
+            <div class="pm-label">
+              <span class="pm-label-top">Revenue</span>
+              <span class="pm-label-sub">$150M ARR</span>
+            </div>
+            <div class="pm-sub">
+              <div class="pm-sub-head">
+                <div class="pm-sub-eye"><span>Revenue Goal</span><span class="pm-sub-status">On Track</span></div>
+                <div class="pm-sub-title">Reach $150M ARR by FY end</div>
+              </div>
+              <div class="pm-sub-items">
+                <div class="pm-sub-row" onclick="openCaptainDrawer('revenue');closePmAll();">
+                  <span class="pm-sub-row-text">Open Goal detail</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="openCaptainDrawer('revenue');closePmAll();">
+                  <span class="pm-sub-row-text">Engagement loop with CRO</span>
+                  <span class="pm-sub-row-meta">Clean</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Pipeline detail coming in V5.1',true);closePmAll();">
+                  <span class="pm-sub-row-text">Q3 pipeline coverage</span>
+                  <span class="pm-sub-row-meta">3.2x</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Recognition drafted to CRO + AE team',true);closePmAll();">
+                  <span class="pm-sub-row-text">Send a recognition note</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pm-item" data-pillar="cost" data-status="ok">
+            <span class="pm-dot ok"></span>
+            <div class="pm-label">
+              <span class="pm-label-top">Cost</span>
+              <span class="pm-label-sub">+6 pts margin</span>
+            </div>
+            <div class="pm-sub">
+              <div class="pm-sub-head">
+                <div class="pm-sub-eye"><span>Cost Goal</span><span class="pm-sub-status">On Track</span></div>
+                <div class="pm-sub-title">6-point gross margin improvement</div>
+              </div>
+              <div class="pm-sub-items">
+                <div class="pm-sub-row" onclick="openCaptainDrawer('cost');closePmAll();">
+                  <span class="pm-sub-row-text">Open Goal detail</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="openCaptainDrawer('cost');closePmAll();">
+                  <span class="pm-sub-row-text">Engagement loop with CFO</span>
+                  <span class="pm-sub-row-meta">Clean</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Vendor consolidation detail coming in V5.1',true);closePmAll();">
+                  <span class="pm-sub-row-text">Vendor consolidation progress</span>
+                  <span class="pm-sub-row-meta">$3.1M / $4.2M</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Acknowledgment sent &mdash; loop closed',true);closePmAll();">
+                  <span class="pm-sub-row-text">Acknowledge recovery plan</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pm-item" data-pillar="culture" data-status="ok">
+            <span class="pm-dot ok"></span>
+            <div class="pm-label">
+              <span class="pm-label-top">Culture</span>
+              <span class="pm-label-sub">Engagement &ge; 78</span>
+            </div>
+            <div class="pm-sub">
+              <div class="pm-sub-head">
+                <div class="pm-sub-eye"><span>Culture Goal</span><span class="pm-sub-status">On Track</span></div>
+                <div class="pm-sub-title">Engagement score &ge; 78 (from 74)</div>
+              </div>
+              <div class="pm-sub-items">
+                <div class="pm-sub-row" onclick="openCaptainDrawer('culture');closePmAll();">
+                  <span class="pm-sub-row-text">Open Goal detail</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="openCaptainDrawer('culture');closePmAll();">
+                  <span class="pm-sub-row-text">Engagement loop with CHRO</span>
+                  <span class="pm-sub-row-meta">Clean</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Pulse preview coming in V5.1',true);closePmAll();">
+                  <span class="pm-sub-row-text">Mid-year pulse preview</span>
+                  <span class="pm-sub-row-meta">+12% YoY</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Thank-you note drafted to all-hands',true);closePmAll();">
+                  <span class="pm-sub-row-text">Send team thank-you</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pm-item" data-pillar="ops" data-status="risk">
+            <span class="pm-dot risk"></span>
+            <div class="pm-label">
+              <span class="pm-label-top">Ops</span>
+              <span class="pm-label-sub">Needs you &middot; team strain</span>
+            </div>
+            <div class="pm-sub" style="left:auto;right:0;border-radius:var(--r-lg) 0 var(--r-lg) var(--r-lg);">
+              <div class="pm-sub-head">
+                <div class="pm-sub-eye"><span>Ops Goal</span><span class="pm-sub-status risk">Needs You</span></div>
+                <div class="pm-sub-title">99.5% SLA, zero P1 outages</div>
+              </div>
+              <div class="pm-sub-items">
+                <div class="pm-sub-row" onclick="openCaptainDrawer('ops');closePmAll();">
+                  <span class="pm-sub-row-text">Open Goal detail</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row alert" onclick="openCaptainDrawer('ops');closePmAll();">
+                  <span class="pm-sub-row-text">Engagement loop with Marcus</span>
+                  <span class="pm-sub-row-meta">Open &middot; 4 days</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Calendar invite drafted &mdash; Marcus, 15 min today',true);closePmAll();">
+                  <span class="pm-sub-row-text">Open 15-min with Marcus</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+                <div class="pm-sub-row" onclick="showToast('Comp band review queued for HR partner',true);closePmAll();">
+                  <span class="pm-sub-row-text">Approve comp band review</span>
+                  <span class="pm-sub-arrow">&rarr;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pm-spacer"></div>
+
+          <div class="pm-ask" onclick="scrollToProspectAsk()">
+            <span class="pm-ask-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </span>
+            Ask TARGA
+          </div>
+
+        </div>
+      </nav>
 
       <!-- THREE-COLUMN PAGE -->
       <div class="pf-page">
@@ -3937,6 +4242,96 @@ function cdAction(kind) {
   showToast(msg, true);
 }
 
+/* ── Prospect menu nav (hover-with-delay + click-to-lock) ──
+   The state machine:
+   - Mouse enters an item: start a 150ms timer. If still inside when it fires, open submenu.
+   - Mouse leaves: start a 200ms close timer. Cancel if user re-enters this item or its submenu.
+   - Click: toggle "locked" state. Locked items ignore hover-close.
+   - Click outside, or Escape: close everything, drop locks. */
+const PM_OPEN_DELAY = 150;
+const PM_CLOSE_DELAY = 200;
+const pmState = { hoverTimer: null, closeTimer: null, locked: null };
+
+function pmInit() {
+  var items = document.querySelectorAll('.pm-item');
+  for (var i = 0; i < items.length; i++) {
+    var el = items[i];
+    el.addEventListener('mouseenter', pmOnEnter);
+    el.addEventListener('mouseleave', pmOnLeave);
+    el.addEventListener('click', pmOnClick);
+  }
+  // Click anywhere else closes everything.
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.pm-item')) closePmAll();
+  });
+}
+
+function pmOnEnter(e) {
+  var el = e.currentTarget;
+  clearTimeout(pmState.closeTimer);
+  pmState.closeTimer = null;
+  // If another item is locked, ignore hover-open on a different item.
+  if (pmState.locked && pmState.locked !== el) return;
+  pmState.hoverTimer = setTimeout(function() {
+    closePmAllExcept(el);
+    el.classList.add('open');
+  }, PM_OPEN_DELAY);
+}
+
+function pmOnLeave(e) {
+  clearTimeout(pmState.hoverTimer);
+  pmState.hoverTimer = null;
+  var el = e.currentTarget;
+  // Don't auto-close a locked item.
+  if (el.classList.contains('locked')) return;
+  pmState.closeTimer = setTimeout(function() {
+    el.classList.remove('open');
+  }, PM_CLOSE_DELAY);
+}
+
+function pmOnClick(e) {
+  // If the click landed on a submenu row, let its own onclick run; don't toggle lock.
+  if (e.target.closest('.pm-sub-row, .pm-sub')) return;
+  var el = e.currentTarget;
+  var wasLocked = el.classList.contains('locked');
+  closePmAll();
+  if (!wasLocked) {
+    el.classList.add('locked', 'open');
+    pmState.locked = el;
+  }
+}
+
+function closePmAllExcept(keep) {
+  var items = document.querySelectorAll('.pm-item');
+  for (var i = 0; i < items.length; i++) {
+    if (items[i] !== keep) {
+      items[i].classList.remove('open');
+      // Don't strip lock from `keep`, but other locks get cleared
+      // because hover-opening a sibling shouldn't preserve a stale lock.
+      if (items[i] !== pmState.locked) items[i].classList.remove('locked');
+    }
+  }
+}
+
+function closePmAll() {
+  var items = document.querySelectorAll('.pm-item');
+  for (var i = 0; i < items.length; i++) {
+    items[i].classList.remove('open');
+    items[i].classList.remove('locked');
+  }
+  pmState.locked = null;
+  clearTimeout(pmState.hoverTimer);
+  clearTimeout(pmState.closeTimer);
+}
+
+function scrollToProspectAsk() {
+  var el = document.getElementById('prospectAsk');
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  var input = document.getElementById('prospectAskInput');
+  if (input) setTimeout(function() { input.focus(); }, 480);
+}
+
 /* ── Prospect-mode Ask TARGA ──
    Canned answers keyed to chip text. Free-text input falls through to a
    generic acknowledgment. The point is for the prospect to ask a "would
@@ -5539,6 +5934,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e.key === 'Enter') prospectAskSubmit();
     });
   }
+
+  // Prospect menu nav — bind hover/click listeners
+  pmInit();
 });
 
 setTimeout(makeClickable, 100);
@@ -5560,6 +5958,7 @@ document.addEventListener('keydown', function(e) {
     if (typeof closeNewPlan === 'function') closeNewPlan();
     if (typeof closeDesktopQA === 'function') closeDesktopQA();
     if (typeof closeCaptainDrawer === 'function') closeCaptainDrawer();
+    if (typeof closePmAll === 'function') closePmAll();
   }
 });
 
