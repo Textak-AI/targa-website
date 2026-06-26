@@ -93,13 +93,15 @@
   .aer-conn{width:2px; height:14px; background:var(--border-strong);}
   .aer-row{display:flex; gap:10px;}
 
-  .mini-map{position:relative; height:200px;}
-  .smap-node{position:absolute; display:flex; flex-direction:column; align-items:center; gap:4px;}
-  .smap-glyph{width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-md); background:var(--bg-base); border:1.5px solid var(--border-default);}
-  .smap-glyph svg{width:18px; height:18px;}
-  .smap-node.block .smap-glyph{border-color:var(--st-blocked);} .smap-node.on .smap-glyph{border-color:var(--st-on-track);} .smap-node.risk .smap-glyph{border-color:var(--st-at-risk);}
-  .smap-cap{font-family:var(--font-mono); font-size:8px; color:var(--text-tertiary);}
-  .smap-line{position:absolute; height:1.5px; background:var(--border-strong); transform-origin:left center;}
+  .smap{position:relative; height:204px; margin-top:2px;}
+  .smap-links{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .smap-node{position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .smap-glyph{width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:11px; background:var(--bg-base); border:1.5px solid var(--border-default); box-shadow:0 1px 3px rgba(12,20,36,0.06);}
+  .smap-glyph svg{width:20px; height:20px;}
+  .smap-node.block .smap-glyph{border-color:var(--st-blocked); background:rgba(212,74,74,0.05);}
+  .smap-node.on .smap-glyph{border-color:var(--st-on-track); background:rgba(58,167,118,0.05);}
+  .smap-node.risk .smap-glyph{border-color:var(--st-at-risk); background:rgba(224,144,58,0.06);}
+  .smap-cap{font-family:var(--font-mono); font-size:9px; letter-spacing:0.04em; color:var(--text-tertiary);}
 
   .lens{margin-top:18px; text-align:center;}
   .lens-name{font-family:var(--font-display); font-size:18px; font-weight:600; letter-spacing:-0.01em; min-height:24px;}
@@ -188,13 +190,14 @@
 
         <div class="face f-bottom">
           <div class="face-label"><span class="ld"></span>Strategy Map</div>
-          <div class="mini-map">
-            <div class="smap-line" style="left:88px;top:48px;width:70px;transform:rotate(34deg);"></div>
-            <div class="smap-line" style="left:88px;top:48px;width:70px;transform:rotate(-32deg);"></div>
-            <div class="smap-line" style="left:60px;top:150px;width:120px;"></div>
-            <div class="smap-node risk" style="left:62px;top:14px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#a4751c" stroke-width="2"><path d="M12 3 L21 8 L21 18 L12 23 L3 18 L3 8 Z"/></svg></div><span class="smap-cap">Margin</span></div>
-            <div class="smap-node block" style="left:14px;top:120px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#b53a3a" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg></div><span class="smap-cap">COGS</span></div>
-            <div class="smap-node on" style="left:150px;top:120px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#2c7d57" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg></div><span class="smap-cap">Channel</span></div>
+          <div class="smap">
+            <svg class="smap-links" viewBox="0 0 228 204" preserveAspectRatio="none">
+              <line x1="114" y1="66" x2="54" y2="132" stroke="rgba(12,20,36,0.18)" stroke-width="1.5"/>
+              <line x1="114" y1="66" x2="174" y2="132" stroke="rgba(12,20,36,0.18)" stroke-width="1.5"/>
+            </svg>
+            <div class="smap-node risk" style="left:114px;top:46px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#a4751c" stroke-width="2"><path d="M12 3 L21 8 L21 18 L12 23 L3 18 L3 8 Z"/></svg></div><span class="smap-cap">Margin</span></div>
+            <div class="smap-node block" style="left:54px;top:152px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#b53a3a" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg></div><span class="smap-cap">COGS</span></div>
+            <div class="smap-node on" style="left:174px;top:152px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#2c7d57" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg></div><span class="smap-cap">Channel</span></div>
           </div>
         </div>
 
@@ -232,7 +235,7 @@
     {name:'50,000-ft',   rx:-90, ry:0},
     {name:'Strategy Map',rx:90,  ry:0}
   ];
-  var COSMETIC = -14; // pure-Y depth tilt; never rolls content
+  var COSMETIC = 0; // settle straight-on; depth comes from the motion, not the rest pose
 
   var rx=0, ry=0;
   var dragging=false, sx=0, sy=0, rx0=0, ry0=0, axis=null, moved=false;
