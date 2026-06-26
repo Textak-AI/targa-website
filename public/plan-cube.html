@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TARGA · Plan Cube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --p-navy-900:#070d18; --p-navy-800:#0c1424; --p-navy-700:#121d33; --p-navy-600:#1a2945;
+    --p-navy-500:#26395f; --p-navy-400:#3a517d; --p-navy-300:#5d76a0;
+    --p-teal-500:#14ada3; --p-gold-500:#d09a2e; --p-gold-700:#8a5e10;
+    --p-red-500:#d44a4a; --p-amber-500:#e0903a; --p-green-500:#3aa776;
+    --brand-targa-navy:#1f476a; --brand-targa-teal:#0eb2af;
+    --bg-base:#eef1f5; --bg-surface:#ffffff; --bg-elevated:#fafbfc; --bg-sunken:#e8edf2;
+    --border-subtle:rgba(12,20,36,0.06); --border-default:rgba(12,20,36,0.10); --border-strong:rgba(12,20,36,0.18);
+    --text-primary:#0c1424; --text-secondary:#1a2540; --text-tertiary:#2e4368;
+    --primary:#0d8b82; --primary-soft:rgba(20,173,163,0.08);
+    --st-on-track:var(--p-green-500); --st-at-risk:var(--p-amber-500); --st-blocked:var(--p-red-500); --st-complete:#7c8aa3;
+    --advisor:var(--p-gold-500); --advisor-text:var(--p-gold-700);
+    --font-display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --font-body:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-pill:999px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--font-body); background:radial-gradient(120% 120% at 50% 0%, #f4f6fa 0%, var(--bg-base) 60%); color:var(--text-primary); -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px; overflow:hidden;}
+
+  .lead{text-align:center; margin-bottom:8px;}
+  .lead .eyebrow{font-family:var(--font-mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--primary); margin-bottom:8px;}
+  .lead h1{font-family:var(--font-display); font-size:24px; font-weight:600; letter-spacing:-0.02em;}
+  .lead p{font-size:13px; color:var(--text-tertiary); margin-top:6px;}
+
+  .stage{perspective:1150px; perspective-origin:50% 38%; width:340px; height:340px; display:flex; align-items:center; justify-content:center; touch-action:none; cursor:grab; margin:18px 0 6px;}
+  .stage:active{cursor:grabbing;}
+  /* cosmetic depth tilt = pure Y, so content never rolls */
+  .scene{width:260px; height:260px; transform-style:preserve-3d; transition:transform 520ms cubic-bezier(0.4,0.2,0.2,1);}
+  .cube{position:relative; width:260px; height:260px; transform-style:preserve-3d; transform:rotateX(0deg) rotateY(0deg); transition:transform 600ms cubic-bezier(0.34,1.25,0.5,1);}
+  .cube.dragging{transition:none;}
+
+  .face{
+    position:absolute; width:260px; height:260px; left:0; top:0;
+    background:linear-gradient(180deg, var(--bg-surface), var(--bg-elevated));
+    border:1px solid var(--border-default); border-radius:var(--radius-lg);
+    box-shadow:0 8px 30px rgba(12,20,36,0.10), inset 0 1px 0 rgba(255,255,255,0.7);
+    padding:16px; overflow:hidden; backface-visibility:hidden;
+  }
+  .face-label{font-family:var(--font-mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-tertiary); display:flex; align-items:center; gap:7px; margin-bottom:12px;}
+  .face-label .ld{width:7px; height:7px; border-radius:50%; background:var(--primary);}
+
+  .f-front  { transform: rotateY(0deg)    translateZ(130px); }
+  .f-right  { transform: rotateY(90deg)   translateZ(130px); }
+  .f-back   { transform: rotateY(180deg)  translateZ(130px); }
+  .f-left   { transform: rotateY(-90deg)  translateZ(130px); }
+  .f-top    { transform: rotateX(90deg)   translateZ(130px); }
+  .f-bottom { transform: rotateX(-90deg)  translateZ(130px); }
+
+  .kpis{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .kpi{background:var(--bg-base); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:11px 12px;}
+  .kpi .v{font-family:var(--font-display); font-size:22px; font-weight:600; letter-spacing:-0.02em;}
+  .kpi .k{font-family:var(--font-mono); font-size:9px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-tertiary); margin-top:3px;}
+  .kpi.alert .v{color:var(--st-blocked);}
+
+  .mini-kanban{display:grid; grid-template-columns:repeat(4,1fr); gap:7px; height:200px;}
+  .mk-col{background:var(--bg-sunken); border-radius:var(--radius-sm); padding:6px;}
+  .mk-h{height:4px; border-radius:2px; margin-bottom:7px;}
+  .mk-h.on{background:var(--st-on-track);} .mk-h.risk{background:var(--st-at-risk);} .mk-h.block{background:var(--st-blocked);} .mk-h.done{background:var(--st-complete);}
+  .mk-card{background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:4px; height:26px; margin-bottom:6px; border-top:2px solid var(--border-default);}
+  .mk-card.on{border-top-color:var(--st-on-track);} .mk-card.risk{border-top-color:var(--st-at-risk);} .mk-card.block{border-top-color:var(--st-blocked);} .mk-card.done{border-top-color:var(--st-complete); opacity:.7;}
+
+  .mini-tl{display:flex; flex-direction:column; gap:11px; padding-top:6px;}
+  .mtl-row{display:flex; align-items:center; gap:8px;}
+  .mtl-name{font-size:10px; color:var(--text-secondary); width:62px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500;}
+  .mtl-track{flex:1; height:14px; background:var(--bg-base); border-radius:var(--radius-pill); position:relative;}
+  .mtl-bar{position:absolute; top:0; height:14px; border-radius:var(--radius-pill);}
+  .mtl-bar.on{background:var(--st-on-track);} .mtl-bar.risk{background:var(--st-at-risk);} .mtl-bar.block{background:var(--st-blocked);}
+  .mtl-axis{display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:8px; color:var(--text-tertiary); padding:0 0 0 70px; margin-top:2px;}
+
+  .mini-st{display:flex; flex-direction:column; gap:8px; padding-top:4px;}
+  .mst-row{display:flex; align-items:center; gap:8px; font-size:11px;}
+  .mst-row .nm{flex:1; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mchip{font-family:var(--font-mono); font-size:8px; letter-spacing:0.04em; padding:2px 7px; border-radius:var(--radius-pill);}
+  .mchip.on{background:rgba(58,167,118,0.14); color:#2c7d57;} .mchip.risk{background:rgba(224,144,58,0.15); color:#a4751c;} .mchip.block{background:rgba(212,74,74,0.13); color:#b53a3a;} .mchip.done{background:rgba(124,138,163,0.16); color:#56607a;}
+  .mdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .mdot.on{background:var(--st-on-track);} .mdot.risk{background:var(--st-at-risk);} .mdot.block{background:var(--st-blocked);} .mdot.done{background:var(--st-complete);}
+
+  .mini-aer{display:flex; flex-direction:column; align-items:center; gap:0; padding-top:8px;}
+  .aer-node{background:var(--bg-base); border:1px solid var(--border-subtle); border-left:3px solid var(--border-default); border-radius:var(--radius-sm); padding:7px 11px; font-family:var(--font-display); font-size:11px; font-weight:600; text-align:center;}
+  .aer-node.goal{font-size:12px; border-left-color:var(--st-at-risk); padding:9px 14px;}
+  .aer-node.block{border-left-color:var(--st-blocked);} .aer-node.on{border-left-color:var(--st-on-track);} .aer-node.risk{border-left-color:var(--st-at-risk);}
+  .aer-conn{width:2px; height:14px; background:var(--border-strong);}
+  .aer-row{display:flex; gap:10px;}
+
+  .mini-map{position:relative; height:200px;}
+  .smap-node{position:absolute; display:flex; flex-direction:column; align-items:center; gap:4px;}
+  .smap-glyph{width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-md); background:var(--bg-base); border:1.5px solid var(--border-default);}
+  .smap-glyph svg{width:18px; height:18px;}
+  .smap-node.block .smap-glyph{border-color:var(--st-blocked);} .smap-node.on .smap-glyph{border-color:var(--st-on-track);} .smap-node.risk .smap-glyph{border-color:var(--st-at-risk);}
+  .smap-cap{font-family:var(--font-mono); font-size:8px; color:var(--text-tertiary);}
+  .smap-line{position:absolute; height:1.5px; background:var(--border-strong); transform-origin:left center;}
+
+  .lens{margin-top:18px; text-align:center;}
+  .lens-name{font-family:var(--font-display); font-size:18px; font-weight:600; letter-spacing:-0.01em; min-height:24px;}
+  .lens-hint{font-size:12px; color:var(--text-tertiary); margin-top:4px; display:flex; align-items:center; gap:8px; justify-content:center;}
+  .lens-hint svg{width:13px; height:13px;}
+  .dots{display:flex; gap:9px; justify-content:center; margin-top:14px;}
+  .dot{width:8px; height:8px; border-radius:50%; background:var(--border-strong); cursor:pointer; transition:all .2s;}
+  .dot.active{background:var(--primary); transform:scale(1.35);}
+</style>
+</head>
+<body>
+
+  <div class="lead">
+    <div class="eyebrow">FY26 Plan · Margin Recovery</div>
+    <h1>Turn the plan to see it differently</h1>
+    <p>Swipe sideways through the lenses, or up and down for altitude.</p>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="scene" id="scene">
+      <div class="cube" id="cube">
+
+        <div class="face f-front">
+          <div class="face-label"><span class="ld"></span>Dashboard</div>
+          <div class="kpis">
+            <div class="kpi"><div class="v">38.4%</div><div class="k">Gross margin</div></div>
+            <div class="kpi"><div class="v">$41.2M</div><div class="k">Revenue YTD</div></div>
+            <div class="kpi alert"><div class="v">2</div><div class="k">Blocked items</div></div>
+            <div class="kpi"><div class="v">61</div><div class="k">Goal health</div></div>
+          </div>
+        </div>
+
+        <div class="face f-right">
+          <div class="face-label"><span class="ld"></span>Kanban</div>
+          <div class="mini-kanban">
+            <div class="mk-col"><div class="mk-h on"></div><div class="mk-card on"></div><div class="mk-card on"></div><div class="mk-card on"></div></div>
+            <div class="mk-col"><div class="mk-h risk"></div><div class="mk-card risk"></div><div class="mk-card risk"></div></div>
+            <div class="mk-col"><div class="mk-h block"></div><div class="mk-card block"></div><div class="mk-card block"></div></div>
+            <div class="mk-col"><div class="mk-h done"></div><div class="mk-card done"></div><div class="mk-card done"></div></div>
+          </div>
+        </div>
+
+        <div class="face f-back">
+          <div class="face-label"><span class="ld"></span>Timeline</div>
+          <div class="mini-tl">
+            <div class="mtl-row"><span class="mtl-name">Margin</span><span class="mtl-track"><span class="mtl-bar risk" style="left:2%;width:72%;"></span></span></div>
+            <div class="mtl-row"><span class="mtl-name">COGS</span><span class="mtl-track"><span class="mtl-bar block" style="left:3%;width:44%;"></span></span></div>
+            <div class="mtl-row"><span class="mtl-name">Pricing</span><span class="mtl-track"><span class="mtl-bar risk" style="left:4%;width:92%;"></span></span></div>
+            <div class="mtl-row"><span class="mtl-name">Channel</span><span class="mtl-track"><span class="mtl-bar on" style="left:26%;width:68%;"></span></span></div>
+            <div class="mtl-row"><span class="mtl-name">Efficiency</span><span class="mtl-track"><span class="mtl-bar on" style="left:2%;width:70%;"></span></span></div>
+          </div>
+          <div class="mtl-axis"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span></div>
+        </div>
+
+        <div class="face f-left">
+          <div class="face-label"><span class="ld"></span>Status</div>
+          <div class="mini-st">
+            <div class="mst-row"><span class="mdot block"></span><span class="nm">Approve pricing model</span><span class="mchip block">Blocked</span></div>
+            <div class="mst-row"><span class="mdot block"></span><span class="nm">Reduce COGS tier-1</span><span class="mchip block">Blocked</span></div>
+            <div class="mst-row"><span class="mdot risk"></span><span class="nm">Price realization</span><span class="mchip risk">At Risk</span></div>
+            <div class="mst-row"><span class="mdot risk"></span><span class="nm">Validate supplier scope</span><span class="mchip risk">At Risk</span></div>
+            <div class="mst-row"><span class="mdot on"></span><span class="nm">Channel mix</span><span class="mchip on">On Track</span></div>
+            <div class="mst-row"><span class="mdot on"></span><span class="nm">Efficiency +8%</span><span class="mchip on">On Track</span></div>
+            <div class="mst-row"><span class="mdot done"></span><span class="nm">Audit contracts</span><span class="mchip done">Complete</span></div>
+          </div>
+        </div>
+
+        <div class="face f-top">
+          <div class="face-label"><span class="ld"></span>50,000-ft</div>
+          <div class="mini-aer">
+            <div class="aer-node goal">Gross margin recovery</div>
+            <div class="aer-conn"></div>
+            <div class="aer-row">
+              <div class="aer-node risk">Lower cost</div>
+              <div class="aer-node on">Efficiency</div>
+              <div class="aer-node risk">Pricing</div>
+            </div>
+            <div class="aer-conn"></div>
+            <div class="aer-row">
+              <div class="aer-node block" style="font-size:10px;">COGS tier-1</div>
+              <div class="aer-node on" style="font-size:10px;">Channel mix</div>
+              <div class="aer-node risk" style="font-size:10px;">Price real.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="face f-bottom">
+          <div class="face-label"><span class="ld"></span>Strategy Map</div>
+          <div class="mini-map">
+            <div class="smap-line" style="left:88px;top:48px;width:70px;transform:rotate(34deg);"></div>
+            <div class="smap-line" style="left:88px;top:48px;width:70px;transform:rotate(-32deg);"></div>
+            <div class="smap-line" style="left:60px;top:150px;width:120px;"></div>
+            <div class="smap-node risk" style="left:62px;top:14px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#a4751c" stroke-width="2"><path d="M12 3 L21 8 L21 18 L12 23 L3 18 L3 8 Z"/></svg></div><span class="smap-cap">Margin</span></div>
+            <div class="smap-node block" style="left:14px;top:120px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#b53a3a" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg></div><span class="smap-cap">COGS</span></div>
+            <div class="smap-node on" style="left:150px;top:120px;"><div class="smap-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#2c7d57" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg></div><span class="smap-cap">Channel</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="lens">
+    <div class="lens-name" id="lensName">Dashboard</div>
+    <div class="lens-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 12l4-4M5 12l4 4M19 12l-4-4M19 12l-4 4"/></svg>Swipe sideways · up/down for altitude · or tap a dot</div>
+    <div class="dots" id="dots">
+      <span class="dot active" data-i="0" title="Dashboard"></span>
+      <span class="dot" data-i="1" title="Kanban"></span>
+      <span class="dot" data-i="2" title="Timeline"></span>
+      <span class="dot" data-i="3" title="Status"></span>
+      <span class="dot" data-i="4" title="50,000-ft"></span>
+      <span class="dot" data-i="5" title="Strategy Map"></span>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var scene = document.getElementById('scene');
+  var cube  = document.getElementById('cube');
+  var stage = document.getElementById('stage');
+  var lensName = document.getElementById('lensName');
+  var dots = Array.prototype.slice.call(document.querySelectorAll('#dots .dot'));
+
+  // lens = a head-on, upright orientation
+  var lenses = [
+    {name:'Dashboard',   rx:0,   ry:0},
+    {name:'Kanban',      rx:0,   ry:-90},
+    {name:'Timeline',    rx:0,   ry:180},
+    {name:'Status',      rx:0,   ry:90},
+    {name:'50,000-ft',   rx:-90, ry:0},
+    {name:'Strategy Map',rx:90,  ry:0}
+  ];
+  var COSMETIC = -14; // pure-Y depth tilt; never rolls content
+
+  var rx=0, ry=0;
+  var dragging=false, sx=0, sy=0, rx0=0, ry0=0, axis=null, moved=false;
+
+  function applyCube(){ cube.style.transform='rotateX('+rx+'deg) rotateY('+ry+'deg)'; }
+  function applyScene(pole){ scene.style.transform='rotateY('+(pole?0:COSMETIC)+'deg)'; }
+  function circDelta(a,b){ var d=((a-b)%360+540)%360-180; return d; }
+
+  function setLensUI(name, idx){ lensName.textContent=name; dots.forEach(function(d,k){d.classList.toggle('active',k===idx);}); }
+
+  function snapHorizontal(){
+    var target = Math.round(ry/90)*90;            // nearest of 4 sides
+    rx = 0; ry = target;
+    var norm = ((target%360)+360)%360;            // 0,90,180,270
+    var idx = norm===0?0 : norm===270?1 : norm===180?2 : 3; // -90==270 => Kanban
+    cube.classList.remove('dragging'); applyCube(); applyScene(false);
+    setLensUI(lenses[idx].name, idx);
+  }
+  function snapVertical(){
+    var trx = Math.max(-90, Math.min(90, Math.round(rx/90)*90)); // -90,0,90
+    rx = trx; ry = Math.round(ry/360)*360;        // home meridian -> poles upright
+    var idx = trx===0?0 : trx===-90?4 : 5;
+    cube.classList.remove('dragging'); applyCube(); applyScene(trx!==0);
+    setLensUI(lenses[idx].name, idx);
+  }
+  function goLens(i){
+    var L=lenses[i];
+    rx=L.rx; ry = L.ry + 360*Math.round((ry-L.ry)/360);
+    cube.classList.remove('dragging'); applyCube(); applyScene(L.rx!==0);
+    setLensUI(L.name, i);
+  }
+
+  stage.addEventListener('pointerdown', function(e){
+    dragging=true; moved=false; axis=null; sx=e.clientX; sy=e.clientY; rx0=rx; ry0=ry;
+    cube.classList.add('dragging'); stage.setPointerCapture(e.pointerId);
+  });
+  stage.addEventListener('pointermove', function(e){
+    if(!dragging) return;
+    var dx=e.clientX-sx, dy=e.clientY-sy;
+    if(!axis && (Math.abs(dx)+Math.abs(dy))>6){
+      axis = Math.abs(dx)>Math.abs(dy) ? 'h' : 'v';
+      moved=true;
+      if(axis==='h'){ rx0=0; rx=0; }                       // level for sideways turn
+      else { ry0=Math.round(ry/360)*360; ry=ry0; }         // home column for tilt
+      scene.style.transform='rotateY('+COSMETIC+'deg)';    // keep level while turning
+    }
+    if(axis==='h'){ ry = ry0 + dx*0.6; rx = 0; }
+    else if(axis==='v'){ rx = Math.max(-90, Math.min(90, rx0 - dy*0.6)); ry = ry0; }
+    applyCube();
+  });
+  function endDrag(e){
+    if(!dragging) return; dragging=false;
+    try{ stage.releasePointerCapture(e.pointerId); }catch(_){}
+    if(!moved){ return; }
+    if(axis==='v') snapVertical(); else snapHorizontal();
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  dots.forEach(function(d){ d.addEventListener('click', function(){ goLens(parseInt(d.getAttribute('data-i'),10)); }); });
+
+  applyCube(); applyScene(false);
+})();
+</script>
+</body>
+</html>
