@@ -235,13 +235,14 @@
     {name:'50,000-ft',   rx:-90, ry:0},
     {name:'Strategy Map',rx:90,  ry:0}
   ];
-  var COSMETIC = 0; // settle straight-on; depth comes from the motion, not the rest pose
+  // fixed 3/4 framing angle on the wrapper: shows top + side, keeps forward-face text upright
+  var SCENE_RX = -16, SCENE_RY = -24;
 
   var rx=0, ry=0;
   var dragging=false, sx=0, sy=0, rx0=0, ry0=0, axis=null, moved=false;
 
   function applyCube(){ cube.style.transform='rotateX('+rx+'deg) rotateY('+ry+'deg)'; }
-  function applyScene(pole){ scene.style.transform='rotateY('+(pole?0:COSMETIC)+'deg)'; }
+  function applyScene(){ scene.style.transform='rotateX('+SCENE_RX+'deg) rotateY('+SCENE_RY+'deg)'; }
   function circDelta(a,b){ var d=((a-b)%360+540)%360-180; return d; }
 
   function setLensUI(name, idx){ lensName.textContent=name; dots.forEach(function(d,k){d.classList.toggle('active',k===idx);}); }
@@ -280,7 +281,7 @@
       moved=true;
       if(axis==='h'){ rx0=0; rx=0; }                       // level for sideways turn
       else { ry0=Math.round(ry/360)*360; ry=ry0; }         // home column for tilt
-      scene.style.transform='rotateY('+COSMETIC+'deg)';    // keep level while turning
+      scene.style.transform='rotateX('+SCENE_RX+'deg) rotateY('+SCENE_RY+'deg)'; // hold framing while turning
     }
     if(axis==='h'){ ry = ry0 + dx*0.6; rx = 0; }
     else if(axis==='v'){ rx = Math.max(-90, Math.min(90, rx0 - dy*0.6)); ry = ry0; }
