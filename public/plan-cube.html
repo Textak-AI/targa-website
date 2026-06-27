@@ -110,6 +110,14 @@
   .dots{display:flex; gap:9px; justify-content:center; margin-top:14px;}
   .dot{width:8px; height:8px; border-radius:50%; background:var(--border-strong); cursor:pointer; transition:all .2s;}
   .dot.active{background:var(--primary); transform:scale(1.35);}
+  .lens-detail{max-width:330px; margin:13px auto 0; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-md); box-shadow:0 1px 2px rgba(12,20,36,0.05), 0 6px 16px rgba(12,20,36,0.06); padding:12px 16px;}
+  .ld-stats{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+  .ld-stat{text-align:center;}
+  .ld-stat .v{font-family:var(--font-display); font-size:18px; font-weight:600; letter-spacing:-0.02em; line-height:1;}
+  .ld-stat .k{font-family:var(--font-mono); font-size:9px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-tertiary); margin-top:4px;}
+  .ld-stat.block .v{color:var(--st-blocked);} .ld-stat.risk .v{color:var(--st-at-risk);} .ld-stat.on .v{color:var(--st-on-track);}
+  .ld-line{font-size:12.5px; color:var(--text-secondary); line-height:1.45; text-align:center;}
+  .ld-line b{color:var(--text-primary); font-weight:600;} .ld-line .x{color:var(--st-blocked); font-weight:600;}
 </style>
 </head>
 <body>
@@ -207,6 +215,7 @@
 
   <div class="lens">
     <div class="lens-name" id="lensName">Dashboard</div>
+    <div class="lens-detail" id="lensDetail"></div>
     <div class="lens-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 12l4-4M5 12l4 4M19 12l-4-4M19 12l-4 4"/></svg>Swipe sideways · up/down for altitude · or tap a dot</div>
     <div class="dots" id="dots">
       <span class="dot active" data-i="0" title="Dashboard"></span>
@@ -245,7 +254,17 @@
   function applyScene(){ scene.style.transform='rotateX('+SCENE_RX+'deg) rotateY('+SCENE_RY+'deg)'; }
   function circDelta(a,b){ var d=((a-b)%360+540)%360-180; return d; }
 
-  function setLensUI(name, idx){ lensName.textContent=name; dots.forEach(function(d,k){d.classList.toggle('active',k===idx);}); }
+  var lensDetail = document.getElementById('lensDetail');
+  var details = [
+    '<div class="ld-stats"><div class="ld-stat risk"><div class="v">38.4%</div><div class="k">Margin</div></div><div class="ld-stat"><div class="v">$41.2M</div><div class="k">Revenue</div></div><div class="ld-stat block"><div class="v">2</div><div class="k">Blocked</div></div><div class="ld-stat"><div class="v">61</div><div class="k">Health</div></div></div>',
+    '<div class="ld-stats"><div class="ld-stat on"><div class="v">4</div><div class="k">On track</div></div><div class="ld-stat risk"><div class="v">3</div><div class="k">At risk</div></div><div class="ld-stat block"><div class="v">2</div><div class="k">Blocked</div></div><div class="ld-stat"><div class="v">3</div><div class="k">Complete</div></div></div>',
+    '<div class="ld-line"><b>COGS blocked through Q2.</b> Apex renegotiation milestone <span class="x">overdue</span>. Margin recovery spans Q1 to Q3.</div>',
+    '<div class="ld-line"><span class="x">2 blocked need you:</span> <b>Approve pricing model</b> and <b>Reduce COGS tier-1</b>.</div>',
+    '<div class="ld-line">Goal health <b>61</b>. Lower-cost objective <span class="x">at risk</span>; 1 of 3 initiatives blocked.</div>',
+    '<div class="ld-line">Margin depends on <span class="x">COGS (blocked)</span> and <b>Channel (on track)</b>.</div>'
+  ];
+
+  function setLensUI(name, idx){ lensName.textContent=name; lensDetail.innerHTML=details[idx]; dots.forEach(function(d,k){d.classList.toggle('active',k===idx);}); }
 
   function snapHorizontal(){
     var target = Math.round(ry/90)*90;            // nearest of 4 sides
@@ -298,7 +317,7 @@
 
   dots.forEach(function(d){ d.addEventListener('click', function(){ goLens(parseInt(d.getAttribute('data-i'),10)); }); });
 
-  applyCube(); applyScene(false);
+  applyCube(); applyScene(false); lensDetail.innerHTML = details[0];
 })();
 </script>
 </body>
