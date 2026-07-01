@@ -1200,12 +1200,17 @@ input,textarea{font-family:var(--font-b);outline:none;}
    Desktop layout unchanged above this breakpoint.
    ═══════════════════════════════════════════════════════════ */
 @media (max-width:760px){
-  /* --- app shell: allow vertical scroll instead of fixed clipping --- */
-  #app{height:auto;min-height:100vh;overflow:visible;}
-  .screen{position:relative;inset:auto;min-height:100vh;}
-  .role-view{overflow-y:visible;}
-  .role-view.active{min-height:0;}
-  .view-scroll{padding:18px 16px 88px;overflow-y:visible;}
+  /* --- iOS-reliable scroll: #app is the scroll container, not the body --- */
+  html,body{height:100%;margin:0;overflow:hidden;overflow-x:hidden;}
+  .screen{position:fixed !important;inset:0 !important;height:100% !important;overflow:hidden !important;}
+  #app{position:fixed !important;inset:0 !important;height:100% !important;
+    display:flex;flex-direction:column;
+    overflow-y:auto !important;overflow-x:hidden !important;-webkit-overflow-scrolling:touch;}
+  #app.hidden{display:none !important;}
+  .topbar,.persona-bar{flex-shrink:0;}
+  .role-view{display:none;height:auto !important;overflow:visible !important;flex-shrink:0;}
+  .role-view.active{display:flex;flex-direction:column;height:auto !important;overflow:visible !important;}
+  .view-scroll{flex:none !important;height:auto !important;overflow:visible !important;padding:18px 16px 120px;}
 
   /* --- topbar: tighter, wraps, no clipping --- */
   .topbar{padding:0 14px;height:auto;min-height:52px;flex-wrap:wrap;gap:6px;}
