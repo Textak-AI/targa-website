@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TARGA · Lightning Line</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --p-navy-900:#070d18; --p-navy-800:#0c1424; --p-navy-700:#121d33; --p-navy-600:#1a2945;
+    --p-teal-500:#14ada3; --p-gold-500:#d09a2e; --p-gold-700:#8a5e10;
+    --bg-base:#eef1f5; --bg-surface:#ffffff; --bg-sunken:#e8edf2;
+    --border-subtle:rgba(12,20,36,0.06); --border-default:rgba(12,20,36,0.10); --border-strong:rgba(12,20,36,0.18);
+    --text-primary:#0c1424; --text-secondary:#1a2540; --text-tertiary:#2e4368; --text-quiet:#6b7a93;
+    --st-on-track:#3aa776; --st-at-risk:#e0903a; --st-blocked:#d44a4a; --st-complete:#7c8aa3;
+    --font-display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --font-body:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-pill:999px;
+    --shadow-soft:0 1px 2px rgba(12,20,36,0.05), 0 8px 22px rgba(12,20,36,0.07);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--font-body); background:var(--bg-base); color:var(--text-primary); -webkit-font-smoothing:antialiased; padding:34px 28px 60px;}
+
+  .wrap{max-width:1240px; margin:0 auto;}
+
+  /* ===== HEADER ===== */
+  .head{display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin-bottom:6px;}
+  .eyebrow{font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--p-teal-500); font-weight:500; margin-bottom:8px;}
+  h1{font-family:var(--font-display); font-size:30px; font-weight:600; letter-spacing:-0.01em; line-height:1.05;}
+  .sub{font-size:13.5px; color:var(--text-tertiary); margin-top:7px;}
+  .plan-flag{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:var(--radius-pill); background:rgba(224,144,58,0.12); border:1px solid rgba(224,144,58,0.30); color:#a4751c; font-size:12.5px; font-weight:500; white-space:nowrap;}
+  .plan-flag .dot{width:8px; height:8px; border-radius:50%; background:var(--st-at-risk);}
+
+  /* ===== CHART CARD ===== */
+  .card{background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); box-shadow:var(--shadow-soft); margin-top:22px; overflow:hidden;}
+
+  .gantt{display:grid; grid-template-columns:300px 1fr;}
+  .names{border-right:1px solid var(--border-subtle); background:var(--bg-surface);}
+  .scroll{overflow-x:auto;}
+  .plot{position:relative; min-width:760px;}
+
+  /* axis */
+  .axis{display:flex; height:46px; border-bottom:1px solid var(--border-default); position:relative;}
+  .names .axis{padding:0 18px; align-items:center;}
+  .names .axis span{font-family:var(--font-mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-quiet);}
+  .month{position:absolute; top:0; height:46px; display:flex; flex-direction:column; justify-content:center; padding-left:9px; border-left:1px solid var(--border-subtle);}
+  .month b{font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--text-secondary);}
+  .month small{font-family:var(--font-mono); font-size:9px; color:var(--text-quiet); letter-spacing:0.06em;}
+
+  /* rows */
+  .rowlabel{height:46px; display:flex; align-items:center; gap:10px; padding:0 18px; border-bottom:1px solid var(--border-subtle);}
+  .rowlabel:last-child{border-bottom:none;}
+  .sdot{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
+  .rl-main{min-width:0;}
+  .rl-name{font-size:13px; font-weight:500; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.2;}
+  .rl-meta{display:flex; align-items:center; gap:6px; margin-top:2px;}
+  .av{width:15px; height:15px; border-radius:50%; background:linear-gradient(135deg,var(--p-navy-600),var(--p-navy-800)); color:#fff; font-family:var(--font-mono); font-size:8px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .kind{font-family:var(--font-mono); font-size:9px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-quiet);}
+
+  .track{height:46px; border-bottom:1px solid var(--border-subtle); position:relative;}
+  .track:last-child{border-bottom:none;}
+
+  /* bars */
+  .bar{position:absolute; top:50%; transform:translateY(-50%); height:18px; border-radius:var(--radius-pill); background:var(--bar-soft); overflow:hidden;}
+  .bar .fill{position:absolute; left:0; top:0; bottom:0; border-radius:var(--radius-pill); background:var(--bar);}
+
+  /* overlay svg: today line, dependency wires, lightning line */
+  .overlay{position:absolute; inset:0; pointer-events:none; z-index:5;}
+
+  /* lollipop */
+  .pop{position:absolute; top:6px; transform:translateX(-50%); z-index:6; display:flex; flex-direction:column; align-items:center; pointer-events:none;}
+  .pop .sticker{display:inline-flex; align-items:center; gap:6px; background:var(--p-navy-800); color:#fff; font-family:var(--font-mono); font-size:10px; font-weight:500; letter-spacing:0.08em; padding:4px 9px; border-radius:var(--radius-pill); box-shadow:0 2px 6px rgba(12,20,36,0.25);}
+  .pop .sticker .pd{width:7px; height:7px; border-radius:50%; background:var(--st-at-risk);}
+
+  /* callout */
+  .callout{position:absolute; z-index:7; max-width:222px; background:#fff; border:1px solid rgba(212,74,74,0.35); border-left:3px solid var(--st-blocked); border-radius:var(--radius-md); padding:9px 11px; box-shadow:0 6px 18px rgba(12,20,36,0.13); font-size:11.5px; line-height:1.4; color:var(--text-secondary);}
+  .callout b{color:var(--st-blocked);}
+
+  /* legend */
+  .legend{display:flex; align-items:center; flex-wrap:wrap; gap:18px 26px; padding:16px 22px; border-top:1px solid var(--border-subtle); background:var(--bg-surface);}
+  .leg-read{font-size:12.5px; color:var(--text-secondary); line-height:1.5; max-width:640px;}
+  .leg-read b{color:var(--text-primary); font-weight:600;}
+  .keys{display:flex; align-items:center; gap:14px; margin-left:auto;}
+  .key{display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.04em; color:var(--text-tertiary);}
+  .key .k{width:9px; height:9px; border-radius:50%;}
+  .note{margin-top:14px; font-size:11.5px; color:var(--text-quiet); text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div>
+      <div class="eyebrow">Lightning Line · Concept</div>
+      <h1>The Lightning Line</h1>
+      <div class="sub">FY26 Margin Recovery · the plan as a Gantt, read at a glance as of Jun 29</div>
+    </div>
+    <div class="plan-flag"><span class="dot"></span>Plan behind · 1 blocker dragging 3 tasks</div>
+  </div>
+
+  <div class="card">
+    <div class="gantt">
+      <div class="names" id="names"></div>
+      <div class="scroll">
+        <div class="plot" id="plot">
+          <div class="axis" id="axis"></div>
+          <div id="tracks"></div>
+          <svg class="overlay" id="overlay"></svg>
+          <div class="pop" id="pop"><div class="sticker"><span class="pd"></span>JUN 29</div></div>
+          <div class="callout" id="callout"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg-read">
+        <b>Left of the line is behind. Right is ahead.</b> The bigger the jog, the bigger the gap - so you read it without depending on color. When a task slips, it pulls everything waiting on it. The line is built so the team can see where to help, not to assign blame.
+      </div>
+      <div class="keys">
+        <div class="key"><span class="k" style="background:var(--st-on-track)"></span>On track</div>
+        <div class="key"><span class="k" style="background:var(--st-at-risk)"></span>At risk</div>
+        <div class="key"><span class="k" style="background:var(--st-blocked)"></span>Blocked</div>
+        <div class="key"><span class="k" style="background:var(--st-complete)"></span>Complete</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">Vertical dashes mark today (Jun 29). The lollipop sits at the top of the today line. Seeded plan data.</div>
+</div>
+
+<script>
+(function(){
+  // ---- time window ----
+  var START = new Date(2026,5,1);   // Jun 1
+  var END   = new Date(2026,8,30);  // Sep 30
+  var TODAY = new Date(2026,5,29);  // Jun 29
+  var SPAN  = (END-START);
+  function x(d){ return (d-START)/SPAN*100; }   // percent across plot
+  function D(y,m,day){ return new Date(y,m,day); }
+
+  var ST = { on:'var(--st-on-track)', risk:'var(--st-at-risk)', block:'var(--st-blocked)', done:'var(--st-complete)' };
+  var SOFT = { on:'rgba(58,167,118,0.20)', risk:'rgba(224,144,58,0.22)', block:'rgba(212,74,74,0.20)', done:'rgba(124,138,163,0.22)' };
+
+  // ---- tasks (top -> bottom). pct = actual progress 0..1 ----
+  // vertex date = start + pct*(finish-start)  ->  left of today = behind, right = ahead
+  var T = [
+    {n:'Audit tier-1 supplier contracts', o:'ME', k:'Action',     s:ST.done,  soft:SOFT.done,  start:D(2026,5,3),  fin:D(2026,5,17), pct:1.00},
+    {n:'Confirm supplier 2 revised terms',o:'SC', k:'Action',     s:ST.done,  soft:SOFT.done,  start:D(2026,5,8),  fin:D(2026,5,20), pct:1.00},
+    {n:'Operational efficiency +8%',      o:'ME', k:'Objective',  s:ST.on,    soft:SOFT.on,    start:D(2026,5,10), fin:D(2026,7,15), pct:0.29},
+    {n:'Interview channel partners',      o:'PN', k:'Action',     s:ST.on,    soft:SOFT.on,    start:D(2026,5,20), fin:D(2026,6,20), pct:0.40},
+    {n:'Channel mix optimization',        o:'PN', k:'Initiative', s:ST.on,    soft:SOFT.on,    start:D(2026,5,15), fin:D(2026,8,1),  pct:0.27},
+    {n:'Approve pricing model',           o:'DR', k:'Action',     s:ST.block, soft:SOFT.block, start:D(2026,5,5),  fin:D(2026,5,24), pct:0.45, blocker:true},
+    {n:'Price realization',               o:'PN', k:'Initiative', s:ST.risk,  soft:SOFT.risk,  start:D(2026,5,18), fin:D(2026,7,20), pct:0.08, dep:true},
+    {n:'Reduce COGS tier-1',              o:'ME', k:'Initiative', s:ST.block, soft:SOFT.block, start:D(2026,5,12), fin:D(2026,7,30), pct:0.09, dep:true},
+    {n:'Validate supplier scope',         o:'ME', k:'Action',     s:ST.risk,  soft:SOFT.risk,  start:D(2026,5,22), fin:D(2026,6,25), pct:0.12, dep:true},
+    {n:'Draft supplier 3 negotiation brief',o:'ME',k:'Action',    s:ST.risk,  soft:SOFT.risk,  start:D(2026,5,25), fin:D(2026,6,18), pct:0.20},
+    {n:'Weekly status to leadership',     o:'PN', k:'Action',     s:ST.on,    soft:SOFT.on,    start:D(2026,5,1),  fin:D(2026,8,30), pct:0.231}
+  ];
+
+  var ROW=46, AXIS=46;
+  function vDate(t){ return new Date(t.start.getTime() + t.pct*(t.fin-t.start)); }
+
+  // ---- month axis ----
+  var months=[{b:'June',x:x(D(2026,5,1))},{b:'July',x:x(D(2026,6,1))},{b:'August',x:x(D(2026,7,1))},{b:'September',x:x(D(2026,8,1))}];
+  var axisEl=document.getElementById('axis');
+  months.forEach(function(m){
+    var d=document.createElement('div'); d.className='month'; d.style.left=m.x+'%';
+    d.innerHTML='<b>'+m.b+'</b><small>2026</small>'; axisEl.appendChild(d);
+  });
+  // names header cell
+  var namesEl=document.getElementById('names');
+  var nh=document.createElement('div'); nh.className='axis'; nh.innerHTML='<span>Task</span>'; namesEl.appendChild(nh);
+
+  // ---- rows: labels + tracks + bars ----
+  var tracksEl=document.getElementById('tracks');
+  T.forEach(function(t){
+    var rl=document.createElement('div'); rl.className='rowlabel';
+    rl.innerHTML='<span class="sdot" style="background:'+t.s+'"></span>'+
+      '<div class="rl-main"><div class="rl-name">'+t.n+'</div>'+
+      '<div class="rl-meta"><span class="av">'+t.o+'</span><span class="kind">'+t.k+'</span></div></div>';
+    namesEl.appendChild(rl);
+
+    var tr=document.createElement('div'); tr.className='track';
+    var L=x(t.start), W=x(t.fin)-x(t.start);
+    var bar=document.createElement('div'); bar.className='bar';
+    bar.style.left=L+'%'; bar.style.width=W+'%';
+    bar.style.setProperty('--bar', t.s); bar.style.setProperty('--bar-soft', t.soft);
+    var fill=document.createElement('div'); fill.className='fill'; fill.style.width=(t.pct*100)+'%';
+    bar.appendChild(fill); tr.appendChild(bar); tracksEl.appendChild(tr);
+  });
+
+  // ---- overlay (today line, dependency wires, lightning line) ----
+  var plot=document.getElementById('plot');
+  var ov=document.getElementById('overlay');
+  function draw(){
+    var W=plot.clientWidth, H=AXIS + T.length*ROW;
+    ov.setAttribute('viewBox','0 0 '+W+' '+H);
+    ov.setAttribute('width',W); ov.setAttribute('height',H);
+    var px=function(pct){ return pct/100*W; };
+    var rowY=function(i){ return AXIS + i*ROW + ROW/2; };
+    var svg='';
+
+    // today reference (straight dashed line)
+    var tx=px(x(TODAY));
+    svg+='<line x1="'+tx+'" y1="'+AXIS+'" x2="'+tx+'" y2="'+H+'" stroke="rgba(12,20,36,0.30)" stroke-width="1.5" stroke-dasharray="3 4"/>';
+
+    // dependency wires from blocker to its dependents
+    var bi=-1; T.forEach(function(t,i){ if(t.blocker) bi=i; });
+    if(bi>=0){
+      var bx=px(x(T[bi].fin)), by=rowY(bi);
+      T.forEach(function(t,i){
+        if(t.dep){
+          var cx=px(x(t.start)), cy=rowY(i);
+          var mx=(bx+cx)/2;
+          svg+='<path d="M'+bx+' '+by+' C '+mx+' '+by+' '+mx+' '+cy+' '+cx+' '+cy+'" fill="none" stroke="rgba(124,138,163,0.55)" stroke-width="1.4"/>';
+          svg+='<circle cx="'+cx+'" cy="'+cy+'" r="2.4" fill="rgba(124,138,163,0.8)"/>';
+        }
+      });
+    }
+
+    // lightning line: only in-play tasks jog. Done or not-started tasks sit
+    // straight on the today line - they have no variance to express yet.
+    var TX=x(TODAY);
+    function frontier(t){
+      if(t.pct>=1) return TX;          // complete -> on the line
+      if(TODAY < t.start) return TX;   // not started yet -> on the line
+      return x(vDate(t));              // in play -> jog by variance
+    }
+    var pts=T.map(function(t,i){ return [px(frontier(t)), rowY(i)]; });
+    var dd='M'+pts[0][0]+' '+pts[0][1];
+    for(var i=1;i<pts.length;i++){ dd+=' L'+pts[i][0]+' '+pts[i][1]; }
+    // glow under-stroke
+    svg+='<path d="'+dd+'" fill="none" stroke="rgba(224,144,58,0.28)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>';
+    svg+='<path d="'+dd+'" fill="none" stroke="var(--st-at-risk)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+    // vertex nodes tinted by each task status
+    T.forEach(function(t,i){
+      svg+='<circle cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="5.5" fill="#fff" stroke="'+t.s+'" stroke-width="2.4"/>';
+    });
+    ov.innerHTML=svg;
+
+    // lollipop above today line
+    document.getElementById('pop').style.left=(x(TODAY))+'%';
+
+    // callout near the blocker vertex
+    if(bi>=0){
+      var co=document.getElementById('callout');
+      var bvx=x(vDate(T[bi]));
+      co.style.left='calc('+bvx+'% - 234px)';
+      co.style.top=(rowY(bi)-26)+'px';
+      co.innerHTML='<b>Approve pricing model</b> is blocked and ~9 days behind. It is dragging the three tasks waiting on it.';
+    }
+  }
+  draw();
+  window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>
