@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TARGA · Plan Views</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --p-navy-900:#070d18; --p-navy-800:#0c1424; --p-navy-700:#121d33; --p-navy-600:#1a2945;
+    --p-navy-500:#26395f; --p-navy-400:#3a517d; --p-navy-300:#5d76a0;
+    --p-teal-600:#0f8a82; --p-teal-500:#14ada3; --p-teal-400:#3ec5bb;
+    --p-gold-700:#8a5e10; --p-gold-500:#d09a2e; --p-gold-400:#e3b54e;
+    --p-red-500:#d44a4a; --p-amber-500:#e0903a; --p-green-500:#3aa776;
+    --brand-targa-navy:#1f476a; --brand-targa-teal:#0eb2af;
+    --bg-base:#eef1f5; --bg-surface:#ffffff; --bg-elevated:#fafbfc; --bg-sunken:#e8edf2;
+    --border-subtle:rgba(12,20,36,0.06); --border-default:rgba(12,20,36,0.10); --border-strong:rgba(12,20,36,0.18);
+    --text-primary:#0c1424; --text-secondary:#1a2540; --text-tertiary:#2e4368;
+    --primary:#0d8b82; --primary-hover:#0a6962; --primary-soft:rgba(20,173,163,0.08);
+    --advisor:var(--p-gold-500); --advisor-text:var(--p-gold-700); --advisor-soft:rgba(208,154,46,0.14);
+    --st-on-track:var(--p-green-500); --st-at-risk:var(--p-amber-500); --st-blocked:var(--p-red-500); --st-complete:#7c8aa3;
+    --font-display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --font-body:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-pill:999px;
+    --shadow-soft:0 1px 2px rgba(12,20,36,0.05), 0 6px 18px rgba(12,20,36,0.06);
+    --shadow-hover:0 2px 4px rgba(12,20,36,0.07), 0 14px 32px rgba(12,20,36,0.12);
+    --ease-out:cubic-bezier(0.2,0.7,0.2,1); --dfast:140ms;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--font-body); background:var(--bg-base); color:var(--text-primary); -webkit-font-smoothing:antialiased;}
+
+  /* ===== SHELL ===== */
+  .app{display:grid; grid-template-columns:72px 1fr; min-height:100vh;}
+  .sidebar{background:var(--bg-surface); border-right:1px solid var(--border-subtle); padding:18px 0; display:flex; flex-direction:column; align-items:center; gap:6px; position:sticky; top:0; height:100vh;}
+  .sidebar-logo{width:44px; height:44px; margin-bottom:14px; display:flex; align-items:center; justify-content:center;}
+  .sidebar-logo svg{width:32px; height:32px;}
+  .nav-item{width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-md); color:var(--text-tertiary); cursor:pointer; transition:all var(--dfast) var(--ease-out); position:relative;}
+  .nav-item:hover{background:var(--bg-sunken); color:var(--text-primary);}
+  .nav-item.active{background:var(--primary-soft); color:var(--primary);}
+  .nav-item.active::before{content:''; position:absolute; left:-2px; top:10px; bottom:10px; width:3px; background:var(--primary); border-radius:0 2px 2px 0;}
+  .nav-item svg{width:20px; height:20px;}
+  .nav-spacer{flex:1;}
+  .nav-avatar{width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--p-navy-400),var(--p-navy-600)); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:11px; font-weight:600; cursor:pointer;}
+  .main{display:flex; flex-direction:column; min-width:0;}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:16px 32px; border-bottom:1px solid var(--border-subtle); background:var(--bg-surface); position:sticky; top:0; z-index:10;}
+  .topbar-left{display:flex; align-items:center; gap:14px;}
+  .topbar-eyebrow{font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--primary); font-weight:500;}
+  .topbar-pos{font-family:var(--font-mono); font-size:11px; letter-spacing:0.06em; color:var(--text-tertiary);}
+  .topbar-right{display:flex; align-items:center; gap:10px;}
+  .meta-pill{font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); letter-spacing:0.04em; padding:6px 10px; background:var(--bg-base); border:1px solid var(--border-subtle); border-radius:var(--radius-sm);}
+  .quick-add-btn{display:flex; align-items:center; gap:8px; padding:8px 14px 8px 12px; background:var(--p-navy-800); color:#fff; border:none; border-radius:100px; font-family:var(--font-body); font-size:13px; font-weight:500; cursor:pointer; box-shadow:var(--shadow-soft);}
+  .quick-add-btn:hover{background:var(--p-navy-700);}
+  .quick-add-btn .plus{font-size:14px; line-height:1;}
+  .quick-add-btn .qa-counter{background:var(--primary); color:#fff; width:20px; height:20px; border-radius:50%; font-family:var(--font-mono); font-size:10px; font-weight:600; display:flex; align-items:center; justify-content:center; margin-left:2px;}
+
+  .surface-head{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 32px 4px;}
+  .viewmode{display:inline-flex; align-items:center; gap:2px; background:var(--bg-sunken); border:1px solid var(--border-subtle); border-radius:var(--radius-pill); padding:3px;}
+  .viewmode button{font-family:var(--font-body); font-size:12px; font-weight:500; color:var(--text-tertiary); background:transparent; border:none; padding:6px 14px; border-radius:var(--radius-pill); cursor:pointer; white-space:nowrap; transition:all var(--dfast) var(--ease-out);}
+  .viewmode button:hover{color:var(--text-primary);}
+  .viewmode button.active{background:var(--bg-surface); color:var(--primary); font-weight:600; box-shadow:var(--shadow-soft);}
+  .filters{display:flex; gap:8px;}
+  .filter{font-size:12px; font-weight:500; color:var(--text-secondary); background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-pill); padding:6px 14px; cursor:pointer;}
+  .filter.active{border-color:var(--primary); color:var(--primary); background:var(--primary-soft);}
+
+  .brief{margin:14px 32px 6px; padding:11px 16px; display:flex; align-items:center; gap:11px; background:var(--advisor-soft); border:1px solid rgba(208,154,46,0.32); border-left:3px solid var(--advisor); border-radius:var(--radius-md); font-size:13px; color:var(--text-secondary);}
+  .brief .spark{width:15px; height:15px; flex-shrink:0;}
+  .brief b{color:var(--advisor-text); font-weight:600;}
+
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* shared bits */
+  .avatar{width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,var(--p-navy-500),var(--p-navy-700)); color:#fff; font-family:var(--font-display); font-weight:600; font-size:9.5px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .spark{display:inline-block;}
+  .chip{display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:10px; font-weight:500; letter-spacing:0.04em; padding:2px 8px; border-radius:var(--radius-pill);}
+  .chip[data-st="on-track"]{background:rgba(58,167,118,0.13); color:#2c7d57;}
+  .chip[data-st="at-risk"]{background:rgba(224,144,58,0.14); color:#a4751c;}
+  .chip[data-st="blocked"]{background:rgba(212,74,74,0.12); color:#b53a3a;}
+  .chip[data-st="complete"]{background:rgba(124,138,163,0.16); color:#56607a;}
+
+  /* ===== KANBAN ===== */
+  .board{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; padding:14px 32px 32px; align-items:start; overflow-x:auto;}
+  .col{background:var(--bg-sunken); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:12px; min-width:230px;}
+  .col-head{display:flex; align-items:center; gap:8px; padding:4px 6px 12px;}
+  .col-dot{width:9px; height:9px; border-radius:50%;}
+  .col-title{font-family:var(--font-display); font-size:13px; font-weight:600;}
+  .col-count{margin-left:auto; font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-pill); padding:1px 8px;}
+  .col[data-st="on-track"] .col-dot{background:var(--st-on-track);} .col[data-st="at-risk"] .col-dot{background:var(--st-at-risk);}
+  .col[data-st="blocked"] .col-dot{background:var(--st-blocked);} .col[data-st="complete"] .col-dot{background:var(--st-complete);}
+  .card{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-md); box-shadow:var(--shadow-soft); padding:13px 13px 11px; margin-bottom:10px; cursor:pointer; border-top:2px solid var(--border-default); transition:all var(--dfast) var(--ease-out);}
+  .card:hover{box-shadow:var(--shadow-hover); transform:translateY(-1px);}
+  .card[data-st="on-track"]{border-top-color:var(--st-on-track);} .card[data-st="at-risk"]{border-top-color:var(--st-at-risk);}
+  .card[data-st="blocked"]{border-top-color:var(--st-blocked);} .card[data-st="complete"]{border-top-color:var(--st-complete); opacity:.82;}
+  .card-kind{font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:6px;}
+  .card-title{font-family:var(--font-display); font-size:14px; font-weight:600; line-height:1.25; margin-bottom:9px;}
+  .card[data-st="complete"] .card-title{text-decoration:line-through; text-decoration-color:rgba(12,20,36,0.25); color:var(--text-secondary);}
+  .card-foot{display:flex; align-items:center; gap:8px;}
+  .card-when{font-size:11px; color:var(--text-tertiary); font-family:var(--font-mono);}
+  .card-when.past{color:var(--st-blocked); font-weight:500;} .card-when.soon{color:var(--st-at-risk);}
+  .card-actions{margin-left:auto; font-family:var(--font-mono); font-size:10px; color:var(--text-tertiary);}
+  .card .chip{margin-bottom:8px;}
+  .targa-tag{display:flex; align-items:flex-start; gap:6px; margin-top:9px; padding-top:9px; border-top:1px solid var(--border-subtle); font-size:11px; color:var(--advisor-text); line-height:1.35;}
+  .targa-tag .spark{width:12px; height:12px; flex-shrink:0; margin-top:1px;} .targa-tag b{font-weight:600;}
+  .add-card{width:100%; font-family:var(--font-body); font-size:12px; color:var(--text-tertiary); background:transparent; border:1px dashed var(--border-strong); border-radius:var(--radius-md); padding:9px; cursor:pointer; margin-top:2px;}
+  .add-card:hover{color:var(--primary); border-color:var(--primary);}
+
+  /* ===== TIMELINE ===== */
+  .tl{padding:18px 32px 32px;}
+  .tl-grid{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-soft);}
+  .tl-row{display:grid; grid-template-columns:230px 1fr; border-bottom:1px solid var(--border-subtle);}
+  .tl-row:last-child{border-bottom:none;}
+  .tl-head .tl-name, .tl-head .tl-track{background:var(--bg-elevated);}
+  .tl-name{padding:12px 14px; border-right:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:2px; justify-content:center;}
+  .tl-name .nm{font-family:var(--font-display); font-size:13px; font-weight:600; line-height:1.2;}
+  .tl-name .mt{font-family:var(--font-mono); font-size:10px; color:var(--text-tertiary); display:flex; align-items:center; gap:6px;}
+  .tl-track{position:relative; display:grid; grid-template-columns:repeat(4,1fr); min-height:48px;}
+  .tl-track .q{border-right:1px dashed var(--border-subtle); }
+  .tl-track .q:last-child{border-right:none;}
+  .tl-head .tl-track{min-height:38px;}
+  .q-label{font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; color:var(--text-tertiary); text-transform:uppercase; display:flex; align-items:center; justify-content:center; height:100%;}
+  .bar{position:absolute; top:50%; transform:translateY(-50%); height:22px; border-radius:var(--radius-pill); display:flex; align-items:center; padding:0 10px; font-family:var(--font-mono); font-size:10px; font-weight:500; color:#fff; white-space:nowrap; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.15);}
+  .bar[data-st="on-track"]{background:var(--st-on-track);} .bar[data-st="at-risk"]{background:var(--st-at-risk);}
+  .bar[data-st="blocked"]{background:var(--st-blocked);} .bar[data-st="complete"]{background:var(--st-complete);}
+  .milestone{position:absolute; top:50%; transform:translate(-50%,-50%) rotate(45deg); width:13px; height:13px; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.2); cursor:pointer;}
+  .milestone[data-st="blocked"]{background:var(--st-blocked);}
+  .today{position:absolute; top:0; bottom:0; width:2px; background:var(--primary); z-index:3;}
+  .today::after{content:'TODAY'; position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-family:var(--font-mono); font-size:8px; letter-spacing:0.1em; color:var(--primary); background:var(--bg-surface); padding:0 4px;}
+
+  /* ===== STATUS ===== */
+  .st-wrap{padding:18px 32px 32px;}
+  .st-summary{display:flex; gap:12px; margin-bottom:16px;}
+  .st-stat{flex:1; background:var(--bg-surface); border:1px solid var(--border-default); border-top:3px solid; border-radius:var(--radius-md); padding:12px 14px; box-shadow:var(--shadow-soft);}
+  .st-stat[data-st="on-track"]{border-top-color:var(--st-on-track);} .st-stat[data-st="at-risk"]{border-top-color:var(--st-at-risk);}
+  .st-stat[data-st="blocked"]{border-top-color:var(--st-blocked);} .st-stat[data-st="complete"]{border-top-color:var(--st-complete);}
+  .st-stat .n{font-family:var(--font-display); font-size:28px; font-weight:600; line-height:1;}
+  .st-stat .l{font-family:var(--font-mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-tertiary); margin-top:5px;}
+  .st-table{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-soft);}
+  .st-tr{display:grid; grid-template-columns:2.4fr 1fr 0.9fr 1fr 1fr; align-items:center; padding:12px 18px; border-bottom:1px solid var(--border-subtle); transition:background var(--dfast);}
+  .st-tr:last-child{border-bottom:none;} .st-tr.body:hover{background:var(--bg-elevated); cursor:pointer;}
+  .st-th{background:var(--bg-elevated); font-family:var(--font-mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-tertiary);}
+  .st-item{display:flex; flex-direction:column; gap:2px;}
+  .st-item .nm{font-family:var(--font-display); font-size:13.5px; font-weight:600;}
+  .st-item .kd{font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-tertiary);}
+  .st-owner{display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text-secondary);}
+  .st-type{font-size:12px; color:var(--text-tertiary);}
+  .st-trend{font-family:var(--font-mono); font-size:11px; display:flex; align-items:center; gap:5px;}
+  .st-trend.up{color:#2c7d57;} .st-trend.down{color:#b53a3a;} .st-trend.flat{color:var(--text-tertiary);}
+  .st-upd{font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary);}
+
+  /* ===== 50,000-FT ===== */
+  .aerial{padding:24px 32px 40px; position:relative;}
+  .aerial-hint{position:absolute; right:40px; top:20px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.08em; color:var(--text-tertiary); display:flex; align-items:center; gap:6px;}
+  .tier{display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .tier-label{font-family:var(--font-mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-tertiary); align-self:flex-start; margin:0 0 4px 4px;}
+  .tier-row{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-bottom:6px;}
+  .connector{height:22px; width:2px; background:var(--border-strong); margin:0 auto;}
+  .node{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); box-shadow:var(--shadow-soft); padding:14px 16px; min-width:200px; cursor:pointer; transition:all var(--dfast) var(--ease-out); position:relative; border-left:3px solid var(--border-default);}
+  .node:hover{box-shadow:var(--shadow-hover); transform:translateY(-2px);}
+  .node[data-st="on-track"]{border-left-color:var(--st-on-track);} .node[data-st="at-risk"]{border-left-color:var(--st-at-risk);} .node[data-st="blocked"]{border-left-color:var(--st-blocked);}
+  .node-goal{min-width:340px; border-left-width:4px;}
+  .node-kind{font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:6px;}
+  .node-title{font-family:var(--font-display); font-weight:600; letter-spacing:-0.01em; line-height:1.2;}
+  .node-goal .node-title{font-size:20px;}
+  .node .node-title{font-size:14px;}
+  .node-meta{display:flex; align-items:center; gap:8px; margin-top:10px;}
+  .health{margin-left:auto; display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:11px; color:var(--text-secondary);}
+  .health-bar{width:54px; height:6px; border-radius:3px; background:var(--bg-sunken); overflow:hidden;}
+  .health-fill{height:100%; border-radius:3px;}
+  .node-tags{display:flex; gap:6px; margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== RAIL ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><svg viewBox="0 0 55.86 58.3" aria-label="TARGA"><polygon fill="var(--brand-targa-navy)" points="55.86 58.06 45.8 58.1 28.11 21.08 10.19 58.25 0 58.3 22.65 11.33 26.39 3.56 28.11 0 55.86 58.06"/><polygon fill="var(--brand-targa-teal)" points="33.67 45.26 22.31 45.31 28.03 33.46 33.67 45.26"/></svg></div>
+    <div class="nav-item active" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9v9a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5h-2v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9z"/></svg></div>
+    <div class="nav-item" title="My role"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg></div>
+    <div class="nav-item" title="Strategy Map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 L21 8 L21 18 L12 23 L3 18 L3 8 Z"/><path d="M3 8 L12 13 L21 8 M12 13 L12 23"/></svg></div>
+    <div class="nav-item" title="Focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12 H7 M17 12 H21 M12 3 V7 M12 17 V21"/><circle cx="12" cy="12" r="4"/></svg></div>
+    <div class="nav-item" title="Goal Health"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+    <div class="nav-item" title="Board Pulse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12 H7 L10 5 L14 19 L17 12 H21"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar" title="Dana Reyes · CEO">DR</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left"><span class="topbar-eyebrow">Home</span><span class="topbar-pos" id="pos">FY26 Plan · Margin Recovery</span></div>
+      <div class="topbar-right"><span class="meta-pill">FY26 Q1 · Updated 12 min ago</span><button class="quick-add-btn"><span class="plus">+</span> Quick add <span class="qa-counter">3</span></button></div>
+    </header>
+
+    <div class="surface-head">
+      <div class="viewmode" id="viewmode">
+        <button data-view="dashboard">Dashboard</button>
+        <button data-view="aerial">50,000-ft</button>
+        <button data-view="kanban" class="active">Kanban</button>
+        <button data-view="timeline">Timeline</button>
+        <button data-view="status">Status</button>
+      </div>
+      <div class="filters">
+        <button class="filter active">All items</button><button class="filter">Initiatives</button><button class="filter">Actions</button><button class="filter">My items</button>
+      </div>
+    </div>
+
+    <div class="brief">
+      <svg class="spark" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.6 7.4L21 11l-7.4 1.6L12 20l-1.6-7.4L3 11l7.4-1.6L12 2z" fill="#d09a2e"/></svg>
+      <span><b>Two items moved into Blocked this week.</b> Both trace to the Apex Logistics dependency. Resolving Apex clears $6.1M across margin and efficiency before board lock.</span>
+    </div>
+
+    <!-- ===== KANBAN ===== -->
+    <div class="view active" data-view="kanban">
+      <div class="board">
+        <section class="col" data-st="on-track">
+          <div class="col-head"><span class="col-dot"></span><span class="col-title">On Track</span><span class="col-count">4</span></div>
+          <article class="card" data-st="on-track"><div class="card-kind">Initiative</div><div class="card-title">Channel mix optimization</div><div class="card-foot"><span class="avatar">PN</span><span class="card-when">Ahead of pace</span><span class="card-actions">2 actions</span></div></article>
+          <article class="card" data-st="on-track"><div class="card-kind">Action</div><div class="card-title">Review Q1 margin variance</div><div class="card-foot"><span class="avatar">SC</span><span class="card-when">Due Apr 22</span></div></article>
+          <article class="card" data-st="on-track"><div class="card-kind">Action</div><div class="card-title">Interview channel partners</div><div class="card-foot"><span class="avatar">PN</span><span class="card-when">Due May 1</span></div></article>
+          <article class="card" data-st="on-track"><div class="card-kind">Objective</div><div class="card-title">Operational efficiency +8%</div><div class="card-foot"><span class="avatar">ME</span><span class="card-when">On pace</span><span class="card-actions">3 children</span></div></article>
+          <button class="add-card">+ Add item</button>
+        </section>
+        <section class="col" data-st="at-risk">
+          <div class="col-head"><span class="col-dot"></span><span class="col-title">At Risk</span><span class="col-count">3</span></div>
+          <article class="card" data-st="at-risk"><span class="chip" data-st="at-risk">SLIPPING</span><div class="card-kind">Initiative</div><div class="card-title">Price realization</div><div class="card-foot"><span class="avatar">PN</span><span class="card-when soon">3 actions · margin pressure</span></div><div class="targa-tag"><svg class="spark" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.6 7.4L21 11l-7.4 1.6L12 20l-1.6-7.4L3 11l7.4-1.6L12 2z" fill="#d09a2e"/></svg><span><b>TARGA</b> Discount depth is widening faster than volume gains. Worth a pricing review.</span></div></article>
+          <article class="card" data-st="at-risk"><div class="card-kind">Action</div><div class="card-title">Validate supplier scope</div><div class="card-foot"><span class="avatar">ME</span><span class="card-when soon">Due May 8</span></div></article>
+          <article class="card" data-st="at-risk"><div class="card-kind">Action</div><div class="card-title">Draft supplier 3 negotiation brief</div><div class="card-foot"><span class="avatar">ME</span><span class="card-when soon">Apr 25</span></div></article>
+          <button class="add-card">+ Add item</button>
+        </section>
+        <section class="col" data-st="blocked">
+          <div class="col-head"><span class="col-dot"></span><span class="col-title">Blocked</span><span class="col-count">2</span></div>
+          <article class="card" data-st="blocked"><span class="chip" data-st="blocked">BLOCKER · 3 DOWNSTREAM</span><div class="card-kind">Action</div><div class="card-title">Approve pricing model</div><div class="card-foot"><span class="avatar">DR</span><span class="card-when past">Overdue 2d</span></div><div class="targa-tag"><svg class="spark" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.6 7.4L21 11l-7.4 1.6L12 20l-1.6-7.4L3 11l7.4-1.6L12 2z" fill="#d09a2e"/></svg><span><b>TARGA</b> Holds three downstream actions. Highest-leverage close on the board.</span></div></article>
+          <article class="card" data-st="blocked"><div class="card-kind">Initiative</div><div class="card-title">Reduce COGS tier-1</div><div class="card-foot"><span class="avatar">ME</span><span class="card-when past">1 overdue</span><span class="card-actions">4 actions</span></div><div class="targa-tag"><svg class="spark" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.6 7.4L21 11l-7.4 1.6L12 20l-1.6-7.4L3 11l7.4-1.6L12 2z" fill="#d09a2e"/></svg><span><b>TARGA</b> Blocked on Apex Logistics renegotiation. Shared exposure with efficiency goal.</span></div></article>
+          <button class="add-card">+ Add item</button>
+        </section>
+        <section class="col" data-st="complete">
+          <div class="col-head"><span class="col-dot"></span><span class="col-title">Complete</span><span class="col-count">3</span></div>
+          <article class="card" data-st="complete"><div class="card-kind">Action</div><div class="card-title">Audit tier-1 supplier contracts</div><div class="card-foot"><span class="avatar">ME</span><span class="card-when">Closed 2h ago</span></div></article>
+          <article class="card" data-st="complete"><div class="card-kind">Action</div><div class="card-title">Confirm supplier 2 revised terms</div><div class="card-foot"><span class="avatar">SC</span><span class="card-when">Closed Apr 19</span></div></article>
+          <article class="card" data-st="complete"><div class="card-kind">Action</div><div class="card-title">Weekly status to leadership</div><div class="card-foot"><span class="avatar">PN</span><span class="card-when">Closed Fri</span></div></article>
+          <button class="add-card">+ Add item</button>
+        </section>
+      </div>
+    </div>
+
+    <!-- ===== TIMELINE ===== -->
+    <div class="view" data-view="timeline">
+      <div class="tl">
+        <div class="tl-grid">
+          <div class="tl-row tl-head">
+            <div class="tl-name"><span class="nm" style="font-size:12px; color:var(--text-tertiary); font-family:var(--font-mono); letter-spacing:0.08em;">FY26 PLAN</span></div>
+            <div class="tl-track">
+              <div class="q"><div class="q-label">Q1</div></div><div class="q"><div class="q-label">Q2</div></div><div class="q"><div class="q-label">Q3</div></div><div class="q"><div class="q-label">Q4</div></div>
+              <div class="today" style="left:28%;"></div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-name"><span class="nm">Gross margin recovery</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">DR</span>Goal</span></div>
+            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="at-risk" style="left:2%; width:72%;">Gross margin recovery</div></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-name"><span class="nm">Reduce COGS tier-1</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">ME</span>Initiative</span></div>
+            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="blocked" style="left:3%; width:44%;">Blocked · Apex</div><div class="milestone" data-st="blocked" style="left:22%;" title="Apex renegotiation milestone"></div></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-name"><span class="nm">Price realization</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">PN</span>Initiative</span></div>
+            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="at-risk" style="left:4%; width:92%;">Price realization</div></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-name"><span class="nm">Channel mix optimization</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">PN</span>Initiative</span></div>
+            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="on-track" style="left:26%; width:68%;">Channel mix optimization</div></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-name"><span class="nm">Operational efficiency +8%</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">ME</span>Objective</span></div>
+            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="on-track" style="left:2%; width:70%;">Operational efficiency +8%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STATUS ===== -->
+    <div class="view" data-view="status">
+      <div class="st-wrap">
+        <div class="st-summary">
+          <div class="st-stat" data-st="on-track"><div class="n">4</div><div class="l">On Track</div></div>
+          <div class="st-stat" data-st="at-risk"><div class="n">3</div><div class="l">At Risk</div></div>
+          <div class="st-stat" data-st="blocked"><div class="n">2</div><div class="l">Blocked</div></div>
+          <div class="st-stat" data-st="complete"><div class="n">3</div><div class="l">Complete</div></div>
+        </div>
+        <div class="st-table">
+          <div class="st-tr st-th"><div>Item</div><div>Owner</div><div>Type</div><div>Status</div><div>Trend · Updated</div></div>
+          <div class="st-tr body"><div class="st-item"><span class="nm">Approve pricing model</span><span class="kd">Action</span></div><div class="st-owner"><span class="avatar">DR</span>Dana Reyes</div><div class="st-type">Action</div><div><span class="chip" data-st="blocked">Blocked</span></div><div class="st-trend down">▼ Overdue 2d</div></div>
+          <div class="st-tr body"><div class="st-item"><span class="nm">Reduce COGS tier-1</span><span class="kd">Initiative</span></div><div class="st-owner"><span class="avatar">ME</span>Marcus Ellis</div><div class="st-type">Initiative</div><div><span class="chip" data-st="blocked">Blocked</span></div><div class="st-trend down">▼ 1 overdue</div></div>
+          <div class="st-tr body"><div class="st-item"><span class="nm">Price realization</span><span class="kd">Initiative</span></div><div class="st-owner"><span class="avatar">PN</span>Priya Nair</div><div class="st-type">Initiative</div><div><span class="chip" data-st="at-risk">At Risk</span></div><div class="st-trend down">▼ Slipping</div></div>
+          <div class="st-tr body"><div class="st-item"><span class="nm">Validate supplier scope</span><span class="kd">Action</span></div><div class="st-owner"><span class="avatar">ME</span>Marcus Ellis</div><div class="st-type">Action</div><div><span class="chip" data-st="at-risk">At Risk</span></div><div class="st-trend flat">— Due May 8</div></div>
+          <div class="st-tr body"><div class="st-item"><span class="nm">Channel mix optimization</span><span class="kd">Initiative</span></div><div class="st-owner"><span class="avatar">PN</span>Priya Nair</div><div class="st-type">Initiative</div><div><span class="chip" data-st="on-track">On Track</span></div><div class="st-trend up">▲ Ahead</div></div>
+          <div class="st-tr body"><div class="st-item"><span class="nm">Operational efficiency +8%</span><span class="kd">Objective</span></div><div class="st-owner"><span class="avatar">ME</span>Marcus Ellis</div><div class="st-type">Objective</div><div><span class="chip" data-st="on-track">On Track</span></div><div class="st-trend up">▲ On pace</div></div>
+          <div class="st-tr body"><div class="st-item"><span class="nm">Audit tier-1 supplier contracts</span><span class="kd">Action</span></div><div class="st-owner"><span class="avatar">ME</span>Marcus Ellis</div><div class="st-type">Action</div><div><span class="chip" data-st="complete">Complete</span></div><div class="st-upd">Closed 2h ago</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 50,000-FT ===== -->
+    <div class="view" data-view="aerial">
+      <div class="aerial">
+        <div class="aerial-hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>Click any node to zoom in</div>
+        <div class="tier">
+          <span class="tier-label">Goal</span>
+          <div class="tier-row">
+            <div class="node node-goal" data-st="at-risk">
+              <div class="node-kind">Goal</div>
+              <div class="node-title">Gross margin recovery to 42%</div>
+              <div class="node-meta"><span class="avatar">DR</span><span style="font-size:12px;color:var(--text-secondary);">Dana Reyes</span>
+                <span class="health"><span class="health-bar"><span class="health-fill" style="width:61%; background:var(--st-at-risk);"></span></span>61</span>
+              </div>
+              <div class="node-tags"><span class="chip" data-st="blocked">1 blocked</span><span class="chip" data-st="at-risk">1 at risk</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="connector"></div>
+        <div class="tier">
+          <span class="tier-label">Objectives</span>
+          <div class="tier-row">
+            <div class="node" data-st="at-risk"><div class="node-kind">Objective</div><div class="node-title">Lower cost base</div><div class="node-meta"><span class="avatar">ME</span><span class="health"><span class="health-bar"><span class="health-fill" style="width:48%; background:var(--st-at-risk);"></span></span>48</span></div></div>
+            <div class="node" data-st="on-track"><div class="node-kind">Objective</div><div class="node-title">Operational efficiency +8%</div><div class="node-meta"><span class="avatar">ME</span><span class="health"><span class="health-bar"><span class="health-fill" style="width:78%; background:var(--st-on-track);"></span></span>78</span></div></div>
+            <div class="node" data-st="at-risk"><div class="node-kind">Objective</div><div class="node-title">Pricing power</div><div class="node-meta"><span class="avatar">PN</span><span class="health"><span class="health-bar"><span class="health-fill" style="width:55%; background:var(--st-at-risk);"></span></span>55</span></div></div>
+          </div>
+        </div>
+        <div class="connector"></div>
+        <div class="tier">
+          <span class="tier-label">Initiatives</span>
+          <div class="tier-row">
+            <div class="node" data-st="blocked"><div class="node-kind">Initiative</div><div class="node-title">Reduce COGS tier-1</div><div class="node-meta"><span class="avatar">ME</span><span class="chip" data-st="blocked" style="margin-left:auto;">Apex</span></div></div>
+            <div class="node" data-st="on-track"><div class="node-kind">Initiative</div><div class="node-title">Channel mix optimization</div><div class="node-meta"><span class="avatar">PN</span><span class="chip" data-st="on-track" style="margin-left:auto;">Ahead</span></div></div>
+            <div class="node" data-st="at-risk"><div class="node-kind">Initiative</div><div class="node-title">Price realization</div><div class="node-meta"><span class="avatar">PN</span><span class="chip" data-st="at-risk" style="margin-left:auto;">Slipping</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD (placeholder pointer) ===== -->
+    <div class="view" data-view="dashboard">
+      <div style="padding:60px 32px; text-align:center; color:var(--text-tertiary); font-family:var(--font-mono); font-size:13px;">Dashboard view = existing BC-04 Executive Dashboard (already built). Linked here for switch continuity.</div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  (function(){
+    var pos = {
+      dashboard:'FY26 Plan · Executive Dashboard',
+      aerial:'FY26 Plan · 50,000-ft decomposition',
+      kanban:'FY26 Plan · Margin Recovery',
+      timeline:'FY26 Plan · Timeline',
+      status:'FY26 Plan · Status roll-up'
+    };
+    var btns = document.querySelectorAll('#viewmode button');
+    var views = document.querySelectorAll('.view');
+    var posEl = document.getElementById('pos');
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        var v = b.getAttribute('data-view');
+        btns.forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active');
+        views.forEach(function(view){ view.classList.toggle('active', view.getAttribute('data-view')===v); });
+        if(pos[v]) posEl.textContent = pos[v];
+      });
+    });
+  })();
+</script>
+</body>
+</html>
