@@ -62,9 +62,18 @@
   .viewmode button{font-family:var(--font-body); font-size:12px; font-weight:500; color:var(--text-tertiary); background:transparent; border:none; padding:6px 14px; border-radius:var(--radius-pill); cursor:pointer; white-space:nowrap; transition:all var(--dfast) var(--ease-out);}
   .viewmode button:hover{color:var(--text-primary);}
   .viewmode button.active{background:var(--bg-surface); color:var(--primary); font-weight:600; box-shadow:var(--shadow-soft);}
-  .filters{display:flex; gap:8px;}
-  .filter{font-size:12px; font-weight:500; color:var(--text-secondary); background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-pill); padding:6px 14px; cursor:pointer;}
-  .filter.active{border-color:var(--primary); color:var(--primary); background:var(--primary-soft);}
+  .scope-toggle{display:inline-flex; background:var(--bg-sunken); border-radius:var(--radius-pill); padding:3px;}
+  .scope-toggle .seg{font-size:12px; font-weight:500; color:var(--text-tertiary); background:transparent; border:none; padding:6px 14px; border-radius:var(--radius-pill); cursor:pointer;}
+  .scope-toggle .seg.active{background:var(--primary); color:#fff;}
+  .master-filter{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 32px 2px;}
+  .mf{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--text-tertiary); background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-pill); padding:7px 14px; cursor:pointer; white-space:nowrap;}
+  .mf .chev{font-size:9px; color:var(--text-tertiary);}
+  .mf-plan{background:var(--bg-sunken); color:var(--text-primary); font-weight:600;}
+  .mf-search{display:inline-flex; align-items:center; gap:7px; min-width:160px; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-pill); padding:7px 14px;}
+  .mf-search span{font-size:12.5px; color:var(--text-quiet, #8ea2c2);}
+  .type-filter{display:flex; gap:6px; padding:8px 32px 4px;}
+  .tf{font-size:11.5px; font-weight:500; color:var(--text-tertiary); background:transparent; border:1px solid transparent; border-radius:var(--radius-pill); padding:4px 12px; cursor:pointer;}
+  .tf.active{background:var(--primary-soft); color:var(--primary); border-color:var(--primary);}
 
   .brief{margin:14px 32px 6px; padding:11px 16px; display:flex; align-items:center; gap:11px; background:var(--advisor-soft); border:1px solid rgba(208,154,46,0.32); border-left:3px solid var(--advisor); border-radius:var(--radius-md); font-size:13px; color:var(--text-secondary);}
   .brief .spark{width:15px; height:15px; flex-shrink:0;}
@@ -171,6 +180,35 @@
   .health-bar{width:54px; height:6px; border-radius:3px; background:var(--bg-sunken); overflow:hidden;}
   .health-fill{height:100%; border-radius:3px;}
   .node-tags{display:flex; gap:6px; margin-top:10px;}
+
+  /* ===== Lightning Line (Timeline lens) ===== */
+  .ll-wrap{margin:8px 20px 20px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); overflow:hidden;}
+  .ll-chart{display:grid; grid-template-columns:280px 1fr;}
+  .ll-names{border-right:1px solid var(--border-subtle);}
+  .ll-names .ll-axis{height:52px;display:flex;align-items:flex-end;padding:0 20px 10px;}
+  .ll-names .ll-axis span{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-quiet,#9aa7bd);}
+  .ll-rn{height:50px;display:flex;flex-direction:column;justify-content:center;padding:0 20px;position:relative;transition:background .18s,opacity .2s;}
+  .ll-rn .t{font-size:13px;font-weight:500;color:var(--text-primary);line-height:1.25;}
+  .ll-rn .m{display:flex;align-items:center;gap:7px;margin-top:3px;}
+  .ll-rn .av{width:17px;height:17px;border-radius:50%;background:var(--p-navy-800,#0c1424);color:#fff;font-family:var(--font-mono);font-size:7.5px;font-weight:500;display:flex;align-items:center;justify-content:center;}
+  .ll-rn .k{font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-tertiary);}
+  .ll-rn .rdot{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;}
+  .ll-plot{position:relative;}
+  .ll-plot svg{display:block;width:100%;}
+  .ll-chart.focusing .ll-rn{opacity:.4;}
+  .ll-chart.focusing .ll-rn.lit{opacity:1;background:rgba(20,173,163,.05);}
+  .ll-bar-g,.ll-ghost-g,.ll-node-g,.ll-dep,.ll-drag{transition:opacity .2s;}
+  .ll-chart.focusing .ll-bar-g,.ll-chart.focusing .ll-ghost-g,.ll-chart.focusing .ll-node-g{opacity:.28;}
+  .ll-chart.focusing .ll-bar-g.lit,.ll-chart.focusing .ll-ghost-g.lit,.ll-chart.focusing .ll-node-g.lit{opacity:1;}
+  .ll-chart.focusing .ll-bolt{opacity:.22;}
+  .ll-drag{opacity:0;} .ll-chart.focusing .ll-drag.lit{opacity:1;}
+  .ll-dep{opacity:0;} .ll-chart.focusing .ll-dep.lit{opacity:1;}
+  .ll-rn:hover{cursor:pointer;}
+  .ll-legend{display:flex;align-items:center;gap:18px;padding:14px 20px;border-top:1px solid var(--border-subtle);flex-wrap:wrap;}
+  .ll-read{font-size:12.5px;color:var(--text-tertiary);} .ll-read b{color:var(--text-primary);font-weight:600;}
+  .ll-keys{display:flex;gap:14px;margin-left:auto;}
+  .ll-key{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;color:var(--text-tertiary);}
+  .ll-key i{width:8px;height:8px;border-radius:50%;}
 </style>
 </head>
 <body>
@@ -203,9 +241,22 @@
         <button data-view="timeline">Timeline</button>
         <button data-view="status">Status</button>
       </div>
-      <div class="filters">
-        <button class="filter active">All items</button><button class="filter">Initiatives</button><button class="filter">Actions</button><button class="filter">My items</button>
+      <div class="scope-toggle">
+        <button class="seg">My View</button><button class="seg active">Company View</button>
       </div>
+    </div>
+
+    <div class="master-filter">
+      <button class="mf mf-plan">FY26 Plan <span class="chev">▾</span></button>
+      <button class="mf">All groups <span class="chev">▾</span></button>
+      <button class="mf">All teams <span class="chev">▾</span></button>
+      <button class="mf">FY26 · All quarters <span class="chev">▾</span></button>
+      <button class="mf">Any status <span class="chev">▾</span></button>
+      <div class="mf-search"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>Search items</span></div>
+    </div>
+
+    <div class="type-filter">
+      <button class="tf active">All</button><button class="tf">Goals</button><button class="tf">Objectives</button><button class="tf">Initiatives</button><button class="tf">Actions</button>
     </div>
 
     <div class="brief">
@@ -249,34 +300,18 @@
 
     <!-- ===== TIMELINE ===== -->
     <div class="view" data-view="timeline">
-      <div class="tl">
-        <div class="tl-grid">
-          <div class="tl-row tl-head">
-            <div class="tl-name"><span class="nm" style="font-size:12px; color:var(--text-tertiary); font-family:var(--font-mono); letter-spacing:0.08em;">FY26 PLAN</span></div>
-            <div class="tl-track">
-              <div class="q"><div class="q-label">Q1</div></div><div class="q"><div class="q-label">Q2</div></div><div class="q"><div class="q-label">Q3</div></div><div class="q"><div class="q-label">Q4</div></div>
-              <div class="today" style="left:28%;"></div>
-            </div>
-          </div>
-          <div class="tl-row">
-            <div class="tl-name"><span class="nm">Gross margin recovery</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">DR</span>Goal</span></div>
-            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="at-risk" style="left:2%; width:72%;">Gross margin recovery</div></div>
-          </div>
-          <div class="tl-row">
-            <div class="tl-name"><span class="nm">Reduce COGS tier-1</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">ME</span>Initiative</span></div>
-            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="blocked" style="left:3%; width:44%;">Blocked · Apex</div><div class="milestone" data-st="blocked" style="left:22%;" title="Apex renegotiation milestone"></div></div>
-          </div>
-          <div class="tl-row">
-            <div class="tl-name"><span class="nm">Price realization</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">PN</span>Initiative</span></div>
-            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="at-risk" style="left:4%; width:92%;">Price realization</div></div>
-          </div>
-          <div class="tl-row">
-            <div class="tl-name"><span class="nm">Channel mix optimization</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">PN</span>Initiative</span></div>
-            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="on-track" style="left:26%; width:68%;">Channel mix optimization</div></div>
-          </div>
-          <div class="tl-row">
-            <div class="tl-name"><span class="nm">Operational efficiency +8%</span><span class="mt"><span class="avatar" style="width:16px;height:16px;font-size:8px;">ME</span>Objective</span></div>
-            <div class="tl-track"><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="today" style="left:28%;"></div><div class="bar" data-st="on-track" style="left:2%; width:70%;">Operational efficiency +8%</div></div>
+      <div class="ll-wrap">
+        <div class="ll-chart" id="llChart">
+          <div class="ll-names" id="llNames"></div>
+          <div class="ll-plot" id="llPlot"></div>
+        </div>
+        <div class="ll-legend">
+          <div class="ll-read"><b>Left of the rule is behind. Right is ahead.</b> The bolt's shape is the plan's health - calm when on pace, jagged when slipping. Hover a blocked item to trace what it's dragging.</div>
+          <div class="ll-keys">
+            <span class="ll-key"><i style="background:#3aa776"></i>On track</span>
+            <span class="ll-key"><i style="background:#e0903a"></i>At risk</span>
+            <span class="ll-key"><i style="background:#d44a4a"></i>Blocked</span>
+            <span class="ll-key"><i style="background:#8a97ab"></i>Complete</span>
           </div>
         </div>
       </div>
@@ -372,6 +407,80 @@
       });
     });
   })();
+</script>
+
+<script>
+// ===== Lightning Line engine (Timeline lens) =====
+(function(){
+  var TODAY=new Date('2026-06-29'), WS=new Date('2026-06-01'), WE=new Date('2026-09-30');
+  var DAY=86400000, winDays=(WE-WS)/DAY;
+  var tasks=[
+    {n:'Audit tier-1 supplier contracts',o:'ME',k:'Action',s:'complete',start:'2026-06-03',end:'2026-06-20',progress:100},
+    {n:'Confirm supplier 2 revised terms',o:'SC',k:'Action',s:'complete',start:'2026-06-08',end:'2026-06-22',progress:100},
+    {n:'Operational efficiency +8%',o:'ME',k:'Objective',s:'ok',start:'2026-06-10',end:'2026-08-15',progress:26},
+    {n:'Interview channel partners',o:'PN',k:'Action',s:'ok',start:'2026-06-20',end:'2026-07-25',progress:42},
+    {n:'Channel mix optimization',o:'PN',k:'Initiative',s:'ok',start:'2026-06-15',end:'2026-08-28',progress:34},
+    {n:'Approve pricing model',o:'DR',k:'Action',s:'danger',start:'2026-06-04',end:'2026-06-24',progress:55,blocker:true},
+    {n:'Price realization',o:'PN',k:'Initiative',s:'warn',start:'2026-06-18',end:'2026-08-20',progress:6,dep:true},
+    {n:'Reduce COGS tier-1',o:'ME',k:'Initiative',s:'danger',start:'2026-06-12',end:'2026-08-25',progress:8,dep:true},
+    {n:'Validate supplier scope',o:'ME',k:'Action',s:'warn',start:'2026-06-22',end:'2026-07-28',progress:9,dep:true},
+    {n:'Draft supplier 3 negotiation brief',o:'ME',k:'Action',s:'warn',start:'2026-06-25',end:'2026-07-30',progress:4},
+    {n:'Weekly status to leadership',o:'PN',k:'Action',s:'ok',start:'2026-06-01',end:'2026-09-20',progress:32}
+  ];
+  var RH=50,AXIS=52,C={ok:'#3aa776',warn:'#e0903a',danger:'#d44a4a',complete:'#8a97ab'};
+  var GH={ok:'rgba(58,167,118,.13)',warn:'rgba(224,144,58,.13)',danger:'rgba(212,74,74,.11)',complete:'rgba(138,151,171,.13)'};
+  var names=document.getElementById('llNames'), plot=document.getElementById('llPlot'), chart=document.getElementById('llChart');
+  if(!plot) return;
+  function xOf(d){return ((new Date(d)-WS)/DAY)/winDays;} // fraction
+  function expPct(t){var s=new Date(t.start),e=new Date(t.end);if(TODAY<=s)return 0;if(TODAY>=e)return 100;return ((TODAY-s)/(e-s))*100;}
+  function slip(t){return t.s==='complete'?0:t.progress-expPct(t);}
+  function boltX(sl,PW){var mp=145,mag=mp*(1-Math.exp(-Math.abs(sl)*0.03));return xOf('2026-06-29')*PW+Math.sign(sl)*mag;}
+
+  var nh='<div class="ll-axis"><span>Task</span></div>';
+  tasks.forEach(function(t,i){nh+='<div class="ll-rn" data-i="'+i+'"><span class="rdot" style="background:'+C[t.s]+'"></span><span class="t">'+t.n+'</span><span class="m"><span class="av">'+t.o+'</span><span class="k">'+t.k+'</span></span></div>';});
+  names.innerHTML=nh;
+
+  function draw(){
+    var PW=plot.clientWidth||900, PH=AXIS+tasks.length*RH, tX=xOf('2026-06-29')*PW;
+    var months=[['June','2026-06-01'],['July','2026-07-01'],['August','2026-08-01'],['September','2026-09-01']];
+    var grid='',lab='';
+    months.forEach(function(m){var x=xOf(m[1])*PW;grid+='<line x1="'+x+'" y1="'+AXIS+'" x2="'+x+'" y2="'+PH+'" stroke="rgba(12,20,36,.07)" stroke-width="1"/>';lab+='<text x="'+(x+10)+'" y="'+(AXIS-22)+'" font-family="Space Grotesk,sans-serif" font-size="13" font-weight="500" fill="#2e4368">'+m[0]+'</text><text x="'+(x+10)+'" y="'+(AXIS-8)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#9aa7bd">2026</text>';});
+    var ghosts='',bars='',nodes='',bp=[],drags='',deps='';
+    var bi=tasks.findIndex(function(t){return t.blocker;});
+    var dIdx=tasks.map(function(t,i){return t.dep?i:-1;}).filter(function(i){return i>=0;});
+    tasks.forEach(function(t,i){
+      var cy=AXIS+i*RH+RH/2, x0=xOf(t.start)*PW, x1=xOf(t.end)*PW, bw=Math.max(x1-x0,8), c=C[t.s];
+      ghosts+='<g class="ll-ghost-g" data-i="'+i+'"><rect x="'+x0+'" y="'+(cy-3)+'" width="'+bw+'" height="6" rx="3" fill="'+GH[t.s]+'"/></g>';
+      var se=(t.s==='complete')?x1:Math.min(x1,tX), sw=Math.max(se-x0,8);
+      bars+='<g class="ll-bar-g" data-i="'+i+'"><rect x="'+x0+'" y="'+(cy-8)+'" width="'+sw+'" height="16" rx="5" fill="'+c+'"/></g>';
+      var bx=boltX(slip(t),PW); bp.push({x:bx,y:cy});
+      nodes+='<g class="ll-node-g" data-i="'+i+'"><circle cx="'+bx+'" cy="'+cy+'" r="5.5" fill="#fff" stroke="'+c+'" stroke-width="2.4"/></g>';
+    });
+    dIdx.forEach(function(di){var cy=AXIS+di*RH;drags+='<rect class="ll-drag" data-dep="'+di+'" x="0" y="'+cy+'" width="'+PW+'" height="'+RH+'" fill="rgba(212,74,74,.06)"/>';});
+    var bn=bp[bi];
+    dIdx.forEach(function(di){var dn=bp[di];deps+='<path class="ll-dep" data-dep="'+di+'" d="M '+bn.x+' '+bn.y+' C '+(bn.x-30)+' '+bn.y+', '+(dn.x-30)+' '+dn.y+', '+dn.x+' '+dn.y+'" fill="none" stroke="#d44a4a" stroke-width="1.5" stroke-dasharray="2 3" opacity=".9"/>';});
+    var bd=bp.map(function(p,i){return (i?'L':'M')+' '+p.x+' '+p.y;}).join(' ');
+    var bolt='<path class="ll-bolt" d="'+bd+'" fill="none" stroke="rgba(51,65,85,.16)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path class="ll-bolt" d="'+bd+'" fill="none" stroke="#334155" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    var today='<line x1="'+tX+'" y1="'+(AXIS-2)+'" x2="'+tX+'" y2="'+PH+'" stroke="rgba(12,20,36,.22)" stroke-width="1.5"/><g transform="translate('+(tX-52)+','+(AXIS-38)+')"><rect x="-64" y="0" width="64" height="20" rx="10" fill="#0c1424"/><circle cx="-50" cy="10" r="3" fill="#e0903a"/><text x="-40" y="14" font-family="JetBrains Mono,monospace" font-size="9.5" font-weight="500" fill="#fff" letter-spacing="0.5">JUN 29</text></g>';
+    plot.innerHTML='<svg viewBox="0 0 '+PW+' '+PH+'" width="'+PW+'" height="'+PH+'">'+grid+lab+drags+ghosts+bars+today+deps+bolt+nodes+'</svg>';
+  }
+  function focus(on){
+    var bi=tasks.findIndex(function(t){return t.blocker;});
+    var dIdx=tasks.map(function(t,i){return t.dep?i:-1;}).filter(function(i){return i>=0;});
+    var chain=[bi].concat(dIdx);
+    if(on){chart.classList.add('focusing');chain.forEach(function(i){chart.querySelectorAll('[data-i="'+i+'"]').forEach(function(el){el.classList.add('lit');});});dIdx.forEach(function(i){chart.querySelectorAll('.ll-drag[data-dep="'+i+'"],.ll-dep[data-dep="'+i+'"]').forEach(function(el){el.classList.add('lit');});});}
+    else{chart.classList.remove('focusing');chart.querySelectorAll('.lit').forEach(function(el){el.classList.remove('lit');});}
+  }
+  function wire(){var bi=tasks.findIndex(function(t){return t.blocker;});names.querySelectorAll('.ll-rn').forEach(function(rn){if(+rn.dataset.i===bi){rn.addEventListener('mouseenter',function(){focus(true);});rn.addEventListener('mouseleave',function(){focus(false);});}});}
+
+  // draw when timeline tab becomes visible (plot has 0 width while hidden)
+  var drawn=false;
+  function maybeDraw(){var tv=document.querySelector('.view[data-view="timeline"]');if(tv&&tv.classList.contains('active')){draw();wire();drawn=true;}}
+  document.querySelectorAll('#viewmode button').forEach(function(b){if(b.getAttribute('data-view')==='timeline')b.addEventListener('click',function(){setTimeout(draw,30);setTimeout(wire,40);});});
+  window.addEventListener('resize',function(){var tv=document.querySelector('.view[data-view="timeline"]');if(tv&&tv.classList.contains('active'))draw();});
+  // initial (in case timeline is default) 
+  maybeDraw();
+})();
 </script>
 </body>
 </html>
