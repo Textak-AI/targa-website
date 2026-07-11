@@ -1126,8 +1126,7 @@ function AboutPage({ setPage }) {
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3,1fr)", gap: 24, marginTop: mobile ? 24 : 40 }}>
             {[
               { name: "Joseph Thompson", role: "CEO", desc: "Enterprise software executive with deep experience in strategic planning, capital allocation, and value creation across Fortune 500 and PE-backed organizations." },
-              { name: "Mark Sternberger", role: "CTO / CPO", desc: "Technology leader focused on AI-native architecture, enterprise security, and building platforms that give leaders real-time cross-functional visibility." },
-              { name: "Kyle Moyer", role: "Fractional CMO", desc: "Brand strategist and marketing executive specializing in enterprise SaaS positioning, digital presence, and go-to-market strategy for high-growth companies." },
+              { name: "Kyle Moyer", role: "Brand & Product Design Lead", desc: "Creative lead across brand and product — design systems, executive-grade platform UX, and enterprise SaaS positioning that turns complex strategy into intuitive experiences." },
             ].map((p, i) => (
               <Reveal key={p.name} delay={i * 0.1}><GlowCard glowColor={i === 0 ? "rgba(14,178,175,0.1)" : i === 1 ? "rgba(74,159,232,0.08)" : "rgba(251,191,36,0.06)"} style={{ padding: mobile ? 24 : 28, minHeight: mobile ? "auto" : 320 }}>
                 <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(14,178,175,0.08)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}><span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", color: C.teal, fontWeight: 500 }}>{p.name.split(" ").map(n => n[0]).join("")}</span></div>
