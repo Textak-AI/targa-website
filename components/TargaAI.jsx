@@ -1123,8 +1123,8 @@ function AboutPage({ setPage }) {
       <section style={{ background: C.navyDeep, padding: mobile ? "48px 20px" : "80px 40px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <Reveal><Eyebrow color={C.gold}>Leadership</Eyebrow><SectionTitle>The team behind the platform.</SectionTitle></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3,1fr)", gap: 24, marginTop: mobile ? 24 : 40 }}>
-            {[
+          <div style={{ display: "grid", 
+            {[gridTemplateColumns: mobile ? "1fr" : "repeat(2,1fr)", gap: 24, maxWidth: 720, margin: mobile ? "24px auto 0" : "40px auto 0" }}>
               { name: "Joseph Thompson", role: "CEO", desc: "Enterprise software executive with deep experience in strategic planning, capital allocation, and value creation across Fortune 500 and PE-backed organizations." },
               { name: "Kyle Moyer", role: "Brand & Product Design Lead", desc: "Creative lead across brand and product — design systems, executive-grade platform UX, and enterprise SaaS positioning that turns complex strategy into intuitive experiences." },
             ].map((p, i) => (
