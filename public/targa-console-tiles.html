@@ -185,6 +185,21 @@ body{background:#C9D1DC}
   #stageseg .sm{display:inline}
   #stage{padding:0}
 }
+/* pills */
+.rchip.fill{background:var(--teal);color:#fff}
+.rchip.gold{border-color:var(--gold-l);color:var(--gold)}
+.rchip.gold.fill{background:var(--gold-l);border-color:var(--gold-l);color:#fff}
+.rchip.plain{border-color:var(--line);color:var(--ink2)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.qin{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14.5px;color:var(--ink);background:#fff}
+.qin .cur{display:inline-block;width:1px;height:16px;background:var(--ink);vertical-align:-3px;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.tsug{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--gold)}
+.aptext{font-size:14.5px;color:var(--ink)} .aptext b{font-weight:600}
+.apmeta{font-size:12.5px;color:var(--ink2);font-weight:500;margin-top:4px}
+.done-line{margin-top:12px;font-size:14px;font-weight:600;color:var(--green)}
+.xbtn{margin-left:auto;font-size:12px;font-weight:500;color:var(--muted)}
+.qbtn{margin-left:auto;border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:999px}
 /* narrow (phone) */
 #device.n .chrome .top .meta{display:none}
 #device.n .chrome .strip{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;gap:22px;scrollbar-width:none}
@@ -242,7 +257,7 @@ body{background:#C9D1DC}
 </header>
 <div id="stage"><div id="device">
 <div class="chrome">
-  <div class="top"><span class="sys" style="color:var(--teal-l)">Item</span><span class="tenant">Apex Logistics</span><span class="meta">CEO portfolio · Dana Reyes</span></div>
+  <div class="top"><span class="sys" style="color:var(--teal-l)">Item</span><span class="tenant">Apex Logistics</span><span class="meta">CEO portfolio · Dana Reyes</span><button class="qbtn" data-qa="open">+ Quick add</button></div>
   <div class="strip">
     <div><span class="dot"></span><b>Revenue</b><span>$150M ARR</span></div>
     <div><span class="dot" id="hMargin"></span><b>Margin</b><span>+6 pts margin</span></div>
@@ -270,13 +285,14 @@ body{background:#C9D1DC}
 </div></div>
 
 <script>
-const S0 = () => ({status:false, metrics:0, values:0, milestone:false, actions:[], comments:0, feed:1, intel:false, pace:false, pins:{}, open:{}});
+const S0 = () => ({status:false, metrics:0, values:0, milestone:false, actions:[], comments:0, feed:1, intel:false, pace:false, pins:{}, open:{}, quick:0, approval:null});
 let S = S0();
 const ACTIONS = {
   tiers:{id:'tiers',t:'Send revised volume tiers to Meridian Packaging',who:'Marcus Ellis',due:'Due Fri'},
   review:{id:'review',t:'Schedule Q3 review with the top-3 remaining suppliers',who:'Marcus Ellis',due:'Due Oct 9'},
   freight:{id:'freight',t:'Agree freight-lane consolidation terms',who:'Priya Nair',due:'Due Oct 2',reply:true},
-  legal:{id:'legal',t:'Clear Meridian legal redlines',who:'Marcus Ellis',due:'Due Sep 26',overdue:true}
+  legal:{id:'legal',t:'Clear Meridian legal redlines',who:'Marcus Ellis',due:'Due Sep 26',overdue:true},
+  gc:{id:'gc',t:'Call Meridian GC about the redlines',who:'Marcus Ellis',due:'Due Thu',fresh:true}
 };
 const METRICS = [
   {n:'Gross margin',v:'38.4%',d:'+1.2 pts QTD'},
@@ -300,6 +316,8 @@ function claim(id){
   if(id==='intel') return S.intel ? (S.pace?3:2) : (S.pins.intel?1:0);
   if(id==='trend') return S.values>=2 ? 2 : 0;
   if(id==='measure') return S.pace?3 : 2;
+  if(id==='approve') return S.approval?3:0;
+  if(id==='quick') return S.quick?3:0;
   return 2;
 }
 function needList(){
@@ -378,7 +396,7 @@ const R = {
     const rest=order.length-show.length;
     return `<div class="in"><div class="lbl">Actions · ${a.length} open ${pin('actions')}</div>${sent}
       ${show.map(x=>`<div class="acard ${x.overdue||x.reply?'hot':''}"><div class="t">${x.t}</div>
-        <div class="m">${x.who} · ${x.due}${x.overdue?'<span class="tag red">Overdue 2 days</span>':''}${x.reply?'<span class="tag teal">Replied</span>':''}</div>
+        <div class="m">${x.who} · ${x.due}${x.overdue?'<span class="tag red">Overdue 2 days</span>':''}${x.reply?'<span class="tag teal">Replied</span>':''}${x.fresh?'<span class="tag teal">New</span>':''}</div>
         <div class="row"><button class="btn" data-done="${x.id}">Mark complete</button><button class="btn ghost">Delegate</button><button class="btn ghost">Defer</button></div></div>`).join('')}
       ${rest>0?`<button class="more" data-open="actions">${rest} more ›</button>`:''}${NARROW&&S.open.actions&&order.length>1?`<button class="more" data-open="actions">Show less ‹</button>`:''}</div>`;
   },
@@ -399,6 +417,25 @@ const R = {
       ${feedList().map(x=>`<div class="fe"><span class="k ${x[3]?'w':''}">${x[0]}</span><span>${x[1]}</span><span class="tm">${x[2]}</span></div>`).join('')}</div>`;
   }
 };
+R.quick=function(){
+  if(S.quick===2) return `<div class="in"><div class="lbl">Quick add<button class="xbtn" data-qa="close">Close</button></div><div class="done-line">Action created for Marcus Ellis, due Thursday. It's in Actions.</div></div>`;
+  const pills=[['action','Action · Marcus Ellis · Thu','gold fill'],['meeting','Meeting · Thu 10:00','gold'],['comment','Comment on this item','gold']];
+  return `<div class="in"><div class="lbl">Quick add<button class="xbtn" data-qa="close">Close</button></div>
+    <div class="qin">Call Meridian GC Thursday about the redlines<span class="cur"></span></div>
+    <div class="tsug">✦ TARGA suggests</div>
+    <div class="pills">${pills.map(([k,l,c])=>`<button class="rchip ${c}" data-qa="${k}">${l}</button>`).join('')}</div></div>`;
+};
+R.approve=function(){
+  const A=S.approval; if(!A) return '';
+  const head=`<div class="lbl"><span class="sys" style="color:var(--teal)">Needs your approval</span></div>
+    <div class="aptext">Marcus Ellis marked <b>Send revised volume tiers to Meridian Packaging</b> complete.</div>
+    <div class="apmeta">Revenue · you approve for this group</div>`;
+  if(A.step===0) return `<div class="in">${head}<div class="pills"><button class="rchip fill" data-ap="approve">Approve</button><button class="rchip" data-ap="changes">Changes needed</button><button class="rchip plain" data-ap="reject">Reject</button></div></div>`;
+  const R2={approve:[['Completed','fill'],['Completed early','']],changes:[['Add evidence',''],['Confirm terms with Meridian','']],reject:[['Not done yet',''],['Abandoned','']]}[A.outcome];
+  const verb={approve:'Approve',changes:'Changes needed',reject:'Reject'}[A.outcome];
+  if(A.step===1) return `<div class="in">${head}<div class="apmeta" style="margin-top:12px;color:var(--ink)"><b>${verb}</b> · pick a reason</div><div class="pills">${R2.map(([l,c])=>`<button class="rchip ${c}" data-apr="${l}">${l}</button>`).join('')}<button class="rchip plain" data-apr="">Add a note</button></div></div>`;
+  return `<div class="in">${head}<div class="done-line">${verb} · ${A.reason||'note added'}. Marcus is notified.</div></div>`;
+};
 const SUM={
   metrics:()=>['Metrics', S.values?`Gross margin 38.4% · ${S.metrics} tracked`:`${S.metrics} awaiting first value`],
   comments:()=>['Comments', S.comments?`${S.comments} · latest from ${COMMENTS[S.comments-1][0]}`:'None yet'],
@@ -413,7 +450,7 @@ function content(id){
   return R[id]();
 }
 const DARK={status:1,feed:1};
-const IDS=['ready','status','trend','measure','milestone','metrics','actions','intel','comments','feed'];
+const IDS=['ready','quick','status','approve','trend','measure','milestone','metrics','actions','intel','comments','feed'];
 
 /* ---------- screens ---------- */
 const DEV={
@@ -472,6 +509,7 @@ function weight(id){
   switch(id){
     case 'actions': return c===3?3:2;
     case 'intel': return c===3?2.4:1.4;
+    case 'approve': return 3;
     case 'metrics': return S.values?1.6:1;
     case 'comments': return S.comments?1.2:.7;
     case 'feed': return S.pace?1.6:.9;
@@ -484,13 +522,13 @@ const MINS={actions:200,intel:150,metrics:150,comments:110,feed:110};
 function layout(){ if(core(false)) core(true); }
 function core(compact){
   const d=DEV[devKey], W=devW()-2*d.pad;
-  const hot=['actions','intel'].some(i=>claim(i)===3);
+  const hot=['actions','intel','approve'].some(i=>claim(i)===3);
   const cols = W>=1180 ? 3 : W>=800 ? 2 : W>=600 ? 1 : 0;
   NARROW = cols===0; devEl.classList.toggle('n',NARROW);
   const G = NARROW?12:compact?14:20;
   FOLD = S.pace || NARROW || compact; COMPACT=compact;
   MODE={}; IDS.forEach(i=>MODE[i]='full');
-  const vis={ ready:needList().length>0, status:1, measure:1, comments:1, feed:1,
+  const vis={ quick:!!S.quick, approve:!!S.approval, ready:needList().length>0, status:1, measure:1, comments:1, feed:1,
     metrics:claim('metrics')>0, actions:claim('actions')>0, intel:claim('intel')>0,
     trend:claim('trend')>0 && !NARROW && !compact, milestone:!FOLD };
   const place={}, need={};
@@ -504,7 +542,7 @@ function core(compact){
   const stack=(x,w,y0,A,list)=>{ // list: [{id|row, fixed}]
     const items=list.map(it=>{
       if(it.row){ const r=rowPrep(x,w); return {key:'mrow',row:r,need:r.need,min:r.need,w:weight('mrow')}; }
-      prep(it.id,w); return {key:it.id,need:need[it.id],fixed:!!it.fixed,min:Math.min(need[it.id], it.id==='actions'&&claim('actions')===3 ? 400 : (MINS[it.id]||80)),w:weight(it.id)};
+      prep(it.id,w); return {key:it.id,need:need[it.id],fixed:!!it.fixed,min:(it.id==='approve'?need[it.id]:Math.min(need[it.id], it.id==='actions'&&claim('actions')===3 ? 400 : (MINS[it.id]||80))),w:weight(it.id)};
     });
     if(A){
       // under pressure, low-claim tiles collapse to a one-line summary instead of being crushed
@@ -522,9 +560,10 @@ function core(compact){
     return y-G;
   };
   const lower = S.pace ? ['feed','comments'] : ['comments','feed'];
-  const rightIds=['actions','intel'].filter(i=>vis[i]).sort((a,b)=>claim(b)-claim(a));
+  const rightIds=['approve','actions','intel'].filter(i=>vis[i]).sort((a,b)=>claim(b)-claim(a) || (a==='approve'?-1:b==='approve'?1:0));
   let y0=0, bottom=0;
   if(vis.ready){ prep('ready',W); put('ready',0,0,W); y0=need.ready+G; }
+  if(vis.quick){ prep('quick',W); put('quick',0,y0,W); y0+=need.quick+G; }
   railMetrics=false; sideEmpty=!vis.metrics && !rightIds.length;
   const fillA = cols>=2 ? Math.max(300, availH()-y0) : 0;
 
@@ -565,7 +604,7 @@ function core(compact){
     t.style.left=x+'px'; t.style.top=y+'px'; t.style.width=w+'px'; t.style.height=h+'px';
     const clip = h < need[id]-2;
     t.classList.toggle('clip',clip); inner.style.height=h+'px'; inner.style.overflowY=clip?'auto':'hidden';
-    t.classList.toggle('claim', claim(id)===3 && id!=='measure');
+    t.classList.toggle('claim', claim(id)===3 && id!=='measure' && id!=='quick');
   });
   board.style.width=W+'px';
   board.style.height=Math.max(0,bottom)+'px';
@@ -599,7 +638,9 @@ const CAP={
   comment:'A comment lands. Only its own tile grows.',
   hot:'A reply and an overdue action. Actions claim attention and move to the front.',
   pace:'Meridian goes pace-critical. The measure claims the row, the status carries the callout, TARGA speaks up.',
-  dismiss:'Insight dismissed. The tile yields.'
+  dismiss:'Insight dismissed. The tile yields.',
+  quick:'Quick add: TARGA reads the note and offers the next move as pills. Tap one and it is done.',
+  approval:'An approval lands. It takes the top of the rail with three pills. No form, no typing.'
 };
 function act(k){
   switch(k){
@@ -612,26 +653,39 @@ function act(k){
     case 'hot': S.everActions=true; ['freight','legal'].forEach(a=>{if(!S.actions.includes(a))S.actions.push(a)}); break;
     case 'pace': S.pace=true; S.intel=true; S.values=6; S.metrics=3; S.milestone=true; S.feed=5; break;
     case 'dismiss': S.intel=false; break;
+    case 'quick': S.quick=1; break;
+    case 'approval': if(!S.actions.includes('tiers')) S.actions.push('tiers'); S.everActions=true; S.approval={step:0}; break;
   }
   setCap(CAP[k]); layout();
 }
 function setCap(t){document.getElementById('cap').textContent=t||'';}
 function renderActs(){
   const list=[['status','Write status',S.status],['metric','Attach metric',S.metrics>0],['value','First reading',S.values>=1],['trend','Second reading',S.values>=2],
-    ['action','Assign actions',S.actions.includes('tiers')],['comment','Add comment',S.comments>=2],['hot','Reply + overdue',S.actions.includes('legal')],['pace','Pace-critical',S.pace]];
+    ['action','Assign actions',S.actions.includes('tiers')],['comment','Add comment',S.comments>=2],['hot','Reply + overdue',S.actions.includes('legal')],['pace','Pace-critical',S.pace],['quick','Quick add',S.quick>0],['approval','Approval request',!!S.approval]];
   document.getElementById('acts').innerHTML=list.map(([k,l,on])=>`<button data-act="${k}" class="${on?'on':''}">${l}</button>`).join('');
 }
 let stageKey='new';
 function stage(s,quiet){
   stageKey=s; S=S0();
   if(s!=='new'){ S.everActions=true; S.status=true; S.metrics=2; S.values=2; S.actions=['tiers','review']; S.comments=1; S.feed=3; S.milestone=true; }
-  if(s==='attention'){ S.actions=['tiers','review','freight','legal']; S.comments=2; S.pace=true; S.intel=true; S.values=6; S.metrics=3; S.feed=5; }
+  if(s==='attention'){ S.approval={step:0}; S.actions=['tiers','review','freight','legal']; S.comments=2; S.pace=true; S.intel=true; S.values=6; S.metrics=3; S.feed=5; }
   document.querySelectorAll('#stageseg button').forEach(b=>b.classList.toggle('on',b.dataset.stage===s));
   if(!quiet) setCap({new:'A new item. One line says what it needs, instead of eight empty boxes.',
     working:'A working item. Every tile at its normal size.',
-    attention:'Needs attention: a reply, an overdue action, and a pace-critical renewal.'}[s]);
+    attention:'Needs attention: an approval, a reply, an overdue action, and a pace-critical renewal.'}[s]);
   layout();
 }
+function quickPick(k){
+  if(k==='open'){ S.quick=1; setCap(CAP.quick); }
+  else if(k==='close'){ S.quick=0; setCap('Closed. The tile yields.'); }
+  else if(k==='action'){ S.quick=2; S.everActions=true; if(!S.actions.includes('gc')) S.actions.unshift('gc'); setCap('One tap: the action is created, assigned and dated from the note. The Actions tile makes room for it.'); at(2200,()=>{S.quick=0; layout();}); }
+  else { S.quick=0; setCap(k==='meeting'?'Meeting created for Thursday at 10:00.':'Added as a comment on this item.'); if(k==='comment') S.comments=Math.min(2,S.comments+1); }
+  layout();
+}
+function apPick(o){ S.approval={step:1,outcome:o}; setCap('The decision is made. Now one more tap for the reason, from the reason codes set in System.'); layout(); }
+function apReason(r){ const o=S.approval.outcome; S.approval={step:2,outcome:o,reason:r}; setCap('Decided in two taps. The tile says what happened, then gives its space back.');
+  if(o==='approve') S.actions=S.actions.filter(a=>a!=='tiers');
+  layout(); at(2000,()=>{S.approval=null; layout();}); }
 function setDev(k){ devKey=k; applyDevice(); layout(); }
 
 let timers=[];
@@ -639,8 +693,13 @@ const clearT=()=>{timers.forEach(clearTimeout); timers=[];};
 const at=(ms,fn)=>timers.push(setTimeout(fn,ms));
 function play(){
   clearT(); stage('new');
-  const seq=['status','metric','value','trend','action','comment','hot','pace'];
-  seq.forEach((k,i)=>at(2400+i*2600,()=>act(k)));
+  const seq=['status','metric','value','trend','action','comment','quick','qaction','approval','apstep','apdone','hot','pace'];
+  seq.forEach((k,i)=>at(2400+i*2600,()=>{
+    if(k==='qaction') return quickPick('action');
+    if(k==='apstep') return apPick('approve');
+    if(k==='apdone') return apReason('Completed');
+    act(k);
+  }));
 }
 function playDevices(){
   clearT(); setDev('desktop'); stage('attention',true); setCap('Same item, same content. Only the screen changes.');
@@ -661,6 +720,9 @@ document.addEventListener('click',e=>{
   else if(b.dataset.act){clearT();act(b.dataset.act);}
   else if(b.dataset.open){const k=b.dataset.open;S.open[k]=!S.open[k];setCap(S.open[k]?'Opened in place. Only this tile grows.':'Closed. It gives the space back.');layout();}
   else if(b.dataset.pin){const k=b.dataset.pin;S.pins[k]=!S.pins[k];setCap(S.pins[k]?'Pinned. This tile keeps its place even when it has nothing to show.':'Unpinned. It yields again when empty.');layout();}
+  else if(b.dataset.qa){clearT();quickPick(b.dataset.qa);}
+  else if(b.dataset.ap){clearT();apPick(b.dataset.ap);}
+  else if(b.dataset.apr!==undefined){clearT();apReason(b.dataset.apr);}
   else if(b.dataset.done){clearT();S.actions=S.actions.filter(a=>a!==b.dataset.done);
     setCap(actState().hot.length?'Action completed. One still needs you, so it keeps its place.':S.actions.length?'Action completed. Its claim drops and the space goes back.':'Last action completed. The tile yields.');layout();}
 });
