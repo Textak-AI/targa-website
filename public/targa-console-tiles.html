@@ -185,6 +185,22 @@ body{background:#C9D1DC}
   #stageseg .sm{display:inline}
   #stage{padding:0}
 }
+/* arrival: a light traces the tile edge once and a soft wash rises from the top; numbers get a light sweep */
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.tile .inner{position:relative;z-index:1}
+.tile .fx,.tile .beam{position:absolute;inset:0;border-radius:12px;pointer-events:none;opacity:0}
+.tile .fx{z-index:0;background:radial-gradient(130% 75% at 50% 0%,color-mix(in srgb,var(--gc) 18%,transparent),transparent 62%)}
+.tile.dark .fx{background:radial-gradient(130% 75% at 50% 0%,color-mix(in srgb,var(--gc) 30%,transparent),transparent 62%)}
+.tile .beam{z-index:2;padding:1.5px;background:conic-gradient(from var(--a),transparent 0deg 240deg,color-mix(in srgb,var(--gc) 40%,transparent) 300deg,var(--gc) 335deg,#fff 347deg,var(--gc) 353deg,transparent 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.tile.g-teal{--gc:#0EB2AF} .tile.g-gold{--gc:#D09A2E}
+.tile.glow .beam{animation:beam 1.7s cubic-bezier(.45,0,.2,1) forwards}
+.tile.glow .fx{animation:wash 2s ease-out forwards}
+@keyframes beam{0%{--a:0deg;opacity:0}10%{opacity:1}78%{opacity:1}100%{--a:360deg;opacity:0}}
+@keyframes wash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+.flash{background:linear-gradient(100deg,var(--ink) 38%,var(--teal) 47%,#8BE8E4 50%,var(--teal) 53%,var(--ink) 62%);background-size:320% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;animation:numsweep 1.4s cubic-bezier(.3,0,.2,1) forwards}
+@keyframes numsweep{to{background-position:0% 0}}
+@media (prefers-reduced-motion:reduce){.tile.glow .beam,.tile.glow .fx{animation:none!important;opacity:0}.flash{animation:none;background:none;color:inherit}}
 /* pills */
 .rchip.fill{background:var(--teal);color:#fff}
 .rchip.gold{border-color:var(--gold-l);color:var(--gold)}
@@ -329,7 +345,8 @@ function needList(){
 }
 const feedList=()=>FEED.slice(FEED.length-S.feed).filter(x=>S.pace||!x[3]);
 
-let MODE={}, FOLD=false, NARROW=false, COMPACT=false;
+let MODE={}, FOLD=false, NARROW=false, COMPACT=false, ARM=false, PREV=null, FLASHT=-1e9;
+const fl=()=>{ const e=performance.now()-FLASHT; return e<1400 ? ` flash" style="animation-delay:-${Math.round(e)}ms` : ''; };
 const pin = id => NARROW?'':`<button class="pin ${S.pins[id]?'on':''}" data-pin="${id}">${S.pins[id]?'Pinned':'Pin'}</button>`;
 const R = {
   ready(){
@@ -365,9 +382,9 @@ const R = {
     if(!S.values) return `<div class="in"><div class="lbl">Measure</div><div class="num sm">0% complete</div><div class="mline">Set by owner · pick a metric to measure this by</div>${foot}</div>`;
     const trendTxt = (NARROW||COMPACT) && S.values>=2 ? `<div class="mline">${S.values>=6?'Up 2.3 pts over the last 6 readings':'Up 0.5 pts since the last reading'}</div>` : '';
     if(COMPACT && !NARROW) return `<div class="in"><div class="lbl">Measure · gross margin</div><div style="display:flex;gap:28px;align-items:flex-start">
-      <div><div class="num">38.4%</div><div class="mline">Target 42% by FY end</div></div>
+      <div><div class="num${fl()}">38.4%</div><div class="mline">Target 42% by FY end</div></div>
       <div style="flex:1;padding-top:4px">${trendTxt}${S.pace?`<div class="mline risk">Pacing to ~40.1%, 1.9 pts short. Meridian carries the gap.</div>`:`<div class="mline">Pacing to 42.0% on the current plan</div>`}<div class="mline">${S.milestone ? 'Next milestone · 5 more contracts by Sep 30' : 'Next milestone · Dec 31, item end date'}</div></div></div></div>`;
-    return `<div class="in"><div class="lbl">Measure · gross margin</div><div class="num">38.4%</div>
+    return `<div class="in"><div class="lbl">Measure · gross margin</div><div class="num${fl()}">38.4%</div>
       <div class="mline">Target 42% by FY end</div>${trendTxt}
       ${S.values<2?`<div class="mline muted">Trend appears after the second reading</div>`:''}
       ${S.pace?`<div class="mline risk">Pacing to ~40.1%, 1.9 pts short. Meridian carries the gap.</div>`:`<div class="mline">Pacing to 42.0% on the current plan</div>`}${foot}</div>`;
@@ -381,9 +398,9 @@ const R = {
     if(!S.metrics) return `<div class="in"><div class="lbl">Item metrics ${pin('metrics')}</div><div class="empty">No metrics on this item.</div><div style="margin-top:12px"><button class="btn" data-act="metric">Add metric</button></div></div>`;
     const list=METRICS.slice(0,S.metrics);
     if(MODE.metrics==='strip'){
-      return `<div class="in"><div class="lbl">Item metrics</div><div class="stripg" style="grid-template-columns:repeat(${list.length},1fr)">${list.map(m=>`<div class="sm"><div class="n">${m.n}</div>${S.values?`<div class="v">${m.v}</div><div class="d">${m.d}</div>`:`<div class="d aw">Awaiting first value</div>`}</div>`).join('')}</div></div>`;
+      return `<div class="in"><div class="lbl">Item metrics</div><div class="stripg" style="grid-template-columns:repeat(${list.length},1fr)">${list.map(m=>`<div class="sm"><div class="n">${m.n}</div>${S.values?`<div class="v${fl()}">${m.v}</div><div class="d">${m.d}</div>`:`<div class="d aw">Awaiting first value</div>`}</div>`).join('')}</div></div>`;
     }
-    return `<div class="in"><div class="lbl">Item metrics ${pin('metrics')}</div>${list.map(m=>`<div class="mrow"><div class="n">${m.n}</div>${S.values?`<div class="v">${m.v}</div><div class="d">${m.d}</div>`:`<div class="d aw">Awaiting first value</div>`}</div>`).join('')}</div>`;
+    return `<div class="in"><div class="lbl">Item metrics ${pin('metrics')}</div>${list.map(m=>`<div class="mrow"><div class="n">${m.n}</div>${S.values?`<div class="v${fl()}">${m.v}</div><div class="d">${m.d}</div>`:`<div class="d aw">Awaiting first value</div>`}</div>`).join('')}</div>`;
   },
   actions(){
     const {a,hot}=actState();
@@ -478,7 +495,7 @@ function applyDevice(){
 
 /* ---------- layout ---------- */
 const el={};
-IDS.forEach(id=>{const t=document.createElement('div');t.className='tile'+(DARK[id]?' dark':'')+' gone';t.id=id;t.innerHTML='<div class="inner"></div>';board.appendChild(t);el[id]=t;});
+IDS.forEach(id=>{const t=document.createElement('div');t.className='tile'+(DARK[id]?' dark':'')+' gone';t.id=id;t.innerHTML='<i class="fx"></i><div class="inner"></div><i class="beam"></i>';board.appendChild(t);el[id]=t;});
 let lastCols=3, railMetrics=false, sideEmpty=false;
 
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
@@ -519,7 +536,24 @@ function weight(id){
 }
 const MINS={actions:200,intel:150,metrics:150,comments:110,feed:110};
 
-function layout(){ if(core(false)) core(true); }
+function layout(){ if(core(false)) core(true); fxDetect(); ARM=false; }
+function glow(id,c){ const t=el[id]; t.classList.remove('glow','g-teal','g-gold'); void t.offsetWidth; t.classList.add('g-'+c,'glow'); clearTimeout(t._g); t._g=setTimeout(()=>t.classList.remove('glow'),2100); }
+// glow only on events, one at a time: what's for you in teal, what TARGA surfaced in gold
+function fxDetect(){
+  const snap={vis:{},claim:{},acts:S.actions.length,status:S.status,intel:S.intel,quick:S.quick,appr:!!S.approval};
+  IDS.forEach(i=>{snap.vis[i]=!el[i].classList.contains('gone'); snap.claim[i]=claim(i);});
+  if(ARM && PREV){
+    const q=[]; const add=(id,c)=>{ if(snap.vis[id] && !q.some(x=>x[0]===id)) q.push([id,c]); };
+    if(snap.appr && !PREV.appr) add('approve','teal');
+    if(snap.quick===1 && PREV.quick!==1) add('quick','gold');
+    if(snap.acts>PREV.acts || (snap.claim.actions===3 && PREV.claim.actions<3)) add('actions','teal');
+    if(snap.intel && !PREV.intel) add('intel','gold');
+    if(snap.status && !PREV.status) add('status','teal');
+    if(snap.vis.metrics && !PREV.vis.metrics) add('metrics','teal');
+    q.forEach(([id,c],i)=>setTimeout(()=>glow(id,c), 120+i*360));
+  }
+  PREV=snap;
+}
 function core(compact){
   const d=DEV[devKey], W=devW()-2*d.pad;
   const hot=['actions','intel','approve'].some(i=>claim(i)===3);
@@ -643,6 +677,7 @@ const CAP={
   approval:'An approval lands. It takes the top of the rail with three pills. No form, no typing.'
 };
 function act(k){
+  ARM=true; const v0=S.values;
   switch(k){
     case 'status': S.status=true; break;
     case 'metric': S.metrics=Math.max(S.metrics,2); break;
@@ -656,6 +691,7 @@ function act(k){
     case 'quick': S.quick=1; break;
     case 'approval': if(!S.actions.includes('tiers')) S.actions.push('tiers'); S.everActions=true; S.approval={step:0}; break;
   }
+  if(S.values>v0) FLASHT=performance.now();
   setCap(CAP[k]); layout();
 }
 function setCap(t){document.getElementById('cap').textContent=t||'';}
@@ -676,6 +712,7 @@ function stage(s,quiet){
   layout();
 }
 function quickPick(k){
+  ARM=true;
   if(k==='open'){ S.quick=1; setCap(CAP.quick); }
   else if(k==='close'){ S.quick=0; setCap('Closed. The tile yields.'); }
   else if(k==='action'){ S.quick=2; S.everActions=true; if(!S.actions.includes('gc')) S.actions.unshift('gc'); setCap('One tap: the action is created, assigned and dated from the note. The Actions tile makes room for it.'); at(2200,()=>{S.quick=0; layout();}); }
