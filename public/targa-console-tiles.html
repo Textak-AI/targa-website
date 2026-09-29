@@ -169,17 +169,37 @@ body{background:#C9D1DC}
 #device::-webkit-scrollbar{display:none}
 #device.framed{overflow-y:auto;border:12px solid #0B111D;border-radius:30px;box-shadow:0 20px 50px rgba(12,20,36,.28)}
 #device .crumbs .back{display:none}
+#stageseg .sm{display:none}
 /* fill: clipped tiles scroll inside with a fade */
 .tile .inner{scrollbar-width:thin}
 .tile.clip::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;pointer-events:none;background:linear-gradient(rgba(255,255,255,0),#fff);border-radius:0 0 12px 12px}
 .tile.dark.clip::after{background:linear-gradient(rgba(12,20,36,0),#0C1424)}
+/* real small screens: controls become a bottom bar, captions stay out of the way */
+@media (max-width:700px){
+  body{padding-bottom:76px}
+  #bar{position:fixed;top:auto;bottom:0;left:0;right:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);border-bottom:0;box-shadow:0 -6px 20px rgba(12,20,36,.08)}
+  #bar .brand,#devseg,#playdev,#more,#stageseg .k,.caption,#acts{display:none!important}
+  #bar .r1{flex-wrap:nowrap;gap:8px;justify-content:space-between}
+  #stageseg{flex:1} #stageseg button{flex:1;padding:8px 6px;font-size:13px}
+  #bar .play{padding:9px 13px} #bar .play .pl,#stageseg .lg{display:none}
+  #stageseg .sm{display:inline}
+  #stage{padding:0}
+}
 /* narrow (phone) */
 #device.n .chrome .top .meta{display:none}
 #device.n .chrome .strip{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;gap:22px;scrollbar-width:none}
 #device.n .chrome .strip::-webkit-scrollbar{display:none}
 #device.n .crumbs .c,#device.n .crumbs .sl{display:none}
 #device.n .crumbs .back{display:inline;color:var(--teal);font-weight:600}
-#device.n h1{font-size:20px;order:2;flex-basis:100%}
+#device.n h1{font-size:20px;line-height:1.3;order:2;flex-basis:100%}
+#device .nmeta{display:none}
+#device.n .nmeta{display:block;order:3;flex-basis:100%;font-size:13px;font-weight:500;color:var(--ink2)}
+#device.n .head .right,#device.n .sub{display:none}
+#device.n .head{margin-bottom:14px}
+#device.n .crumbs{margin-bottom:10px}
+#device.n .page{padding-top:14px}
+#device.n .chrome .top{padding-top:10px;padding-bottom:10px}
+#device.n .chrome .strip{padding-top:8px;padding-bottom:8px;font-size:12.5px}
 #device.n .head .chip{order:0} #device.n #spill{order:1}
 #device.n .head .right{order:3;margin-left:0}
 #device.n #ready .in{flex-direction:column;align-items:flex-start;gap:10px}
@@ -211,9 +231,9 @@ body{background:#C9D1DC}
       <button data-dev="desktop">This window</button><button data-dev="tabl">Tablet, landscape</button><button data-dev="tabp">Tablet, portrait</button><button data-dev="phone">Phone</button>
     </div>
     <div class="seg" id="stageseg"><span class="k">Item</span>
-      <button data-stage="new">New</button><button data-stage="working">Working</button><button data-stage="attention">Needs attention</button>
+      <button data-stage="new">New</button><button data-stage="working">Working</button><button data-stage="attention"><span class="lg">Needs attention</span><span class="sm">Attention</span></button>
     </div>
-    <button class="play" id="play">▶ Play the story</button>
+    <button class="play" id="play">▶<span class="pl"> Play the story</span></button>
     <button class="play alt" id="playdev">▶ Play every screen</button>
     <button class="ghostb" id="more">Step by step</button>
   </div>
@@ -242,6 +262,7 @@ body{background:#C9D1DC}
     <h1>Renegotiate top-8 supplier contracts</h1>
     <span class="pill ok" id="spill">On track</span>
     <div class="right"><span>Watching</span><span><span class="av">ME</span>Marcus Ellis</span></div>
+    <div class="nmeta">Marcus Ellis · Sep 1 – Dec 31 · Priya Nair approves</div>
   </div>
   <div class="sub"><span>Sep 1 – Dec 31</span><span>Priority 5</span><span>Revenue · Priya Nair approves</span></div>
   <div id="board"></div>
@@ -396,7 +417,7 @@ const IDS=['ready','status','trend','measure','milestone','metrics','actions','i
 
 /* ---------- screens ---------- */
 const DEV={
-  desktop:{label:'This window', w:()=>stageEl.clientWidth-48, h:null, pad:32},
+  desktop:{label:'This window', w:()=>stageEl.clientWidth-(window.innerWidth<700?0:48), h:null, pad:32},
   tabl:{label:'Tablet, landscape', w:()=>1180, h:820, pad:24},
   tabp:{label:'Tablet, portrait', w:()=>820, h:1180, pad:24},
   phone:{label:'Phone', w:()=>390, h:844, pad:16}
@@ -405,6 +426,10 @@ let devKey='desktop';
 const stageEl=document.getElementById('stage'), devEl=document.getElementById('device'), board=document.getElementById('board');
 function devW(){ return DEV[devKey].w(); }
 function applyDevice(){
+  const room=stageEl.clientWidth-48;
+  ['tabl','tabp','phone'].forEach(k=>{const b=document.querySelector(`#devseg [data-dev="${k}"]`); if(b) b.style.display = DEV[k].w()+24<=room ? '' : 'none';});
+  document.getElementById('playdev').style.display = DEV.tabl.w()+24<=room ? '' : 'none';
+  if(devKey!=='desktop' && DEV[devKey].w()+24>room) devKey='desktop';
   const d=DEV[devKey], w=devW();
   devEl.style.width=w+'px';
   devEl.style.setProperty('--pad',d.pad+'px');
