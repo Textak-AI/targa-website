@@ -576,7 +576,7 @@ function core(compact){
   const stack=(x,w,y0,A,list)=>{ // list: [{id|row, fixed}]
     const items=list.map(it=>{
       if(it.row){ const r=rowPrep(x,w); return {key:'mrow',row:r,need:r.need,min:r.need,w:weight('mrow')}; }
-      prep(it.id,w); return {key:it.id,need:need[it.id],fixed:!!it.fixed,min:(it.id==='approve'?need[it.id]:Math.min(need[it.id], it.id==='actions'&&claim('actions')===3 ? 400 : (MINS[it.id]||80))),w:weight(it.id)};
+      prep(it.id,w); return {key:it.id,need:need[it.id],fixed:!!it.fixed,min:(it.id==='approve'?need[it.id]:Math.min(need[it.id], it.id==='actions'&&claim('actions')===3 ? 320 : (MINS[it.id]||80))),w:weight(it.id)};
     });
     if(A){
       // under pressure, low-claim tiles collapse to a one-line summary instead of being crushed
@@ -764,6 +764,8 @@ document.addEventListener('click',e=>{
     setCap(actState().hot.length?'Action completed. One still needs you, so it keeps its place.':S.actions.length?'Action completed. Its claim drops and the space goes back.':'Last action completed. The tile yields.');layout();}
 });
 let rz=0;window.addEventListener('resize',()=>{cancelAnimationFrame(rz);rz=requestAnimationFrame(()=>{applyDevice();layout();});});
+// the screen frame animates its size; lay out again once it has settled, since the header wraps differently at the in-between width
+devEl.addEventListener('transitionend',e=>{ if(e.target===devEl && (e.propertyName==='width'||e.propertyName==='height')) layout(); });
 document.fonts.ready.then(()=>{applyDevice(); stage('new');});
 </script>
 </body>
