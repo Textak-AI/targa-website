@@ -1049,7 +1049,7 @@ function HomePage({ setPage }) {
       {/* FAQ */}
       <section style={{ background: C.navyDeep, padding: mobile ? "56px 20px" : "96px 40px" }}>
         <div style={{ maxWidth: 820, margin: "0 auto" }}>
-          <Reveal><Eyebrow>Frequently asked</Eyebrow><SectionTitle>Straight answers, once.</SectionTitle></Reveal>
+          <Reveal><Eyebrow>FAQ</Eyebrow><SectionTitle>Questions executives ask.</SectionTitle></Reveal>
           <div style={{ marginTop: mobile ? 24 : 36 }}><FaqList items={HOME_FAQ} /></div>
         </div>
       </section>
