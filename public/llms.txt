@@ -1,0 +1,22 @@
+# TARGA
+
+> Targatek Inc. makes TARGA, a leadership intelligence platform built for executives. Your strategic actions live in TARGA with a name on every action, the work your team does creates the status you see, and TARGA's guidance gets better the more you use it. The decisions stay yours. Task tools start with tasks. TARGA starts with strategy.
+
+TARGA is built for the CEO and the executive team. It starts with the strategic plan and works down to the work. Project and portfolio tools start with tasks and build up. The difference is direction.
+
+Status in TARGA uses four words: On Track, At Risk, Blocked, Complete.
+
+The AI observes, suggests, and logs. Every action is yours, and the decisions stay yours.
+
+## Pages
+
+- [Home](https://targa.ai): what TARGA is, how it compares, what executives get, and frequently asked questions
+- [The Platform](https://targa.ai/platform): the executive view, Ask TARGA, and how the plan runs
+- [Briefings](https://targa.ai/briefings): strategy execution, explained for executives
+- [Leadership intelligence vs project and portfolio management](https://targa.ai/briefings/leadership-intelligence-vs-ppm): the first briefing
+- [About](https://targa.ai/about): Targatek Inc.
+- [Contact](https://targa.ai/contact): schedule a conversation
+
+## Company
+
+Targatek Inc. - https://targatek.com - info@targa.ai - https://www.linkedin.com/company/targatek
