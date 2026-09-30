@@ -1206,7 +1206,7 @@ function AboutPage({ setPage }) {
             <div style={{ borderTop: "1px solid rgba(14,178,175,0.08)", paddingTop: mobile ? 24 : 32 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: mobile ? 18 : 24 }}>
                 <div style={{ width: 32, height: 1, background: C.g500 }} />
-                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "1.8px", color: C.g500, textTransform: "uppercase" }}>Proven across the Fortune 500</span>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "1.8px", color: C.g500, textTransform: "uppercase" }}>Forged in the C-suite</span>
               </div>
               <div style={{ display: mobile ? "grid" : "flex", gridTemplateColumns: mobile ? "repeat(4, auto)" : undefined, gap: mobile ? "14px 20px" : 0, alignItems: "center", justifyItems: mobile ? "center" : undefined, justifyContent: mobile ? undefined : "space-between", flexWrap: mobile ? undefined : "nowrap" }}>
                 {[
@@ -1222,6 +1222,7 @@ function AboutPage({ setPage }) {
                   <img key={alt} src={src} alt={alt} style={{ height: mobile ? Math.min(h, 16) : h, width: "auto", opacity: 0.3 }} />
                 ))}
               </div>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", lineHeight: 1.6, color: C.g500, marginTop: mobile ? 18 : 22 }}>The insights behind TARGA come from decades of transformation work with Fortune 50 leadership teams. TARGA's own first pilots begin in October.</p>
             </div>
           </Reveal>
         </div>
