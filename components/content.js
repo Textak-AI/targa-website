@@ -64,11 +64,29 @@ export const STATS = [
 export const AI_ANSWER =
   "TARGA watches the plan between meetings and tells you what needs you today. You act on it, or you set it aside. Every action is yours. The more your team works in TARGA, the more its guidance lines up with how you already decide, and the decisions stay yours.";
 
-/* Where it stands. Date-qualified until October. */
+/* ═══ DURABLE vs DATED ═══
+   Everything above this line is durable: it says what TARGA is and stays true for years.
+   AI engines freeze what they read into the next model release, so dated sentences - a month,
+   a stage, a count, "coming", "under way" - live ONLY in STATUS below. STATUS renders in one
+   block on home (Where TARGA stands today) with a visible "As of" stamp. It is never in the
+   FAQ, the schema, the page titles, llms.txt, or a briefing.
+   Monthly swap: edit STATUS and nothing else. */
+export const STATUS = {
+  asOf: "As of October 2026",
+  lines: [
+    "Our own company plan runs in TARGA. The demo you'll see is how we manage the company.",
+    "First pilots begin in October, and you'll hear from them, not from us.",
+    "TARGA runs on desktop, phone, and tablet.",
+  ],
+};
+
 export const PROOF = {
   heading: "Where TARGA stands today",
-  body: "Our own company plan has lived inside TARGA since this quarter. The demo you'll see is how we manage the company. First pilots begin in October, and you'll hear from them, not from us. TARGA runs on desktop, phone, and tablet.",
+  asOf: STATUS.asOf,
+  body: STATUS.lines.join(" "),
   disclaimer: "Forward looking guidance subject to change.",
+  /* The durable version of the proof, for pages that must not carry a date. */
+  durable: "Our own company plan runs in TARGA.",
 };
 
 export const HOME_FAQ = [
@@ -80,7 +98,7 @@ export const HOME_FAQ = [
   { q: "Do we have to replace our current systems?", a: "No. You keep the systems that run your business. TARGA gives them a place to live." },
   { q: "Who is TARGA for?", a: "The CEO and the executive team." },
   { q: "How does TARGA know the status of the work?", a: "The initiative owner's own activity - comments, status, completed actions - becomes the status the executive sees. Report writing is a thing of the past." },
-  { q: "Is it available now?", a: "TARGA is on the verge of MVP. Our own plan runs in it today, and first pilots begin in October." },
+  { q: "Is TARGA available now?", a: "Our own company plan runs in TARGA today. Where pilots and availability stand this month is under Where TARGA stands today, with the date on it." },
 ];
 
 /* ═══ BRIEFINGS ═══ */
@@ -91,13 +109,17 @@ export const BRIEFINGS = [
     title: "What is a leadership intelligence platform, and how is it different from project and portfolio management?",
     short: "Leadership intelligence vs project and portfolio management",
     answer: "One word: direction. Task tools start with tasks and build up. A leadership intelligence platform starts with the strategic plan and works down.",
-    updated: "September 2026",
-    dateISO: "2026-09-30",
+    updated: "October 2026",
+    publishedISO: "2026-09-30",
+    dateISO: "2026-10-02",
   },
-  { slug: null, live: false, title: "Strategy execution built for the CEO vs built for the staff seat", answer: "Why the seat a platform is built for decides what it can show you.", updated: null },
-  { slug: null, live: false, title: "How executives read strategy health at a glance", answer: "Four status words, one view, and what to do with each.", updated: null },
-  { slug: null, live: false, title: "The AI-assisted strategic portfolio management category, explained", answer: "A real, funded category. Where TARGA sits in it, and where it does not.", updated: null },
+  /* Planned briefings stay in the editorial calendar, not on the page. A hub with one live
+     piece and three "Coming" cards reads to an engine as "they have one article". Add each
+     piece here the day it publishes, with live: true. */
 ];
+
+/* The hub and the sitemap list live briefings only. */
+export const LIVE_BRIEFINGS = BRIEFINGS.filter((b) => b.live && b.slug);
 
 export const BRIEFING_FAQ = [
   HOME_FAQ[0], HOME_FAQ[1], HOME_FAQ[2], HOME_FAQ[3], HOME_FAQ[5],

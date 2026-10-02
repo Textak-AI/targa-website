@@ -26,7 +26,7 @@ export default function Page({ params }) {
   const schema = [
     {
       '@context': 'https://schema.org', '@type': 'Article',
-      headline: b.title, description: b.answer, dateModified: b.dateISO, datePublished: b.dateISO,
+      headline: b.title, description: b.answer, datePublished: b.publishedISO || b.dateISO, dateModified: b.dateISO,
       author: { '@type': 'Organization', name: 'Targatek Inc.', url: 'https://targa.ai' },
       publisher: { '@type': 'Organization', name: 'Targatek Inc.', url: 'https://targa.ai' },
       mainEntityOfPage: 'https://targa.ai/briefings/' + b.slug,

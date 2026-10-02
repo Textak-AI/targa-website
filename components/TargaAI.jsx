@@ -770,7 +770,7 @@ function Footer({ setPage }) {
         <div style={{ borderTop: "1px solid rgba(14,178,175,0.06)", paddingTop: 24, display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 16 : 0 }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500 }}>© 2026 Targatek Inc. All rights reserved.</span>
           {!mobile && <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-            {["Enterprise-grade security", "AWS infrastructure", "SOC 2 in progress"].map((s, i) => (
+            {["Enterprise-grade security", "AWS infrastructure"].map((s, i) => (
               <span key={s} style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: C.g500, opacity: 0.6, display: "flex", alignItems: "center", gap: 4 }}>
                 {i > 0 && <span style={{ color: "rgba(14,178,175,0.2)" }}>·</span>}
                 {s}
@@ -1039,7 +1039,8 @@ function HomePage({ setPage }) {
         <Reveal>
           <div style={{ maxWidth: 680, margin: "0 auto" }}>
             <IconMark height={44} variant="light" />
-            <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.5rem,2.5vw,2.1rem)", fontWeight: 300, color: C.white, letterSpacing: "-0.5px", marginTop: 22, marginBottom: 18 }}>{PROOF.heading}</h2>
+            <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.5rem,2.5vw,2.1rem)", fontWeight: 300, color: C.white, letterSpacing: "-0.5px", marginTop: 22, marginBottom: 10 }}>{PROOF.heading}</h2>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", color: C.teal, marginBottom: 18 }}>{PROOF.asOf}</p>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1rem", lineHeight: 1.8, color: C.g300, marginBottom: 18 }}>{PROOF.body}</p>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500, letterSpacing: "0.04em" }}>{PROOF.disclaimer}</p>
           </div>
@@ -1222,7 +1223,7 @@ function AboutPage({ setPage }) {
                   <img key={alt} src={src} alt={alt} style={{ height: mobile ? Math.min(h, 16) : h, width: "auto", opacity: 0.3 }} />
                 ))}
               </div>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", lineHeight: 1.6, color: C.g500, marginTop: mobile ? 18 : 22 }}>The insights behind TARGA come from decades of transformation work with Fortune 50 leadership teams. TARGA's own first pilots begin in October.</p>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", lineHeight: 1.6, color: C.g500, marginTop: mobile ? 18 : 22 }}>The insights behind TARGA come from decades of transformation work with Fortune 50 leadership teams. Our own company plan runs in TARGA.</p>
             </div>
           </Reveal>
         </div>

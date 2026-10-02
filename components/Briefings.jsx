@@ -1,6 +1,6 @@
 "use client";
 import { SiteFrame, useNavigate, C, useMedia, Reveal, Eyebrow, SectionTitle, GlowCard, PremiumBg, Btn, IconMark, CompareTable, FaqList, BriefingCard } from "./TargaAI";
-import { BRIEFINGS, BRIEFING_FAQ, COMPARE_KICKER, AI_ANSWER, PROOF, STATS } from "./content";
+import { BRIEFINGS, LIVE_BRIEFINGS, BRIEFING_FAQ, COMPARE_KICKER, AI_ANSWER, PROOF, STATS } from "./content";
 
 const H = { fontFamily: "'Space Grotesk',sans-serif", fontWeight: 300, color: C.white, letterSpacing: "-0.5px", lineHeight: 1.25 };
 const P = { fontFamily: "'Inter',sans-serif", fontSize: "1rem", lineHeight: 1.85, color: C.g300, marginBottom: 18 };
@@ -29,8 +29,8 @@ export function BriefingsHub() {
     <SiteFrame page="briefings">
       <PageHero eyebrow="Briefings" title="TARGA Briefings - strategy execution, explained for executives" sub="Straight answers to the questions executives ask about running the company from the plan down - how leadership intelligence differs from project and portfolio management, what to look for in a platform, and how strategy actually gets executed. Written for leaders, sourced, and updated as the category moves." />
       <PremiumBg style={{ padding: mobile ? "48px 20px 72px" : "72px 40px 110px" }} orb1="rgba(251,191,36,0.05)" orb2="rgba(14,178,175,0.05)">
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : tablet ? "1fr 1fr" : "1fr 1fr", gap: 24, position: "relative", zIndex: 3 }}>
-          {BRIEFINGS.map((b, i) => (
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: mobile || LIVE_BRIEFINGS.length < 2 ? "minmax(0, 640px)" : tablet ? "1fr 1fr" : "1fr 1fr", gap: 24, position: "relative", zIndex: 3 }}>
+          {LIVE_BRIEFINGS.map((b, i) => (
             <Reveal key={b.title} delay={i * 0.08} style={{ height: "100%" }}><BriefingCard b={b} setPage={setPage} /></Reveal>
           ))}
         </div>
@@ -143,9 +143,9 @@ export function BriefingLIvsPPM() {
             <div style={{ maxWidth: 640, margin: "0 auto" }}>
               <IconMark height={40} variant="light" />
               <h2 style={{ ...H, fontSize: "clamp(1.4rem,2.2vw,1.9rem)", marginTop: 20, marginBottom: 14 }}>{PROOF.heading}</h2>
-              <p style={{ ...P, marginBottom: 26 }}>Our own company plan has lived inside TARGA since this quarter. First pilots begin in October.</p>
+              {/* Durable close. A citation outlives the month it was written in, so no dated line here - status lives on home under the stamp. */}
+              <p style={{ ...P, marginBottom: 26 }}>{PROOF.durable}</p>
               <Btn onClick={() => setPage("contact")}>Schedule a Conversation</Btn>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500, letterSpacing: "0.04em", marginTop: 26 }}>{PROOF.disclaimer}</p>
             </div>
           </Reveal>
         </section>
