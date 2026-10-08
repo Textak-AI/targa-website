@@ -81,6 +81,15 @@ h1{font-family:var(--read);font-weight:500;font-size:24px;letter-spacing:-.01em}
 .callout{display:inline-flex;margin-top:14px;font-size:13px;font-weight:600;color:var(--gold-l);background:rgba(208,154,46,.12);border-radius:999px;padding:6px 12px}
 .status-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .status-top .who{margin-left:auto;font-size:12px;font-weight:500;color:rgba(255,255,255,.88)}
+.dstrip{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.14)}
+.dstrip .d{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.72);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.dstrip .d b{font-weight:600;color:#fff}
+.dstrip .d.link{color:var(--teal-l);border-color:rgba(14,159,156,.45);cursor:pointer}
+.dstrip .d.watch{cursor:pointer}
+.dstrip .d.watch.on{background:rgba(14,159,156,.18);border-color:rgba(14,159,156,.6);color:#fff}
+.dstrip .stack{display:inline-flex;margin-left:2px}
+.dstrip .stack span{width:18px;height:18px;border-radius:999px;background:rgba(255,255,255,.22);border:1.5px solid #1f3350;font-size:9px;font-weight:600;color:#fff;display:inline-flex;align-items:center;justify-content:center;margin-left:-6px}
+.dstrip .stack span:first-child{margin-left:0}
 
 /* measure */
 .num{font-family:var(--read);font-weight:400;font-size:44px;letter-spacing:-.02em;line-height:1.05}
@@ -214,6 +223,21 @@ body{background:#C9D1DC}
 .aptext{font-size:14.5px;color:var(--ink)} .aptext b{font-weight:600}
 .apmeta{font-size:12.5px;color:var(--ink2);font-weight:500;margin-top:4px}
 .done-line{margin-top:12px;font-size:14px;font-weight:600;color:var(--green)}
+.qfoot{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink2)}
+.qfoot .qlink{font-weight:600;color:var(--teal);background:transparent}
+.panel{position:absolute;top:0;right:0;bottom:0;width:400px;max-width:100%;background:#fff;border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(11,27,43,.12);padding:22px 24px;transform:translateX(104%);transition:transform 360ms var(--ease);z-index:40;overflow:auto}
+.panel.open{transform:none}
+.panel .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.panel .pt{font-family:var(--read);font-size:18px;font-weight:600;color:var(--ink)}
+.panel .pl2{font-size:12.5px;color:var(--ink2);margin-bottom:16px}
+.panel .plist{display:flex;flex-direction:column;gap:10px}
+.panel .prow{display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;transition:border-color var(--dur),background var(--dur)}
+.panel .prow:hover{border-color:var(--teal);background:rgba(14,159,156,.05)}
+.panel .pk{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.panel .pk.gold{color:var(--gold)}
+.panel .ptx{font-size:14px;font-weight:500;color:var(--ink);line-height:1.35}
+.panel .pm{font-size:11.5px;color:var(--muted)}
+.n .panel{width:100%}
 .xbtn{margin-left:auto;font-size:12px;font-weight:500;color:var(--muted)}
 .qbtn{margin-left:auto;border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:999px}
 /* narrow (phone) */
@@ -297,6 +321,16 @@ body{background:#C9D1DC}
   </div>
   <div class="sub"><span>Sep 1 – Dec 31</span><span>Priority 5</span><span>Revenue · Priya Nair approves</span></div>
   <div id="board"></div>
+  <div id="panel" class="panel" aria-hidden="true">
+    <div class="ph"><span class="pt">Ideas that need a home</span><button class="xbtn" data-qa="pclose">Close</button></div>
+    <div class="pl2">Captured with Quick add and not yet turned into anything. Tap one to resolve it.</div>
+    <button class="btn pbtn" style="display:none;margin-bottom:14px"></button>
+    <div class="plist">
+      <button class="prow" data-qa="idea" data-idea="Call Meridian GC Thursday about the redlines"><span class="pk gold">Looks like an action</span><span class="ptx">Call Meridian GC Thursday about the redlines</span><span class="pm">Captured 2d ago · Marcus Ellis</span></button>
+      <button class="prow" data-qa="idea" data-idea="Ask Priya for the Q4 volume forecast"><span class="pk gold">Looks like an action</span><span class="ptx">Ask Priya for the Q4 volume forecast</span><span class="pm">Captured 3d ago · Marcus Ellis</span></button>
+      <button class="prow" data-qa="idea" data-idea="Board wants the supplier risk table"><span class="pk">Unsure · you decide</span><span class="ptx">Board wants the supplier risk table</span><span class="pm">Captured 5d ago · Sarah Chen</span></button>
+    </div>
+  </div>
 </div>
 </div></div>
 
@@ -360,7 +394,16 @@ const R = {
     const txt = S.pace
       ? `Three of eight contracts signed. <b>Meridian</b> is the pace-critical renewal. Terms are in legal and the date has slipped twice.`
       : `Three of eight contracts signed. Meridian terms are in legal, targeting Oct 15. Holding on track.`;
-    return `<div class="in">${top}<div class="narr" ${NARROW||COMPACT?'style="font-size:16px"':''}>${txt}</div>${S.pace?`<button class="callout">Open Meridian renewal, pace-critical →</button>`:''}</div>`;
+    const strip = `<div class="dstrip">
+      <span class="d">Owner <b>Marcus Ellis</b></span>
+      <span class="d">Jul 1 to Dec 31</span>
+      <span class="d">Target <b>42% gross margin</b></span>
+      ${COMPACT||NARROW?'':'<span class="d">Revenue · Q4 priority</span>'}
+      <button class="d link" data-act="attach">2 attachments</button>
+      <button class="d link" data-act="links">1 link</button>
+      ${COMPACT||NARROW?'':'<span class="d">Team <span class="stack"><span>ME</span><span>PN</span><span>SC</span></span></span>'}
+      <button class="d watch ${S.watch?'on':''}" data-act="watch">${S.watch?'Watching':'Watch'}</button></div>`;
+    return `<div class="in">${top}<div class="narr" ${NARROW||COMPACT?'style="font-size:16px"':''}>${txt}</div>${S.pace?`<button class="callout">Open Meridian renewal, pace-critical →</button>`:''}${strip}</div>`;
   },
   trend(){
     const n = S.values>=6?6:2;
@@ -436,19 +479,20 @@ const R = {
 };
 R.quick=function(){
   if(S.quick===2) return `<div class="in"><div class="lbl">Quick add<button class="xbtn" data-qa="close">Close</button></div><div class="done-line">Action created for Marcus Ellis, due Thursday. It's in Actions.</div></div>`;
-  const pills=[['action','Action · Marcus Ellis · Thu','gold fill'],['meeting','Meeting · Thu 10:00','gold'],['comment','Comment on this item','gold']];
+  const pills=[['action','Action · Marcus Ellis · Thu','gold fill'],['comment','Comment on this item','gold']];
   return `<div class="in"><div class="lbl">Quick add<button class="xbtn" data-qa="close">Close</button></div>
-    <div class="qin">Call Meridian GC Thursday about the redlines<span class="cur"></span></div>
+    <div class="qin">${S.qtext||'Call Meridian GC Thursday about the redlines'}<span class="cur"></span></div>
     <div class="tsug">✦ TARGA suggests</div>
-    <div class="pills">${pills.map(([k,l,c])=>`<button class="rchip ${c}" data-qa="${k}">${l}</button>`).join('')}</div></div>`;
+    <div class="pills">${pills.map(([k,l,c])=>`<button class="rchip ${c}" data-qa="${k}">${l}</button>`).join('')}</div>
+    ${(S.ideas??3)>0?`<div class="qfoot"><span>${S.ideas??3} idea${(S.ideas??3)===1?'':'s'} still need${(S.ideas??3)===1?'s':''} a home.</span><button class="qlink" data-qa="review">Review them</button></div>`:''}</div>`;
 };
 R.approve=function(){
   const A=S.approval; if(!A) return '';
   const head=`<div class="lbl"><span class="sys" style="color:var(--teal)">Needs your approval</span></div>
-    <div class="aptext">Marcus Ellis marked <b>Send revised volume tiers to Meridian Packaging</b> complete.</div>
-    <div class="apmeta">Revenue · you approve for this group</div>`;
+    <div class="aptext">Marcus Ellis moved the end date on <b>Renegotiate top-8 supplier contracts</b> to Dec 31 and added a milestone.</div>
+    <div class="apmeta">Revenue · you approve plan changes for this group</div>`;
   if(A.step===0) return `<div class="in">${head}<div class="pills"><button class="rchip fill" data-ap="approve">Approve</button><button class="rchip" data-ap="changes">Changes needed</button><button class="rchip plain" data-ap="reject">Reject</button></div></div>`;
-  const R2={approve:[['Completed','fill'],['Completed early','']],changes:[['Add evidence',''],['Confirm terms with Meridian','']],reject:[['Not done yet',''],['Abandoned','']]}[A.outcome];
+  const R2={approve:[['Scope unchanged','fill'],['Date justified','']],changes:[['Explain the slip',''],['Confirm with Meridian first','']],reject:[['Keep the original date',''],['Needs a replan','']]}[A.outcome];
   const verb={approve:'Approve',changes:'Changes needed',reject:'Reject'}[A.outcome];
   if(A.step===1) return `<div class="in">${head}<div class="apmeta" style="margin-top:12px;color:var(--ink)"><b>${verb}</b> · pick a reason</div><div class="pills">${R2.map(([l,c])=>`<button class="rchip ${c}" data-apr="${l}">${l}</button>`).join('')}<button class="rchip plain" data-apr="">Add a note</button></div></div>`;
   return `<div class="in">${head}<div class="done-line">${verb} · ${A.reason||'note added'}. Marcus is notified.</div></div>`;
@@ -689,7 +733,10 @@ function act(k){
     case 'pace': S.pace=true; S.intel=true; S.values=6; S.metrics=3; S.milestone=true; S.feed=5; break;
     case 'dismiss': S.intel=false; break;
     case 'quick': S.quick=1; break;
-    case 'approval': if(!S.actions.includes('tiers')) S.actions.push('tiers'); S.everActions=true; S.approval={step:0}; break;
+    case 'watch': S.watch=!S.watch; break;
+    case 'attach': showPanel('attach'); return;
+    case 'links': showPanel('links'); return;
+    case 'approval': S.approval={step:0}; break;
   }
   if(S.values>v0) FLASHT=performance.now();
   setCap(CAP[k]); layout();
@@ -711,17 +758,37 @@ function stage(s,quiet){
     attention:'Needs attention: an approval, a reply, an overdue action, and a pace-critical renewal.'}[s]);
   layout();
 }
+const PANELS={
+  ideas:{t:'Ideas that need a home',sub:'Captured with Quick add and not yet turned into anything. Tap one to resolve it.',rows:[
+    ['gold','Looks like an action','Call Meridian GC Thursday about the redlines','Captured 2d ago · Marcus Ellis'],
+    ['gold','Looks like an action','Ask Priya for the Q4 volume forecast','Captured 3d ago · Marcus Ellis'],
+    ['','Unsure · you decide','Board wants the supplier risk table','Captured 5d ago · Sarah Chen']]},
+  attach:{t:'Attachments',sub:'Files on this item. Upload adds one here.',btn:'Upload',rows:[
+    ['','PDF · 1.2 MB','Meridian_redlines_v3.pdf','Marcus Ellis · 2d ago'],
+    ['','XLSX · 340 KB','Volume_tiers_proposal.xlsx','Priya Nair · 6d ago']]},
+  links:{t:'Links',sub:'Links on this item. Add link adds one here.',btn:'Add link',rows:[
+    ['','SHAREPOINT','Meridian MSA (SharePoint)','Marcus Ellis · 9d ago']]}
+};
+function showPanel(kind){
+  const P=PANELS[kind], el=document.getElementById('panel');
+  el.querySelector('.pt').textContent=P.t; el.querySelector('.pl2').textContent=P.sub;
+  const b=el.querySelector('.pbtn'); b.style.display=P.btn?'':'none'; b.textContent=P.btn||'';
+  el.querySelector('.plist').innerHTML=P.rows.map(([c,k,t,m])=>`<button class="prow" ${kind==='ideas'?`data-qa="idea" data-idea="${t}"`:''}><span class="pk ${c}">${k}</span><span class="ptx">${t}</span><span class="pm">${m}</span></button>`).join('');
+  el.classList.add('open');
+}
 function quickPick(k){
   ARM=true;
   if(k==='open'){ S.quick=1; setCap(CAP.quick); }
-  else if(k==='close'){ S.quick=0; setCap('Closed. The tile yields.'); }
+  else if(k==='close'){ S.quick=0; S.qtext=null; setCap('Closed. The tile yields.'); }
+  else if(k==='review'){ showPanel('ideas'); setCap('The ideas list slides in over the board. The board does not re-flow.'); return; }
+  else if(k==='pclose'){ document.getElementById('panel').classList.remove('open'); return; }
+  else if(k==='idea'){ document.getElementById('panel').classList.remove('open'); S.quick=1; S.ideas=(S.ideas??3)-1; setCap('The idea loads into Quick add with its suggestions. Resolve it the same way as a fresh capture.'); }
   else if(k==='action'){ S.quick=2; S.everActions=true; if(!S.actions.includes('gc')) S.actions.unshift('gc'); setCap('One tap: the action is created, assigned and dated from the note. The Actions tile makes room for it.'); at(2200,()=>{S.quick=0; layout();}); }
-  else { S.quick=0; setCap(k==='meeting'?'Meeting created for Thursday at 10:00.':'Added as a comment on this item.'); if(k==='comment') S.comments=Math.min(2,S.comments+1); }
+  else { S.quick=0; setCap('Added as a comment on this item.'); if(k==='comment') S.comments=Math.min(2,S.comments+1); }
   layout();
 }
 function apPick(o){ S.approval={step:1,outcome:o}; setCap('The decision is made. Now one more tap for the reason, from the reason codes set in System.'); layout(); }
 function apReason(r){ const o=S.approval.outcome; S.approval={step:2,outcome:o,reason:r}; setCap('Decided in two taps. The tile says what happened, then gives its space back.');
-  if(o==='approve') S.actions=S.actions.filter(a=>a!=='tiers');
   layout(); at(2000,()=>{S.approval=null; layout();}); }
 function setDev(k){ devKey=k; applyDevice(); layout(); }
 
@@ -757,7 +824,7 @@ document.addEventListener('click',e=>{
   else if(b.dataset.act){clearT();act(b.dataset.act);}
   else if(b.dataset.open){const k=b.dataset.open;S.open[k]=!S.open[k];setCap(S.open[k]?'Opened in place. Only this tile grows.':'Closed. It gives the space back.');layout();}
   else if(b.dataset.pin){const k=b.dataset.pin;S.pins[k]=!S.pins[k];setCap(S.pins[k]?'Pinned. This tile keeps its place even when it has nothing to show.':'Unpinned. It yields again when empty.');layout();}
-  else if(b.dataset.qa){clearT();quickPick(b.dataset.qa);}
+  else if(b.dataset.qa){clearT();if(b.dataset.idea){S.qtext=b.dataset.idea;}quickPick(b.dataset.qa);}
   else if(b.dataset.ap){clearT();apPick(b.dataset.ap);}
   else if(b.dataset.apr!==undefined){clearT();apReason(b.dataset.apr);}
   else if(b.dataset.done){clearT();S.actions=S.actions.filter(a=>a!==b.dataset.done);
