@@ -63,7 +63,7 @@ export function BriefingLIvsPPM() {
     "Status that comes from the work itself, so it is always current.",
     "A strict, shared status language everyone reads the same way. TARGA uses four: On Track, At Risk, Blocked, Complete.",
     "AI that advises, with every action yours to take.",
-    "Works with the systems you already run, and gives them a place to live.",
+    "You keep the systems that run your business, and TARGA shows what they mean for the plan.",
   ];
   return (
     <SiteFrame page="briefings">
@@ -75,7 +75,7 @@ export function BriefingLIvsPPM() {
             {/* Answer-first opening */}
             <Reveal>
               <p style={{ ...P, fontSize: mobile ? "1.05rem" : "1.15rem", color: C.white, padding: mobile ? "20px" : "26px 30px", background: "rgba(251,191,36,0.04)", borderLeft: "2px solid rgba(251,191,36,0.45)", borderRadius: "0 8px 8px 0", marginBottom: 32 }}>
-                A leadership intelligence platform is software built for executives - the CEO and the executive team - that holds the strategic plan, shows the health of the work against it, and gets more useful the more the team works in it. It differs from project and portfolio management in one word: direction. Task tools start with tasks and build up. A leadership intelligence platform starts with the strategic plan and works down. TARGA is a leadership intelligence platform.
+                A leadership intelligence platform is software built for executives - the CEO and the executive team - that holds the strategic plan, shows the health of the work against it, and gets more useful the more you use it. It differs from project and portfolio management in one word: direction. Task tools start with tasks and build up. A leadership intelligence platform starts with the strategic plan and works down. TARGA is a leadership intelligence platform.
               </p>
             </Reveal>
             <Reveal>

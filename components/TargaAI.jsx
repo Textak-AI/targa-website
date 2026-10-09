@@ -932,8 +932,7 @@ function HomePage({ setPage }) {
       <PremiumBg style={{ padding: mobile ? "56px 20px" : "88px 40px" }} orb1="rgba(251,191,36,0.05)" orb2="rgba(14,178,175,0.05)">
         <div style={{ maxWidth: 820, margin: "0 auto", position: "relative", zIndex: 3 }}>
           <Reveal>
-            <Eyebrow color={C.gold}>What is TARGA?</Eyebrow>
-            <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.5rem,2.5vw,2.1rem)", fontWeight: 300, color: C.white, letterSpacing: "-0.5px", lineHeight: 1.3, marginBottom: 22 }}>{ONE_SENTENCE}</h2>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}><div style={{ width: 32, height: 1, background: C.gold }} /><h2 style={{ margin: 0, fontFamily: "'Inter',sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: "2px", color: C.gold, textTransform: "uppercase" }}>What is TARGA?</h2></div>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: mobile ? "1rem" : "1.1rem", lineHeight: 1.8, color: C.g300, padding: mobile ? "20px 20px" : "26px 30px", background: "rgba(251,191,36,0.04)", borderLeft: "2px solid rgba(251,191,36,0.45)", borderRadius: "0 8px 8px 0" }}>{DEFINITION}</p>
           </Reveal>
         </div>
@@ -1001,14 +1000,15 @@ function HomePage({ setPage }) {
               </Reveal>
             ))}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 28 : 56, marginTop: mobile ? 40 : 64, alignItems: "center" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 640px)", justifyContent: "center", marginTop: mobile ? 40 : 64 }}>
             <Reveal>
               <div>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Elite companies invest a disciplined portion of their gross margin in strategic value creation. They outperform because they have the infrastructure to identify, fund, and execute the initiatives that matter most.</p>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300 }}>TARGA is that infrastructure. The plan lives in it, the work reports into it, and the executive team runs the company from it.</p>
               </div>
             </Reveal>
-            <Reveal delay={0.15}><FrameworkChart /></Reveal>
+            {/* 30/20 visual off until Joe confirms the figures or sends the source (Joe 9/19). */}
+            {/* <Reveal delay={0.15}><FrameworkChart /></Reveal> */}
           </div>
         </div>
       </section>
@@ -1158,13 +1158,13 @@ function PlatformPage({ setPage }) {
       <PremiumBg style={{ padding: mobile ? "48px 20px" : "80px 40px" }} orb1="rgba(139,92,246,0.06)" orb2="rgba(14,178,175,0.05)">
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <Reveal><Eyebrow>How It Works</Eyebrow><SectionTitle>From strategy to execution in three steps.</SectionTitle></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 24, marginTop: mobile ? 32 : 48 }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 24, marginTop: mobile ? 32 : 48, alignItems: "stretch" }}>
             {[
               { n: "01", t: "Define Strategic Objectives", d: "Set the enterprise-level goals that matter. TARGA structures them into a framework your whole team can see.", glow: "rgba(139,92,246,0.12)" },
               { n: "02", t: "Assign and Align", d: "Map initiatives to executives. Cross-functional dependencies surface automatically.", glow: "rgba(14,178,175,0.12)" },
               { n: "03", t: "Track Value Creation", d: "TARGA watches the plan, flags what is drifting, and suggests the next move. Every action is yours.", glow: "rgba(251,191,36,0.08)" },
             ].map(({ n, t, d, glow }, i) => (
-              <Reveal key={n} delay={i * 0.1}><GlowCard glowColor={glow}>
+              <Reveal key={n} delay={i * 0.1} style={{ height: "100%" }}><GlowCard glowColor={glow} style={{ height: "100%", boxSizing: "border-box" }}>
                 <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2.5rem", fontWeight: 300, color: "rgba(251,191,36,0.3)", marginBottom: 12 }}>{n}</div>
                 <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1rem", fontWeight: 500, color: C.white, marginBottom: 8 }}>{t}</h3>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", lineHeight: 1.7, color: C.g300 }}>{d}</p>

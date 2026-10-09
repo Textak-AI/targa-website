@@ -8,12 +8,12 @@ export const POSITIONING = "Task tools start with tasks. TARGA starts with strat
 
 export const ONE_SENTENCE = "TARGA is a leadership intelligence platform built for executives.";
 
-/* The definition block. Ruled 21 Sep - "a name on every action", "the more you use it". */
+/* The definition block. Company paragraph approved by Joe and Bill, 7 Oct 2026. Also the Organization schema description and the opening of llms.txt. */
 export const DEFINITION =
-  "Targatek Inc. makes TARGA, a leadership intelligence platform built for executives. Your strategic actions live in TARGA with a name on every action, the work your team does creates the status you see, and TARGA's guidance gets better the more you use it. The decisions stay yours. Task tools start with tasks. TARGA starts with strategy.";
+  "Targatek Inc. makes TARGA, a leadership intelligence platform built for executives. Your strategy lives in TARGA with a name on every action, and the work your team does creates the status you see, so the whole leadership team is working from the same picture. TARGA's guidance gets better the more you use it, and the decisions stay yours. Every company has AI now. TARGA uses it where it changes results: watching the plan between meetings and flagging what needs attention, so your team acts sooner.";
 
 /* The eleven top lines (10 Things baseline v3.4), grouped in Joe's 9/19 order.
-   07 carries the 21 Sep wording ("the more you use TARGA"). 09 is the baseline line - Joe has not ruled on the rewrite. */
+   07 carries the 21 Sep wording ("the more you use TARGA"). 09 is the 19 Sep rewrite ("shows what they mean for the plan"). */
 export const VALUE_GROUPS = [
   { title: "Better decisions", lines: [
     "The more you use TARGA, the better its guidance gets. The decisions stay yours.",
@@ -33,7 +33,7 @@ export const VALUE_GROUPS = [
     "The work creates the status. Report writing is a thing of the past.",
   ] },
   { title: "Keep what you have", lines: [
-    "You keep the systems that run your business. TARGA gives them a place to live.",
+    "You keep the systems that run your business. TARGA shows what they mean for the plan.",
   ] },
 ];
 
@@ -62,7 +62,7 @@ export const STATS = [
 
 /* Does the AI decide for me? Positive framing per Joe's 9/10 rule. */
 export const AI_ANSWER =
-  "TARGA watches the plan between meetings and tells you what needs you today. You act on it, or you set it aside. Every action is yours. The more your team works in TARGA, the more its guidance lines up with how you already decide, and the decisions stay yours.";
+  "TARGA watches the plan between meetings and flags what needs your attention today. Every action is yours: you take a suggestion or dismiss it. The more you use TARGA, the closer its guidance gets to how you already decide, and the decisions stay yours.";
 
 /* ═══ DURABLE vs DATED ═══
    Everything above this line is durable: it says what TARGA is and stays true for years.
@@ -74,9 +74,8 @@ export const AI_ANSWER =
 export const STATUS = {
   asOf: "As of October 2026",
   lines: [
-    "Our own company plan runs in TARGA. The demo you'll see is how we manage the company.",
-    "First pilots begin in October, and you'll hear from them, not from us.",
-    "TARGA runs on desktop, phone, and tablet.",
+    "Our own company plan runs in TARGA, and first pilots begin in October.",
+    "TARGA runs on desktop, phone and tablet.",
   ],
 };
 
@@ -90,15 +89,17 @@ export const PROOF = {
 };
 
 export const HOME_FAQ = [
-  { q: "What is TARGA?", a: "A leadership intelligence platform built for executives. Your strategic plan lives in it, the work your team does creates the status you see, and its guidance improves the more your team works in it." },
-  { q: "How is TARGA different from project management tools?", a: "Those start with tasks and build up. TARGA starts with the strategic plan and works down, and it's built for the CEO and executive team, not the people managing tasks." },
-  { q: "Is TARGA a strategy portfolio management (SPM) tool?", a: "It's in that category, which is real and funded. The difference is direction. TARGA is top-down and built for the executive, where most SPM tools assemble the picture from the work upward." },
-  { q: "Does the AI act on its own?", a: "No. TARGA observes, suggests, and logs. Every action is yours, and the decisions stay yours." },
-  { q: "Couldn't we do this with a chat tool?", a: "You can get an answer from a chat tool. What you can't get is the plan itself - owned, current, and shared by the whole leadership team - or status that comes from the work rather than from whoever assembled the prompt. A general tool answers the question you thought to ask. TARGA is where the plan lives between the questions, and it tells you what needs you today before you ask." },
-  { q: "Do we have to replace our current systems?", a: "No. You keep the systems that run your business. TARGA gives them a place to live." },
-  { q: "Who is TARGA for?", a: "The CEO and the executive team." },
-  { q: "How does TARGA know the status of the work?", a: "The initiative owner's own activity - comments, status, completed actions - becomes the status the executive sees. Report writing is a thing of the past." },
+  { q: "What is TARGA?", a: "A leadership intelligence platform built for executives. Your strategy lives in TARGA with a name on every action, the work your team does creates the status you see, and its guidance gets better the more you use it." },
+  { q: "How is TARGA different from project management tools?", a: "Those start with tasks and build up. TARGA starts with the strategic plan and works down, and it's built for the CEO and the executive team." },
+  { q: "Is TARGA a strategy portfolio management (SPM) tool?", a: "It's in that category, which is real and funded. The difference is direction. TARGA works top-down and is built for the executive, where most SPM tools assemble the picture from the work upward." },
+  { q: "Does the AI act on its own?", a: "TARGA observes, suggests and logs. Every action is yours: a person decides, every time." },
+  { q: "Couldn't we do this with ChatGPT or Claude?", a: "A chat tool will answer the question you thought to ask. TARGA is where the plan lives between the questions: owned, current, and shared by the whole leadership team, with status that comes from the work itself. It flags what needs you today before you think to ask." },
+  { q: "Do we have to replace our current systems?", a: "You keep the systems that run your business, and TARGA shows what they mean for the plan." },
+  { q: "Who is TARGA for?", a: "The CEO and the executive team, and in larger companies, the general manager who runs a division with a leadership team of their own." },
+  { q: "How does TARGA know the status of the work?", a: "The owner's own activity - comments, status changes, completed actions - becomes the status the executive sees. Report writing is a thing of the past." },
   { q: "Is TARGA available now?", a: "Our own company plan runs in TARGA today. Where pilots and availability stand this month is under Where TARGA stands today, with the date on it." },
+  { q: "Every tool has AI now. What's different about TARGA?", a: "Almost every software product has AI in it today. The question is whether it changed how your plan gets executed. TARGA uses it where it changes results: watching the plan between meetings and flagging what needs attention, so your team acts sooner. A person decides every time." },
+  { q: "Why can't we do this in our ERP?", a: "Your ERP runs the transactions of the business, and it should keep doing that. TARGA holds the strategic plan above it: the goals, who owns each one, and how the work is tracking against them, so the leadership team sees the same picture." },
 ];
 
 /* ═══ BRIEFINGS ═══ */
@@ -111,7 +112,7 @@ export const BRIEFINGS = [
     answer: "One word: direction. Task tools start with tasks and build up. A leadership intelligence platform starts with the strategic plan and works down.",
     updated: "October 2026",
     publishedISO: "2026-09-30",
-    dateISO: "2026-10-02",
+    dateISO: "2026-10-07",
   },
   /* Planned briefings stay in the editorial calendar, not on the page. A hub with one live
      piece and three "Coming" cards reads to an engine as "they have one article". Add each
