@@ -390,7 +390,15 @@ const R = {
   },
   status(){
     const top=`<div class="status-top"><span class="sys" style="color:var(--teal-l)">Owner status</span><span class="who">${S.status?(NARROW?'1d ago':'Marcus Ellis · updated 1d ago'):(NARROW?'':'Marcus Ellis')}</span><button class="btn line" data-act="status">Update${NARROW?'':' status'}</button></div>`;
-    if(!S.status) return `<div class="in">${top}<div class="narr" style="color:rgba(255,255,255,.88);font-size:16px">No status yet. Two sentences on where this stands.</div></div>`;
+    if(!S.status) return `<div class="in">${top}<div class="narr" style="color:rgba(255,255,255,.88);font-size:16px">No status yet. Two sentences on where this stands.</div><div class="dstrip">
+      <span class="d">Owner <b>Marcus Ellis</b></span>
+      <span class="d">Sep 1 to Dec 31</span>
+      <button class="d link">+ Add target</button>
+      ${COMPACT||NARROW?'':'<button class="d link">+ Add tags</button>'}
+      <button class="d link" data-act="attach">+ Add attachment</button>
+      <button class="d link" data-act="links">+ Add link</button>
+      ${COMPACT||NARROW?'':'<span class="d">Team <span class="stack"><span>ME</span></span></span>'}
+      <button class="d watch ${S.watch?'on':''}" data-act="watch">${S.watch?'Watching':'Watch'}</button></div></div>`;
     const txt = S.pace
       ? `Three of eight contracts signed. <b>Meridian</b> is the pace-critical renewal. Terms are in legal and the date has slipped twice.`
       : `Three of eight contracts signed. Meridian terms are in legal, targeting Oct 15. Holding on track.`;
