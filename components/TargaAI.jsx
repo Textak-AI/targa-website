@@ -339,80 +339,33 @@ function ParallaxWrap({ children, offset = 40 }) {
 }
 
 
-/* ═══ 30/20 FRAMEWORK CHART ═══ */
-function FrameworkChart() {
-  const [ref, inView] = useInView(0.25);
-  const bars = [
-    { label: "Gross Margin Available", pct: 30, color: C.g500, display: "~30%" },
-    { label: "Value Creation Zone", pct: 20, color: C.teal, display: "~20%" },
-    { label: "Typical Allocation", pct: 6, color: C.gold, display: "~6%" },
-  ];
-  return (
-    <div ref={ref} style={{
-      background: "rgba(14,178,175,0.03)",
-      border: "1px solid rgba(14,178,175,0.1)",
-      borderRadius: 12, padding: "32px 28px",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
-        <div style={{ width: 20, height: 1, background: C.teal }} />
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "1.5px", color: C.teal, textTransform: "uppercase" }}>The 30/20 Framework</span>
-      </div>
-      {bars.map((bar, i) => (
-        <div key={bar.label} style={{ marginBottom: i < bars.length - 1 ? 24 : 0 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.76rem", color: C.g300, letterSpacing: "0.02em" }}>{bar.label}</span>
-            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "0.88rem", color: bar.color, fontWeight: 500 }}>{bar.display}</span>
-          </div>
-          <div style={{ height: 8, background: "rgba(255,255,255,0.04)", borderRadius: 4, overflow: "hidden" }}>
-            <div style={{
-              height: "100%",
-              width: inView ? (bar.pct / 35 * 100) + "%" : "0%",
-              background: bar.color,
-              borderRadius: 4,
-              transition: "width 1.2s cubic-bezier(0.16,1,0.3,1) " + (0.2 + i * 0.15) + "s",
-            }} />
-          </div>
-        </div>
-      ))}
-      {/* Gap callout */}
-      <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(14,178,175,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color: C.g500, fontStyle: "italic" }}>Source: McKinsey, Bain, OpenView</span>
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{ width: 12, height: 12, borderRadius: 2, border: "1px dashed " + C.gold, opacity: 0.5 }} />
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: C.gold, opacity: 0.8 }}>The gap TARGA closes</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ═══ CALLOUT DATA — three tiers, each with problem→feature→outcome ═══ */
 const CALLOUTS = [
   /* Tier 1: METRIC (teal) — addresses the 85% barrier problem */
   { cid: "kpi0", tier: 1, color: C.teal,
-    problem: "85% cite internal barriers to growth - McKinsey",
+    problem: "85% cite internal barriers to growth - Bain",
     feature: "Real-time portfolio visibility",
     outcome: "$4.2M across 12 initiatives. No quarterly surprises.",
     spark: [14,11,12,8,6,4,2], meta: "+18% QoQ" },
   { cid: "kpi2", tier: 1, color: C.teal,
-    problem: "85% cite internal barriers to growth - McKinsey",
+    problem: "85% cite internal barriers to growth - Bain",
     feature: "Continuous alignment scoring",
     outcome: "Exec alignment measured weekly - not just at board meetings.",
     spark: [12,10,9,7,5,4,3], meta: "+12 pts this quarter" },
   { cid: "row0", tier: 1, color: C.teal,
-    problem: "85% cite internal barriers to growth - McKinsey",
+    problem: "85% cite internal barriers to growth - Bain",
     feature: "Cross-functional initiative mapping",
     outcome: "See how every initiative connects across functions in real time.",
     spark: [10,9,8,6,5,3,2], meta: "4 linked initiatives" },
 
   /* Tier 2: AI INSIGHT (gold) — addresses the 90% inertia problem */
   { cid: "kpi1", tier: 2, color: C.gold,
-    problem: "90% repeat last year's budget - Deloitte",
+    problem: "90% repeat last year's budget - McKinsey",
     feature: "AI-flagged risk detection",
     outcome: "3 initiatives share constrained engineering capacity. Budget is not the blocker - resource allocation is.",
     linked: "APAC Expansion, Product Line" },
   { cid: "row1", tier: 2, color: C.gold,
-    problem: "90% repeat last year's budget - Deloitte",
+    problem: "90% repeat last year's budget - McKinsey",
     feature: "Cross-functional resource conflict",
     outcome: "This initiative shares 3 resources with APAC Expansion. Engineering capacity is the constraint - not budget.",
     linked: "APAC Expansion" },
@@ -989,7 +942,7 @@ function HomePage({ setPage }) {
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(14,178,175,0.2) 50%,transparent 100%)" }} />
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <Reveal><div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}><Eyebrow color={C.teal}>The problem</Eyebrow><SectionTitle align="center" sub="Most executives will tell you the obstacle to growth is inside the building. The problem is rarely the strategy. It's the gap between the plan and the work.">Why this is an execution problem, not a strategy problem</SectionTitle></div></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3,1fr)", gap: 24, textAlign: "center" }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(" + STATS.length + ",1fr)", gap: 24, textAlign: "center" }}>
             {STATS.map(({ v, sfx, d, s }, i) => (
               <Reveal key={v} delay={i * 0.1}>
                 <GlowCard glowColor="rgba(14,178,175,0.1)" style={{ padding: "32px 24px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -1000,15 +953,21 @@ function HomePage({ setPage }) {
               </Reveal>
             ))}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 640px)", justifyContent: "center", marginTop: mobile ? 40 : 64 }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 28 : 56, marginTop: mobile ? 40 : 64, alignItems: "center" }}>
             <Reveal>
               <div>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Elite companies invest a disciplined portion of their gross margin in strategic value creation. They outperform because they have the infrastructure to identify, fund, and execute the initiatives that matter most.</p>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300 }}>TARGA is that infrastructure. The plan lives in it, the work reports into it, and the executive team runs the company from it.</p>
               </div>
             </Reveal>
-            {/* 30/20 visual off until Joe confirms the figures or sends the source (Joe 9/19). */}
-            {/* <Reveal delay={0.15}><FrameworkChart /></Reveal> */}
+            <Reveal delay={0.15}>
+              <GlowCard glowColor="rgba(14,178,175,0.1)" style={{ padding: "32px 24px", textAlign: "center" }}>
+                <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2.2rem", fontWeight: 500, color: C.teal, marginBottom: 12 }}><AnimatedStat value="90" suffix="%" /></div>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.g300, fontWeight: 400, marginBottom: 12 }}>Last year's investment plan predicts this year's. McKinsey found a 90 percent correlation in investment spending from one year to the next.</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.g300, fontWeight: 400 }}>For fast-moving businesses, McKinsey's guidance is to hold about 20 percent of the budget for the initiatives that earn it during the year. Deciding where that goes, and seeing whether it worked, is the job TARGA was built for.</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", color: C.g500, marginTop: 12 }}>Source: <a href="https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/keep-calm-and-allocate-capital-six-process-improvements" target="_blank" rel="noopener noreferrer" style={{ color: C.g500, textDecoration: "underline" }}>McKinsey, Six process improvements for capital allocation</a>.</p>
+              </GlowCard>
+            </Reveal>
           </div>
         </div>
       </section>

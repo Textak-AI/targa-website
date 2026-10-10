@@ -80,7 +80,7 @@ export function BriefingLIvsPPM() {
             </Reveal>
             <Reveal>
               <p style={P}>Most executives will tell you the obstacle to growth is inside the building. Consider the numbers below. The problem is rarely the strategy. It's the gap between the plan and the work, and the tool a company uses to close that gap is usually built for the wrong seat.</p>
-              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3,1fr)", gap: 16, margin: "28px 0 8px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : `repeat(${STATS.length},1fr)`, gap: 16, margin: "28px 0 8px" }}>
                 {STATS.map(({ v, sfx, d, s }) => (
                   <GlowCard key={s} glowColor="rgba(14,178,175,0.1)" style={{ padding: "22px 20px" }}>
                     <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.8rem", fontWeight: 500, color: C.teal, marginBottom: 8 }}>{v}{sfx}</div>

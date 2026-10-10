@@ -55,8 +55,7 @@ export const COMPARE_KICKER = "If you hear \"everything starts with a task,\" yo
 
 /* Third-party stats, as they run on the live site today. Numbers are Joe's to confirm. */
 export const STATS = [
-  { v: "85", sfx: "%", d: "of executives cite internal barriers - not market conditions - as the top obstacle to growth.", s: "McKinsey" },
-  { v: "90", sfx: "%", d: "year-over-year correlation in capital spending. The opportunity: redirect even a fraction toward value creation.", s: "Deloitte" },
+  { v: "85", sfx: "%", d: "of executives cite internal barriers - not market conditions - as the top obstacle to growth.", s: "Bain, Founder's Mentality" },
   { v: "67", sfx: "%", d: "of well-formulated strategies underperform in execution. The strategy is not the problem - the infrastructure is.", s: "Bain & Company" },
 ];
 
@@ -98,7 +97,7 @@ export const HOME_FAQ = [
   { q: "Who is TARGA for?", a: "The CEO and the executive team, and in larger companies, the general manager who runs a division with a leadership team of their own." },
   { q: "How does TARGA know the status of the work?", a: "The owner's own activity - comments, status changes, completed actions - becomes the status the executive sees. Report writing is a thing of the past." },
   { q: "Is TARGA available now?", a: "Our own company plan runs in TARGA today. Where pilots and availability stand this month is under Where TARGA stands today, with the date on it." },
-  { q: "Every tool has AI now. What's different about TARGA?", a: "Almost every software product has AI in it today. The question is whether it changed how your plan gets executed. TARGA uses it where it changes results: watching the plan between meetings and flagging what needs attention, so your team acts sooner. A person decides every time." },
+  { q: "Every tool has AI now. What's different about TARGA?", a: "Almost every software product has AI in it today. The question is whether it changed how your plan gets executed. TARGA uses it where it changes results: watching the plan between meetings and flagging what needs attention, so your team acts sooner. McKinsey's State of AI survey puts the companies seeing real bottom-line impact at about 6 percent, and what sets them apart is that they redesigned how the work gets done rather than adding AI to what they already had. A person decides every time." },
   { q: "Why can't we do this in our ERP?", a: "Your ERP runs the transactions of the business, and it should keep doing that. TARGA holds the strategic plan above it: the goals, who owns each one, and how the work is tracking against them, so the leadership team sees the same picture." },
 ];
 

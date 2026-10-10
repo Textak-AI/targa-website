@@ -54,7 +54,7 @@ How does TARGA know the status of the work? The owner's own activity - comments,
 
 Is TARGA available now? Our own company plan runs in TARGA today. Where pilots and availability stand this month is under Where TARGA stands today, with the date on it.
 
-Every tool has AI now. What's different about TARGA? Almost every software product has AI in it today. The question is whether it changed how your plan gets executed. TARGA uses it where it changes results: watching the plan between meetings and flagging what needs attention, so your team acts sooner. A person decides every time.
+Every tool has AI now. What's different about TARGA? Almost every software product has AI in it today. The question is whether it changed how your plan gets executed. TARGA uses it where it changes results: watching the plan between meetings and flagging what needs attention, so your team acts sooner. McKinsey's State of AI survey puts the companies seeing real bottom-line impact at about 6 percent, and what sets them apart is that they redesigned how the work gets done rather than adding AI to what they already had. A person decides every time.
 
 Why can't we do this in our ERP? Your ERP runs the transactions of the business, and it should keep doing that. TARGA holds the strategic plan above it: the goals, who owns each one, and how the work is tracking against them, so the leadership team sees the same picture.
 
