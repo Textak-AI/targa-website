@@ -10,7 +10,12 @@
 html,body{background:#0C1424;color:#fff;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 body{min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .stage{position:relative;width:1920px;height:1080px;transform-origin:center;flex:none}
-.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:120px 120px;animation:gridDrift 60s linear infinite}
+.inner{position:absolute;inset:0;animation:settle 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes settle{from{transform:scale(1.012);opacity:.0}to{transform:none;opacity:1}}
+.vig{position:absolute;inset:0;background:radial-gradient(1200px 700px at 50% 45%,transparent 60%,rgba(0,0,0,.18));pointer-events:none}
+.w{display:inline-block;opacity:0;filter:blur(3px);transform:translateY(4px);animation:wordIn .8s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes wordIn{to{opacity:1;filter:blur(0);transform:none}}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:120px 120px}
 @keyframes gridDrift{to{background-position:120px 120px}}
 .hd{position:absolute;left:120px;top:76px;width:1300px}
 .eyebrow{font-weight:500;font-size:19px;letter-spacing:.18em;text-transform:uppercase;color:#0EB2AF;display:flex;align-items:center;gap:16px;margin-bottom:18px}
@@ -19,7 +24,8 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;ove
 h1{font-family:"Space Grotesk";font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-.02em}
 .sub{margin-top:12px;font-size:18px;color:rgba(255,255,255,.7);line-height:1.4;max-width:1000px}
 .fade{opacity:0;transform:translateY(8px);animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes fadeUp{to{opacity:1;transform:none}}
+@keyframes fadeUp{to{opacity:1;transform:none;filter:blur(0)}}
+.fade,.lbl{filter:blur(2px)}
 .key{position:absolute;right:120px;top:100px;font-size:14px;color:rgba(255,255,255,.7);display:flex;flex-direction:column;gap:10px}
 .key div{display:flex;align-items:center;gap:10px}
 .sw{width:34px;height:6px;border-radius:3px;background:#0E9F9C}
@@ -30,38 +36,47 @@ h1{font-family:"Space Grotesk";font-weight:600;font-size:46px;line-height:1.08;l
 svg text{font-family:Inter}
 /* chart motion */
 .bar{opacity:0;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.1s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d)}
-.bar.dashed{animation:drawDash 1.1s cubic-bezier(.2,.8,.2,1) forwards, dashCrawl 14s linear infinite;animation-delay:var(--d),calc(var(--d) + 1.1s);stroke-dasharray:2 10;stroke-dashoffset:0;opacity:0}
+.bar.dashed{animation:drawDash 1.1s cubic-bezier(.2,.8,.2,1) forwards, dashCrawl 40s linear infinite;animation-delay:var(--d),calc(var(--d) + 1.1s);stroke-dasharray:2 10;stroke-dashoffset:0;opacity:0}
 @keyframes draw{from{opacity:1}to{stroke-dashoffset:0;opacity:1}}
-@keyframes drawDash{from{opacity:0}to{opacity:.7}}
+@keyframes drawDash{from{opacity:0;transform:translateX(-10px)}to{opacity:.7;transform:none}}
+.head{opacity:0;animation:head 1.1s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d);offset-rotate:0deg}
+@keyframes head{0%{opacity:0;transform:translateX(0)}8%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translateX(var(--len))}}
+.sheen{opacity:0;animation:sheen 1.4s cubic-bezier(.4,0,.2,1) forwards;animation-delay:calc(var(--d) + 1.05s)}
+@keyframes sheen{0%{opacity:0;transform:translateX(-60px)}20%{opacity:.9}100%{opacity:0;transform:translateX(var(--len))}}
 @keyframes dashCrawl{to{stroke-dashoffset:-240}}
-.lbl{opacity:0;animation:fadeUp .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d)}
+.lbl{opacity:0;transform:translateX(-6px);animation:lblIn .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d)}
+@keyframes lblIn{to{opacity:1;transform:none;filter:blur(0)}}
 .cap{opacity:0;animation:capIn .5s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--d) + .9s)}
 @keyframes capIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
-.band{opacity:0;transform-origin:center;animation:bandIn 1.2s cubic-bezier(.2,.8,.2,1) forwards, breathe 6s ease-in-out infinite;animation-delay:var(--d),calc(var(--d) + 1.2s)}
-@keyframes bandIn{from{opacity:0;transform:scaleY(.2)}to{opacity:1;transform:none}}
-@keyframes breathe{0%,100%{fill-opacity:.16}50%{fill-opacity:.24}}
+.band{opacity:0;transform-box:fill-box;transform-origin:center;animation:bandIn 1.3s cubic-bezier(.2,.8,.2,1) forwards, breathe 6s ease-in-out infinite;animation-delay:var(--d),calc(var(--d) + 1.3s)}
+@keyframes bandIn{from{opacity:0;transform:scaleX(.6)}to{opacity:1;transform:none}}
+.flare{opacity:0;transform-box:fill-box;transform-origin:center;animation:flare 1.6s ease-out forwards;animation-delay:var(--d)}
+@keyframes flare{0%{opacity:0;transform:scaleX(.2)}30%{opacity:.22}100%{opacity:0;transform:scaleX(1.1)}}
+@keyframes breathe{0%,100%{fill-opacity:.15}50%{fill-opacity:.19}}
 .bandlbl{opacity:0;animation:fadeUp .6s forwards;animation-delay:calc(var(--d) + .8s)}
 .axis-line{opacity:0;animation:fadeUp .8s forwards;animation-delay:var(--d)}
 .marker-line{opacity:0;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d)}
 .marker{opacity:0;animation:drop .7s cubic-bezier(.3,1.4,.4,1) forwards;animation-delay:var(--d);transform-box:fill-box;transform-origin:center}
-@keyframes drop{from{opacity:0;transform:translateY(-22px) scale(.6)}to{opacity:1;transform:none}}
-.halo{opacity:0;animation:halo 3.2s ease-out infinite;animation-delay:calc(var(--d) + .7s);transform-box:fill-box;transform-origin:center}
-@keyframes halo{0%{opacity:.55;transform:scale(.6)}70%{opacity:0;transform:scale(2.6)}100%{opacity:0;transform:scale(2.6)}}
-.bignum{opacity:0;animation:fadeUp .6s forwards;animation-delay:calc(var(--d) + .3s)}
-.scan{opacity:0;animation:scan 9s linear infinite;animation-delay:var(--d)}
-@keyframes scan{0%{opacity:0;transform:translateX(0)}6%{opacity:.5}94%{opacity:.5}100%{opacity:0;transform:translateX(1220px)}}
+@keyframes drop{from{opacity:0;transform:translateY(-14px) scale(.8)}to{opacity:1;transform:none}}
+.ripple{opacity:0;transform-box:fill-box;transform-origin:center;animation:ripple 1.1s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d)}
+@keyframes ripple{0%{opacity:.45;transform:scale(.5)}100%{opacity:0;transform:scale(2.6)}}
+.halo{opacity:0;animation:halo 5s ease-out infinite;animation-delay:calc(var(--d) + .7s);transform-box:fill-box;transform-origin:center}
+@keyframes halo{0%{opacity:.3;transform:scale(.7)}70%{opacity:0;transform:scale(2)}100%{opacity:0;transform:scale(2)}}
+.bignum{opacity:0;filter:blur(2px);animation:fadeUp .7s forwards;animation-delay:calc(var(--d) + .15s)}
+.scan{opacity:0;animation:scan 16s linear infinite;animation-delay:var(--d)}
+@keyframes scan{0%{opacity:0;transform:translateX(0)}8%{opacity:.22}92%{opacity:.22}100%{opacity:0;transform:translateX(1220px)}}
 .endtick{opacity:0;animation:tick .35s ease-out forwards;animation-delay:calc(var(--d) + 1s);transform-box:fill-box;transform-origin:center}
 @keyframes tick{from{opacity:0;transform:scaleY(0)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0ms!important;animation-iteration-count:1!important}.bar,.bar.dashed{stroke-dashoffset:0;opacity:1}.grid{animation:none}}
 </style></head><body>
-<div class="stage" id="stage">
-<div class="grid"></div>
+<div class="stage" id="stage"><div class="inner">
+<div class="grid"></div><div class="vig"></div>
 <div class="hd">
   <div class="eyebrow fade" style="animation-delay:.1s">The 30 / 20 framework - how the figures were set</div>
   <h1 class="fade" style="animation-delay:.3s">Five sources, one axis. The framework sits where the stated ranges overlap.</h1>
   <div class="sub fade" style="animation-delay:.55s">Each bar is the share of gross margin a published source supports, as stated or as implied by its own numbers. Solid bars state a range for a company at ~70% gross margin; dashed bars give direction or describe a different stage. The gold band is where the solid bars overlap. Targatek set the framework inside it.</div>
 </div>
-<div class="key fade" style="animation-delay:1s">
+<div class="key fade" style="animation-delay:7.4s">
   <div><span class="sw"></span>Range a source states</div>
   <div><span class="sw dash"></span>Direction, or a different stage</div>
   <div><span class="sw band"></span>Where the sources overlap</div>
@@ -69,19 +84,23 @@ svg text{font-family:Inter}
 </div>
 <svg id="chart" width="1680" height="700" style="position:absolute;left:120px;top:292px" viewBox="0 0 1680 700" fill="none"></svg>
 <div class="foot fade" style="animation-delay:9s">Sources: McKinsey, SaaS and the Rule of 40 (2021); McKinsey, Six process improvements for capital allocation; OpenView SaaS Benchmarks Report 2023; Blossom Street Ventures, SaaS spend ratios (75 IPOs); Bain, Sustained Value Creation; Bain, Strategies for Corporate Growth. Ranges are read from each source's published figures at a ~70% gross margin; where a source states a principle rather than a number, or describes IPO-stage companies, the bar is dashed and sits outside the band. The framework figures are Targatek's synthesis, not any one source's finding.</div>
-</div>
+</div></div>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg', svg=document.getElementById('chart');
   const X0=420, X1=1640, MIN=0, MAX=45, x=v=>X0+(v-MIN)/(MAX-MIN)*(X1-X0);
+  const defs=document.createElementNS(NS,'defs'); svg.appendChild(defs); defs.innerHTML=`<filter id="glow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="sheenGrad" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>`;
   const el=(t,a,txt,parent)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);if(txt!=null)n.textContent=txt;(parent||svg).appendChild(n);return n;};
-  const T0=1.0; // chart starts after the header
+  // word-by-word reveal for the title and subhead
+  document.querySelectorAll('.hd h1, .hd .sub').forEach((n,k)=>{const base=k?0.75:0.35; n.classList.remove('fade'); n.style.opacity=1; n.style.filter='none';
+    n.innerHTML=n.textContent.split(' ').map((w,i)=>`<span class="w" style="animation-delay:${(base+i*0.022).toFixed(3)}s">${w}</span>`).join(' ');});
+  const T0=1.6; // chart starts after the header
   // axis
   for(let v=0;v<=45;v+=5){
-    el('line',{class:'axis-line',style:`--d:${T0+v*0.02}s`,x1:x(v),y1:30,x2:x(v),y2:640,stroke:'rgba(255,255,255,.08)','stroke-width':1});
-    el('text',{class:'axis-line',style:`--d:${T0+v*0.02}s`,x:x(v),y:664,'text-anchor':'middle','font-size':13,fill:'rgba(255,255,255,.5)'},v+'%');
+    el('line',{class:'axis-line',style:`--d:${T0+1.0+v*0.02}s`,x1:x(v),y1:30,x2:x(v),y2:640,stroke:'rgba(255,255,255,.08)','stroke-width':1});
+    el('text',{class:'axis-line',style:`--d:${T0+1.0+v*0.02}s`,x:x(v),y:664,'text-anchor':'middle','font-size':13,fill:'rgba(255,255,255,.5)'},v+'%');
   }
-  el('text',{class:'axis-line',style:`--d:${T0+.6}s`,x:(X0+X1)/2,y:692,'text-anchor':'middle','font-size':13,'letter-spacing':2,fill:'rgba(255,255,255,.5)'},'SHARE OF GROSS MARGIN');
+  el('text',{class:'axis-line',style:`--d:${T0+1.8}s`,x:(X0+X1)/2,y:692,'text-anchor':'middle','font-size':13,'letter-spacing':2,fill:'rgba(255,255,255,.5)'},'SHARE OF GROSS MARGIN');
   // the scan: a faint vertical light that walks the axis once every 9s after everything has settled
   el('line',{class:'scan',style:`--d:9s`,x1:X0,y1:30,x2:X0,y2:640,stroke:'rgba(14,178,175,.35)','stroke-width':1});
 
@@ -110,26 +129,33 @@ svg text{font-family:Inter}
     const top=L.y+52, bot=top+L.rows.length*54;
     // band goes under the bars, appears after the solid rows have drawn
     const tBand=t+0.3+core.length*0.55+0.6;
+    el('rect',{class:'flare',style:`--d:${tBand}s`,x:x(lo),y:top-10,width:x(hi)-x(lo),height:bot-top+10,fill:'#D09A2E',filter:'url(#soft)'});
     el('rect',{class:'band',style:`--d:${tBand}s`,x:x(lo),y:top-10,width:x(hi)-x(lo),height:bot-top+10,fill:'#D09A2E','fill-opacity':.16,stroke:'rgba(208,154,46,.6)','stroke-width':1,rx:4});
     el('text',{class:'bandlbl',style:`--d:${tBand}s`,x:(x(lo)+x(hi))/2,y:bot+18,'text-anchor':'middle','font-size':12,'letter-spacing':1.5,fill:'#D09A2E','font-weight':500},(lo+'-'+hi+'% OVERLAP').toUpperCase());
     L.rows.forEach((r,i)=>{
       const y=top+i*54+14, d=t+0.3+i*0.55, len=x(r[3])-x(r[2]);
       el('text',{class:'lbl',style:`--d:${d}s`,x:0,y:y+4,'font-size':15,'font-weight':500,fill:'#fff'},r[0]);
       el('text',{class:'lbl',style:`--d:${d+.08}s`,x:0,y:y+22,'font-size':12.5,fill:'rgba(255,255,255,.5)'},r[1]);
-      el('line',{class:'bar'+(r[4]?'':' dashed'),style:`--d:${d+.1}s;--len:${len}`,x1:x(r[2]),y1:y,x2:x(r[3]),y2:y,stroke:'#0E9F9C','stroke-width':6,'stroke-linecap':'round'});
-      el('text',{class:'cap',style:`--d:${d}s`,x:x(r[2])-10,y:y+4,'text-anchor':'end','font-size':12,fill:'rgba(255,255,255,.6)'},r[2]+'%');
-      el('text',{class:'cap',style:`--d:${d+.2}s`,x:x(r[3])+10,y:y+4,'font-size':12,fill:'rgba(255,255,255,.6)'},r[3]+'%');
-      if(r[5]) el('text',{class:'cap',style:`--d:${d+.4}s`,x:x(r[3])+42,y:y+4,'font-size':12,fill:'rgba(255,255,255,.45)','font-style':'italic'},r[5]);
-      if(r[4]){ // end ticks on the solid bars, a tiny flourish that says "this is where it stops"
-        [r[2],r[3]].forEach(v=>el('line',{class:'endtick',style:`--d:${d}s`,x1:x(v),y1:y-9,x2:x(v),y2:y+9,stroke:'#0E9F9C','stroke-width':2,'stroke-linecap':'round',opacity:.7}));
+      el('line',{class:'bar'+(r[4]?'':' dashed'),style:`--d:${d+.28}s;--len:${len}`,x1:x(r[2]),y1:y,x2:x(r[3]),y2:y,stroke:'#0E9F9C','stroke-width':6,'stroke-linecap':'round'});
+      el('text',{class:'cap',style:`--d:${d+.2}s`,x:x(r[2])-10,y:y+4,'text-anchor':'end','font-size':12,fill:'rgba(255,255,255,.6)'},r[2]+'%');
+      el('text',{class:'cap',style:`--d:${d+.4}s`,x:x(r[3])+10,y:y+4,'font-size':12,fill:'rgba(255,255,255,.6)'},r[3]+'%');
+      if(r[5]) el('text',{class:'cap',style:`--d:${d+.6}s`,x:x(r[3])+42,y:y+4,'font-size':12,fill:'rgba(255,255,255,.45)','font-style':'italic'},r[5]);
+      if(r[4]){
+        // a bright head of light draws the bar and fades out at its end
+        el('circle',{class:'head',style:`--d:${d+.28}s;--len:${len}px`,cx:x(r[2]),cy:y,r:3.5,fill:'#CFF6F4',opacity:.9});
+        // a soft sheen crosses the finished bar once
+        
+        [r[2],r[3]].forEach(v=>el('line',{class:'endtick',style:`--d:${d}s`,x1:x(v),y1:y-9,x2:x(v),y2:y+9,stroke:'#0E9F9C','stroke-width':1.5,'stroke-linecap':'round',opacity:.5}));
       }
     });
     // the framework figure: a line draws down from above the band, then the marker drops in and keeps a soft halo
     const tM=tBand+1.0;
     el('line',{class:'marker-line',style:`--d:${tM}s;--len:${bot-top+14}`,x1:x(L.point),y1:top-12,x2:x(L.point),y2:bot+2,stroke:'#D09A2E','stroke-width':2});
+    el('circle',{class:'ripple',style:`--d:${tM+.55}s`,cx:x(L.point),cy:top-12,r:10,fill:'none',stroke:'#D09A2E','stroke-width':2});
     el('circle',{class:'halo',style:`--d:${tM+.5}s`,cx:x(L.point),cy:top-12,r:8,fill:'none',stroke:'#D09A2E','stroke-width':1.5});
     el('circle',{class:'marker',style:`--d:${tM+.5}s`,cx:x(L.point),cy:top-12,r:8,fill:'#D09A2E',stroke:'#0C1424','stroke-width':3});
-    el('text',{class:'bignum',style:`--d:${tM+.5}s`,x:x(L.point),y:top-30,'text-anchor':'middle','font-family':'Space Grotesk','font-weight':600,'font-size':26,fill:'#D09A2E'},L.point+'%');
+    const num=el('text',{class:'bignum',style:`--d:${tM+.5}s`,x:x(L.point),y:top-30,'text-anchor':'middle','font-family':'Space Grotesk','font-weight':600,'font-size':26,fill:'#D09A2E'},'0%');
+    setTimeout(()=>{const t0=performance.now(),D=700;(function f(){const k=Math.min(1,(performance.now()-t0)/D),e=1-Math.pow(1-k,3);num.textContent=Math.round(L.point*e)+'%';if(k<1)requestAnimationFrame(f);})();},(tM+.65)*1000);
   });
   // fit the 1920x1080 stage to any window
   const fit=()=>{const s=Math.min(innerWidth/1920,innerHeight/1080);document.getElementById('stage').style.transform=`scale(${s})`;};
