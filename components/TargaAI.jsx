@@ -1,5 +1,10 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { DEFINITION, ONE_SENTENCE, POSITIONING, VALUE_GROUPS, COMPARE_ANSWER, COMPARE_COLS, COMPARE_ROWS, COMPARE_KICKER, STATS, AI_ANSWER, PROOF, HOME_FAQ, BRIEFINGS } from "./content";
+
+/* ═══ ROUTES — page keys map to real URLs (App Router) ═══ */
+export const PATHS = { home: "/", platform: "/platform", about: "/about", ceo100: "/100-ceos", contact: "/contact", privacy: "/privacy", terms: "/terms", briefings: "/briefings" };
 
 const C = {
   navy: "#1f476a", navyDark: "#162d46", navyDeep: "#0f2035", navyMid: "#1a3a5c",
@@ -11,9 +16,11 @@ const C = {
 
 /* ═══ RESPONSIVE HOOK ═══ */
 function useMedia() {
-  const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  /* Start at the server's width so hydration matches, then read the real viewport on mount. */
+  const [w, setW] = useState(1200);
   useEffect(() => {
     const fn = () => setW(window.innerWidth);
+    fn();
     window.addEventListener("resize", fn);
     return () => window.removeEventListener("resize", fn);
   }, []);
@@ -332,94 +339,47 @@ function ParallaxWrap({ children, offset = 40 }) {
 }
 
 
-/* ═══ 30/20 FRAMEWORK CHART ═══ */
-function FrameworkChart() {
-  const [ref, inView] = useInView(0.25);
-  const bars = [
-    { label: "Gross Margin Available", pct: 30, color: C.g500, display: "~30%" },
-    { label: "Value Creation Zone", pct: 20, color: C.teal, display: "~20%" },
-    { label: "Typical Allocation", pct: 6, color: C.gold, display: "~6%" },
-  ];
-  return (
-    <div ref={ref} style={{
-      background: "rgba(14,178,175,0.03)",
-      border: "1px solid rgba(14,178,175,0.1)",
-      borderRadius: 12, padding: "32px 28px",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
-        <div style={{ width: 20, height: 1, background: C.teal }} />
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "1.5px", color: C.teal, textTransform: "uppercase" }}>The 30/20 Framework</span>
-      </div>
-      {bars.map((bar, i) => (
-        <div key={bar.label} style={{ marginBottom: i < bars.length - 1 ? 24 : 0 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.76rem", color: C.g300, letterSpacing: "0.02em" }}>{bar.label}</span>
-            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "0.88rem", color: bar.color, fontWeight: 500 }}>{bar.display}</span>
-          </div>
-          <div style={{ height: 8, background: "rgba(255,255,255,0.04)", borderRadius: 4, overflow: "hidden" }}>
-            <div style={{
-              height: "100%",
-              width: inView ? (bar.pct / 35 * 100) + "%" : "0%",
-              background: bar.color,
-              borderRadius: 4,
-              transition: "width 1.2s cubic-bezier(0.16,1,0.3,1) " + (0.2 + i * 0.15) + "s",
-            }} />
-          </div>
-        </div>
-      ))}
-      {/* Gap callout */}
-      <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(14,178,175,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color: C.g500, fontStyle: "italic" }}>Source: McKinsey, Bain, OpenView</span>
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{ width: 12, height: 12, borderRadius: 2, border: "1px dashed " + C.gold, opacity: 0.5 }} />
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: C.gold, opacity: 0.8 }}>The gap TARGA closes</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ═══ CALLOUT DATA — three tiers, each with problem→feature→outcome ═══ */
 const CALLOUTS = [
   /* Tier 1: METRIC (teal) — addresses the 85% barrier problem */
   { cid: "kpi0", tier: 1, color: C.teal,
-    problem: "85% cite internal barriers to growth — McKinsey",
-    feature: "Real-time pipeline visibility",
+    problem: "85% cite internal barriers to growth - Bain",
+    feature: "Real-time portfolio visibility",
     outcome: "$4.2M across 12 initiatives. No quarterly surprises.",
     spark: [14,11,12,8,6,4,2], meta: "+18% QoQ" },
   { cid: "kpi2", tier: 1, color: C.teal,
-    problem: "85% cite internal barriers to growth — McKinsey",
+    problem: "85% cite internal barriers to growth - Bain",
     feature: "Continuous alignment scoring",
-    outcome: "Exec alignment measured weekly — not just at board meetings.",
+    outcome: "Exec alignment measured weekly - not just at board meetings.",
     spark: [12,10,9,7,5,4,3], meta: "+12 pts this quarter" },
   { cid: "row0", tier: 1, color: C.teal,
-    problem: "85% cite internal barriers to growth — McKinsey",
+    problem: "85% cite internal barriers to growth - Bain",
     feature: "Cross-functional initiative mapping",
     outcome: "See how every initiative connects across functions in real time.",
     spark: [10,9,8,6,5,3,2], meta: "4 linked initiatives" },
 
   /* Tier 2: AI INSIGHT (gold) — addresses the 90% inertia problem */
   { cid: "kpi1", tier: 2, color: C.gold,
-    problem: "90% repeat last year's budget — Deloitte",
+    problem: "90% repeat last year's budget - McKinsey",
     feature: "AI-flagged risk detection",
-    outcome: "3 initiatives share constrained engineering capacity. Budget is not the blocker — resource allocation is.",
+    outcome: "3 initiatives share constrained engineering capacity. Budget is not the blocker - resource allocation is.",
     linked: "APAC Expansion, Product Line" },
   { cid: "row1", tier: 2, color: C.gold,
-    problem: "90% repeat last year's budget — Deloitte",
+    problem: "90% repeat last year's budget - McKinsey",
     feature: "Cross-functional resource conflict",
-    outcome: "This initiative shares 3 resources with APAC Expansion. Engineering capacity is the constraint — not budget.",
+    outcome: "This initiative shares 3 resources with APAC Expansion. Engineering capacity is the constraint - not budget.",
     linked: "APAC Expansion" },
 
   /* Tier 3: ACTION (teal accent on premium dark) — addresses the 67% execution problem */
   { cid: "row2", tier: 3, color: C.teal,
-    problem: "67% of strategies fail in execution — Bain",
+    problem: "67% of strategies fail in execution - Bain",
     feature: "Suggested next action",
     outcome: "Schedule 15-min alignment check with CTO and CPO on shared engineering capacity before Q2 close.",
     action: "Send invite → CTO, CPO" },
   { cid: "row3", tier: 3, color: C.teal,
-    problem: "67% of strategies fail in execution — Bain",
+    problem: "67% of strategies fail in execution - Bain",
     feature: "Delegation prompt",
-    outcome: "CHRO has bandwidth. Reassign the talent pipeline review from CRO to accelerate by 2 weeks.",
+    outcome: "CHRO has bandwidth. Reassign the talent portfolio review from CRO to accelerate by 2 weeks.",
     action: "Reassign → CHRO" },
 ];
 
@@ -559,7 +519,7 @@ function PerspectiveDashboard({ view = "strategic" }) {
   }, []);
 
   const kpis = [
-    { t: "Q2 Value Pipeline", v: "$4.2M", d: "+18% QoQ", c: C.teal, cid: "kpi0" },
+    { t: "Q2 Value Portfolio", v: "$4.2M", d: "+18% QoQ", c: C.teal, cid: "kpi0" },
     { t: "Strategic Initiatives", v: "12 Active", d: "3 At Risk", c: C.gold, cid: "kpi1" },
     { t: "Exec Alignment", v: "87%", d: "+12 pts", c: C.teal, cid: "kpi2" },
   ];
@@ -724,10 +684,11 @@ function Nav({ page, setPage }) {
         ) : (
           <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
             <Link to="platform">Platform</Link>
+            <Link to="briefings">Briefings</Link>
             <Link to="about">About</Link>
             <Link to="ceo100">100 CEOs</Link>
             <Link to="contact">Contact</Link>
-            <Btn variant="primary" style={{ padding: "9px 20px", fontSize: "0.76rem" }} onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request More Information</Btn>
+            <Btn variant="primary" style={{ padding: "9px 20px", fontSize: "0.76rem" }} onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Schedule a Conversation</Btn>
           </div>
         )}
       </div>
@@ -735,10 +696,11 @@ function Nav({ page, setPage }) {
       {mobile && (
         <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "rgba(15,32,53,0.95)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(14,178,175,0.08)", padding: menuOpen ? "24px 20px" : "0 20px", maxHeight: menuOpen ? 400 : 0, overflow: "hidden", transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)", display: "flex", flexDirection: "column", gap: 20 }}>
           <Link to="platform">Platform</Link>
+          <Link to="briefings">Briefings</Link>
           <Link to="about">About</Link>
           <Link to="ceo100">100 CEOs</Link>
           <Link to="contact">Contact</Link>
-          <Btn variant="primary" style={{ padding: "12px 20px", fontSize: "0.82rem", width: "100%", justifyContent: "center" }} onClick={() => { setPage("contact"); window.scrollTo(0, 0); setMenuOpen(false); }}>Request More Information</Btn>
+          <Btn variant="primary" style={{ padding: "12px 20px", fontSize: "0.82rem", width: "100%", justifyContent: "center" }} onClick={() => { setPage("contact"); window.scrollTo(0, 0); setMenuOpen(false); }}>Schedule a Conversation</Btn>
         </div>
       )}
     </nav>
@@ -753,15 +715,15 @@ function Footer({ setPage }) {
     <footer style={{ background: C.navyDeep, borderTop: "1px solid rgba(14,178,175,0.06)", padding: mobile ? "40px 20px 32px" : "60px 40px 40px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1.5fr 1fr 1fr 1fr", gap: mobile ? 32 : 40, marginBottom: mobile ? 32 : 48 }}>
-          <div><Logo variant="light" /><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.82rem", color: C.g500, lineHeight: 1.7, marginTop: 16, maxWidth: 280 }}>Speed and clarity for enterprise value creation. The Leader Experience™.</p></div>
-          <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Platform</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><FL to="platform">Overview</FL><FL to="platform">Features</FL><FL to="platform">Security</FL></div></div>
+          <div><Logo variant="light" /><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.82rem", color: C.g500, lineHeight: 1.7, marginTop: 16, maxWidth: 280 }}>Speed and clarity for enterprise value creation. Targatek Inc. makes TARGA, the platform that helps leaders lead.</p></div>
+          <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Platform</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><FL to="platform">Overview</FL><FL to="briefings">Briefings</FL></div></div>
           <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Company</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><FL to="about">About</FL><FL to="about">Leadership</FL><FL to="ceo100">100 CEOs</FL><FL to="contact">Contact</FL></div></div>
           <div><div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "1.5px", color: C.g500, textTransform: "uppercase", marginBottom: 16 }}>Connect</div><div style={{ display: "flex", flexDirection: "column", gap: 10 }}><a href="https://www.linkedin.com/company/targatek" target="_blank" rel="noopener" style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.78rem", color: C.g500, textDecoration: "none", cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={e => e.target.style.color = C.teal} onMouseLeave={e => e.target.style.color = C.g500}>LinkedIn</a><FL to="contact">Schedule a Call</FL></div></div>
         </div>
         <div style={{ borderTop: "1px solid rgba(14,178,175,0.06)", paddingTop: 24, display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 16 : 0 }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500 }}>© 2026 Targatek Inc. All rights reserved.</span>
           {!mobile && <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-            {["Enterprise-grade security", "AWS infrastructure", "SOC 2 in progress"].map((s, i) => (
+            {["Enterprise-grade security", "AWS infrastructure"].map((s, i) => (
               <span key={s} style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", color: C.g500, opacity: 0.6, display: "flex", alignItems: "center", gap: 4 }}>
                 {i > 0 && <span style={{ color: "rgba(14,178,175,0.2)" }}>·</span>}
                 {s}
@@ -774,6 +736,82 @@ function Footer({ setPage }) {
     </footer>
   );
 }
+
+/* ═══ SHARED CONTENT BLOCKS ═══ */
+function CompareTable() {
+  const { mobile } = useMedia();
+  const cell = { fontFamily: "'Inter',sans-serif", fontSize: "0.86rem", lineHeight: 1.6, color: C.g300, padding: mobile ? "12px 12px" : "16px 18px", borderBottom: "1px solid rgba(14,178,175,0.08)", verticalAlign: "top", textAlign: "left" };
+  const head = { ...cell, fontFamily: "'Space Grotesk',sans-serif", fontSize: "0.95rem", fontWeight: 500, color: C.white, borderBottom: "1px solid rgba(14,178,175,0.25)" };
+  if (mobile) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {COMPARE_COLS.map((col, ci) => (
+          <div key={col} style={{ background: ci === 0 ? "rgba(14,178,175,0.06)" : "rgba(15,32,53,0.5)", border: "1px solid " + (ci === 0 ? "rgba(14,178,175,0.3)" : "rgba(14,178,175,0.08)"), borderRadius: 10, padding: "18px 18px" }}>
+            <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.05rem", fontWeight: 500, color: ci === 0 ? C.teal : C.white, marginBottom: 12 }}>{col}</div>
+            {COMPARE_ROWS.map((r) => (
+              <div key={r.label} style={{ marginBottom: 10 }}>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: C.g500, marginBottom: 2 }}>{r.label}</div>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.55, color: C.g300 }}>{r.cells[ci]}</div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div style={{ overflowX: "auto", borderRadius: 12, border: "1px solid rgba(14,178,175,0.12)", background: "rgba(15,32,53,0.55)" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead><tr><th style={{ ...head, width: "16%" }} />{COMPARE_COLS.map((c, i) => <th key={c} style={{ ...head, color: i === 0 ? C.teal : C.white, background: i === 0 ? "rgba(14,178,175,0.06)" : "transparent", width: "28%" }}>{c}</th>)}</tr></thead>
+        <tbody>
+          {COMPARE_ROWS.map((r, ri) => (
+            <tr key={r.label}>
+              <th scope="row" style={{ ...cell, fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: C.g500, borderBottom: ri === COMPARE_ROWS.length - 1 ? "none" : cell.borderBottom }}>{r.label}</th>
+              {r.cells.map((v, ci) => <td key={ci} style={{ ...cell, color: ci === 0 ? C.white : C.g300, background: ci === 0 ? "rgba(14,178,175,0.06)" : "transparent", borderBottom: ri === COMPARE_ROWS.length - 1 ? "none" : cell.borderBottom }}>{v}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function FaqList({ items }) {
+  const [open, setOpen] = useState(0);
+  return (
+    <div>
+      {items.map(({ q, a }, i) => {
+        const isOpen = open === i;
+        return (
+          <div key={q} style={{ borderBottom: "1px solid rgba(14,178,175,0.1)" }}>
+            <button onClick={() => setOpen(isOpen ? -1 : i)} aria-expanded={isOpen} style={{ width: "100%", background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "20px 0", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20 }}>
+              <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.05rem", fontWeight: 500, color: isOpen ? C.teal : C.white, lineHeight: 1.4, transition: "color 0.3s", margin: 0 }}>{q}</h3>
+              <span aria-hidden="true" style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.3rem", fontWeight: 300, color: C.teal, transform: isOpen ? "rotate(45deg)" : "none", transition: "transform 0.3s", flexShrink: 0, lineHeight: 1 }}>+</span>
+            </button>
+            <div style={{ maxHeight: isOpen ? 400 : 0, overflow: "hidden", transition: "max-height 0.4s cubic-bezier(0.16,1,0.3,1)" }}>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, paddingBottom: 22, maxWidth: 680 }}>{a}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function BriefingCard({ b, setPage }) {
+  const [h, setH] = useState(false);
+  const live = b.live && b.slug;
+  const go = () => { if (live) setPage("/briefings/" + b.slug); };
+  return (
+    <div onClick={go} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{ cursor: live ? "pointer" : "default", height: "100%", background: "linear-gradient(145deg,rgba(31,71,106,0.6) 0%,rgba(15,32,53,0.85) 100%)", border: "1px solid " + (h && live ? "rgba(14,178,175,0.35)" : "rgba(14,178,175,0.1)"), borderRadius: 12, padding: "28px 28px", transition: "all 0.35s", transform: h && live ? "translateY(-3px)" : "none", boxShadow: h && live ? "0 16px 40px rgba(0,0,0,0.3)" : "0 4px 16px rgba(0,0,0,0.12)", opacity: live ? 1 : 0.7 }}>
+      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.66rem", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", color: live ? C.teal : C.g500, marginBottom: 14 }}>{live ? "Briefing" : "Coming"}</div>
+      <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.15rem", fontWeight: 500, color: C.white, lineHeight: 1.4, marginBottom: 12 }}>{b.title}</h3>
+      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", lineHeight: 1.7, color: C.g300, marginBottom: live ? 18 : 0 }}>{b.answer}</p>
+      {live && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", fontWeight: 600, color: C.teal, letterSpacing: "0.03em" }}>Read the briefing</span>}
+    </div>
+  );
+}
+
 
 /* ═══ PAGE: HOME ═══ */
 function HomePage({ setPage }) {
@@ -797,12 +835,13 @@ function HomePage({ setPage }) {
         {!mobile && <div style={{ position: "absolute", right: "-2%", top: "50%", transform: "translateY(-50%)", opacity: 0.05, pointerEvents: "none" }}><IconMark height={480} variant="light" /></div>}
         {!mobile && <div style={{ position: "absolute", top: "15%", right: "10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(14,178,175,0.06) 0%,transparent 70%)", filter: "blur(50px)", pointerEvents: "none" }} />}
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "120px 20px 60px" : "160px 40px 100px", position: "relative", zIndex: 2 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24, ...fade(0.2) }}><div style={{ width: 36, height: 1, background: C.teal }} /><span style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "2px", color: C.teal, textTransform: "uppercase" }}>The Leader Experience™</span></div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24, ...fade(0.2) }}><div style={{ width: 36, height: 1, background: C.teal }} /><span style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "2px", color: C.teal, textTransform: "uppercase" }}>Leadership intelligence platform</span></div>
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2.4rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 720, marginBottom: 24, ...fade(0.35) }}>Speed and Clarity<br />for Enterprise<br />Value Creation</h1>
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520, marginBottom: 40, ...fade(0.5) }}>TARGA AI gives executives cross-functional visibility — turning strategic goals into measurable outcomes with AI-driven insight into what drives enterprise value.</p>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520, marginBottom: 18, ...fade(0.5) }}>TARGA gives executives cross-functional visibility - turning strategic goals into measurable outcomes.</p>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", lineHeight: 1.7, color: C.g500, maxWidth: 520, marginBottom: 40, ...fade(0.58) }}>{ONE_SENTENCE} {POSITIONING}</p>
           <div style={{ display: "flex", gap: 14, ...fade(0.65) }}>
-            <Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request More Information</Btn>
-            <Btn variant="secondary" onClick={() => { setPage("platform"); window.scrollTo(0, 0); }}>Learn More</Btn>
+            <Btn onClick={() => { setPage("contact"); }}>Schedule a Conversation</Btn>
+            <Btn variant="secondary" onClick={() => { setPage("platform"); }}>Explore the Platform</Btn>
           </div>
         </div>
       </section>
@@ -842,126 +881,157 @@ function HomePage({ setPage }) {
         </div>
       </section>
 
-      {/* VALUE CARDS */}
-      <PremiumBg style={{ padding: mobile ? "48px 20px 60px" : "60px 40px 100px" }} orb1="rgba(139,92,246,0.05)" orb2="rgba(14,178,175,0.04)">
-        <ParallaxWrap offset={mobile ? 0 : 30}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : tablet ? "1fr 1fr" : "repeat(3,1fr)", gap: 24, alignItems: "stretch", position: "relative", zIndex: 3 }}>
-          {[
-            { t: "Clarity", d: "Real-time executive dashboards that surface what matters — goals, gaps, and the teams driving them. See the whole picture without the quarterly scramble.", a: C.white, glow: "rgba(255,255,255,0.06)" },
-            { t: "Speed to Action", d: "Accelerate value creation across every quarter. When leaders have clarity, decisions happen in days — not the two weeks before a board review.", a: C.teal, glow: "rgba(14,178,175,0.12)" },
-            { t: "Accountability in Execution", d: "Every initiative tied to an owner, a timeline, and a value outcome. Progress measured in enterprise value — not tasks completed.", a: C.gold, glow: "rgba(251,191,36,0.08)" },
-          ].map(({ t, d, a, glow }, i) => (
-            <Reveal key={t} delay={i * 0.1} style={{ height: "100%" }}>
-              <GlowCard glowColor={glow} style={{ height: "100%", borderTop: "3px solid " + a, padding: "36px 32px" }}>
-                <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.15rem", fontWeight: 500, color: C.white, marginBottom: 12 }}>{t}</h3>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", lineHeight: 1.7, color: C.g300 }}>{d}</p>
-              </GlowCard>
-            </Reveal>
-          ))}
-        </div>
-        </ParallaxWrap>
-      </PremiumBg>
-
-      {/* DIFFERENTIATOR */}
-      <section style={{ background: "linear-gradient(165deg," + C.navy + " 0%," + C.navyMid + " 100%)", padding: mobile ? "60px 20px" : "100px 40px", position: "relative" }}>
-        {!mobile && <div style={{ position: "absolute", inset: 0, opacity: 0.02, backgroundImage: "repeating-linear-gradient(45deg," + C.teal + " 0," + C.teal + " 1px,transparent 0,transparent 50%)", backgroundSize: "60px 60px", pointerEvents: "none" }} />}
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 32 : 64 }}>
-          <Reveal><div><Eyebrow color={C.gold}>Why TARGA</Eyebrow><SectionTitle sub="TARGA is an intelligent strategic advisor that understands your business in context — surfacing what you need to act on, flagging what you would not think to ask about, and giving you the clarity to move with confidence.">Executive hypercollaboration — not on-the-fly leadership.</SectionTitle></div></Reveal>
-          <Reveal delay={0.15}>
-            <div>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 24 }}>Elite companies invest a disciplined portion of their gross margin in strategic value creation. They outperform because they have the infrastructure to identify, fund, and execute the initiatives that matter most.</p>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.gold, marginBottom: 28, padding: "14px 18px", background: "rgba(251,191,36,0.04)", borderLeft: "2px solid rgba(251,191,36,0.3)", borderRadius: "0 6px 6px 0" }}>Most organizations know what to do. They lack the infrastructure to ensure it gets done.</p>
-              <FrameworkChart />
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* EXECUTION GAP */}
-      <PremiumBg style={{ padding: mobile ? "48px 20px" : "72px 40px" }} orb1="rgba(14,178,175,0.06)" orb2="rgba(251,191,36,0.04)">
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(14,178,175,0.2) 50%,transparent 100%)", zIndex: 2 }} />
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3,1fr)", gap: 24, textAlign: "center" }}>
-              {[
-                { v: "85", sfx: "%", d: "of executives cite internal barriers — not market conditions — as the top obstacle to growth.", s: "McKinsey" },
-                { v: "90", sfx: "%", d: "year-over-year correlation in capital spending. The opportunity: redirect even a fraction toward value creation.", s: "Deloitte" },
-                { v: "67", sfx: "%", d: "of well-formulated strategies underperform in execution. The strategy is not the problem — the infrastructure is.", s: "Bain & Company" },
-              ].map(({ v, sfx, d, s }, i) => (
-                <Reveal key={v} delay={i * 0.1}>
-                <GlowCard glowColor="rgba(14,178,175,0.1)" style={{ padding: "32px 24px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2.2rem", fontWeight: 500, color: C.teal, marginBottom: 12 }}><AnimatedStat value={v} suffix={sfx} /></div>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.g300, fontWeight: 400 }}>{d}</p>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", color: C.g500, marginTop: 8, fontStyle: "italic" }}>— {s}</p>
-                </GlowCard>
-                </Reveal>
-              ))}
-            </div>
-        </div>
-      </PremiumBg>
-
-      {/* BRIDGE — connects the problem to the solution */}
-      <section style={{ background: "linear-gradient(180deg," + C.navyDark + " 0%," + C.navyDeep + " 100%)", padding: mobile ? "48px 20px" : "80px 40px", textAlign: "center", position: "relative" }}>
-        <div style={{ position: "absolute", top: 0, left: "50%", width: 1, height: mobile ? 32 : 48, background: "linear-gradient(180deg," + C.teal + " 0%,transparent 100%)", transform: "translateX(-50%)" }} />
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      {/* WHAT IS TARGA - the definition block. Self-contained on purpose: this is the paragraph an answer engine lifts whole. */}
+      <PremiumBg style={{ padding: mobile ? "56px 20px" : "88px 40px" }} orb1="rgba(251,191,36,0.05)" orb2="rgba(14,178,175,0.05)">
+        <div style={{ maxWidth: 820, margin: "0 auto", position: "relative", zIndex: 3 }}>
           <Reveal>
-            <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.2rem,2vw,1.6rem)", fontWeight: 300, color: C.white, lineHeight: 1.5, marginBottom: 12 }}>
-              What if you could see it all — <span style={{ color: C.teal }}>at a glance?</span>
-            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}><div style={{ width: 32, height: 1, background: C.gold }} /><h2 style={{ margin: 0, fontFamily: "'Inter',sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: "2px", color: C.gold, textTransform: "uppercase" }}>What is TARGA?</h2></div>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: mobile ? "1rem" : "1.1rem", lineHeight: 1.8, color: C.g300, padding: mobile ? "20px 20px" : "26px 30px", background: "rgba(251,191,36,0.04)", borderLeft: "2px solid rgba(251,191,36,0.45)", borderRadius: "0 8px 8px 0" }}>{DEFINITION}</p>
           </Reveal>
-          <Reveal delay={0.12}>
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", color: C.g500, lineHeight: 1.7, maxWidth: 480, margin: "0 auto" }}>
-              Clarity of focus. Speed to action. A single view that shows you whether your highest-value initiatives are on track — or not.
-            </p>
+        </div>
+      </PremiumBg>
+
+      {/* HOW IT COMPARES - TARGA first, category named */}
+      <section style={{ background: "linear-gradient(165deg," + C.navy + " 0%," + C.navyMid + " 100%)", padding: mobile ? "56px 20px" : "96px 40px", position: "relative" }}>
+        {!mobile && <div style={{ position: "absolute", inset: 0, opacity: 0.02, backgroundImage: "repeating-linear-gradient(45deg," + C.teal + " 0," + C.teal + " 1px,transparent 0,transparent 50%)", backgroundSize: "60px 60px", pointerEvents: "none" }} />}
+        <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
+          <Reveal>
+            <Eyebrow>How it compares</Eyebrow>
+            <SectionTitle sub={COMPARE_ANSWER}>What is a leadership intelligence platform, and how does it compare?</SectionTitle>
+          </Reveal>
+          <Reveal delay={0.12}><div style={{ marginTop: mobile ? 28 : 40 }}><CompareTable /></div></Reveal>
+          <Reveal delay={0.2}>
+            <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.05rem,1.6vw,1.3rem)", fontWeight: 400, color: C.white, marginTop: 28, lineHeight: 1.5 }}>{COMPARE_KICKER}</p>
           </Reveal>
         </div>
       </section>
 
-      {/* 3D DASHBOARD */}
-      <section style={{ background: C.navyDeep, padding: mobile ? "60px 20px" : "100px 40px", overflow: "visible", position: "relative" }}>
-        {!mobile && <div style={{ position: "absolute", inset: 0, opacity: 0.015, backgroundImage: "linear-gradient(rgba(14,178,175,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(14,178,175,0.5) 1px,transparent 1px)", backgroundSize: "80px 80px", pointerEvents: "none" }} />}
-        <div style={{ maxWidth: 1050, margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <Reveal><div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}><Eyebrow color={C.teal}>The Platform</Eyebrow><SectionTitle align="center">Clarity at a Glance. Speed to Action.</SectionTitle></div></Reveal>
-          <PerspectiveDashboard />
-          <Reveal delay={0.3}><div style={{ textAlign: "center", marginTop: 48 }}><Btn onClick={() => { setPage("platform"); window.scrollTo(0, 0); }}>Explore the Platform →</Btn></div></Reveal>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <PremiumBg style={{ padding: mobile ? "60px 20px" : "100px 40px" }} orb1="rgba(251,191,36,0.05)" orb2="rgba(139,92,246,0.05)">
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(251,191,36,0.15) 50%,transparent 100%)" }} />
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <Reveal><div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}><Eyebrow color={C.gold}>What Leaders Are Saying</Eyebrow></div></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: mobile ? 24 : 24 }}>
-            {[
-              { text: "For the first time, I can see across all my strategic initiatives in one place. No spreadsheets, no chasing updates. Just clarity.", name: "Sarah Mitchell", title: "VP Strategic Initiatives", tag: "Early Design Partner" },
-              { text: "This is what I have been asking my team to build internally for years. TARGA does it out of the box — and the AI layer makes it actually useful.", name: "Dan Kowalski", title: "COO, Mid-Market Manufacturing", tag: "Pilot Participant" },
-              { text: "We went from quarterly fire drills to continuous visibility in weeks. My board noticed the difference before I even told them what changed.", name: "Rachel Chen", title: "CEO, Growth-Stage SaaS", tag: "Early Adopter" },
-            ].map((q, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <GlowCard glowColor={i === 0 ? "rgba(14,178,175,0.1)" : i === 1 ? "rgba(251,191,36,0.06)" : "rgba(139,92,246,0.08)"} style={{ padding: mobile ? "28px 24px" : "32px 28px", height: "100%" }}>
-                  <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "3rem", color: "rgba(14,178,175,0.08)", lineHeight: 1, userSelect: "none", marginBottom: 4 }}>"</div>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.75, color: C.g300, fontStyle: "italic", marginBottom: 24 }}>"{q.text}"</p>
-                  <div style={{ marginTop: "auto" }}>
-                    <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "0.85rem", color: C.white, fontWeight: 500, marginBottom: 2 }}>{q.name}</div>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500, marginBottom: 10 }}>{q.title}</div>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.62rem", color: C.teal, background: "rgba(14,178,175,0.08)", padding: "3px 9px", borderRadius: 4, letterSpacing: "0.3px" }}>{q.tag}</span>
-                  </div>
-                </GlowCard>
+      {/* WHAT EXECUTIVES GET - the eleven, in Joe's order */}
+      <PremiumBg style={{ padding: mobile ? "56px 20px" : "96px 40px" }} orb1="rgba(139,92,246,0.05)" orb2="rgba(14,178,175,0.04)">
+        <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 3 }}>
+          <Reveal><div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}><Eyebrow color={C.gold}>What you get</Eyebrow><SectionTitle align="center">What do executives get from TARGA?</SectionTitle></div></Reveal>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : tablet ? "1fr 1fr" : "repeat(3,1fr)", gap: 24, alignItems: "stretch" }}>
+            {VALUE_GROUPS.map((g, i) => {
+              const accents = [C.teal, C.white, C.gold, C.teal, C.white];
+              const glows = ["rgba(14,178,175,0.12)", "rgba(255,255,255,0.06)", "rgba(251,191,36,0.08)", "rgba(14,178,175,0.1)", "rgba(255,255,255,0.05)"];
+              return (
+                <Reveal key={g.title} delay={i * 0.08} style={{ height: "100%" }}>
+                  <GlowCard glowColor={glows[i]} style={{ height: "100%", borderTop: "3px solid " + accents[i], padding: "32px 28px" }}>
+                    <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.15rem", fontWeight: 500, color: C.white, marginBottom: 16 }}>{g.title}</h3>
+                    {g.lines.map((l) => (
+                      <p key={l} style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.92rem", lineHeight: 1.7, color: C.g300, paddingLeft: 14, borderLeft: "1px solid rgba(14,178,175,0.35)", marginBottom: 14 }}>{l}</p>
+                    ))}
+                  </GlowCard>
+                </Reveal>
+              );
+            })}
+            {!mobile && !tablet && (
+              <Reveal delay={0.4} style={{ height: "100%" }}>
+                <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", padding: "32px 28px", border: "1px dashed rgba(14,178,175,0.25)", borderRadius: 10 }}>
+                  <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.2rem", fontWeight: 300, color: C.white, lineHeight: 1.45, marginBottom: 20 }}>See it on your own plan.</p>
+                  <div><Btn onClick={() => { setPage("contact"); }}>Schedule a Conversation</Btn></div>
+                </div>
               </Reveal>
-            ))}
+            )}
           </div>
         </div>
       </PremiumBg>
 
+      {/* WHY THIS IS AN EXECUTION PROBLEM */}
+      <section style={{ background: "linear-gradient(180deg," + C.navyDark + " 0%," + C.navyDeep + " 100%)", padding: mobile ? "56px 20px" : "96px 40px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(14,178,175,0.2) 50%,transparent 100%)" }} />
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <Reveal><div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}><Eyebrow color={C.teal}>The problem</Eyebrow><SectionTitle align="center" sub="Most executives will tell you the obstacle to growth is inside the building. The problem is rarely the strategy. It's the gap between the plan and the work.">Why this is an execution problem, not a strategy problem</SectionTitle></div></Reveal>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(" + STATS.length + ",1fr)", gap: 24, textAlign: "center" }}>
+            {STATS.map(({ v, sfx, d, s }, i) => (
+              <Reveal key={v} delay={i * 0.1}>
+                <GlowCard glowColor="rgba(14,178,175,0.1)" style={{ padding: "32px 24px", textAlign: "center", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2.2rem", fontWeight: 500, color: C.teal, marginBottom: 12 }}><AnimatedStat value={v} suffix={sfx} /></div>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.g300, fontWeight: 400 }}>{d}</p>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", color: C.g500, marginTop: 8 }}>- {s}</p>
+                </GlowCard>
+              </Reveal>
+            ))}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 28 : 56, marginTop: mobile ? 40 : 64, alignItems: "center" }}>
+            <Reveal>
+              <div>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Elite companies invest a disciplined portion of their gross margin in strategic value creation. They outperform because they have the infrastructure to identify, fund, and execute the initiatives that matter most.</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300 }}>TARGA is that infrastructure. The plan lives in it, the work reports into it, and the executive team runs the company from it.</p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <GlowCard glowColor="rgba(14,178,175,0.1)" style={{ padding: "32px 24px", textAlign: "center" }}>
+                <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2.2rem", fontWeight: 500, color: C.teal, marginBottom: 12 }}><AnimatedStat value="90" suffix="%" /></div>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.g300, fontWeight: 400, marginBottom: 12 }}>Last year's investment plan predicts this year's. McKinsey found a 90 percent correlation in investment spending from one year to the next.</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.7, color: C.g300, fontWeight: 400 }}>For fast-moving businesses, McKinsey's guidance is to hold about 20 percent of the budget for the initiatives that earn it during the year. Deciding where that goes, and seeing whether it worked, is the job TARGA was built for.</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", color: C.g500, marginTop: 12 }}>Source: <a href="https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/keep-calm-and-allocate-capital-six-process-improvements" target="_blank" rel="noopener noreferrer" style={{ color: C.g500, textDecoration: "underline" }}>McKinsey, Six process improvements for capital allocation</a>.</p>
+              </GlowCard>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* THE PLATFORM - dashboard */}
+      <section style={{ background: C.navyDeep, padding: mobile ? "60px 20px" : "100px 40px", overflow: "visible", position: "relative" }}>
+        {!mobile && <div style={{ position: "absolute", inset: 0, opacity: 0.015, backgroundImage: "linear-gradient(rgba(14,178,175,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(14,178,175,0.5) 1px,transparent 1px)", backgroundSize: "80px 80px", pointerEvents: "none" }} />}
+        <div style={{ maxWidth: 1050, margin: "0 auto", position: "relative", zIndex: 2 }}>
+          <Reveal><div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}><Eyebrow color={C.teal}>The Platform</Eyebrow><SectionTitle align="center" sub="One view of the strategic portfolio, with status computed from the work underneath it. See what is drifting, and what to do about it, on the screen where you decide.">The whole business at a glance.</SectionTitle></div></Reveal>
+          <PerspectiveDashboard />
+          <Reveal delay={0.3}><div style={{ textAlign: "center", marginTop: 48 }}><Btn variant="secondary" onClick={() => { setPage("platform"); }}>Explore the Platform</Btn></div></Reveal>
+        </div>
+      </section>
+
+      {/* DOES THE AI DECIDE FOR ME */}
+      <PremiumBg style={{ padding: mobile ? "56px 20px" : "88px 40px" }} orb1="rgba(251,191,36,0.05)" orb2="rgba(139,92,246,0.05)">
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent 0%,rgba(251,191,36,0.15) 50%,transparent 100%)" }} />
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1.4fr", gap: mobile ? 24 : 56, alignItems: "center", position: "relative", zIndex: 3 }}>
+          <Reveal><div><Eyebrow color={C.gold}>The intelligence</Eyebrow><SectionTitle>Does the AI decide for me?</SectionTitle></div></Reveal>
+          <Reveal delay={0.12}>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: mobile ? "1rem" : "1.05rem", lineHeight: 1.8, color: C.g300 }}>{AI_ANSWER}</p>
+          </Reveal>
+        </div>
+      </PremiumBg>
+
+      {/* WHERE TARGA STANDS - the proof section */}
+      <section style={{ background: C.navy, padding: mobile ? "56px 20px" : "88px 40px", textAlign: "center" }}>
+        <Reveal>
+          <div style={{ maxWidth: 680, margin: "0 auto" }}>
+            <IconMark height={44} variant="light" />
+            <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.5rem,2.5vw,2.1rem)", fontWeight: 300, color: C.white, letterSpacing: "-0.5px", marginTop: 22, marginBottom: 10 }}>{PROOF.heading}</h2>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", color: C.teal, marginBottom: 18 }}>{PROOF.asOf}</p>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1rem", lineHeight: 1.8, color: C.g300, marginBottom: 18 }}>{PROOF.body}</p>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.72rem", color: C.g500, letterSpacing: "0.04em" }}>{PROOF.disclaimer}</p>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* FAQ */}
+      <section style={{ background: C.navyDeep, padding: mobile ? "56px 20px" : "96px 40px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto" }}>
+          <Reveal><Eyebrow>FAQ</Eyebrow><SectionTitle>Questions executives ask.</SectionTitle></Reveal>
+          <div style={{ marginTop: mobile ? 24 : 36 }}><FaqList items={HOME_FAQ} /></div>
+        </div>
+      </section>
+
+      {/* BRIEFINGS TEASER */}
+      <section style={{ background: C.navyDark, padding: mobile ? "56px 20px" : "88px 40px", borderTop: "1px solid rgba(14,178,175,0.06)" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1.3fr", gap: mobile ? 24 : 56, alignItems: "center" }}>
+          <Reveal><div><Eyebrow color={C.gold}>Briefings</Eyebrow><SectionTitle sub="Straight answers to the questions executives ask about running the company from the plan down.">Strategy execution, explained for executives.</SectionTitle></div></Reveal>
+          <Reveal delay={0.12}>
+            <BriefingCard b={BRIEFINGS[0]} setPage={setPage} />
+          </Reveal>
+        </div>
+      </section>
       {/* 100 CEOS TEASER */}
       <section style={{ background: C.navy, padding: mobile ? "60px 20px" : "100px 40px", textAlign: "center" }}>
         <Reveal>
           <div style={{ maxWidth: 700, margin: "0 auto" }}>
             <IconMark height={48} variant="light" />
             <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.5rem,2.5vw,2.1rem)", fontWeight: 300, color: C.white, letterSpacing: "-0.5px", marginTop: 24, marginBottom: 12 }}>100 CEO Conversations</h2>
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "2px", color: C.teal, textTransform: "uppercase", marginBottom: 20 }}>Building the Future of the Leader Experience</p>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "2px", color: C.teal, textTransform: "uppercase", marginBottom: 20 }}>Built with the people who run companies</p>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, maxWidth: 520, margin: "0 auto 32px" }}>We are talking to 100 enterprise CEOs to ensure every capability is grounded in real executive needs. Your perspective shapes what we build.</p>
-            <Btn onClick={() => { setPage("ceo100"); window.scrollTo(0, 0); }}>Learn More →</Btn>
+            <Btn onClick={() => { setPage("ceo100"); window.scrollTo(0, 0); }}>About the conversations</Btn>
           </div>
         </Reveal>
       </section>
@@ -970,7 +1040,7 @@ function HomePage({ setPage }) {
       <section style={{ background: C.navyDeep, padding: mobile ? "60px 20px" : "100px 40px", textAlign: "center" }}>
         <Reveal>
           <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.5rem,2.5vw,2.1rem)", fontWeight: 300, color: C.white, marginBottom: 16 }}>Ready to lead differently?</h2>
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.g300, marginBottom: 32 }}>Schedule a conversation with the TARGA AI team.</p>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.g300, marginBottom: 32 }}>Bring your plan. We will show you how TARGA runs it.</p>
           <Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Schedule a Conversation</Btn>
           {/* Trust signals */}
           <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 32, marginTop: mobile ? 32 : 48, paddingTop: 32, borderTop: "1px solid rgba(14,178,175,0.06)", flexWrap: mobile ? "wrap" : "nowrap" }}>
@@ -1002,17 +1072,17 @@ function PlatformPage({ setPage }) {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow>The Platform</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Your executive team deserves better than spreadsheets and slide decks.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520 }}>TARGA AI is a leadership platform that gives C-suite teams continuous visibility into what is creating enterprise value — and what is not.</p></div>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow>The Platform</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Your executive team deserves better than spreadsheets and slide decks.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 520 }}>TARGA is a leadership intelligence platform built for executives. It gives the executive team continuous visibility into what is creating enterprise value, with status that comes from the work itself.</p></div>
       </section>
 
       <section style={{ background: C.navy, padding: mobile ? "48px 20px" : "80px 40px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 16 : 32 }}>
           {[
             { t: "Strategic Visibility", d: "See all value-creating initiatives across functions in one view.", i: "◎" },
-            { t: "AI-Native Architecture", d: "Agentic AI that understands business context and responds to natural language.", i: "⟐" },
-            { t: "Multi-View Intelligence", d: "Flip between Kanban, timeline, and functional views of the same data.", i: "⬡" },
+            { t: "Ask TARGA", d: "Ask your plan directly, in plain language, and get to an informed decision faster.", i: "⟐" },
+            { t: "One Plan, Every Lens", d: "Summit, timeline, and status views of the same plan. Left of the Lightning Line is behind, right is ahead.", i: "⬡" },
             { t: "Cross-Functional Clarity", d: "Every executive sees how their function connects to the whole.", i: "◈" },
-            { t: "Value-Based Metrics", d: "Progress measured in enterprise value — not tasks completed.", i: "△" },
+            { t: "Value-Based Metrics", d: "Progress measured in enterprise value, against the goals the plan set.", i: "△" },
             { t: "Enterprise Security", d: "Siloed infrastructure, role-based access, no third-party model training.", i: "⊡" },
           ].map(({ t, d, i }, idx) => (
             <Reveal key={t} delay={idx * 0.06}><GlowCard glowColor={idx % 2 === 0 ? "rgba(14,178,175,0.1)" : "rgba(251,191,36,0.06)"} style={{ padding: "32px 28px" }}>
@@ -1028,7 +1098,7 @@ function PlatformPage({ setPage }) {
         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
           <Reveal><div style={{ textAlign: "center", marginBottom: 48 }}>
             <Eyebrow color={C.gold}>Preview</Eyebrow>
-            <SectionTitle align="center">Strategic Command Center</SectionTitle>
+            <SectionTitle align="center">Command Center</SectionTitle>
             <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 20 }}>
               {["strategic", "timeline"].map(v => (
                 <button key={v} onClick={() => setActiveView(v)} style={{
@@ -1047,13 +1117,13 @@ function PlatformPage({ setPage }) {
       <PremiumBg style={{ padding: mobile ? "48px 20px" : "80px 40px" }} orb1="rgba(139,92,246,0.06)" orb2="rgba(14,178,175,0.05)">
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <Reveal><Eyebrow>How It Works</Eyebrow><SectionTitle>From strategy to execution in three steps.</SectionTitle></Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 24, marginTop: mobile ? 32 : 48 }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 24, marginTop: mobile ? 32 : 48, alignItems: "stretch" }}>
             {[
               { n: "01", t: "Define Strategic Objectives", d: "Set the enterprise-level goals that matter. TARGA structures them into a framework your whole team can see.", glow: "rgba(139,92,246,0.12)" },
               { n: "02", t: "Assign and Align", d: "Map initiatives to executives. Cross-functional dependencies surface automatically.", glow: "rgba(14,178,175,0.12)" },
-              { n: "03", t: "Track Value Creation", d: "AI monitors progress, flags risks, and gives you clarity to intervene before quarterly surprises.", glow: "rgba(251,191,36,0.08)" },
+              { n: "03", t: "Track Value Creation", d: "TARGA watches the plan, flags what is drifting, and suggests the next move. Every action is yours.", glow: "rgba(251,191,36,0.08)" },
             ].map(({ n, t, d, glow }, i) => (
-              <Reveal key={n} delay={i * 0.1}><GlowCard glowColor={glow}>
+              <Reveal key={n} delay={i * 0.1} style={{ height: "100%" }}><GlowCard glowColor={glow} style={{ height: "100%", boxSizing: "border-box" }}>
                 <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "2.5rem", fontWeight: 300, color: "rgba(251,191,36,0.3)", marginBottom: 12 }}>{n}</div>
                 <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1rem", fontWeight: 500, color: C.white, marginBottom: 8 }}>{t}</h3>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", lineHeight: 1.7, color: C.g300 }}>{d}</p>
@@ -1064,7 +1134,7 @@ function PlatformPage({ setPage }) {
       </PremiumBg>
 
       <section style={{ background: C.navyDeep, padding: mobile ? "48px 20px" : "80px 40px", textAlign: "center" }}>
-        <Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.4rem,2vw,1.8rem)", fontWeight: 300, color: C.white, marginBottom: 20 }}>See it in action.</h2><Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Request More Information</Btn></Reveal>
+        <Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(1.4rem,2vw,1.8rem)", fontWeight: 300, color: C.white, marginBottom: 20 }}>See it in action.</h2><Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Schedule a Conversation</Btn></Reveal>
       </section>
     </>
   );
@@ -1080,28 +1150,25 @@ function AboutPage({ setPage }) {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(2,6,14,0.8) 0%, rgba(8,14,26,0.5) 50%, rgba(8,14,26,0.2) 72%, transparent 88%, rgba(31,71,106,0.12) 100%)", pointerEvents: "none" }} />
         {/* TARGA icon pattern with sweep */}
         <TargaCanvasPattern />
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow color={C.gold}>About TARGA AI</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>An intelligent advisor for the executives who create enterprise value.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA AI exists because the gap between setting strategy and executing it is the most expensive problem in enterprise management. We are building a platform that starts at the strategic level and gives leaders the clarity, speed, and accountability to close that gap.</p></div>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}><Eyebrow color={C.gold}>About TARGA</Eyebrow><h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>An intelligent advisor for the executives who create enterprise value.</h1><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>TARGA exists because the gap between setting strategy and executing it is the most expensive problem in enterprise management. We are building a platform that starts at the strategic level and gives leaders the clarity, speed, and accountability to close that gap.</p></div>
       </section>
       <section style={{ background: C.navy, padding: mobile ? "48px 20px" : "80px 40px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 32 : 64 }}>
           <Reveal><div><Eyebrow>Mission</Eyebrow><SectionTitle>Speed and clarity for enterprise value creation.</SectionTitle></div></Reveal>
-          <Reveal delay={0.15}><div><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Every quarter, executive teams spend eight weeks preparing for a meeting and two weeks doing the work that actually creates value. TARGA flips that equation.</p><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300 }}>Our AI-native platform gives leaders continuous cross-functional visibility — so strategic initiatives move forward every week, not just in the sprint before a board review.</p></div></Reveal>
+          <Reveal delay={0.15}><div><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>Every quarter, executive teams spend eight weeks preparing for a meeting and two weeks doing the work that actually creates value. TARGA flips that equation.</p><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 20 }}>TARGA gives leaders continuous cross-functional visibility, so strategic initiatives move forward every week, not just in the weeks before a board meeting.</p><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300 }}>It was built on decades of hands-on transformation work with the world's most demanding leadership teams. The methodology behind the platform was forged inside these organizations.</p></div></Reveal>
         </div>
       </section>
 
-      {/* HERITAGE PROOF — expanded on About page */}
+      {/* HERITAGE PROOF - logo strip; the words live in the Mission section above */}
       <section style={{ background: C.navy, padding: mobile ? "0 20px 48px" : "0 40px 80px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <Reveal>
-            <div style={{ background: "rgba(14,178,175,0.02)", border: "1px solid rgba(14,178,175,0.06)", borderRadius: 12, padding: mobile ? "24px 20px" : "40px 44px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+            <div style={{ borderTop: "1px solid rgba(14,178,175,0.08)", paddingTop: mobile ? 24 : 32 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: mobile ? 18 : 24 }}>
                 <div style={{ width: 32, height: 1, background: C.g500 }} />
-                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "1.8px", color: C.g500, textTransform: "uppercase" }}>Proven across the Fortune 500</span>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "1.8px", color: C.g500, textTransform: "uppercase" }}>Forged in the C-suite</span>
               </div>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.92rem", lineHeight: 1.75, color: C.g300, maxWidth: 560, marginBottom: 32 }}>
-                TARGA was built on decades of hands-on transformation work with the world's most demanding leadership teams. The methodology behind the platform was forged inside these organizations.
-              </p>
-              <div style={{ display: mobile ? "grid" : "flex", gridTemplateColumns: mobile ? "repeat(4, auto)" : undefined, gap: mobile ? "14px 20px" : 0, alignItems: "center", justifyItems: mobile ? "center" : undefined, justifyContent: mobile ? undefined : "space-between", paddingTop: 24, borderTop: "1px solid rgba(14,178,175,0.06)", flexWrap: mobile ? undefined : "nowrap" }}>
+              <div style={{ display: mobile ? "grid" : "flex", gridTemplateColumns: mobile ? "repeat(4, auto)" : undefined, gap: mobile ? "14px 20px" : 0, alignItems: "center", justifyItems: mobile ? "center" : undefined, justifyContent: mobile ? undefined : "space-between", flexWrap: mobile ? undefined : "nowrap" }}>
                 {[
                   { src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4PSJuc19leHRlbmQ7IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA0MjkuMDIwOSA0MCI+CiAgPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDMwLjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDIuMS4xIEJ1aWxkIDEpICAtLT4KICA8cGF0aCBkPSJNNDIuNDI0MiwzNi41Nzc1Yy00LjIwNjgsMC02LjU1OTctMy45OTI5LTYuNTU5Ny0xMS4xOTQzLDAtNy4zNDQsMi4zNTI5LTExLjE5NDMsNi41NTk3LTExLjE5NDNzNi41NTk3LDMuOTIxNiw2LjU1OTcsMTEuMTk0M2MwLDcuMzQ0LTIuMzUyOSwxMS4xOTQzLTYuNTU5NywxMS4xOTQzWk00Mi40MjQyLDExLjI2NTZjLTguNTU2MSwwLTEzLjMzMzMsNi40MTcxLTEzLjMzMzMsMTQuMTg4OXM0Ljc3NzIsMTQuMTg4OSwxMy4zMzMzLDE0LjE4ODksMTMuMzMzMy02LjQxNzEsMTMuMzMzMy0xNC4xODg5YzAtNy44NDMxLTQuNzc3Mi0xNC4xODg5LTEzLjMzMzMtMTQuMTg4OVpNMTAxLjk2MDgsMTEuMjY1NmMtNC4wNjQyLDAtNi4yNzQ1LDEuNzgyNS03LjU1NzksMy45OTI5aC0uMjg1MnYtMy40MjI1aC02LjQxNzF2MjcuMzA4NGg2LjQxNzF2LTE3LjY4MjdjMC00LjA2NDIsMi4wNjc3LTYuNDE3MSw1LjQxODktNi40MTcxLDMuMjA4NiwwLDQuNjM0NiwyLjEzOSw0LjYzNDYsNS4zNDc2djE4LjY4MDloNi40MTcxdi0xOC43NTIyYzAtNS42MzI4LTIuOTk0Ny05LjA1NTMtOC42Mjc1LTkuMDU1M1pNMTI1LjIwNSwxMS4yNjU2Yy01LjkxOCwwLTEwLjQxLDIuNDk1NS0xMC40MSw3Ljg0MzEsMCw0LjU2MzMsMy4xMzczLDYuOTg3NSw2LjYzMSw3Ljg0MzFsNS40MTg5LDEuMzU0N2MyLjkyMzQuNzEzLDQuMjA2OCwxLjc4MjUsNC4yMDY4LDQuMDY0MiwwLDIuNzgwNy0xLjk5NjQsNC4zNDk0LTUuNDE4OSw0LjM0OTQtMy43MDc3LDAtNS42MzI4LTEuNzgyNS02LjIwMzItNi4zNDU4bC01Ljc3NTQsMS42Mzk5Yy4zNTY1LDQuNzA1OSw0LjcwNTksNy41NTc5LDExLjI2NTYsNy41NTc5LDcuMzQ0LDAsMTEuMzM2OS0zLjQyMjUsMTEuMzM2OS04LjkxMjcsMC01LjEzMzctMy41NjUxLTcuMjcyNy03LjI3MjctOC4xOTk2bC01LjIwNS0xLjI4MzRjLTIuNjM4MS0uNjQxNy0zLjc3OS0xLjg1MzgtMy43NzktMy42MzY0LDAtMi4yMTAzLDEuODUzOC0zLjQ5MzgsNC42MzQ2LTMuNDkzOCwzLjI3OTksMCw1LjI3NjMsMS43ODI1LDUuNTYxNSw1LjIwNWw1LjQxODktMS42Mzk5Yy0uNjQxNy0zLjcwNzctNC40MjA3LTYuMzQ1OC0xMC40MS02LjM0NThaTTE1Mi4yMjgyLDM2LjU3NzVjLTQuMjA2OCwwLTYuNTU5Ny0zLjk5MjktNi41NTk3LTExLjE5NDMsMC03LjM0NCwyLjM1MjktMTEuMTk0Myw2LjU1OTctMTEuMTk0M3M2LjU1OTcsMy45MjE2LDYuNTU5NywxMS4xOTQzYzAsNy4zNDQtMi4zNTI5LDExLjE5NDMtNi41NTk3LDExLjE5NDNaTTE1Mi4yMjgyLDExLjI2NTZjLTguNTU2MSwwLTEzLjMzMzMsNi40MTcxLTEzLjMzMzMsMTQuMTg4OXM0Ljc3NzIsMTQuMTg4OSwxMy4zMzMzLDE0LjE4ODksMTMuMzMzMy02LjQxNzEsMTMuMzMzMy0xNC4xODg5YzAtNy44NDMxLTQuNzc3Mi0xNC4xODg5LTEzLjMzMzMtMTQuMTg4OVpNMTgzLjY3MiwxMS4yNjU2Yy00LjA2NDIsMC02LjI3NDUsMS43ODI1LTcuNTU3OSwzLjk5MjloLS4zNTY1di0zLjQyMjVoLTYuNDE3MXYyNy4zMDg0aDYuNDE3MXYtMTcuNjgyN2MwLTQuMDY0MiwyLjA2NzctNi40MTcxLDUuNDE4OS02LjQxNzEsMy4yMDg2LDAsNC42MzQ2LDIuMTM5LDQuNjM0Niw1LjM0NzZ2MTguNjgwOWg2LjQxNzF2LTE4Ljc1MjJjMC01LjYzMjgtMi45MjM0LTkuMDU1My04LjU1NjEtOS4wNTUzWk0yNzkuMjg3LDM2LjU3NzVjLTQuMjA2OCwwLTYuNTU5Ny0zLjk5MjktNi41NTk3LTExLjE5NDMsMC03LjM0NCwyLjM1MjktMTEuMTk0Myw2LjU1OTctMTEuMTk0M3M2LjU1OTcsMy45MjE2LDYuNTU5NywxMS4xOTQzYy0uMDcxMyw3LjM0NC0yLjM1MywxMS4xOTQzLTYuNTU5NywxMS4xOTQzWk0yNzkuMjg3LDExLjI2NTZjLTguNTU2MSwwLTEzLjMzMzMsNi40MTcxLTEzLjMzMzMsMTQuMTg4OXM0Ljc3NzIsMTQuMTg4OSwxMy4zMzMzLDE0LjE4ODksMTMuMzMzMy02LjQxNzEsMTMuMzMzMy0xNC4xODg5Yy0uMDcxMy03Ljg0MzEtNC43NzcyLTE0LjE4ODktMTMuMzMzMy0xNC4xODg5Wk0zMzguNzUyMiwxMS4yNjU2Yy00LjA2NDIsMC02LjI3NDUsMS43ODI1LTcuNTU3OSwzLjk5MjloLS4zNTY1di0zLjQyMjVoLTYuNDE3MXYyNy4zMDg0aDYuNDE3MXYtMTcuNjgyN2MwLTQuMDY0MiwyLjA2NzctNi40MTcxLDUuNDE4OS02LjQxNzEsMy4yMDg2LDAsNC42MzQ2LDIuMTM5LDQuNjM0Niw1LjM0NzZ2MTguNjgwOWg2LjQxNzF2LTE4Ljc1MjJjLjA3MTMtNS42MzI4LTIuODUyLTkuMDU1My04LjU1NjEtOS4wNTUzWk0zNjEuOTk2NSwxMS4yNjU2Yy01LjkxOCwwLTEwLjQxLDIuNDk1NS0xMC40MSw3Ljg0MzEsMCw0LjU2MzMsMy4xMzczLDYuOTg3NSw2LjYzMSw3Ljg0MzFsNS40MTg5LDEuMzU0N2MyLjkyMzMuNzEzLDQuMjA2OCwxLjc4MjUsNC4yMDY4LDQuMDY0MiwwLDIuNzgwNy0xLjk5NjQsNC4zNDk0LTUuNDE4OSw0LjM0OTQtMy43MDc3LDAtNS42MzI4LTEuNzgyNS02LjIwMzItNi4zNDU4bC01Ljc3NTQsMS42Mzk5Yy4zNTY1LDQuNzA1OSw0LjcwNTksNy41NTc5LDExLjI2NTYsNy41NTc5LDcuMzQ0LDAsMTEuMzM2OS0zLjQyMjUsMTEuMzM2OS04LjkxMjcsMC01LjEzMzctMy41NjUxLTcuMjcyNy03LjI3MjctOC4xOTk2bC01LjIwNS0xLjI4MzRjLTIuNjM4Mi0uNjQxNy0zLjc3OS0xLjg1MzgtMy43NzktMy42MzY0LDAtMi4yMTAzLDEuODUzOC0zLjQ5MzgsNC42MzQ2LTMuNDkzOCwzLjI3OTksMCw1LjI3NjMsMS43ODI1LDUuNTYxNSw1LjIwNWw1LjQxODktMS42Mzk5Yy0uNTcwNC0zLjcwNzctNC4zNDk0LTYuMzQ1OC0xMC40MS02LjM0NThaTTM4OS4wOTA5LDM2LjU3NzVjLTQuMjA2OCwwLTYuNTU5Ny0zLjk5MjktNi41NTk3LTExLjE5NDMsMC03LjM0NCwyLjM1MjktMTEuMTk0Myw2LjU1OTctMTEuMTk0M3M2LjU1OTcsMy45MjE2LDYuNTU5NywxMS4xOTQzYy0uMDcxMyw3LjM0NC0yLjQyNDMsMTEuMTk0My02LjU1OTcsMTEuMTk0M1pNMzg5LjA5MDksMTEuMjY1NmMtOC41NTYxLDAtMTMuMzMzMyw2LjQxNzEtMTMuMzMzMywxNC4xODg5czQuNzc3MiwxNC4xODg5LDEzLjMzMzMsMTQuMTg4OSwxMy4zMzMzLTYuNDE3MSwxMy4zMzMzLTE0LjE4ODljLS4wNzEzLTcuODQzMS00Ljc3NzItMTQuMTg4OS0xMy4zMzMzLTE0LjE4ODlaTTQyMC40NjM1LDExLjI2NTZjLTQuMDY0MiwwLTYuMjc0NSwxLjc4MjUtNy41NTc5LDMuOTkyOWgtLjM1NjV2LTMuNDIyNWgtNi40MTcxdjI3LjMwODRoNi40MTcxdi0xNy42ODI3YzAtNC4wNjQyLDIuMDY3OC02LjQxNzEsNS40MTg5LTYuNDE3MSwzLjIwODYsMCw0LjYzNDYsMi4xMzksNC42MzQ2LDUuMzQ3NnYxOC42ODA5aDYuNDE3MXYtMTguNzUyMmMuMDcxMy01LjYzMjgtMi44NTItOS4wNTUzLTguNTU2MS05LjA1NTNaTTI1LjMxMTkuODU1NmgtNi43NzM2djI4LjE2NGMwLDQuNTYzMy0xLjc4MjUsNy4yNzI3LTUuOTE4LDcuMjcyNy00LjA2NDIuMDcxMy01Ljg0NjctMi43ODA3LTUuODQ2Ny03Ljc3MTh2LTUuMjA1bC02Ljc3MzYsMS42Mzk5djIuMzUyOWMwLDcuMTMwMSwzLjU2NTEsMTIuNjIwMywxMi42MjAzLDEyLjYyMDMsOS4xMjY2LDAsMTIuNjIwMy01LjQxODksMTIuNjIwMy0xMi42MjAzVi44NTU2aC4wNzEzWk02Ni4wMjUuODU1NmgtNi40MTcxdjM4LjE0NjJoNi40MTcxdi0xNy41NDAxYzAtNC4wNjQyLDIuMDY3Ny02LjQxNzEsNS40MTg5LTYuNDE3MSwzLjIwODYsMCw0LjYzNDYsMi4xMzksNC42MzQ2LDUuMzQ3NnYxOC42ODA5aDYuNDE3MXYtMTguNzUyMmMwLTUuNjMyOC0yLjkyMzQtOS4xMjY2LTguNjI3NS05LjEyNjYtNC4wNjQyLDAtNi4yNzQ1LDEuNzgyNS03LjU1NzksMy45OTI5aC0uMzU2NVYuODU1NmguMDcxM1pNMjYyLjEwMzQuODU1NmgtNi43NzM2djI4LjE2NGMwLDQuNTYzMy0xLjc4MjUsNy4yNzI3LTUuOTE4LDcuMjcyNy00LjA2NDIsMC01LjkxOC0yLjkyMzQtNS45MTgtNy44NDMxdi01LjIwNWwtNi43NzM2LDEuNzExMnYyLjM1MjljMCw3LjEzMDEsMy41NjUxLDEyLjYyMDMsMTIuNjIwMywxMi42MjAzLDkuMTI2NiwwLDEyLjYyMDMtNS40MTg5LDEyLjYyMDMtMTIuNjIwM1YuODU1NmguMTQyNlpNMzAyLjgxNjQuODU1NmgtNi40MTcxdjM4LjE0NjJoNi40MTcxdi0xNy41NDAxYzAtNC4wNjQyLDIuMDY3Ny02LjQxNzEsNS40MTg5LTYuNDE3MSwzLjIwODYsMCw0LjYzNDYsMi4xMzksNC42MzQ2LDUuMzQ3NnYxOC42ODA5aDYuNDE3MXYtMTguNzUyMmMwLTUuNjMyOC0yLjkyMzQtOS4xMjY2LTguNjI3NS05LjEyNjYtNC4wNjQyLDAtNi4yNzQ1LDEuNzgyNS03LjU1NzksMy45OTI5aC0uMzU2NVYuODU1NmguMDcxM1pNMjEzLjQ3NTksMzUuOTM1OGMtNS4yMDUsMC04LjQ4NDgtNC4yNzgxLTguNDg0OC04Ljc3MDEsMC0yLjg1MiwxLjI4MzQtNS40MTg5LDMuMzUxMi02LjkxNjJsMTIuMzM1MSwxMy40NzU5Yy0yLjI4MTYsMS4zNTQ3LTQuODQ4NSwyLjIxMDMtNy4yMDE0LDIuMjEwM1pNMjI1LjQ1NDYsMjkuMjMzNWwtMTAuNjk1Mi0xMS43NjQ3YzEuOTI1MS0uNzg0MywzLjc3OS0xLjA2OTUsNS4yNzYzLTEuMDY5NSw0LjQyMDcsMCw3LjEzMDEsMi41NjY4LDcuMTMwMSw2Ljk4NzUuMDcxMywxLjk5NjQtLjQ5OTEsMy45OTI5LTEuNzExMiw1Ljg0NjdaTTIxMy4zMzMzLDE1LjkwMDJsLTIuMzUyOS0yLjYzODFjLTIuMDY3Ny0yLjI4MTYtMi42MzgyLTMuNzA3Ny0yLjYzODItNS40MTg5LDAtMy4xMzczLDEuOTk2NC00Ljk5MTEsNS4yMDUtNC45OTExczUuMTMzNywxLjg1MzgsNS4xMzM3LDUuMjA1Yy0uMDcxMywzLjIwODYtMS41Njg2LDYuMTMxOS01LjM0NzYsNy44NDMxWk0yMTMuNjE4NSwwYy03LjU1NzksMC0xMS4yNjU2LDQuMjA2OC0xMS4yNjU2LDkuNDExOCwwLDIuODUyMSwxLjIxMjEsNS43MDQxLDQuMzQ5NCw5LjEyNjZsLjA3MTMuMTQyNmMtNS4zNDc2LDIuNTY2OC03Ljc3MTgsNi43MDIzLTcuNzcxOCwxMC45ODA0LDAsNS42MzI4LDQuMjc4MSwxMC4zMzg3LDEwLjk4MDQsMTAuMzM4NywzLjg1MDMsMCw4LjI3MDktMS41Njg2LDEyLjMzNTEtNC40MjA3bDMuMjc5OSwzLjU2NTFoOC41NTYxdi0uMjg1MmwtNi45ODc1LTcuNzAwNWMyLjkyMzQtMy40OTM4LDQuNjM0Ni03LjI3MjcsNC42MzQ2LTEwLjYyMzksMC00LjEzNTUtMi43ODA3LTYuOTE2Mi03LjEzMDEtNi45MTYyLTIuMjgxNiwwLTQuODQ4NS42NDE3LTYuNTU5NywxLjI4MzRsLS4xNDI2LS4yMTM5YzQuMTM1NS0yLjIxMDMsNS45MTgtNC4yNzgxLDUuOTE4LTcuMjAxNCwwLTQuMjA2OC0zLjcwNzctNy40ODY2LTEwLjI2NzQtNy40ODY2WiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4=", alt: "Johnson & Johnson", h: 16 },
                   { src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0ic3ZnOTEyMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTMzLjI0OSA0MCI+CiAgPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDMwLjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDIuMS4xIEJ1aWxkIDEpICAtLT4KICA8c29kaXBvZGk6bmFtZWR2aWV3IGlkPSJiYXNlIiBib3JkZXJjb2xvcj0iIzY2NjY2NiIgYm9yZGVyb3BhY2l0eT0iMS4wIiBmaXQtbWFyZ2luLWJvdHRvbT0iMCIgZml0LW1hcmdpbi1sZWZ0PSIwIiBmaXQtbWFyZ2luLXJpZ2h0PSIwIiBmaXQtbWFyZ2luLXRvcD0iMCIgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiBpbmtzY2FwZTpjeD0iNTkuNzU2MjQyIiBpbmtzY2FwZTpjeT0iMTcuOTM4MjE5IiBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0ibW0iIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiIGlua3NjYXBlOndpbmRvdy1oZWlnaHQ9Ijc0NCIgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIgaW5rc2NhcGU6d2luZG93LXdpZHRoPSIxMjgwIiBpbmtzY2FwZTp3aW5kb3cteD0iLTQiIGlua3NjYXBlOndpbmRvdy15PSItNCIgaW5rc2NhcGU6em9vbT0iNy41MDU0OTIiIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIgc2hvd2dyaWQ9ImZhbHNlIiB1bml0cz0icHgiLz4KICA8ZyBpZD0ibGF5ZXIxIiBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIiBpbmtzY2FwZTpsYWJlbD0iTGF5ZXIgMSI+CiAgICA8ZyBpZD0iZzkxNzUiPgogICAgICA8cGF0aCBpZD0icGF0aDgwOTciIGQ9Ik0yNS4yMzIxLDQuNzk5NmMtMS42MTMsMC0zLjk0MDkuNTEyOS04LjE1MDksMS45MTMydjI2LjU1OTNjMy43MDE2LDEuMjA3MSw2LjUzOCwxLjkxMzIsOC4xNTA5LDEuOTEzMiwzLjcxNzksMCw1LjgxNC0yLjQ0ODQsNS44MTQtNi4zNzZWMTEuMTc1NWMwLTMuOTI3NS0yLjA5Ni02LjM3NTktNS44MTQtNi4zNzU5TTI2LjQ0MzYsMjguMTI3MWMwLDEuNTM3MS0uODU3OCwyLjA0ODUtMS44ODM1LDIuMDQ4NS0uNzk4MywwLTIuMDMwNi0uMzEyMi0zLjAzNTYtLjYwOFYxMC40MDdjMS4wMDQ5LS4yODUzLDIuMjM3My0uNTk3NiwzLjAzNTYtLjU5NzYsMS4wMjU4LDAsMS44ODM1LjUxMTQsMS44ODM1LDIuMDQ4NXYxNi4yNjkxWiIgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgZmlsbD0iI2ZmZiIvPgogICAgICA8cGF0aCBpZD0icGF0aDgxMDEiIGQ9Ik03OC4zODg3LjAxODFjLTQuNzA4LS4yNDUyLTcuNTExNywxLjk5Mi03LjUxMTcsNy4xMTQ3djI1LjQ1MDRjMCw1LjQwODIsMi41MzkxLDcuNjMzNiw3LjUxMTcsNy40MDAyLDQuODY3LS4yMjc2LDcuNDA2Mi0yLjIxOTUsNy40MDYyLTcuOTY5NVY3LjcyMDFjMC01LjQ4MjUtMi4yOTY4LTcuNDM0NC03LjQwNjItNy43MDJNODAuNjYzMSwzMi4xMjgzYzAsMS41MzcxLS40NzU3LDIuMzMzOS0yLjI3NDUsMi4zOTA1LTEuODUwOC4wNTgxLTIuMzUzMy0uNzk2OC0yLjM1MzMtMi4zOTA1VjcuODczMmMwLTEuNTkzNi41MDI1LTIuNDc2NiwyLjM1MzMtMi40MTg3LDEuNzk4OC4wNTY1LDIuMjc0NS44ODE1LDIuMjc0NSwyLjQxODd2MjQuMjU1MVoiIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIGZpbGw9IiNmZmYiLz4KICAgICAgPHBhdGggaWQ9InBhdGg4MTA1IiBkPSJNMTI0LjE1NTYsOS45NTEydjIwLjA0OGM1Ljc3NjktMi45NTM5LDkuMDkzNC02LjM4NjQsOS4wOTM0LTEwLjA2NDIsMC0zLjYzNzctMy4zMTY2LTcuMDUyNC05LjA5MzQtOS45ODM5IiBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiBmaWxsPSIjZmZmIi8+CiAgICAgIDxwYXRoIGlkPSJwYXRoODEwOSIgZD0iTTAsMTkuOTM1NWMwLDMuNjcxOCwzLjMxMjEsNy4xMTA0LDkuMDg3NSwxMC4wNTgyVjkuOTU3NkMzLjMxMjEsMTIuODgzMSwwLDE2LjI5NzgsMCwxOS45MzU1IiBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiBmaWxsPSIjZmZmIi8+CiAgICAgIDxwYXRoIGlkPSJwYXRoODExMyIgZD0iTTQ0LjAwNTQsMzEuMjQwNGMwLDEuNTM3MS0uNDkyMSwyLjUxMDgtMi4yNzQ1LDIuMjc3NS0xLjc1MTItLjIyNzYtMi4yMjI1LTEuMDI1OC0yLjIyMjUtMi44NDY4VjEuNzY2Yy0xLjE2MjUuMTM2NS0zLjc1NTEuNTIzMy00Ljg2NTUuNjk0MnYyOS4yMzUyYzAsNC42Njc5LDIuMTA1LDYuNDg0NSw3LjA4OCw3LjA5ODQsNC41NTk0LjU2MzUsNy4zNTI3LTEuOTE3Nyw3LjM1MjctNy4wOTg0Vi44MDg2Yy0uOTUxNC4wNTc3LTQuMDczMy4zNDE4LTUuMDc4Mi40NTY0djI5Ljk3NTRaIiBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiBmaWxsPSIjZmZmIi8+CiAgICAgIDxwYXRoIGlkPSJwYXRoODExNyIgZD0iTTk5Ljg5MTYsMjEuNjg4NmwtNS42MzQyLTE5Ljc4MDVjLTEuNTM0MS0uMjE3LTMuMzg0OS0uNDM4NS00LjgxMzUtLjU4MTN2MzcuMzM1NmMxLjAwNDktLjEwMTEsMy41NjYzLS40MTQ3LDQuODg3OS0uNTk3NmwtLjQwMTYtMjIsNS45NjEyLDIxLjE0MDdjMS4yNjk1LS4yMTU3LDMuMTIwMy0uNTYzNCw0LjMzNzgtLjgxMzFWMy41ODY1Yy0xLjI2OTYtLjI2NzYtMy41NzY3LS42ODgzLTQuNjg3Mi0uODY5N2wuMzQ5NiwxOC45NzE4WiIgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgZmlsbD0iI2ZmZiIvPgogICAgICA8cGF0aCBpZD0icGF0aDgxMjEiIGQ9Ik02MC4xMTguMjM0NGMtLjg4MywwLTQuMTA0NC4xMTg4LTcuMDY3Mi4zMDc2djM4LjkwNjhjMS4wMDQ5LjA1NjUsMy42NDk2LjIwNTIsNS4wNzgyLjI0NTJ2LTEzLjIxMjdsMS45ODktLjAwNDJjNS4zMjE5LS4wMTY4LDcuNTMyNS0yLjU4MzYsNy41MzI1LTcuNTI1MVY3LjQ4NzVjMC00LjgzNzMtMi40ODU2LTcuMjUxNi03LjUzMjUtNy4yNTE2TTYyLjUxODgsMTguNTQxN2MwLDEuNjczOC0uNTQ0MSwyLjUyMjctMi42MDc1LDIuNTI4NmwtMS43ODI0LjAwNDJWNS43MjI3Yy43OTM4LS4wNDQ3LDEuMjE2LS4wNTY1LDEuNjkzMy0uMDU2NSwyLjIzMTQsMCwyLjY5NjcuOTExMywyLjY5NjcsMi42MTc5djEwLjI1NzZaIiBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiBmaWxsPSIjZmZmIi8+CiAgICAgIDxwYXRoIGlkPSJwYXRoODEyNSIgZD0iTTEwNi43NDE4LDkuMzI1YzEuMjU3Ni4yNDIzLDIuNDk2LjUxMTQsMy43MDMxLjc5Njh2MjQuODI0NWMxLjExMDUtLjI3OTQsMy4xNzM4LS44NTkyLDQuNTQ4OS0xLjI5NzhWMTEuMjkzM2MxLjMyMDEuMzY4NywyLjU2NDMuNzM3MywzLjcwMzEsMS4wODgxdi00Ljc4NjhjLTMuNTkxNi0xLjM0OTgtNy40NDc4LTIuNDQ4NC0xMS45NTUxLTMuNDYwOHY1LjE5MTJaIiBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiBmaWxsPSIjZmZmIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4=", alt: "DuPont", h: 20 },
@@ -1115,6 +1182,7 @@ function AboutPage({ setPage }) {
                   <img key={alt} src={src} alt={alt} style={{ height: mobile ? Math.min(h, 16) : h, width: "auto", opacity: 0.3 }} />
                 ))}
               </div>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.8rem", lineHeight: 1.6, color: C.g500, marginTop: mobile ? 18 : 22 }}>The insights behind TARGA come from decades of transformation work with Fortune 50 leadership teams. Our own company plan runs in TARGA.</p>
             </div>
           </Reveal>
         </div>
@@ -1127,7 +1195,7 @@ function AboutPage({ setPage }) {
             {[
               { name: "Bill Adams", role: "Founder", desc: "Founder of Targatek. The methodology behind TARGA comes from his decades of enterprise transformation work at Johnson & Johnson, DuPont, and Merck." },
               { name: "Joseph Thompson", role: "CEO", desc: "Enterprise software executive with deep experience in strategic planning, capital allocation, and value creation across Fortune 500 and PE-backed organizations." },
-              { name: "Kyle Moyer", role: "Brand & Product Design Lead", desc: "Creative lead across brand and product — design systems, executive-grade platform UX, and enterprise SaaS positioning that turns complex strategy into intuitive experiences." },
+              { name: "Kyle Moyer", role: "Brand & Product Design Lead", desc: "Creative lead across brand and product - design systems, executive-grade platform UX, and enterprise SaaS positioning that turns complex strategy into intuitive experiences." },
             ].map((p, i) => (
               <Reveal key={p.name} delay={i * 0.1}><GlowCard glowColor={i === 0 ? "rgba(251,191,36,0.06)" : i === 1 ? "rgba(14,178,175,0.1)" : "rgba(74,159,232,0.08)"} style={{ padding: mobile ? 32 : 32, minHeight: mobile ? "auto" : 300 }}>
                 <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(14,178,175,0.08)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}><span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.1rem", color: C.teal, fontWeight: 500 }}>{p.name.split(" ").map(n => n[0]).join("")}</span></div>
@@ -1139,7 +1207,7 @@ function AboutPage({ setPage }) {
           </div>
         </div>
       </section>
-      <section style={{ background: C.navy, padding: mobile ? "40px 20px" : "60px 40px", textAlign: "center" }}><Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.3rem", fontWeight: 300, color: C.white, marginBottom: 10 }}>A Targatek Inc. Company</h2><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", color: C.g500, maxWidth: 420, margin: "0 auto" }}>TARGA AI is the flagship product of Targatek Inc., a software company focused on enterprise value creation infrastructure.</p></Reveal></section>
+      <section style={{ background: C.navy, padding: mobile ? "40px 20px" : "60px 40px", textAlign: "center" }}><Reveal><h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.3rem", fontWeight: 300, color: C.white, marginBottom: 10 }}>A Targatek Inc. Company</h2><p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", color: C.g500, maxWidth: 420, margin: "0 auto" }}>Targatek Inc. makes TARGA, the platform that helps leaders lead.</p></Reveal></section>
       <section style={{ background: C.navyDeep, padding: mobile ? "48px 20px" : "80px 40px", textAlign: "center" }}><Reveal><div style={{ display: "flex", gap: 14, justifyContent: "center", flexDirection: mobile ? "column" : "row" }}><Btn onClick={() => { setPage("contact"); window.scrollTo(0, 0); }}>Get in Touch</Btn><Btn variant="secondary" onClick={() => { setPage("ceo100"); window.scrollTo(0, 0); }}>Join 100 CEOs</Btn></div></Reveal></section>
     </>
   );
@@ -1157,7 +1225,7 @@ function CEO100Page({ setPage }) {
         <TargaCanvasPattern />
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "0 20px" : "0 40px", position: "relative", zIndex: 1 }}>
           <Eyebrow>100 CEO Conversations</Eyebrow>
-          <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Building the future of the leader experience.</h1>
+          <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 300, lineHeight: 1.15, letterSpacing: "-1px", color: C.white, maxWidth: 650, marginBottom: 20 }}>Built with the people who run companies.</h1>
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "1.05rem", lineHeight: 1.75, color: C.g300, maxWidth: 560 }}>We are having 100 conversations with enterprise CEOs about how they create value, where they lose visibility, and what tools they wish existed. Your perspective shapes what we build.</p>
         </div>
       </section>
@@ -1166,7 +1234,7 @@ function CEO100Page({ setPage }) {
           <Reveal><Eyebrow color={C.gold}>Why Participate</Eyebrow><SectionTitle>What you get from the conversation.</SectionTitle></Reveal>
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 28, marginTop: mobile ? 24 : 40 }}>
             {[
-              { t: "Executive Peer Insight", d: "Aggregated findings from leaders across industries — patterns, blind spots, opportunities." },
+              { t: "Executive Peer Insight", d: "Aggregated findings from leaders across industries - patterns, blind spots, opportunities." },
               { t: "Early Platform Access", d: "Participants who commit to a pilot get priority access and favorable terms." },
               { t: "Shape the Product", d: "Your input directly influences features and AI capabilities. Co-creation, not a sales pitch." },
             ].map(({ t, d }, i) => (
@@ -1182,7 +1250,7 @@ function CEO100Page({ setPage }) {
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <Reveal><Eyebrow>The Conversation</Eyebrow><SectionTitle sub="A 30-minute conversation with our CEO, Joe Thompson. No pitch deck. No demo. Just a direct conversation about how you manage value creation.">What to expect.</SectionTitle></Reveal>
           <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 20 }}>
-            {["How do you currently track strategic initiatives across functions?", "Where do alignment gaps show up — and when do you find out?", "What would continuous executive visibility look like for your organization?"].map((q, i) => (
+            {["How do you currently track strategic initiatives across functions?", "Where do alignment gaps show up - and when do you find out?", "What would continuous executive visibility look like for your organization?"].map((q, i) => (
               <Reveal key={i} delay={i * 0.1}><div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
                 <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "1.2rem", color: C.teal, fontWeight: 500, minWidth: 28 }}>{"0" + (i + 1)}</div>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.9rem", color: C.g300, lineHeight: 1.6 }}>{q}</p>
@@ -1231,7 +1299,7 @@ function ContactPage() {
         <Reveal><div>
           <Eyebrow>Contact</Eyebrow>
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 300, lineHeight: 1.2, letterSpacing: "-1px", color: C.white, marginBottom: 20 }}>Start the conversation.</h1>
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 40 }}>Whether you want a demo, want to join the 100 CEO initiative, or just want to learn more — we would like to hear from you.</p>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.8, color: C.g300, marginBottom: 40 }}>Whether you want a demo, want to join the 100 CEO initiative, or just want to learn more - we would like to hear from you.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div><div style={labelStyle}>Email</div><a href="mailto:info@targa.ai" style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal, textDecoration: "none" }}>info@targa.ai</a></div>
             <div><div style={labelStyle}>LinkedIn</div><a href="https://www.linkedin.com/company/targatek" target="_blank" rel="noopener" style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", color: C.teal, textDecoration: "none" }}>linkedin.com/company/targatek</a></div>
@@ -1330,16 +1398,32 @@ function TermsPage() {
 }
 
 /* ═══ MAIN ═══ */
-export default function TargaAI() {
-  const [page, setPage] = useState("home");
-  const pages = { home: HomePage, platform: PlatformPage, about: AboutPage, ceo100: CEO100Page, contact: ContactPage, privacy: PrivacyPage, terms: TermsPage };
-  const Page = pages[page] || HomePage;
+export function useNavigate() {
+  const router = useRouter();
+  return (key) => { router.push(PATHS[key] || key); };
+}
+
+export function SiteFrame({ page, children }) {
+  const setPage = useNavigate();
   return (
     <div style={{ background: C.navyDeep, minHeight: "100vh", position: "relative" }}>
       <style>{`@keyframes lightSweep { 0% { transform: translateX(-100%) rotate(35deg); } 100% { transform: translateX(300%) rotate(35deg); } }`}</style>
       <Nav page={page} setPage={setPage} />
-      <Page setPage={setPage} />
+      {children}
       <Footer setPage={setPage} />
     </div>
   );
 }
+
+export default function TargaAI({ page = "home" }) {
+  const setPage = useNavigate();
+  const pages = { home: HomePage, platform: PlatformPage, about: AboutPage, ceo100: CEO100Page, contact: ContactPage, privacy: PrivacyPage, terms: TermsPage };
+  const Page = pages[page] || HomePage;
+  return (
+    <SiteFrame page={page}>
+      <Page setPage={setPage} />
+    </SiteFrame>
+  );
+}
+
+export { CompareTable, FaqList, BriefingCard, C, useMedia, useInView, Reveal, AnimatedStat, IconMark, Logo, Btn, Eyebrow, SectionTitle, HoverCard, PremiumBg, GlowCard, Nav, Footer };
