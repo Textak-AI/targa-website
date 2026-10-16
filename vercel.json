@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "desk.targa.ai" }],
+      "destination": "https://claude.ai/artifact/EizvPoe63zR63JmgeoqpWA",
+      "permanent": false
+    }
+  ]
+}
