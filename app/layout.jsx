@@ -32,7 +32,7 @@ const orgSchema = {
       name: 'Targatek Inc.',
       url: 'https://targatek.com',
       description: 'Targatek Inc. makes TARGA, a leadership intelligence platform built for executives. Your strategy lives in TARGA with a name on every action, and the work your team does creates the status you see, so the whole leadership team is working from the same picture. TARGA\'s guidance gets better the more you use it, and the decisions stay yours. Every company has AI now. TARGA uses it where it changes results: watching the plan between meetings and flagging what needs attention, so your team acts sooner.',
-      sameAs: ['https://www.linkedin.com/company/targatek', 'https://targa.ai'],
+      sameAs: ['https://www.linkedin.com/showcase/targa-by-targatek', 'https://www.linkedin.com/company/targatek', 'https://targa.ai'],
       contactPoint: { '@type': 'ContactPoint', email: 'info@targa.ai', contactType: 'sales' },
     },
     {
